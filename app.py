@@ -361,6 +361,8 @@ class CredentialsInput(BaseModel):
 
 # --- REST Endpoints: Halaman Utama ---
 @app.get("/", response_class=HTMLResponse)
+@app.get("/api/index", response_class=HTMLResponse)
+@app.get("/api/index.py", response_class=HTMLResponse)
 async def serve_index():
     index_path = config.BASE_DIR / "static" / "index.html"
     if index_path.exists():
