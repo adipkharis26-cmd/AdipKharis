@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  bgris-media:
+    build: .
+    container_name: bgris-media-bot
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./downloads:/app/downloads
+      - ./thumbnails:/app/thumbnails
