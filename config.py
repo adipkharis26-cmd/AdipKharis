@@ -5,13 +5,25 @@ import imageio_ffmpeg
 
 # Base Directories
 BASE_DIR = Path(__file__).resolve().parent
-DOWNLOADS_DIR = BASE_DIR / "downloads"
-THUMBNAILS_DIR = BASE_DIR / "thumbnails"
-DATA_DIR = BASE_DIR / "data"
+
+# Check if running in serverless environment (e.g. Vercel)
+IS_VERCEL = bool(os.environ.get("VERCEL"))
+
+if IS_VERCEL:
+    DATA_DIR = Path("/tmp/data")
+    DOWNLOADS_DIR = Path("/tmp/downloads")
+    THUMBNAILS_DIR = Path("/tmp/thumbnails")
+else:
+    DOWNLOADS_DIR = BASE_DIR / "downloads"
+    THUMBNAILS_DIR = BASE_DIR / "thumbnails"
+    DATA_DIR = BASE_DIR / "data"
 
 # Ensure directories exist
 for directory in [DOWNLOADS_DIR, THUMBNAILS_DIR, DATA_DIR]:
-    directory.mkdir(parents=True, exist_ok=True)
+    try:
+        directory.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
 
 # Database
 DB_PATH = DATA_DIR / "shorts_system.db"

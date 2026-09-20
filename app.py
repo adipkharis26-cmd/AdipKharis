@@ -288,8 +288,9 @@ async def upload_worker_loop():
 async def lifespan(app: FastAPI):
     # Startup
     await init_db()
-    running_tasks["downloader"] = asyncio.create_task(download_worker_loop())
-    running_tasks["uploader"] = asyncio.create_task(upload_worker_loop())
+    if not os.environ.get("VERCEL"):
+        running_tasks["downloader"] = asyncio.create_task(download_worker_loop())
+        running_tasks["uploader"] = asyncio.create_task(upload_worker_loop())
     yield
     # Shutdown
     for task in running_tasks.values():
