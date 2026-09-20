@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="id" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BGRis Media</title>
+  <meta name="description" content="BGRis Media - Dashboard Otomatisasi YouTube Shorts">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons 1.11.3 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom Modern SaaS Theme -->
+  <link rel="stylesheet" href="/static/css/style.css?v=2026.5">
+
+  <!-- Critical Layout Safety Rules -->
+  <style>
+    .tab-pane-saas { display: none !important; }
+    .tab-pane-saas.active { display: block !important; }
+    .saas-tab-nav { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top app-navbar">
+    <div class="container-xl">
+      <!-- Brand Logo -->
+      <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none" href="/">
+        <div class="brand-badge-icon">
+          BgRM
+        </div>
+        <div class="brand-text">
+          <h1>BGRis Media</h1>
+          <small>Platform Otomatisasi YouTube Shorts</small>
+        </div>
+      </a>
+
+      <!-- Mobile Toggler Button -->
+      <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="bi bi-list fs-2"></i>
+      </button>
+
+      <!-- Navbar Right Status -->
+      <div class="collapse navbar-collapse justify-content-end mt-3 mt-lg-0" id="navbarContent">
+        <div class="d-flex align-items-center flex-wrap gap-2">
+          <!-- Worker Status Badge -->
+          <div class="status-pill" id="workerStatusBadge">
+            <span class="status-dot active"></span>
+            <span class="text-secondary fw-semibold">Worker Aktif</span>
+          </div>
+
+          <!-- Active YouTube Channel Badge -->
+          <div class="status-pill" id="ytStatusBadge" style="cursor: pointer;" title="Klik untuk kelola channel YouTube">
+            <img id="headerChannelThumb" src="" style="width: 20px; height: 20px; border-radius: 50%; display: none; object-fit: cover;" alt="">
+            <span class="status-dot warning" id="ytDot"></span>
+            <span id="ytStatusText" class="text-light fw-semibold">YouTube Belum Terhubung</span>
+          </div>
+
+          <!-- Tombol Akses HP -->
+          <button type="button" class="btn btn-outline-info btn-sm d-flex align-items-center gap-1" id="btnOpenMobileGuide" style="border-radius: 20px; padding: 4px 12px; font-size: 0.82rem;" title="Buka di HP (Smartphone)">
+            <i class="bi bi-phone"></i>
+            <span id="mobileBadgeText">Akses HP</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container-xl py-4">
+
+    <!-- Hero Input Card (Bulk / Single Shorts) -->
+    <section class="mb-4">
+      <div class="saas-card saas-card-hero p-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+          <h2 class="h5 mb-0 d-flex align-items-center gap-2">
+            <i class="bi bi-link-45deg fs-4 text-danger"></i> Input YouTube Shorts
+          </h2>
+          <div class="d-flex align-items-center gap-2">
+            <button type="button" id="btnOpenChannelExtractor" class="btn btn-secondary btn-sm" style="background: rgba(255, 68, 68, 0.12); border-color: rgba(255, 68, 68, 0.28); color: #ff6b6b;" title="Fitur Baru: Ekstrak Shorts dari Channel YouTube">
+              <i class="bi bi-collection-play-fill text-danger me-1"></i> Ambil dari Channel
+            </button>
+            <button type="button" id="btnOpenGuide" class="btn btn-secondary btn-sm" style="color: var(--saas-cyan-light);">
+              <i class="bi bi-question-circle"></i> Panduan Setup
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <textarea 
+            id="linksInput" 
+            class="form-control" 
+            rows="3" 
+            placeholder="Tempel link YouTube Shorts di sini (bisa 1 link atau banyak baris)..."
+          ></textarea>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <div class="d-flex flex-wrap gap-2">
+            <span class="badge badge-feature">
+              <i class="bi bi-stars text-danger"></i> MP4 HD Otomatis
+            </span>
+            <span class="badge badge-feature">
+              <i class="bi bi-calendar-check text-warning"></i> Maks 3 Upload/Hari
+            </span>
+            <span class="badge badge-feature">
+              <i class="bi bi-infinity text-info"></i> Stok Tak Terbatas
+            </span>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button id="btnPasteClipboard" class="btn btn-secondary" type="button">
+              <i class="bi bi-clipboard"></i> Tempel
+            </button>
+            <button id="btnStartDownload" class="btn btn-primary" type="button">
+              <i class="bi bi-cloud-arrow-down-fill"></i> Tambah Antrean
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPI Metrics Grid (5 Kartu SaaS Modern) -->
+    <section class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-3 mb-4">
+      <div class="col">
+        <div class="kpi-card">
+          <div class="kpi-icon-box kpi-icon-red">
+            <i class="bi bi-hourglass-split"></i>
+          </div>
+          <div>
+            <div class="kpi-label">Antrean</div>
+            <div class="kpi-value" id="statPendingQueue">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="kpi-card">
+          <div class="kpi-icon-box kpi-icon-cyan">
+            <i class="bi bi-film"></i>
+          </div>
+          <div>
+            <div class="kpi-label">Stok Siap</div>
+            <div class="kpi-value" id="statInStock">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="kpi-card">
+          <div class="kpi-icon-box kpi-icon-purple">
+            <i class="bi bi-calendar-event"></i>
+          </div>
+          <div>
+            <div class="kpi-label">Tayang Hari Ini</div>
+            <div class="kpi-value" id="statUploadedToday">0 / 3</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="kpi-card">
+          <div class="kpi-icon-box kpi-icon-amber">
+            <i class="bi bi-cloud-arrow-up"></i>
+          </div>
+          <div>
+            <div class="kpi-label">Unggah Hari Ini</div>
+            <div class="kpi-value" id="statTransferredToday">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="kpi-card">
+          <div class="kpi-icon-box kpi-icon-green">
+            <i class="bi bi-check2-circle"></i>
+          </div>
+          <div>
+            <div class="kpi-label">Total Unggah</div>
+            <div class="kpi-value" id="statUploadedTotal">0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Segmented Tab Bar (Horizontal & Clean) -->
+    <div class="saas-tab-nav mb-4" id="mainTabNav">
+      <button class="saas-tab-item active tab-btn" data-target="tabQueue" type="button">
+        <i class="bi bi-cloud-arrow-down"></i> Antrean <span class="tab-badge" id="queueBadge">0</span>
+      </button>
+      <button class="saas-tab-item tab-btn" data-target="tabStock" type="button">
+        <i class="bi bi-collection-play"></i> Stok Video <span class="tab-badge" id="stockBadge">0</span>
+      </button>
+      <button class="saas-tab-item tab-btn" data-target="tabTimeline" type="button">
+        <i class="bi bi-calendar3"></i> Jadwal Upload
+      </button>
+      <button class="saas-tab-item tab-btn" data-target="tabSettings" type="button">
+        <i class="bi bi-gear"></i> Channel & Pengaturan
+      </button>
+      <button class="saas-tab-item tab-btn" data-target="tabLogs" type="button">
+        <i class="bi bi-terminal"></i> Log Sistem
+      </button>
+    </div>
+
+    <!-- TAB 1: Antrean Unduh (Queue) -->
+    <section id="tabQueue" class="tab-pane-saas active">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+        <h2 class="h5 mb-0">Antrean Unduh</h2>
+        <div class="d-flex flex-wrap gap-2">
+          <button id="btnTogglePauseQueue" class="btn btn-outline-info btn-sm" type="button" title="Jeda atau lanjutkan unduhan otomatis">
+            <i class="bi bi-pause-circle"></i> Jeda Unduh
+          </button>
+          <button id="btnCancelAllQueue" class="btn btn-outline-danger btn-sm" type="button" title="Batalkan seluruh antrean unduh">
+            <i class="bi bi-x-circle"></i> Batal Semua
+          </button>
+          <button id="btnRetryFailed" class="btn btn-warning btn-sm" type="button" style="display: none;">
+            <i class="bi bi-arrow-repeat"></i> Coba Lagi yang Gagal
+          </button>
+          <button id="btnClearCompleted" class="btn btn-secondary btn-sm" type="button">
+            <i class="bi bi-trash3"></i> Bersihkan Selesai
+          </button>
+        </div>
+      </div>
+
+      <div id="queueListContainer" class="d-flex flex-column gap-2">
+        <div class="saas-card empty-state-saas">
+          <i class="bi bi-inbox text-secondary"></i>
+          <p class="mb-0">Belum ada antrean unduhan.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: Inventaris Stok Video (Stock) -->
+    <section id="tabStock" class="tab-pane-saas" style="display: none;">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+        <h2 class="h5 mb-0">Stok Video</h2>
+        <div class="d-flex flex-wrap gap-2">
+          <button id="btnSyncViews" class="btn btn-outline-info btn-sm" type="button" title="Perbarui jumlah views & status video dari YouTube">
+            <i class="bi bi-arrow-repeat"></i> Sinkron Status YT
+          </button>
+          <button id="btnDeduplicateStock" class="btn btn-outline-warning btn-sm" type="button" title="Cek & bersihkan video ganda/duplikat dalam stok">
+            <i class="bi bi-copy"></i> Bersihkan Duplikat
+          </button>
+          <button id="btnReschedule" class="btn btn-secondary btn-sm" type="button" title="Padatkan ulang jam rilis stok">
+            <i class="bi bi-calendar-range"></i> Padatkan Jadwal
+          </button>
+          <button id="btnOpenBulkEdit" class="btn btn-outline-primary btn-sm" type="button" title="Ubah judul, deskripsi, atau tag seluruh stok sekaligus">
+            <i class="bi bi-pencil-square"></i> Edit Massal
+          </button>
+          <button id="btnOpenBulkDelete" class="btn btn-outline-danger btn-sm" type="button" title="Hapus semua video dalam stok dengan konfirmasi aman">
+            <i class="bi bi-trash3"></i> Hapus Semua Stok
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter & Search Controls -->
+      <div class="saas-card p-3 mb-3">
+        <div class="row g-2 align-items-center">
+          <div class="col-12 col-md-6 col-lg-8">
+            <div class="input-group">
+              <span class="input-group-text bg-dark border text-secondary" style="border-color: var(--saas-border-light) !important;">
+                <i class="bi bi-search"></i>
+              </span>
+              <input type="text" id="inputStockSearch" class="form-control" placeholder="Cari video berdasarkan judul atau tag...">
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <select id="selectStockStatusFilter" class="form-select">
+              <option value="all">Semua Status</option>
+              <option value="in_stock">Hanya Stok Siap</option>
+              <option value="scheduled">Hanya Terjadwal</option>
+              <option value="uploaded">Hanya Terunggah</option>
+              <option value="public">Hanya Publik</option>
+              <option value="deleted_on_youtube">Dihapus di YouTube</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="stockGridContainer" class="row g-3">
+        <div class="col-12">
+          <div class="saas-card empty-state-saas">
+            <i class="bi bi-folder2-open text-secondary"></i>
+            <p class="mb-0">Stok video masih kosong.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Kalender Jadwal Upload (Timeline) -->
+    <section id="tabTimeline" class="tab-pane-saas" style="display: none;">
+      <div class="mb-3">
+        <h2 class="h5 mb-0">Jadwal Upload</h2>
+      </div>
+      <div id="timelineContainer">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+
+    <!-- TAB 4: Multi-Channel YouTube & Pengaturan -->
+    <section id="tabSettings" class="tab-pane-saas" style="display: none;">
+      <!-- Multi-Channel Section -->
+      <div class="saas-card p-4 mb-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+          <div>
+            <h2 class="h5 mb-0 d-flex align-items-center gap-2">
+              <i class="bi bi-youtube text-danger fs-4"></i> Channel YouTube Terhubung
+            </h2>
+          </div>
+          <button id="btnConnectYt" class="btn btn-primary btn-sm" type="button">
+            <i class="bi bi-plus-circle"></i> + Hubungkan Channel
+          </button>
+        </div>
+
+        <div id="channelsListContainer" class="row g-3">
+          <!-- Loaded via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Google Cloud Credentials Setup -->
+      <div class="saas-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="h6 mb-0">Kredensial OAuth (client_secrets.json)</h3>
+          <span id="secretsStatusBadge" class="status-pill border text-secondary bg-dark">
+            <span class="status-dot warning"></span> Memeriksa Kredensial...
+          </span>
+        </div>
+
+        <div class="row g-4">
+          <!-- Form Input Client ID & Secret Manual -->
+          <div class="col-12 col-lg-6 border-end-lg" style="border-color: var(--saas-border) !important;">
+            <label class="form-label fw-semibold text-light small">Metode 1: Masukkan ID & Secret</label>
+            <div class="mb-2">
+              <input type="text" id="inputClientId" class="form-control form-control-sm" placeholder="Client ID Google">
+            </div>
+            <div class="mb-3">
+              <input type="password" id="inputClientSecret" class="form-control form-control-sm" placeholder="Client Secret">
+            </div>
+            <button id="btnSaveClientCredentials" class="btn btn-secondary btn-sm" type="button">
+              <i class="bi bi-check-circle"></i> Simpan
+            </button>
+          </div>
+
+          <!-- Form Upload File JSON -->
+          <div class="col-12 col-lg-6">
+            <label class="form-label fw-semibold text-light small">Metode 2: Unggah client_secrets.json</label>
+            <div class="mb-3">
+              <input type="file" id="inputClientSecrets" class="form-control form-control-sm" accept=".json">
+            </div>
+            <div class="d-flex gap-2">
+              <button id="btnUploadSecrets" class="btn btn-secondary btn-sm" type="button">
+                <i class="bi bi-upload"></i> Unggah File
+              </button>
+              <button id="btnCopyRedirectUri" class="btn btn-secondary btn-sm text-secondary" type="button">
+                <i class="bi bi-clipboard"></i> Salin URI
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- General System Settings (Per-Channel Automation & SEO) -->
+      <div class="saas-card p-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+          <div>
+            <h3 class="h6 mb-1"><i class="bi bi-sliders me-1 text-info"></i> Pengaturan Otomatisasi & SEO</h3>
+            <p class="text-secondary small mb-0">Konfigurasi SEO, judul, deskripsi, dan jadwal khusus per masing-masing channel.</p>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="small text-secondary fw-semibold">Target Channel:</span>
+            <select id="settingChannelSelect" class="form-select form-select-sm text-light fw-semibold" style="min-width: 240px; background-color: var(--saas-surface-input); border-color: var(--saas-cyan);">
+              <!-- Diisi otomatis oleh JavaScript -->
+            </select>
+          </div>
+        <div id="settingChannelLockNotice" class="mb-3" style="display: none;">
+          <!-- Diisi otomatis oleh JavaScript: pemberitahuan mode terkunci atau mode aktif -->
+        </div>
+
+        <form id="settingsForm">
+          <input type="hidden" id="settingTargetChannelId" value="">
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <label class="form-label small fw-semibold">Maksimal Upload Per Hari</label>
+              <input type="number" id="settingMaxUploads" class="form-control" value="3" min="1" max="10">
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label small fw-semibold">Slot Jam Tayang (WIB)</label>
+              <input type="text" id="settingUploadSlots" class="form-control" value="09:00, 13:00, 18:00" placeholder="08:00, 13:00, 18:00">
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label small fw-semibold">Template Judul</label>
+              <input type="text" id="settingTitleTemplate" class="form-control" value="{clean_title} #Shorts">
+              <div class="form-text text-secondary small">Gunakan <code>{clean_title}</code> untuk judul bersih otomatis (contoh: <code>{clean_title} #Shorts #Viral</code>).</div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label small fw-semibold">Tag Default (Dipisah Koma)</label>
+              <input type="text" id="settingDefaultTags" class="form-control" value="shorts, youtubeshorts, viral, trending, fyp">
+              <div class="form-text text-secondary small">Tag SEO relevan yang otomatis disematkan ke video channel ini.</div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label small fw-semibold">Template Deskripsi Otomatis</label>
+              <textarea id="settingDescriptionTemplate" class="form-control font-monospace" rows="3" placeholder="{clean_title}&#10;&#10;Tonton sampai habis! Jangan lupa Like, Comment, dan Subscribe.&#10;&#10;#Shorts #Viral #Trending"></textarea>
+              <div class="form-text text-secondary small">Variabel tersedia: <code>{clean_title}</code>, <code>{title}</code>, <code>{original_title}</code>. Deskripsi ini otomatis diterapkan saat video channel ini masuk stok.</div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label small fw-semibold">Google Gemini API Key (Opsional)</label>
+              <input type="password" id="settingGeminiKey" class="form-control" placeholder="AIzaSy...">
+            </div>
+
+            <div class="col-12">
+              <div class="form-check form-switch mt-2">
+                <input class="form-check-input" type="checkbox" id="settingAutoUpload" checked>
+                <label class="form-check-label small fw-semibold" for="settingAutoUpload">
+                  Otomatisasi Unggah ke YouTube Aktif untuk Channel Ini
+                </label>
+              </div>
+            </div>
+
+            <div class="col-12 text-end mt-3">
+              <button type="submit" class="btn btn-primary" id="btnSaveSettings">
+                <i class="bi bi-save"></i> Simpan Pengaturan Channel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 5: Log Sistem (Logs) -->
+    <section id="tabLogs" class="tab-pane-saas" style="display: none;">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 mb-0">Log Sistem</h2>
+        <button id="btnRefreshLogs" class="btn btn-secondary btn-sm" type="button">
+          <i class="bi bi-arrow-clockwise"></i> Segarkan
+        </button>
+      </div>
+
+      <div class="saas-card p-3">
+        <div id="logsContainer" class="p-3 bg-dark rounded font-monospace small" style="max-height: 480px; overflow-y: auto; border: 1px solid var(--saas-border); font-size: 0.82rem;">
+          <p class="text-secondary mb-0">Memuat log...</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bootstrap Modal: Edit Metadata Video & Jadwal (2-Way Sync) -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="h5 modal-title" id="editModalTitle">Edit Video</h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form id="editForm">
+          <div class="modal-body">
+            <input type="hidden" id="editVideoId">
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-light">Judul Shorts</label>
+              <input type="text" id="editTitle" class="form-control" required maxlength="100">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-light">Tag YouTube</label>
+              <input type="text" id="editTags" class="form-control">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-light">Deskripsi Video</label>
+              <textarea id="editDescription" class="form-control" rows="4"></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-light">Jadwal Tayang Publik (WIB)</label>
+              <input type="datetime-local" id="editSchedule" class="form-control">
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-cloud-arrow-up"></i> Simpan & Sinkronisasi
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Modal: Fitur Baru - Ambil Shorts dari Channel YouTube -->
+  <div class="modal fade" id="channelExtractorModal" tabindex="-1" aria-labelledby="channelExtractorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h3 class="h5 modal-title text-light d-flex align-items-center gap-2" id="channelExtractorModalLabel">
+              <i class="bi bi-collection-play-fill text-danger"></i> Ambil Shorts dari Channel YouTube
+            </h3>
+            <div class="text-secondary small mt-1">Ekstrak otomatis daftar Shorts terbaru langsung dari channel YouTube</div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <form id="channelExtractorForm" onsubmit="return false;">
+            <!-- Input Link Channel -->
+            <div class="mb-3">
+              <label for="channelUrlInput" class="form-label text-light small fw-semibold">
+                Link atau Handle Channel YouTube <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <span class="input-group-text bg-dark border-secondary text-secondary">
+                  <i class="bi bi-youtube text-danger"></i>
+                </span>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="channelUrlInput" 
+                  placeholder="Contoh: https://www.youtube.com/@MrBeast atau @MrBeast"
+                  autocomplete="off"
+                >
+              </div>
+              <div id="channelUrlFeedback" class="text-danger small mt-1 d-none">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i> <span id="channelUrlFeedbackText">Link tidak valid.</span>
+              </div>
+              <div class="form-text text-secondary" style="font-size: 0.78rem;">
+                <i class="bi bi-info-circle me-1"></i> Format valid: <code>@NamaChannel</code>, <code>youtube.com/@NamaChannel</code>, atau <code>youtube.com/channel/UC...</code>. (Link video tunggal tidak diperbolehkan).
+              </div>
+            </div>
+
+            <!-- Input Jumlah Video Bebas & Preset Cepat -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label for="channelLimitInput" class="form-label text-light small fw-semibold mb-0">
+                  Jumlah Video yang Diambil <span class="text-secondary fw-normal">(Bebas diatur)</span>
+                </label>
+                <span class="badge bg-secondary text-light small" id="channelLimitBadge">5 Video Terbaru</span>
+              </div>
+              <input 
+                type="number" 
+                class="form-control mb-2" 
+                id="channelLimitInput" 
+                value="5" 
+                min="1" 
+                max="100" 
+                placeholder="Ketik jumlah video yang diinginkan (misal: 5, 10, 11, 20...)"
+              >
+              
+              <!-- Tombol Pilihan Preset Cepat -->
+              <div class="d-flex flex-wrap gap-2 align-items-center">
+                <span class="text-secondary small me-1">Pilihan Cepat:</span>
+                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 preset-limit-btn" data-limit="3">3</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 preset-limit-btn active" data-limit="5">5</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 preset-limit-btn" data-limit="10">10</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 preset-limit-btn" data-limit="11">11</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 preset-limit-btn" data-limit="15">15</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 preset-limit-btn" data-limit="20">20</button>
+              </div>
+              <div class="form-text text-secondary mt-1" style="font-size: 0.78rem;">
+                Sistem akan mengambil video Shorts terbaru dari channel tersebut secara berurutan.
+              </div>
+            </div>
+
+            <!-- Loading Indicator Box -->
+            <div id="channelExtractorLoading" class="alert alert-info py-2 d-none d-flex align-items-center gap-2 mb-0" style="background: rgba(14,165,233,0.15); border-color: rgba(14,165,233,0.3); color: #38bdf8;">
+              <div class="spinner-border spinner-border-sm text-info" role="status"></div>
+              <span class="small" id="channelExtractorLoadingText">Sedang mengekstrak daftar Shorts terbaru dari YouTube...</span>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" id="btnCancelChannelExtract">Batal</button>
+          <button type="button" class="btn btn-primary btn-sm" id="btnSubmitChannelExtract">
+            <i class="bi bi-cloud-arrow-down-fill me-1"></i> Ambil & Masukkan Antrean
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Modal: Panduan Setup Google Cloud Console -->
+  <div class="modal fade" id="guideModal" tabindex="-1" aria-labelledby="guideModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="h5 modal-title text-light" id="guideModalLabel">
+            <i class="bi bi-shield-lock text-danger me-2"></i> Panduan Setup YouTube API
+          </h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="d-flex flex-column gap-3">
+            <div class="p-3 rounded-3 bg-dark border" style="border-color: var(--saas-border-light) !important;">
+              <strong class="text-light d-block mb-1">1. Buat Proyek di Google Cloud Console</strong>
+              <small class="text-secondary">
+                Buka <a href="https://console.cloud.google.com/" target="_blank" class="text-info text-decoration-none">Google Cloud Console</a>, buat proyek baru, lalu aktifkan <strong>YouTube Data API v3</strong>.
+              </small>
+            </div>
+
+            <div class="p-3 rounded-3 bg-dark border" style="border-color: var(--saas-border-light) !important;">
+              <strong class="text-light d-block mb-1">2. Konfigurasi OAuth Consent Screen</strong>
+              <small class="text-secondary">
+                Pilih User Type: <strong>External</strong>. Pada bagian <strong>Test Users</strong>, tambahkan email YouTube Anda.
+              </small>
+            </div>
+
+            <div class="p-3 rounded-3 bg-dark border" style="border-color: var(--saas-border-light) !important;">
+              <strong class="text-light d-block mb-1">3. Buat Kredensial OAuth Client ID</strong>
+              <small class="text-secondary d-block mb-2">
+                Pilih <strong>Web application</strong>. Pada Authorized redirect URIs:
+              </small>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control font-monospace" value="http://localhost:8000/api/youtube/oauth-callback" readonly>
+                <button class="btn btn-secondary" type="button" id="btnModalCopyUri">Salin</button>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-3 bg-dark border border-success border-opacity-25">
+              <strong class="text-success d-block mb-1">4. Simpan & Hubungkan!</strong>
+              <small class="text-secondary">
+                Masukkan Client ID & Secret di tab Pengaturan, lalu klik <strong>"+ Hubungkan Channel"</strong>.
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <a href="https://console.cloud.google.com/apis/credentials" target="_blank" class="btn btn-secondary btn-sm">
+            <i class="bi bi-box-arrow-up-right"></i> Buka Google Cloud Console
+          </a>
+          <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal" id="btnUnderstandGuide">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Edit Massal Stok Video -->
+  <div class="modal fade" id="bulkEditModal" tabindex="-1" aria-labelledby="bulkEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content saas-modal">
+        <div class="modal-header border-bottom" style="border-color: var(--saas-border-light) !important;">
+          <h5 class="modal-title d-flex align-items-center gap-2" id="bulkEditModalLabel">
+            <i class="bi bi-pencil-square text-primary"></i> Edit Massal Stok Video
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form id="bulkEditForm">
+          <div class="modal-body d-flex flex-column gap-3">
+            <div class="alert alert-info py-2 px-3 small mb-0 d-flex align-items-center gap-2">
+              <i class="bi bi-info-circle-fill fs-5"></i>
+              <span>Perubahan yang Anda pilih akan diterapkan secara serempak ke seluruh video yang berada dalam cakupan yang dipilih.</span>
+            </div>
+
+            <!-- Cakupan Video (Scope) -->
+            <div class="p-3 rounded-3 bg-dark border" style="border-color: var(--saas-border-light) !important;">
+              <label class="form-label fw-bold text-light small mb-2">Cakupan Video Target:</label>
+              <div class="d-flex flex-column gap-2">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="bulkScope" id="scopeUnuploaded" value="unuploaded" checked>
+                  <label class="form-check-label text-light small" for="scopeUnuploaded">
+                    <strong>Hanya video yang belum tayang</strong> (Stok Siap & Terjadwal) — <em>Direkomendasikan</em>
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="bulkScope" id="scopeAll" value="all">
+                  <label class="form-check-label text-light small" for="scopeAll">
+                    <strong>Semua video stok</strong> (termasuk yang sudah berstatus terunggah/publik)
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bagian 1: Perubahan Judul -->
+            <div class="p-3 rounded-3 bg-dark border" style="border-color: var(--saas-border-light) !important;">
+              <label class="form-label fw-bold text-primary small mb-1"><i class="bi bi-type-h1 me-1"></i> Perubahan Judul:</label>
+              <div class="row g-2 align-items-center mb-2">
+                <div class="col-12 col-md-5">
+                  <select id="bulkTitleMode" class="form-select form-select-sm">
+                    <option value="none">-- Jangan Ubah Judul --</option>
+                    <option value="append_suffix">Tambah di Akhir Judul (Suffix)</option>
+                    <option value="prepend_prefix">Tambah di Awal Judul (Prefix)</option>
+                    <option value="find_replace">Cari & Ganti Kata</option>
+                    <option value="replace_all">Ganti Seluruh Judul (Teks Tetap)</option>
+                  </select>
+                </div>
+                <div class="col-12 col-md-7" id="bulkTitleFindWrap" style="display: none;">
+                  <input type="text" id="bulkTitleFind" class="form-control form-control-sm" placeholder="Kata yang ingin diganti...">
+                </div>
+              </div>
+              <div id="bulkTitleValWrap" style="display: none;">
+                <input type="text" id="bulkTitleVal" class="form-control form-control-sm" placeholder="Contoh: #Shorts #Viral (atau teks judul baru)">
+              </div>
+            </div>
+
+            <!-- Bagian 2: Perubahan Deskripsi -->
+            <div class="p-3 rounded-3 bg-dark border" style="border-color: var(--saas-border-light) !important;">
+              <label class="form-label fw-bold text-primary small mb-1"><i class="bi bi-card-text me-1"></i> Perubahan Deskripsi:</label>
+              <select id="bulkDescMode" class="form-select form-select-sm mb-2">
+                <option value="none">-- Jangan Ubah Deskripsi --</option>
+                <option value="append">Tambah di Akhir Deskripsi (Append)</option>
+                <option value="replace_all">Ganti Seluruh Deskripsi</option>
+              </select>
+              <div id="bulkDescValWrap" style="display: none;">
+                <textarea id="bulkDescVal" class="form-control form-control-sm" rows="3" placeholder="Tuliskan teks deskripsi atau catatan/link yang ingin ditambahkan..."></textarea>
+              </div>
+            </div>
+
+            <!-- Bagian 3: Perubahan Tag -->
+            <div class="p-3 rounded-3 bg-dark border" style="border-color: var(--saas-border-light) !important;">
+              <label class="form-label fw-bold text-primary small mb-1"><i class="bi bi-tags me-1"></i> Perubahan Tag (Hashtag):</label>
+              <select id="bulkTagsMode" class="form-select form-select-sm mb-2">
+                <option value="none">-- Jangan Ubah Tag --</option>
+                <option value="append">Tambahkan Tag Baru</option>
+                <option value="replace">Ganti Seluruh Tag</option>
+              </select>
+              <div id="bulkTagsValWrap" style="display: none;">
+                <input type="text" id="bulkTagsVal" class="form-control form-control-sm" placeholder="Pisahkan dengan koma, misal: shorts, viral, fyp, trending">
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer border-top" style="border-color: var(--saas-border-light) !important;">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary btn-sm" id="btnSubmitBulkEdit">
+              <i class="bi bi-check2-circle"></i> Terapkan Edit Massal
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Hapus Semua Stok Video (dengan Proteksi Ketik) -->
+  <div class="modal fade" id="bulkDeleteModal" tabindex="-1" aria-labelledby="bulkDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content saas-modal border-danger border-opacity-50">
+        <div class="modal-header border-bottom border-danger border-opacity-25 bg-danger bg-opacity-10">
+          <h5 class="modal-title text-danger d-flex align-items-center gap-2" id="bulkDeleteModalLabel">
+            <i class="bi bi-exclamation-triangle-fill"></i> Hapus Semua Stok Video
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body d-flex flex-column gap-3">
+          <div class="alert alert-danger py-2 px-3 small mb-0">
+            <strong>PERINGATAN!</strong> Tindakan ini bersifat permanen dan tidak dapat dibatalkan.
+          </div>
+
+          <!-- Cakupan Hapus -->
+          <div class="p-3 rounded-3 bg-dark border" style="border-color: var(--saas-border-light) !important;">
+            <label class="form-label fw-bold text-light small mb-2">Pilih Video yang Akan Dihapus:</label>
+            <div class="d-flex flex-column gap-2">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="deleteScope" id="delScopeUnuploaded" value="unuploaded" checked>
+                <label class="form-check-label text-light small" for="delScopeUnuploaded">
+                  <strong>Hanya video belum terunggah</strong> (Stok Siap & Terjadwal)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="deleteScope" id="delScopeAll" value="all">
+                <label class="form-check-label text-light small" for="delScopeAll">
+                  <strong>Semua video stok</strong> (termasuk riwayat video terunggah)
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Opsi Hapus File Fisik -->
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="checkDeleteLocalFiles" checked>
+            <label class="form-check-label text-light small" for="checkDeleteLocalFiles">
+              Hapus juga file video (.mp4) dan thumbnail dari penyimpanan komputer untuk menghemat ruang disk.
+            </label>
+          </div>
+
+          <!-- Proteksi Ketik Konfirmasi -->
+          <div class="p-3 rounded-3 bg-dark border border-danger border-opacity-50">
+            <label class="form-label text-light small mb-1">
+              Untuk mengonfirmasi, silakan ketik kata <strong class="text-danger font-monospace">HAPUS SEMUA</strong> pada kotak di bawah:
+            </label>
+            <input type="text" id="inputBulkDeleteConfirm" class="form-control text-center fw-bold text-danger font-monospace" placeholder="Ketik persis: HAPUS SEMUA" autocomplete="off">
+            <div class="text-secondary small mt-1 text-center" id="deleteConfirmHint">
+              Tombol hapus akan aktif setelah Anda mengetik dengan benar.
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer border-top" style="border-color: var(--saas-border-light) !important;">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-danger btn-sm" id="btnConfirmBulkDelete" disabled>
+            <i class="bi bi-trash3-fill"></i> Ya, Hapus Sekarang
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Petunjuk Akses HP -->
+  <div class="modal fade" id="mobileGuideModal" tabindex="-1" aria-labelledby="mobileGuideModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="h5 modal-title text-light d-flex align-items-center gap-2" id="mobileGuideModalLabel">
+            <i class="bi bi-phone text-info"></i> Buka BGRis Media di HP
+          </h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex flex-column gap-3">
+          <p class="text-secondary small mb-0">
+            Anda dapat membuka dan mengontrol dashboard ini langsung dari browser HP (Chrome, Safari, dll.) yang terhubung ke Wi-Fi yang sama.
+          </p>
+
+          <div class="p-3 rounded-3 bg-dark border" style="border-color: var(--saas-border-light) !important;">
+            <label class="form-label text-light small fw-bold mb-1">Alamat URL untuk Browser HP:</label>
+            <div class="input-group">
+              <input type="text" id="mobileUrlDisplay" class="form-control font-monospace text-info bg-black" readonly value="http://192.168.1.13:8000">
+              <button class="btn btn-primary" type="button" id="btnCopyMobileUrl">
+                <i class="bi bi-clipboard"></i> Salin
+              </button>
+            </div>
+            <div class="text-secondary mt-2" style="font-size: 0.78rem;">
+              Ketik alamat di atas pada aplikasi browser di HP Anda.
+            </div>
+          </div>
+
+          <div class="alert alert-warning py-2 px-3 small mb-0" style="background: rgba(234, 179, 8, 0.1); border-color: rgba(234, 179, 8, 0.25); color: #facc15;">
+            <strong>HP Mengalami Loading / Muter-Muter Terus?</strong>
+            <ol class="ps-3 mb-1 mt-1">
+              <li><strong>Wi-Fi yang Sama:</strong> Pastikan HP terhubung ke Wi-Fi yang sama dengan Laptop (bukan kuota data seluler).</li>
+              <li><strong>Izin Firewall Windows:</strong> Windows Defender Firewall memblokir koneksi dari luar. Jalankan file <code class="text-light">izinkan_akses_hp.bat</code> di folder aplikasi (Klik kanan &rarr; <em>Run as administrator</em>).</li>
+            </ol>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+    <div id="liveToast" class="toast toast-saas align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body d-flex align-items-center gap-2">
+          <i id="toastIcon" class="bi bi-info-circle-fill text-info fs-5"></i>
+          <span id="toastMessage" class="fw-semibold">Pesan notifikasi</span>
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5.3.3 JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Application Logic -->
+  <script src="/static/js/app.js?v=2026.9"></script>
+</body>
+</html>

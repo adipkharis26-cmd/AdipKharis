@@ -1,0 +1,54 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Sensitive credentials & OAuth secrets (NEVER COMMIT)
+data/client_secrets.json
+data/token.json
+data/code_verifier.txt
+client_secrets.json
+token.json
+code_verifier.txt
+*.pem
+*.key
+.env
+
+# SQLite Databases & runtime storage
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+*.db
+*.sqlite
+*.sqlite3
+
+# Downloaded media & generated thumbnails
+downloads/*
+!downloads/.gitkeep
+thumbnails/*
+!thumbnails/.gitkeep
+*.mp4
+*.mkv
+*.webm
+*.avi
+*.jpg
+*.jpeg
+*.png
+!static/**
+
+# Logs & OS artifacts
+*.log
+.download_history.json
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+.DS_Store
