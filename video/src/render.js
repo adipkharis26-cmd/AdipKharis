@@ -1,4 +1,4 @@
-// Usage:
+// Usage (EP=ep01|ep02 picks the episode page, default ep01):
 //   node render.js video <out.mp4> [fps] [audio]   render full DURATION to mp4 (optional VO audio)
 //   node render.js stills <dir> t1 t2 ...          render single frames as PNG
 const { chromium } = require('playwright');
@@ -11,7 +11,7 @@ const path = require('path');
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   page.on('pageerror', e => { console.error('PAGE ERROR', e.message); process.exit(1); });
-  await page.goto('file://' + path.join(__dirname, 'render.html'));
+  await page.goto('file://' + path.join(__dirname, (process.env.EP || 'ep01') + '.html'));
   await page.evaluate(() => document.fonts.ready);
 
   const grab = t => page.evaluate(t => { renderFrame(t); return document.getElementById('c').toDataURL('image/png').split(',')[1]; }, t);

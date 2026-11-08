@@ -461,8 +461,9 @@ function strokeText(txt, x, y, size, fill, opts) {
   g.lineWidth = size * (opts.sw || 0.16); g.strokeStyle = opts.stroke || '#111';
   if (opts.shadow !== false) { g.save(); g.fillStyle = 'rgba(0,0,0,0.35)'; g.strokeStyle = 'rgba(0,0,0,0.35)'; g.strokeText(txt, x + size * 0.06, y + size * 0.08); g.restore(); }
   g.strokeText(txt, x, y); g.fillStyle = fill || '#fff'; g.fillText(txt, x, y);
+  g.letterSpacing = '0px';
 }
-function fitSize(txt, size, maxW) { g.font = `900 ${size}px ${FONT}`; g.letterSpacing = Math.round(size * 0.03) + 'px'; const w = g.measureText(txt).width; return w > maxW ? Math.floor(size * maxW / w) : size; }
+function fitSize(txt, size, maxW) { g.font = `900 ${size}px ${FONT}`; g.letterSpacing = Math.round(size * 0.03) + 'px'; const w = g.measureText(txt).width; g.letterSpacing = '0px'; return w > maxW ? Math.floor(size * maxW / w) : size; }
 
 // word-timed caption: words = [[word, start, end], ...]; shows the current chunk of up to 3 words
 function caption(words, t, y) {
@@ -472,14 +473,14 @@ function caption(words, t, y) {
   const c0 = Math.floor(idx / 3) * 3, chunk = words.slice(c0, c0 + 3);
   const txt = chunk.map(w => w[0]).join(' ');
   const size = fitSize(txt, 104, W - 140);
-  g.font = `900 ${size}px ${FONT}`;
+  g.font = `900 ${size}px ${FONT}`; g.letterSpacing = Math.round(size * 0.03) + 'px';
   const total = chunk.reduce((a, w) => a + g.measureText(w[0]).width, 0) + (chunk.length - 1) * size * 0.32; let x = W / 2 - total / 2;
   chunk.forEach((w, k) => {
     const ww = g.measureText(w[0]).width, cur = c0 + k === idx;
     const pop = cur ? 1 + 0.12 * (1 - easeOut(seg(t, w[1], w[1] + 0.12))) : 1;
     g.save(); g.translate(x + ww / 2, y); g.scale(pop, pop);
     strokeText(w[0], 0, 0, size, cur ? C.yellow : '#fff');
-    g.restore();
+    g.restore(); g.font = `900 ${size}px ${FONT}`; g.letterSpacing = Math.round(size * 0.03) + 'px';
     x += ww + size * 0.32;
   });
 }
