@@ -1,0 +1,731 @@
+<title>Mas Kharis Motion</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+
+<style>
+/* Layout: fullscreen cinematic scenes, stickman on canvas, text overlay */
+:root {
+  --bg:       #0A0A14;
+  --yellow:   #FFD600;
+  --red:      #FF3330;
+  --blue:     #00C2FF;
+  --green:    #00E676;
+  --fg:       #FFFFFF;
+  --muted:    rgba(255,255,255,0.55);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Montserrat', sans-serif;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Safe-area body for top/bottom insets (sides via max() gutter) */
+body {
+  padding-left: max(0px, env(safe-area-inset-left, 0px));
+  padding-right: max(0px, env(safe-area-inset-right, 0px));
+}
+
+/* safe-area top band */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  background: var(--bg);
+  z-index: 90;
+}
+
+/* ── STAGE ── */
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Dynamic background */
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transition: background 0.6s ease;
+}
+
+/* Canvas fills lower 55% of stage */
+canvas {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── TEXT LAYER ── */
+.txt {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 58%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px;
+  pointer-events: none;
+}
+
+/* Individual scene panels */
+.scene { display: none; flex-direction: column; align-items: center; gap: 12px; }
+.scene.on { display: flex; }
+
+/* Typography */
+.hook {
+  font-size: clamp(1.6rem, 6vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.hook .y { color: var(--yellow); }
+.hook .r { color: var(--red); }
+.hook .b { color: var(--blue); }
+.hook .g { color: var(--green); }
+
+.sub {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(0.85rem, 2.4vw, 1.15rem);
+  color: var(--muted);
+  text-wrap: balance;
+  line-height: 1.5;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--yellow);
+  color: #000;
+  font-weight: 900;
+  font-size: clamp(1.1rem, 3.5vw, 1.9rem);
+  padding: 7px 22px;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+}
+
+.bubble {
+  background: #fff;
+  color: #111;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: clamp(0.82rem, 2.3vw, 1.05rem);
+  padding: 11px 18px;
+  border-radius: 18px 18px 18px 4px;
+  max-width: 300px;
+  line-height: 1.45;
+  position: relative;
+}
+.bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -12px; left: 20px;
+  border: 7px solid transparent;
+  border-top-color: #fff;
+}
+
+.cta-wrap { pointer-events: all; }
+.cta {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  font-weight: 900;
+  font-size: clamp(0.95rem, 3vw, 1.4rem);
+  padding: 14px 36px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: transform 0.12s, background 0.3s;
+}
+.cta:hover, .cta:focus-visible { transform: scale(1.06); outline: none; }
+.cta:active { transform: scale(0.96); }
+
+/* ── PROGRESS BAR ── */
+.prog-bar {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: 0; right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  z-index: 100;
+}
+.prog-fill {
+  height: 100%;
+  background: var(--yellow);
+  transition: width 0.4s ease;
+}
+
+/* ── UI CHROME ── */
+.scene-num {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 14px);
+  right: max(16px, env(safe-area-inset-right, 0px));
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.28;
+  z-index: 95;
+  pointer-events: none;
+}
+.tap-hint {
+  position: fixed;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.25;
+  z-index: 95;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(0.4) rotate(-8deg); }
+  65%  { transform: scale(1.08) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+@keyframes shakeIn {
+  0%,100% { transform: translateX(0) rotate(0); }
+  20%     { transform: translateX(-10px) rotate(-3deg); }
+  40%     { transform: translateX(10px) rotate(3deg); }
+  60%     { transform: translateX(-6px); }
+  80%     { transform: translateX(6px); }
+}
+@keyframes pulseGlow {
+  0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,51,48,0.4); }
+  50%     { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(255,51,48,0); }
+}
+@keyframes floatUp {
+  from { opacity: 0.7; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-40px); }
+}
+
+.a-fadeup { animation: fadeUp 0.5s ease both; }
+.a-pop    { animation: popIn  0.55s cubic-bezier(.17,.67,.35,1.3) both; }
+.a-shake  { animation: shakeIn 0.55s ease both; }
+.a-pulse  { animation: pulseGlow 1.1s ease infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .a-fadeup, .a-pop, .a-shake, .a-pulse { animation: none !important; opacity: 1; }
+}
+</style>
+
+<!-- Progress + Chrome -->
+<div class="prog-bar"><div class="prog-fill" id="prog"></div></div>
+<div class="scene-num" id="snum"></div>
+<div class="tap-hint" id="hint">tap untuk lanjut →</div>
+
+<!-- Stage -->
+<div class="stage" id="stage">
+  <div class="bg" id="bg"></div>
+  <canvas id="cv"></canvas>
+
+  <div class="txt">
+
+    <!-- S1: HOOK -->
+    <div class="scene" id="s1">
+      <p class="hook a-fadeup">
+        PERNAH NGGAK<br>
+        NGERASA HIDUP LO<br>
+        <span class="y">GITU-GITU AJA?</span>
+      </p>
+      <p class="sub a-fadeup" style="animation-delay:.35s">
+        Bangun. Kerja. Pulang. Tidur. Repeat.
+      </p>
+    </div>
+
+    <!-- S2: Introduce Mas Kharis -->
+    <div class="scene" id="s2">
+      <p class="sub a-fadeup">Ini cerita...</p>
+      <div class="badge a-pop" style="animation-delay:.2s">MAS KHARIS</div>
+      <div class="bubble a-fadeup" style="animation-delay:.5s">
+        Halo! Gue stikmen paling relate se-Indonesia 👋
+      </div>
+    </div>
+
+    <!-- S3: Morning struggle -->
+    <div class="scene" id="s3">
+      <p class="hook a-fadeup">
+        PAGI INI...<br>
+        <span class="r">ALARM JAM 5</span>
+      </p>
+      <div class="bubble a-pop" style="animation-delay:.4s">
+        "5 menit lagi... cuma 5 menit..." 😴
+      </div>
+    </div>
+
+    <!-- S4: Chaos / Late -->
+    <div class="scene" id="s4">
+      <p class="hook a-shake">
+        <span class="r">TELAT LAGI!</span>
+      </p>
+      <p class="sub a-fadeup" style="animation-delay:.3s">
+        Jam 8:02 — meeting jam 8:00
+      </p>
+      <div class="bubble a-pop" style="animation-delay:.5s">
+        "Kenapa ini SELALU terjadi?!" 😤
+      </div>
+    </div>
+
+    <!-- S5: Turning point -->
+    <div class="scene" id="s5">
+      <p class="hook a-fadeup">
+        TAPI HARI INI...<br>
+        <span class="g">GUE SADAR</span>
+      </p>
+      <p class="sub a-fadeup" style="animation-delay:.35s">
+        Hidup nggak akan berubah<br>kalau gue nggak mulai berubah.
+      </p>
+      <div class="bubble a-pop" style="animation-delay:.6s">
+        "Mulai besok, gue berubah!" 💪
+      </div>
+    </div>
+
+    <!-- S6: CTA -->
+    <div class="scene" id="s6">
+      <p class="hook a-pop">
+        <span class="y">IKUTIN</span> CERITA<br>
+        MAS KHARIS<br>
+        <span class="r">SETIAP HARI!</span>
+      </p>
+      <p class="sub a-fadeup" style="animation-delay:.35s">
+        Konten harian yang relatable &amp; penuh pelajaran hidup
+      </p>
+      <div class="cta-wrap a-pop" style="animation-delay:.6s">
+        <button class="cta a-pulse" id="ctaBtn">🔔 FOLLOW SEKARANG!</button>
+      </div>
+    </div>
+
+  </div><!-- .txt -->
+</div><!-- .stage -->
+
+<script>
+// ════════════════════════════════════════
+//  SCENE SYSTEM
+// ════════════════════════════════════════
+const TOTAL = 6;
+let cur = 0;
+let autoTimer = null;
+
+const bgGradients = [
+  'radial-gradient(ellipse at 50% 70%, rgba(255,214,0,.06), transparent 70%), #0A0A14',
+  'radial-gradient(ellipse at 50% 70%, rgba(0,194,255,.07), transparent 70%), #060D1A',
+  'radial-gradient(ellipse at 50% 70%, rgba(255,140,0,.06), transparent 70%), #120A00',
+  'radial-gradient(ellipse at 50% 70%, rgba(255,51,48,.08), transparent 70%), #140000',
+  'radial-gradient(ellipse at 50% 70%, rgba(0,230,118,.07), transparent 70%), #001209',
+  'radial-gradient(ellipse at 50% 70%, rgba(180,0,255,.06), transparent 70%), #0A0014',
+];
+const autoDelay = [4000,4000,3800,3600,4200,0];
+
+function go(n) {
+  if (autoTimer) clearTimeout(autoTimer);
+  if (n < 1 || n > TOTAL) return;
+
+  // Hide old
+  if (cur) document.getElementById('s'+cur)?.classList.remove('on');
+  cur = n;
+
+  // Show new & restart animations
+  const el = document.getElementById('s'+cur);
+  if (el) {
+    el.classList.add('on');
+    el.querySelectorAll('[class*="a-"]').forEach(ch => {
+      const cls = ch.className;
+      ch.className = cls.replace(/\ba-\S+/g,'').trim();
+      void ch.offsetWidth;
+      ch.className = cls;
+    });
+  }
+
+  document.getElementById('bg').style.background = bgGradients[cur-1];
+  document.getElementById('prog').style.width = ((cur/TOTAL)*100)+'%';
+  document.getElementById('snum').textContent = String(cur).padStart(2,'0')+' / '+String(TOTAL).padStart(2,'0');
+  document.getElementById('hint').style.opacity = cur === TOTAL ? '0' : '0.25';
+
+  stickState = cur;
+
+  if (cur < TOTAL && autoDelay[cur-1]) {
+    autoTimer = setTimeout(() => go(cur+1), autoDelay[cur-1]);
+  }
+}
+
+document.getElementById('stage').addEventListener('click', () => { if (cur < TOTAL) go(cur+1); });
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key===' ') go(cur+1);
+  if (e.key==='ArrowLeft') go(cur-1);
+});
+document.getElementById('ctaBtn').addEventListener('click', e => {
+  e.stopPropagation();
+  const b = e.currentTarget;
+  b.textContent = '✅ Mantap! Like & share ya!';
+  b.style.background = '#00C853';
+  b.style.animation = 'none';
+  b.style.transform = 'scale(1)';
+});
+
+// ════════════════════════════════════════
+//  STICKMAN CANVAS
+// ════════════════════════════════════════
+const cv = document.getElementById('cv');
+const c  = cv.getContext('2d');
+let dpr  = devicePixelRatio || 1;
+let stickState = 1;
+let raf;
+let gt = 0;        // global time (seconds)
+let walkX = 0, walkDir = 1;
+
+function resize() {
+  dpr = devicePixelRatio || 1;
+  cv.width  = cv.offsetWidth  * dpr;
+  cv.height = cv.offsetHeight * dpr;
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ── Drawing helpers ──────────────────────
+function sk(x, y, s, o = {}) {
+  const {
+    al = -Math.PI/4,  // arm left angle
+    ar = Math.PI/4,   // arm right angle
+    ll = Math.PI/5,   // leg left
+    lr = -Math.PI/5,  // leg right
+    exp = 'neutral',  // expression
+    wp = 0,           // walk phase
+    col = '#fff',
+    jy = 0,           // jump Y offset
+  } = o;
+
+  const W = cv.offsetWidth, H = cv.offsetHeight;
+  const ay = y + jy;
+  c.save();
+  c.strokeStyle = col; c.fillStyle = col;
+  c.lineCap = 'round'; c.lineJoin = 'round';
+
+  const lw = Math.max(1.5, s * 0.085);
+  c.lineWidth = lw;
+
+  // shadow
+  c.save();
+  c.fillStyle = 'rgba(0,0,0,.35)';
+  c.beginPath();
+  c.ellipse(x, y + s*2.4, s*.55, s*.1, 0, 0, Math.PI*2);
+  c.fill();
+  c.restore();
+
+  // HEAD
+  const hr = s * 0.36;
+  c.beginPath(); c.arc(x, ay - s*1.75, hr, 0, Math.PI*2); c.stroke();
+
+  // HAIR — single spike
+  c.save();
+  c.strokeStyle = '#FFD600';
+  c.lineWidth = lw * 1.4;
+  c.beginPath();
+  c.moveTo(x, ay - s*1.75 - hr);
+  c.lineTo(x + s*.05, ay - s*1.75 - hr - s*.38);
+  c.stroke();
+  c.beginPath();
+  c.moveTo(x - s*.08, ay - s*1.75 - hr - s*.05);
+  c.lineTo(x + s*.12, ay - s*1.75 - hr - s*.28);
+  c.stroke();
+  c.restore();
+
+  // EYES
+  c.save();
+  c.strokeStyle = '#111'; c.fillStyle = '#111'; c.lineWidth = lw * .8;
+  const ey = ay - s*1.78;
+  if (exp === 'happy' || exp === 'determined') {
+    // arc eyes
+    c.beginPath(); c.arc(x - hr*.32, ey, lw*1.1, Math.PI, Math.PI*2); c.stroke();
+    c.beginPath(); c.arc(x + hr*.32, ey, lw*1.1, Math.PI, Math.PI*2); c.stroke();
+  } else if (exp === 'stressed' || exp === 'surprised') {
+    // O eyes
+    c.beginPath(); c.arc(x - hr*.3, ey, lw*1.3, 0, Math.PI*2); c.stroke();
+    c.beginPath(); c.arc(x + hr*.3, ey, lw*1.3, 0, Math.PI*2); c.stroke();
+  } else if (exp === 'sad' || exp === 'sleepy') {
+    // dots
+    c.beginPath(); c.arc(x - hr*.3, ey + (exp==='sleepy'?lw:.5), lw*.65, 0, Math.PI*2); c.fill();
+    c.beginPath(); c.arc(x + hr*.3, ey + (exp==='sleepy'?lw:.5), lw*.65, 0, Math.PI*2); c.fill();
+    if (exp === 'sleepy') {
+      // half-closed: line over eyes
+      c.lineWidth = lw;
+      c.moveTo(x - hr*.5, ey); c.lineTo(x - hr*.1, ey);
+      c.moveTo(x + hr*.1, ey); c.lineTo(x + hr*.5, ey);
+      c.stroke();
+    }
+  } else {
+    c.beginPath(); c.arc(x - hr*.3, ey, lw*.65, 0, Math.PI*2); c.fill();
+    c.beginPath(); c.arc(x + hr*.3, ey, lw*.65, 0, Math.PI*2); c.fill();
+  }
+  c.restore();
+
+  // MOUTH
+  c.save(); c.strokeStyle = '#111'; c.lineWidth = lw * .8; c.fillStyle = '#111';
+  const my = ay - s*1.62;
+  c.beginPath();
+  if (exp === 'happy' || exp === 'determined') {
+    c.arc(x, my, hr*.28, .15, Math.PI-.15);
+  } else if (exp === 'sad') {
+    c.arc(x, my + hr*.15, hr*.26, Math.PI+.2, Math.PI*2-.2);
+  } else if (exp === 'surprised') {
+    c.arc(x, my, hr*.2, 0, Math.PI*2);
+    c.fill();
+  } else if (exp === 'stressed') {
+    c.moveTo(x - hr*.3, my + hr*.05);
+    c.bezierCurveTo(x - hr*.1, my - hr*.1, x + hr*.1, my + hr*.15, x + hr*.3, my);
+  } else if (exp === 'sleepy') {
+    c.moveTo(x - hr*.2, my); c.lineTo(x + hr*.2, my);
+  } else {
+    c.moveTo(x - hr*.22, my); c.lineTo(x + hr*.22, my);
+  }
+  c.stroke();
+  c.restore();
+
+  // BODY
+  c.beginPath(); c.moveTo(x, ay-s*1.38); c.lineTo(x, ay-s*.45); c.stroke();
+
+  // ARMS (swing on walk)
+  const swing = exp==='walking' ? Math.sin(wp)*.45 : 0;
+  c.beginPath();
+  c.moveTo(x, ay-s*1.15);
+  c.lineTo(x + Math.cos(al+swing)*s*.7, ay-s*1.15 + Math.sin(al+swing)*s*.7);
+  c.stroke();
+  c.beginPath();
+  c.moveTo(x, ay-s*1.15);
+  c.lineTo(x + Math.cos(ar-swing)*s*.7, ay-s*1.15 + Math.sin(ar-swing)*s*.7);
+  c.stroke();
+
+  // LEGS
+  const ls = exp==='walking' ? Math.sin(wp)*.38 : 0;
+  c.beginPath();
+  c.moveTo(x, ay-s*.45);
+  c.lineTo(x + Math.cos(Math.PI/2+ll+ls)*s*.82, ay-s*.45+Math.sin(Math.PI/2+ll+ls)*s*.82);
+  c.stroke();
+  c.beginPath();
+  c.moveTo(x, ay-s*.45);
+  c.lineTo(x + Math.cos(Math.PI/2+lr-ls)*s*.82, ay-s*.45+Math.sin(Math.PI/2+lr-ls)*s*.82);
+  c.stroke();
+
+  c.restore();
+}
+
+function ground(y) {
+  const W = cv.offsetWidth;
+  c.save(); c.strokeStyle='rgba(255,255,255,.07)'; c.lineWidth=1;
+  c.beginPath(); c.moveTo(0,y); c.lineTo(W,y); c.stroke(); c.restore();
+}
+
+function zzz(x, y) {
+  c.save(); c.fillStyle='rgba(200,220,255,.55)'; c.textAlign='center';
+  ['z','Z','Z'].forEach((ch,i) => {
+    const off = ((gt*.5 + i*.45) % 1.3);
+    c.globalAlpha = Math.max(0, 1-off/1.3)*.8;
+    c.font = `bold ${Math.round(10+i*4)}px sans-serif`;
+    c.fillText(ch, x+i*9, y - off*35 - i*14);
+  });
+  c.restore();
+}
+
+function sparkle(x, y, r) {
+  c.save(); c.strokeStyle='#FFD600'; c.lineWidth=1.5; c.globalAlpha=.65+.3*Math.sin(gt*3);
+  for (let i=0;i<4;i++){
+    const a=(i/4)*Math.PI*2+gt*.8;
+    c.beginPath();
+    c.moveTo(x+Math.cos(a)*r*.3, y+Math.sin(a)*r*.3);
+    c.lineTo(x+Math.cos(a)*r, y+Math.sin(a)*r);
+    c.stroke();
+  }
+  c.restore();
+}
+
+function speedLines(cx, cy, dir) {
+  c.save(); c.strokeStyle='rgba(255,51,48,.25)'; c.lineWidth=1.5;
+  for (let i=0;i<6;i++){
+    const a = -Math.PI/2 + (i-2.5)*.18;
+    const len = 28 + (i%3)*12;
+    c.beginPath();
+    c.moveTo(cx - dir*len*.3, cy + Math.tan(a)*len*.3);
+    c.lineTo(cx - dir*len, cy + Math.tan(a)*len);
+    c.stroke();
+  }
+  c.restore();
+}
+
+// ── Main loop ────────────────────────────
+function loop(ts) {
+  gt = ts * .001;
+  const W = cv.offsetWidth, H = cv.offsetHeight;
+  c.setTransform(dpr, 0, 0, dpr, 0, 0);
+  c.clearRect(0, 0, W, H);
+
+  const gy  = H * .78;         // ground Y
+  const s   = Math.min(W, H) * .2; // scale
+  const cx  = W / 2;
+
+  ground(gy);
+
+  switch (stickState) {
+
+    case 1: { // Standing, shrugging — sad/confused
+      const sh = Math.sin(gt*1.8) * .28;
+      sk(cx, gy, s, {
+        al: -Math.PI/2.2 - sh,
+        ar:  Math.PI/2.2 + sh,
+        exp: 'sad',
+      });
+      // floating question marks
+      c.save(); c.textAlign='center';
+      ['?','?','?'].forEach((_, i) => {
+        const off = ((gt*.45 + i*.5) % 1.2);
+        c.globalAlpha = Math.max(0, 1 - off/1.2)*.7;
+        c.fillStyle = '#FFD600';
+        c.font = `bold ${Math.round(s*.38)}px Montserrat, sans-serif`;
+        c.fillText('?', cx + (i-1)*s*.45, gy - s*2.6 - off*s*.5);
+      });
+      c.restore();
+      break;
+    }
+
+    case 2: { // Waving hello
+      const wave = Math.sin(gt*4.5) * .6;
+      sk(cx, gy, s, {
+        al: -Math.PI/3,
+        ar: -Math.PI/2 - wave,
+        exp: 'happy',
+      });
+      // name label above head
+      c.save();
+      c.fillStyle = '#FFD600'; c.textAlign = 'center';
+      c.font = `bold ${Math.round(s*.22)}px Montserrat, sans-serif`;
+      c.fillText('MAS KHARIS', cx, gy - s*2.65);
+      c.restore();
+      break;
+    }
+
+    case 3: { // Sleeping — small lean
+      const nod = Math.sin(gt*1.2) * .04;
+      sk(cx, gy, s, {
+        al:  Math.PI/4 + nod,
+        ar: -Math.PI/4 + nod,
+        ll:  Math.PI/8,
+        lr: -Math.PI/8,
+        exp: 'sleepy',
+        jy: Math.sin(gt*1.2)*s*.02,
+      });
+      zzz(cx + s*.6, gy - s*2.4);
+      // alarm
+      c.save(); c.font=`${Math.round(s*.38)}px sans-serif`; c.textAlign='center';
+      c.fillText('⏰', cx - s*1.1, gy - s*1.3 + Math.abs(Math.sin(gt*5))*s*.12);
+      c.restore();
+      break;
+    }
+
+    case 4: { // Running / stressed
+      walkX += walkDir * 2.8;
+      if (walkX >  W * .22) walkDir = -1;
+      if (walkX < -W * .22) walkDir =  1;
+      const rx = cx + walkX;
+      const bounce = Math.abs(Math.sin(gt*8)) * s * .07;
+      speedLines(rx, gy - s*1.2, walkDir);
+      sk(rx, gy - bounce, s, {
+        al: walkDir > 0 ? -Math.PI*.7 - Math.sin(gt*8)*.35 :  Math.PI*.3 + Math.sin(gt*8)*.35,
+        ar: walkDir > 0 ?  Math.PI*.2 + Math.sin(gt*8)*.35 : -Math.PI*.7 - Math.sin(gt*8)*.35,
+        exp: 'stressed',
+        wp: gt*8,
+      });
+      // sweat
+      c.save(); c.fillStyle='#00C2FF';
+      [{dx:.6,dy:2.3,r:1},{dx:.4,dy:2.0,r:.7}].forEach(d => {
+        c.beginPath();
+        c.arc(rx + walkDir*d.dx*s, gy - d.dy*s, s*.07*d.r, 0, Math.PI*2);
+        c.fill();
+      });
+      c.restore();
+      break;
+    }
+
+    case 5: { // Determined, fist pump
+      // glow
+      c.save();
+      const gr = c.createRadialGradient(cx, gy-s*1.2, 0, cx, gy-s*1.2, s*2.2);
+      gr.addColorStop(0, `rgba(0,230,118,${.12+.08*Math.sin(gt*2)})`);
+      gr.addColorStop(1, 'transparent');
+      c.fillStyle = gr;
+      c.beginPath(); c.arc(cx, gy-s*1.2, s*2.2, 0, Math.PI*2); c.fill();
+      c.restore();
+
+      const fp = -Math.PI*.62 - Math.sin(gt*2.5)*.12;
+      sk(cx, gy, s, {
+        al: fp,
+        ar: -(fp + Math.PI),
+        exp: 'determined',
+      });
+      for (let i=0;i<4;i++) {
+        const a = (i/4)*Math.PI*2 + gt*.6;
+        sparkle(cx + Math.cos(a)*s*1.5, gy-s*1.2 + Math.sin(a)*s*.7, s*.22);
+      }
+      break;
+    }
+
+    case 6: { // CTA — jumping, pointing up
+      const jj = Math.abs(Math.sin(gt*2.4)) * s * .18;
+      sk(cx, gy - jj, s, {
+        al:  .12,
+        ar: -Math.PI/2 + Math.sin(gt*3)*.14,
+        ll:  Math.PI/5 - jj*.1,
+        lr: -Math.PI/5 + jj*.1,
+        exp: 'happy',
+        jy: 0,
+      });
+      // arrow pointing up toward CTA text
+      c.save();
+      c.strokeStyle = '#FFD600'; c.lineWidth = 2.2;
+      c.globalAlpha = .65 + .3*Math.sin(gt*3);
+      const ay2 = gy - s*3.2 - jj;
+      c.beginPath();
+      c.moveTo(cx, ay2); c.lineTo(cx, ay2 - s*.5);
+      c.moveTo(cx - s*.18, ay2 - s*.3); c.lineTo(cx, ay2 - s*.5); c.lineTo(cx + s*.18, ay2 - s*.3);
+      c.stroke();
+      c.restore();
+      break;
+    }
+  }
+
+  raf = requestAnimationFrame(loop);
+}
+
+// ── Init ─────────────────────────────────
+go(1);
+raf = requestAnimationFrame(loop);
+</script>
