@@ -62,14 +62,15 @@ function box(X1, X2, Y1, Y2, Z, d, top, front, side) {
 }
 
 // ═════════════════════════ ROOM ═════════════════════════
-function drawRoom() {
-  g.fillStyle = C.ceil; g.fillRect(-400, -400, W + 800, H + 800);
+function drawRoom(th) {
+  th = th || {};
+  g.fillStyle = C.ceil; g.fillRect(-3000, -3000, W + 6000, H + 6000);
   for (let X = -5; X <= XR; X += 0.34) line(P(X, WH, ZB), P(X, WH, 0.8), C.plank, 3);
-  poly([P(-8, WH, ZB), P(XR, WH, ZB), P(XR, 0, ZB), P(-8, 0, ZB)], C.wall);
+  poly([P(-8, WH, ZB), P(XR, WH, ZB), P(XR, 0, ZB), P(-8, 0, ZB)], th.wall || C.wall);
   const gw = g.createLinearGradient(0, 470, 0, 1130);
   gw.addColorStop(0, 'rgba(255,255,255,0.12)'); gw.addColorStop(1, 'rgba(0,0,0,0.05)');
   poly([P(-8, WH, ZB), P(XR, WH, ZB), P(XR, 0, ZB), P(-8, 0, ZB)], gw);
-  poly([P(XR, WH, ZB), P(XR, WH, 0.7), P(XR, 0, 0.7), P(XR, 0, ZB)], C.wallR);
+  poly([P(XR, WH, ZB), P(XR, WH, 0.7), P(XR, 0, 0.7), P(XR, 0, ZB)], th.wallR || C.wallR);
 
   // floor: diagonal checker
   g.save();
@@ -78,11 +79,11 @@ function drawRoom() {
   for (let i = -18; i < 18; i++) for (let j = -18; j < 18; j++) {
     const cs = [[i, j], [i + 1, j], [i + 1, j + 1], [i, j + 1]].map(([u, v]) => [(u - v) * s * k, Z0 + (u + v) * s * k]);
     if (cs.some(c => c[1] < 0.6)) continue;
-    poly(cs.map(c => P(c[0], 0, c[1])), (i + j) & 1 ? C.tileA : C.tileB, 'rgba(0,0,0,0.10)', 2);
+    poly(cs.map(c => P(c[0], 0, c[1])), (i + j) & 1 ? (th.tileA || C.tileA) : (th.tileB || C.tileB), 'rgba(0,0,0,0.10)', 2);
   }
   const fg = g.createLinearGradient(0, 1130, 0, 1920);
   fg.addColorStop(0, 'rgba(0,0,0,0.18)'); fg.addColorStop(0.25, 'rgba(0,0,0,0)');
-  g.fillStyle = fg; g.fillRect(-400, 1100, W + 800, 1300);
+  g.fillStyle = fg; g.fillRect(-3000, 1100, W + 6000, 3000);
   g.restore();
 
   poly([P(-8, 0.12, ZB), P(XR, 0.12, ZB), P(XR, 0, ZB), P(-8, 0, ZB)], '#fff');
@@ -140,11 +141,12 @@ function drawWhiteboard(text) {
 }
 
 function drawBanner(text) {
-  const [x, y, w, h] = frontRect(-2.1, 2.42, 0.85, 2.92, ZB);
+  const [x, y, w, h] = frontRect(-1.8, 2.42, 0.75, 2.92, ZB);
   // bunting
   for (let i = 0; i < 9; i++) { const bx = x - 40 + i * (w + 80) / 8, by = y - 26 + Math.sin(i / 8 * Math.PI) * 18; poly([[bx - 20, by], [bx + 20, by], [bx, by + 36]], [C.red, C.teal, C.yellow][i % 3], C.ol, 3); }
   rr(x, y, w, h, 8); g.fillStyle = C.red; g.fill(); g.strokeStyle = C.ol; g.lineWidth = 5; g.stroke();
-  g.fillStyle = '#fff'; g.font = `900 ${Math.round(h * 0.5)}px ${FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillStyle = '#fff'; g.font = `900 ${Math.round(h * 0.5)}px ${FONT}`; g.letterSpacing = '0px'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  const tw = g.measureText(text).width; if (tw > w * 0.9) g.font = `900 ${Math.round(h * 0.5 * w * 0.9 / tw)}px ${FONT}`;
   g.fillText(text, x + w / 2, y + h * 0.54);
 }
 
@@ -401,9 +403,9 @@ function drawFace(kind, cx, cy, r, st, lw) {
     }
     if (kind === 'dimas') { /* bridge */ if (sd < 0) line([x + eyeR, y], [x + 2 * ex - eyeR, y], C.ol, lw * 0.7); }
     // brows
-    const bt = { neutral: 0, tired: -0.15, shock: 0.25, happy: 0.1, proud: 0.15, salute: -0.25, angry: -0.35 }[exp] || 0;
+    const bt = { neutral: 0, tired: 0.2, shock: 0.1, happy: 0, proud: -0.1, salute: -0.25, angry: -0.5, sad: 0.45 }[exp] || 0;
     const by = y - eyeR - r * (exp === 'shock' ? 0.2 : 0.1);
-    g.beginPath(); g.moveTo(x - sd * r * 0.13, by - bt * sd * r * 0.12 * -1 + (bt < 0 ? 0 : 0)); g.lineTo(x + sd * r * 0.13, by + bt * r * 0.15 * -1);
+    g.beginPath(); g.moveTo(x - sd * r * 0.14, by - bt * r * 0.16); g.lineTo(x + sd * r * 0.14, by + bt * r * 0.16);
     g.strokeStyle = kind === 'bos' ? C.ol : (kind === 'dimas' ? C.hairD : C.hairK); g.lineWidth = kind === 'bos' ? lw * 1.4 : lw * 0.8; g.stroke();
   });
 
@@ -420,6 +422,11 @@ function drawFace(kind, cx, cy, r, st, lw) {
   } else if (exp === 'happy' || exp === 'proud' || exp === 'salute') {
     g.beginPath(); g.moveTo(mx - r * 0.2, my - r * 0.04); g.quadraticCurveTo(mx, my + r * 0.22, mx + r * 0.2, my - r * 0.04); g.closePath();
     g.fillStyle = '#5a1f2a'; g.fill(); g.stroke();
+  } else if (exp === 'angry') {
+    rr(mx - r * 0.2, my - r * 0.06, r * 0.4, r * 0.13, r * 0.04); g.fillStyle = '#fff'; g.fill(); g.stroke();
+    g.beginPath(); g.moveTo(mx - r * 0.2, my); g.lineTo(mx + r * 0.2, my); g.lineWidth = lw * 0.5; g.stroke();
+  } else if (exp === 'sad') {
+    g.beginPath(); g.arc(mx, my + r * 0.12, r * 0.14, Math.PI * 1.15, Math.PI * 1.85); g.stroke();
   } else if (exp === 'tired') {
     g.beginPath(); g.moveTo(mx - r * 0.14, my); g.quadraticCurveTo(mx - r * 0.07, my - r * 0.05, mx, my); g.quadraticCurveTo(mx + r * 0.07, my + r * 0.05, mx + r * 0.14, my); g.stroke();
   } else {
@@ -432,7 +439,7 @@ function nightGrade(a) {
   if (a <= 0) return;
   g.save(); g.globalCompositeOperation = 'multiply';
   g.fillStyle = `rgba(${Math.round(lerp(255, 105, a))},${Math.round(lerp(255, 115, a))},${Math.round(lerp(255, 185, a))},1)`;
-  g.fillRect(-400, -400, W + 800, H + 800); g.restore();
+  g.fillRect(-3000, -3000, W + 6000, H + 6000); g.restore();
 }
 function confetti(t, n) {
   for (let i = 0; i < n; i++) {
@@ -483,12 +490,18 @@ function timeWords(text, a, b) {
 }
 function bubble(x, y, txt, sc, tailX, tailY) {
   if (sc <= 0) return;
-  g.save(); g.translate(x, y); g.scale(sc, sc);
-  const size = 66; g.font = `900 ${size}px ${FONT}`; const w = g.measureText(txt).width + 70, h = size + 50;
-  g.beginPath(); g.moveTo(-w * 0.2, h / 2 - 4); g.lineTo((tailX - x) / sc, (tailY - y) / sc); g.lineTo(-w * 0.02, h / 2 - 4); g.closePath();
+  // work in screen space so bubbles keep one size and never leave the frame
+  const m = g.getTransform(), p = m.transformPoint(new DOMPoint(x, y)), tp = m.transformPoint(new DOMPoint(tailX, tailY));
+  g.save(); g.setTransform(1, 0, 0, 1, 0, 0);
+  const size = 60; g.font = `900 ${size}px ${FONT}`; g.letterSpacing = '0px';
+  const w = g.measureText(txt).width + 64, h = size + 46;
+  const cx = clamp(p.x, w * sc / 2 + 24, W - w * sc / 2 - 24), cy = clamp(p.y, h * sc / 2 + 120, H - h * sc / 2 - 24);
+  g.translate(cx, cy); g.scale(sc, sc);
+  const ax = clamp((tp.x - cx) / sc * 0.25, -w * 0.3, w * 0.3);
+  g.beginPath(); g.moveTo(ax - 26, h / 2 - 4); g.lineTo((tp.x - cx) / sc, (tp.y - cy) / sc); g.lineTo(ax + 26, h / 2 - 4); g.closePath();
   g.fillStyle = '#fff'; g.fill(); g.strokeStyle = C.ol; g.lineWidth = 7; g.stroke();
   rr(-w / 2, -h / 2, w, h, 34); g.fill(); g.stroke();
-  g.beginPath(); g.moveTo(-w * 0.2 + 4, h / 2 - 3); g.lineTo(-w * 0.02 - 4, h / 2 - 3); g.strokeStyle = '#fff'; g.lineWidth = 9; g.stroke();
+  g.beginPath(); g.moveTo(ax - 22, h / 2 - 3); g.lineTo(ax + 22, h / 2 - 3); g.strokeStyle = '#fff'; g.lineWidth = 9; g.stroke();
   g.fillStyle = C.ol; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt, 0, 4);
   g.restore();
 }
