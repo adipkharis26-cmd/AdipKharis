@@ -10,7 +10,7 @@ Kamu menjalankan seluruh tim produksi Kantor Konten milik Adip. Bekerjalah sendi
 - Update ide menjadi `{status:"produksi", progres:"Penulis Naskah mulai"}`. Setiap pindah tahap, perbarui `progres` di ide dan `agents/<id>` (kerja, lalu santai). Selalu pakai `if_version`.
 
 ## 1. Penulis Naskah
-- Nomor episode = nomor terbesar di `naskah/` + 1, dua digit (`ep03`, ...).
+- Nomor episode = 1 + angka terbesar dari: file `naskah/epNN-*` dan field `episode` di semua dokumen `ideas` (bisa saja ada sumber yang belum ter-push). Dua digit (`ep03`, ...).
 - Tulis `naskah/epNN-slug.md` persis dengan format skill (8 bagian dengan Visual, Teks layar, dan VO; lalu VO lengkap dan catatan rekam). Hook layar memakai `hook` dari ide. CTA bagian 8 memakai `cta` dari ide ditambah teaser episode berikutnya.
 - Tulis `video/vo/epNN.txt` berisi 8 paragraf VO yang dipisah baris kosong. Simpan teks yang sama ke field `voText` di ide, beserta `naskahPath` dan `episode`.
 
@@ -21,7 +21,7 @@ Kamu menjalankan seluruh tim produksi Kantor Konten milik Adip. Bekerjalah sendi
 - Jalankan `python3 video/src/tts_elevenlabs.py epNN`.
 - Kalau gagal (Voice ID belum diisi, 401/403, atau host diblokir):
   - Jika ide punya `voAssetId`, baca dulu artifact Kantor Konten dengan Artifact `action:"read"`. Lalu Artifact `action:"read"` dengan `url` Kantor Konten dan `path:<voAssetId>` untuk mengunduh file, lalu konversi ke `video/vo/epNN.mp3` dengan ffmpeg. Setelah itu jalankan `python3 video/src/align.py video/vo/epNN.mp3 video/vo/epNN.txt video/vo/epNN.json` dan tulis `video/vo/epNN-words.js` (`const VO = <json>;`).
-  - Jika tidak punya: set ide `{status:"butuh-vo", progres:"Naskah siap. ElevenLabs belum aktif: <alasan singkat>. Rekam VO dari teks di kartu lalu unggah."}`. Commit dan push naskah, lalu berhenti.
+  - Jika tidak punya: set ide `{status:"butuh-vo", progres:"Naskah siap. ElevenLabs belum aktif: <alasan singkat>. Rekam VO dari teks di kartu lalu unggah."}`. Commit dan push naskah (kalau push gagal, cukup lanjut), lalu berhenti.
 
 ## 4. Animator
 - Buat `video/src/epNN.html` (salin pola dari `ep02.html`) dan `video/src/epNN.js` (8 scene, pola sama dengan `ep02.js`). Semua waktu diambil dari `at()/atEnd()/CUT`.
@@ -33,6 +33,6 @@ Kamu menjalankan seluruh tim produksi Kantor Konten milik Adip. Bekerjalah sendi
 - Kalau MP4 lebih dari 14 MB, buat salinan untuk diunggah: `ffmpeg -i in.mp4 -c:v libx264 -crf 24 -preset medium -c:a copy -movflags +faststart out-web.mp4`.
 - Baca artifact Kantor Konten (Artifact `action:"read"`), lalu unggah MP4: Artifact publish dengan `url` Kantor Konten, `file_path` MP4, dan `asset:true`. Pakai `url` hasilnya persis seperti yang diberikan.
 - Update ide menjadi `{status:"selesai", videoAssetId, videoUrl, progres:"Selesai", upload:"Judul: … | Deskripsi: … | Tag: #… #…"}`. Judul upload maksimal 70 karakter dan memakai hook. Tag 5–8 buah.
-- Commit sumber (naskah, vo txt/json/words.js/mp3, epNN.html/js) dengan pesan `feat: produce <channel> epNN (<judul singkat>)`, lalu `git push -u origin <branch>`. Jangan membuat PR.
-- Kirim MP4 ke owner dengan SendUserFile (status proactive) dan caption judulnya.
+- Commit sumber (naskah, vo txt/json/words.js/mp3, epNN.html/js) dengan pesan `feat: produce <channel> epNN (<judul singkat>)`, lalu `git push -u origin <branch>`. Jangan membuat PR. Push bisa gagal karena sesi terjadwal tidak punya hak push. Kalau begitu, jangan dianggap gagal: tambahkan `sumberBelumPush: true` ke ide dan lanjutkan. Video di Kantor Konten adalah hasil utama.
+- Kalau tool SendUserFile tersedia, kirim MP4 ke owner (status proactive) dengan caption judulnya. Kalau tidak tersedia, lewati, karena video sudah ada di Kantor Konten.
 - Semua agen kembali `santai`. Akhiri dengan ringkasan singkat.
