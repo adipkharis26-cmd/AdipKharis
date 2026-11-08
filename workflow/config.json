@@ -1,0 +1,19 @@
+{
+  "owner": "Adip",
+  "timezone": "Asia/Jakarta",
+  "kantor_konten_url": "https://claude.ai/artifact/TPrLXh4cwBMhXhnRKxp7DC",
+  "branch": "claude/stickmen-motion-graphics-kharis-ap44z0",
+  "channels": {
+    "mas-kharis": {
+      "nama": "Mas Kharis",
+      "skill": ".claude/skills/mas-kharis/SKILL.md",
+      "ide_per_hari": 4
+    }
+  },
+  "elevenlabs": {
+    "voice_id": "ISI_VOICE_ID",
+    "model_id": "eleven_multilingual_v2",
+    "voice_settings": { "stability": 0.45, "similarity_boost": 0.8, "style": 0.3, "use_speaker_boost": true },
+    "section_gap_s": 0.8
+  }
+}

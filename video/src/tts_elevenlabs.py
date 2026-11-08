@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+"""Generate the Mas Kharis voice over with ElevenLabs, with word timestamps.
+
+Usage:  python3 video/src/tts_elevenlabs.py ep03 [--voice VOICE_ID]
+
+Reads   video/vo/<ep>.txt  (one paragraph per script section, blank line between)
+Writes  video/vo/<ep>.mp3, <ep>.json, <ep>-words.js  in the same format align.py
+        produces, so story.js / voCaption work unchanged.
+
+Each section is synthesized separately (with previous/next text for natural
+prosody) and joined with a fixed pause, so section boundaries are exact.
+
+API key: ELEVENLABS_API_KEY if set; otherwise a placeholder is sent and the
+cloud session's network proxy injects the key saved for api.elevenlabs.io.
+Voice/model settings: workflow/config.json -> "elevenlabs".
+"""
+import base64, json, os, subprocess, sys, tempfile
+from pathlib import Path
+
+import requests
+
+ROOT = Path(__file__).resolve().parents[2]
+VO_DIR = ROOT / 'video' / 'vo'
+CFG = json.loads((ROOT / 'workflow' / 'config.json').read_text(encoding='utf-8'))['elevenlabs']
+
+
+def ffprobe_dur(p):
+    out = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(p)],
+                         capture_output=True, text=True, check=True).stdout
+    return float(out.strip())
+
+
+def tts(text, prev_text, next_text, voice):
+    url = f'https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps'
+    body = {
+        'text': text,
+        'model_id': CFG.get('model_id', 'eleven_multilingual_v2'),
+        'voice_settings': CFG.get('voice_settings', {}),
+    }
+    if prev_text: body['previous_text'] = prev_text
+    if next_text: body['next_text'] = next_text
+    if CFG.get('language_code'): body['language_code'] = CFG['language_code']
+    key = os.environ.get('ELEVENLABS_API_KEY', 'proxy-injected')
+    r = requests.post(url, params={'output_format': 'mp3_44100_128'}, json=body,
+                      headers={'xi-api-key': key, 'Content-Type': 'application/json'}, timeout=180)
+    if r.status_code != 200:
+        sys.exit(f'ElevenLabs error {r.status_code}: {r.text[:400]}')
+    return r.json()
+
+
+def words_from_alignment(al, offset, sec):
+    chars, st, en = al['characters'], al['character_start_times_seconds'], al['character_end_times_seconds']
+    out, cur, s0, e0 = [], '', None, None
+    for c, s, e in zip(chars, st, en):
+        if c.isspace():
+            if cur: out.append({'w': cur, 's': round(offset + s0, 3), 'e': round(offset + e0, 3), 'sec': sec})
+            cur = ''
+            continue
+        if not cur: s0 = s
+        cur += c; e0 = e
+    if cur: out.append({'w': cur, 's': round(offset + s0, 3), 'e': round(offset + e0, 3), 'sec': sec})
+    return out
+
+
+def main():
+    args = sys.argv[1:]
+    if not args: sys.exit(__doc__)
+    ep = args[0]
+    voice = args[args.index('--voice') + 1] if '--voice' in args else CFG.get('voice_id')
+    if not voice or voice.startswith('ISI_'):
+        sys.exit('Voice ID belum diisi: set workflow/config.json -> elevenlabs.voice_id atau pakai --voice')
+    gap = float(CFG.get('section_gap_s', 0.8))
+    secs = [p.strip().replace('\n', ' ') for p in (VO_DIR / f'{ep}.txt').read_text(encoding='utf-8').split('\n\n') if p.strip()]
+
+    tmp = Path(tempfile.mkdtemp(prefix=f'tts_{ep}_'))
+    silence = tmp / 'gap.wav'
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=mono',
+                    '-t', str(gap), silence], check=True)
+    words, parts, offset = [], [], 0.0
+    for i, text in enumerate(secs):
+        print(f'[{i + 1}/{len(secs)}] {text[:60]}...')
+        res = tts(text, secs[i - 1] if i else '', secs[i + 1] if i + 1 < len(secs) else '', voice)
+        mp3 = tmp / f's{i}.mp3'; wav = tmp / f's{i}.wav'
+        mp3.write_bytes(base64.b64decode(res['audio_base64']))
+        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', mp3, '-ar', '44100', '-ac', '1', wav], check=True)
+        words += words_from_alignment(res['alignment'], offset, i)
+        dur = ffprobe_dur(wav)
+        parts.append(wav)
+        offset += dur
+        if i + 1 < len(secs):
+            parts.append(silence); offset += gap
+
+    lst = tmp / 'list.txt'
+    lst.write_text(''.join(f"file '{p}'\n" for p in parts))
+    out_mp3 = VO_DIR / f'{ep}.mp3'
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', lst,
+                    '-c:a', 'libmp3lame', '-b:a', '192k', out_mp3], check=True)
+    dur = ffprobe_dur(out_mp3)
+    data = {'duration': dur, 'words': words}
+    (VO_DIR / f'{ep}.json').write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding='utf-8')
+    (VO_DIR / f'{ep}-words.js').write_text('const VO = ' + json.dumps(data, ensure_ascii=False) + ';\n', encoding='utf-8')
+    print(f'OK {out_mp3.relative_to(ROOT)}  {dur:.1f}s  {len(words)} kata')
+
+
+if __name__ == '__main__':
+    main()
