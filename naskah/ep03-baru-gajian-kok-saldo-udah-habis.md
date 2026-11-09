@@ -63,10 +63,10 @@
   > Uang yang nggak kelihatan di saldo, lebih jarang tergoda dipakai. Makanya Dimas santai sampai akhir bulan.
 
 ### 8. CTA (53–62 dtk)
-- Visual: Kharis menatap HP dengan sedih. Dimas datang menepuk pundaknya. Muncul "KAMU JUGA GINI?" dan kolom komentar yang mengetik "SAMA!!". Lalu teaser: Kharis berdiri di depan kulkas yang terbuka, bingung, dengan tanda tanya. Teks "EPISODE DEPAN!".
-- Teks layar: **KOMEN "SAMA" 👇** · FOLLOW BUAT EPISODE DEPAN
+- Visual: Kharis menatap HP dengan sedih. Dimas datang menepuk pundaknya. Muncul "KAMU JUGA GINI?" dan kolom komentar yang mengetik "SAMA!!". Punchline: kamera "memergoki" layar HP Kharis yang diam-diam membuka keranjang belanja. Di sana muncul "+1 ITEM 🛒" (diskon tanggal 25!). Kharis nyengir kaku. Dimas menepuk jidat, dan muncul cap "NGGAK KAPOK".
+- Teks layar: **KOMEN "SAMA" 👇** · FOLLOW MAS KHARIS · NGGAK KAPOK 🛒
 - VO:
-  > Kalau saldo kamu juga gini, komen SAMA di bawah! Follow Mas Kharis, besok dia bongkar kenapa kita suka buka kulkas… padahal nggak lapar.
+  > Kalau saldo kamu juga gini, komen SAMA di bawah! Follow Mas Kharis biar gajian depan nggak bernasib sama… Eh, Mas Kharis malah udah ngisi keranjang lagi.
 
 ## VO lengkap (untuk direkam sekali jalan)
 
@@ -84,12 +84,13 @@ Triknya: bayar dirimu dulu. Begitu gajian, langsung pindahkan tabungan dan uang 
 
 Uang yang nggak kelihatan di saldo, lebih jarang tergoda dipakai. Makanya Dimas santai sampai akhir bulan.
 
-Kalau saldo kamu juga gini, komen SAMA di bawah! Follow Mas Kharis, besok dia bongkar kenapa kita suka buka kulkas… padahal nggak lapar.
+Kalau saldo kamu juga gini, komen SAMA di bawah! Follow Mas Kharis biar gajian depan nggak bernasib sama… Eh, Mas Kharis malah udah ngisi keranjang lagi.
 
 ## Catatan rekam VO
 
 - Pakai suara yang sama dengan Ep.01 dan Ep.02 supaya konsisten.
 - Beri jeda ±1 detik di antara 8 bagian di atas.
+- Kalimat terakhir "Eh, Mas Kharis malah…" dibaca dengan nada memergoki, seperti menyindir. Itu punchline-nya.
 - Beri jeda kecil di "Tiga hari kemudian…" lalu baca "dua belas ribu" dengan nada kaget. "Saldo lagi penuh?" dibaca dengan nada bertanya.
 - Ucapkan "Thaler" sebagai *TAY-ler*. "Self reward", "checkout", dan "paylater" dibaca seperti biasa diucapkan orang Indonesia.
 - Durasi ideal 55–65 detik (±140 kata).

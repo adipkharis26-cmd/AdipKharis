@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Generate the Mas Kharis voice over with ElevenLabs, with word timestamps.
 
-Usage:  python3 video/src/tts_elevenlabs.py ep03 [--voice VOICE_ID]
+Usage:  python3 video/src/tts_elevenlabs.py ep03 [--voice VOICE_ID] [--from N]
+
+--from N  regenerate only sections N.. (1-based) and keep the existing audio and
+          timestamps of the earlier sections (so approved parts do not change).
 
 Reads   video/vo/<ep>.txt  (one paragraph per script section, blank line between)
 Writes  video/vo/<ep>.mp3, <ep>.json, <ep>-words.js  in the same format align.py
@@ -107,8 +110,18 @@ def main():
     silence = tmp / 'gap.wav'
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=mono',
                     '-t', str(gap), silence], check=True)
-    words, parts, offset = [], [], 0.0
+    words, parts, offset, first = [], [], 0.0, 0
+    if '--from' in args:
+        first = int(args[args.index('--from') + 1]) - 1
+        old = json.loads((VO_DIR / f'{ep}.json').read_text(encoding='utf-8'))
+        words = [w for w in old['words'] if w['sec'] < first]
+        cut = min(w['s'] for w in old['words'] if w['sec'] == first) - 0.05  # keeps the gap before it
+        head = tmp / 'head.wav'
+        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', VO_DIR / f'{ep}.mp3', '-t', f'{cut:.3f}',
+                        '-ar', '44100', '-ac', '1', head], check=True)
+        parts, offset = [head], ffprobe_dur(head)
     for i, text in enumerate(secs):
+        if i < first: continue
         print(f'[{i + 1}/{len(secs)}] {text[:60]}...')
         res = tts(text, secs[i - 1] if i else '', secs[i + 1] if i + 1 < len(secs) else '', voice)
         mp3 = tmp / f's{i}.mp3'; wav = tmp / f's{i}.wav'
