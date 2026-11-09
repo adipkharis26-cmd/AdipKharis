@@ -8,7 +8,8 @@ Owner: **Adip**. Halaman kantor (tempat ACC): https://claude.ai/artifact/TPrLXh4
 tiap jam   Penulis Naskah ─► naskah/epNN-*.md (format skill channel)
 07–22 WIB  Cek Fakta ──────► verifikasi "Dasar fakta", koreksi naskah
            Pengisi Suara ──► ElevenLabs (tts_elevenlabs.py) → mp3 + timestamp kata
-                             └─ cadangan: VO yang diunggah owner di kartu → align.py
+                             → pratinjau VO (mp4) di kartu, status: cek-vo
+           Owner ──────────► ACC suara (vo-acc)  /  Ulang VO + catatan (vo-ulang)
            Animator ───────► epNN.js + render MP4 1080×1920 sinkron VO
            Publisher ──────► unggah MP4 ke Kantor Konten, isi judul/deskripsi/tag,
                              commit sumber ke repo, kirim MP4 ke owner (status: selesai)
@@ -36,7 +37,11 @@ Setiap agen memperbarui dokumen `agents/<id>` saat mulai (`status: "kerja"`, `ak
 | `channel`, `channelNama` | `mas-kharis`, `Mas Kharis` |
 | `tanggal` | `YYYY-MM-DD` (WIB) |
 | `judul`, `hook[3]`, `niche`, `alasan`, `cta` | diisi Penggali Ide |
-| `status` | `usulan` → `acc` → `produksi` → `selesai`. Status lain: `tolak`, `butuh-vo`, `gagal` |
+| `status` | `usulan` → `acc` → `cek-vo` → `vo-acc` → `selesai`. Status lain: `vo-ulang`, `tolak`, `butuh-vo`, `gagal`, `produksi` |
+| `catatanVo` | catatan owner saat ACC atau ulang suara |
+| `voPreviewUrl`, `voMp4AssetId`, `voDurasi` | pratinjau VO (mp4) untuk dicek owner |
+| `naskahMd`, `voJson`, `epJs` | salinan berkas episode, untuk jaga-jaga kalau push dari sesi terjadwal gagal |
+| `kunci` | `{oleh, sampai}`: ide sedang dikerjakan sesi lain, jadi jangan disentuh |
 | `catatan` | catatan owner saat ACC, wajib dipatuhi tim |
 | `progres` | satu baris status terkini |
 | `naskahPath`, `episode` | mis. `naskah/ep03-...md`, `ep03` |

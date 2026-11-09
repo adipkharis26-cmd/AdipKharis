@@ -73,6 +73,9 @@ h1 span { color: var(--teal); }
 .s-usulan { background: var(--warn-soft); color: var(--warn); }
 .s-acc, .s-produksi { background: var(--prod-soft); color: var(--prod); }
 .s-butuh-vo { background: var(--warn-soft); color: var(--warn); }
+.s-cek-vo { background: var(--tolak); color: #fff; }
+.s-vo-ulang { background: var(--warn-soft); color: var(--warn); }
+.s-vo-acc { background: var(--prod-soft); color: var(--prod); }
 .s-selesai { background: var(--acc-soft); color: var(--acc); }
 .s-tolak, .s-gagal { background: var(--tolak-soft); color: var(--tolak); }
 .card h3 { margin: 0; font-size: 19px; line-height: 1.25; font-weight: 900; text-wrap: balance; }
@@ -93,6 +96,7 @@ video { width: 100%; max-width: 100%; border-radius: 10px; background: #000; asp
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg);
   padding: 10px 18px; border-radius: 999px; font-weight: 800; z-index: 20; }
 details summary { cursor: pointer; font-weight: 800; }
+.card video.vo { aspect-ratio: auto; height: 120px; max-height: 120px; object-fit: cover; }
 .votext { white-space: pre-wrap; font-size: 14px; background: var(--bg); border-radius: 10px; padding: 10px 12px; margin-top: 6px; max-height: 260px; overflow-y: auto; }
 h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0; letter-spacing: .3px; }
 .sec { display: grid; gap: 12px; }
@@ -120,7 +124,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     <h2>MEJA OWNER</h2>
     <div id="banner" class="banner" hidden></div>
     <div class="tabs" role="group" aria-label="Filter status">
-      <button class="tab" id="tab-usulan" data-f="usulan" aria-pressed="true">Menunggu ACC<span class="n"></span></button>
+      <button class="tab" id="tab-usulan" data-f="usulan" aria-pressed="true">Perlu ACC<span class="n"></span></button>
       <button class="tab" id="tab-jalan" data-f="jalan" aria-pressed="false">Diproduksi<span class="n"></span></button>
       <button class="tab" id="tab-selesai" data-f="selesai" aria-pressed="false">Selesai<span class="n"></span></button>
       <button class="tab" id="tab-tolak" data-f="tolak" aria-pressed="false">Ditolak<span class="n"></span></button>
@@ -131,9 +135,10 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   <details>
     <summary>Cara kerja kantor ini</summary>
     <ol class="how">
-      <li>Setiap pagi ±06:40 WIB, <b>Penggali Ide</b> menyetor beberapa judul per channel ke tab "Menunggu ACC".</li>
+      <li>Setiap pagi ±06:40 WIB, <b>Penggali Ide</b> menyetor beberapa judul baru (berbeda setiap hari) ke tab "Perlu ACC".</li>
       <li>Anda menekan <b>ACC</b> pada judul yang cocok. Catatan opsional bisa diisi, misalnya "fokus ke anak kos".</li>
-      <li>Tiap jam (07:00–22:00 WIB) tim mengecek judul yang sudah di-ACC lalu memproduksinya. Urutannya: Penulis Naskah, Cek Fakta, Pengisi Suara (ElevenLabs), Animator, lalu Publisher.</li>
+      <li>Tiap jam (07:00–22:00 WIB) tim mengerjakan judul yang sudah di-ACC: Penulis Naskah, Cek Fakta, lalu Pengisi Suara (ElevenLabs). Hasilnya berhenti dulu di <b>Cek suara</b>.</li>
+      <li>Dengarkan VO di kartu "Cek suara". Tekan <b>ACC suara</b> agar Animator dan Publisher melanjutkan, atau <b>Ulang VO</b> dengan catatan apa yang perlu diperbaiki.</li>
       <li>MP4 lengkap muncul di tab "Selesai" dan bisa langsung diputar.</li>
       <li>Kalau ElevenLabs belum siap, kartu berstatus "Butuh VO". Unggah rekaman VO Anda di kartu itu dan tim melanjutkan produksinya.</li>
     </ol>
@@ -278,8 +283,9 @@ tick(); setInterval(tick, 20000);
 /* ---------- ideas board ---------- */
 let ideas = [], filter = 'usulan', db = null, assets = null, canWrite = false;
 try { const f = localStorage.getItem('kk-filter'); if (f) filter = f; } catch (e) {}
-const GROUP = { usulan: ['usulan'], jalan: ['acc', 'produksi', 'butuh-vo', 'gagal'], selesai: ['selesai'], tolak: ['tolak'] };
-const LABEL = { usulan: 'Menunggu ACC', acc: 'Di-ACC · antre', produksi: 'Diproduksi', 'butuh-vo': 'Butuh VO', selesai: 'Selesai', tolak: 'Ditolak', gagal: 'Gagal' };
+const GROUP = { usulan: ['cek-vo', 'usulan'], jalan: ['acc', 'produksi', 'vo-ulang', 'vo-acc', 'butuh-vo', 'gagal'], selesai: ['selesai'], tolak: ['tolak'] };
+const LABEL = { usulan: 'Judul baru', acc: 'Judul di-ACC · antre', produksi: 'Diproduksi', 'cek-vo': 'Cek suara', 'vo-ulang': 'VO diulang', 'vo-acc': 'Suara di-ACC · animasi', 'butuh-vo': 'Butuh VO', selesai: 'Selesai', tolak: 'Ditolak', gagal: 'Gagal' };
+const RANK = { 'cek-vo': 0, usulan: 1 };
 function toast(msg) { const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 2600); }
 function fmtDate(s) { if (!s) return ''; try { return new Date(s + (s.length === 10 ? 'T00:00:00+07:00' : '')).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }); } catch (e) { return s; } }
 
@@ -302,12 +308,16 @@ function card(i) {
     c.append(hk);
   }
   const kv = document.createElement('div'); kv.className = 'kv';
-  [['Kenapa CTA tinggi', i.alasan], ['CTA', i.cta], ['Catatan owner', i.catatan], ['Naskah', i.naskahPath]].forEach(([k, v]) => {
+  [['Kenapa CTA tinggi', i.alasan], ['CTA', i.cta], ['Catatan owner', i.catatan], ['Catatan suara', i.catatanVo], ['Naskah', i.naskahPath]].forEach(([k, v]) => {
     if (!v) return; const d = document.createElement('div'); const b = document.createElement('b'); b.textContent = k + ': '; d.append(b, v); kv.append(d);
   });
   if (kv.childNodes.length) c.append(kv);
-  if (i.status === 'butuh-vo' && i.voText) {
-    const d = document.createElement('details'); d.open = true; const s = document.createElement('summary'); s.textContent = 'Teks VO untuk direkam';
+  if (i.status === 'cek-vo' && i.voPreviewUrl) {
+    const lb = document.createElement('div'); lb.className = 'kv'; const b = document.createElement('b'); b.textContent = 'Dengarkan VO' + (i.voDurasi ? ' (' + i.voDurasi + ' dtk)' : '') + ':'; lb.append(b);
+    const v = document.createElement('video'); v.className = 'vo'; v.controls = true; v.preload = 'metadata'; v.playsInline = true; v.src = i.voPreviewUrl; c.append(lb, v);
+  }
+  if ((i.status === 'butuh-vo' || i.status === 'cek-vo') && i.voText) {
+    const d = document.createElement('details'); d.open = i.status === 'butuh-vo'; const s = document.createElement('summary'); s.textContent = i.status === 'cek-vo' ? 'Teks VO' : 'Teks VO untuk direkam';
     const pre = document.createElement('div'); pre.className = 'votext'; pre.textContent = i.voText; d.append(s, pre); c.append(d);
   }
   if (i.progres) { const pr = document.createElement('div'); pr.className = 'prog'; pr.textContent = '▸ ' + i.progres; c.append(pr); }
@@ -321,12 +331,18 @@ function card(i) {
     const a = btn('ACC', 'acc', () => setStatus(i, 'acc', ta.value));
     const r = btn('Tolak', 'tolak', () => setStatus(i, 'tolak', ta.value));
     c.append(ta); act.append(a, r);
+  } else if (i.status === 'cek-vo') {
+    const ta = document.createElement('textarea'); ta.id = 'vonote-' + i.id; ta.rows = 2;
+    ta.placeholder = 'Kalau diulang: apa yang kurang? Mis. "bagian 3 terlalu cepat", "intonasi hook kurang kaget", "ganti suara".';
+    act.append(btn('ACC suara → animasi', 'acc', () => setStatus(i, 'vo-acc', ta.value, 'catatanVo')),
+               btn('Ulang VO', 'tolak', () => setStatus(i, 'vo-ulang', ta.value, 'catatanVo')));
+    c.append(ta);
   } else if (i.status === 'tolak') {
     act.append(btn('Kembalikan ke usulan', '', () => setStatus(i, 'usulan')));
   } else if (i.status === 'butuh-vo') {
-    const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'audio/*'; inp.id = 'vo-' + i.id; inp.hidden = true;
+    const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'video/mp4,audio/*'; inp.id = 'vo-' + i.id; inp.hidden = true;
     inp.onchange = () => inp.files[0] && uploadVo(i, inp.files[0]);
-    const u = btn('Unggah VO (mp3)', 'acc', () => inp.click()); u.disabled = !assets;
+    const u = btn('Unggah VO (mp4/audio)', 'acc', () => inp.click()); u.disabled = !assets;
     act.append(u, inp);
   } else if (i.status === 'gagal') {
     act.append(btn('Coba lagi', 'acc', () => setStatus(i, 'acc')));
@@ -338,11 +354,11 @@ function btn(txt, cls, fn) { const b = document.createElement('button'); b.class
 function renderList(state) {
   renderTabs();
   const L = $('list'); L.textContent = '';
-  const items = ideas.filter(i => GROUP[filter].includes(i.status)).sort((a, b) => String(b.tanggal || '').localeCompare(String(a.tanggal || '')) || String(a.id).localeCompare(String(b.id)));
+  const items = ideas.filter(i => GROUP[filter].includes(i.status)).sort((a, b) => ((RANK[a.status] ?? 5) - (RANK[b.status] ?? 5)) || String(b.tanggal || '').localeCompare(String(a.tanggal || '')) || String(a.id).localeCompare(String(b.id)));
   if (!items.length) {
     const e = document.createElement('div'); e.className = 'empty';
     e.textContent = state === 'loading' ? 'Memuat ide dari tim…' : filter === 'usulan'
-      ? 'Belum ada judul yang menunggu. Penggali Ide menyetor judul baru setiap pagi ±06:40 WIB.'
+      ? 'Tidak ada yang perlu di-ACC. Penggali Ide menyetor judul baru setiap pagi ±06:40 WIB, dan VO yang siap dicek juga muncul di sini.'
       : 'Belum ada judul di sini.';
     L.append(e); return;
   }
@@ -350,12 +366,16 @@ function renderList(state) {
 }
 document.querySelectorAll('.tab').forEach(b => b.onclick = () => { filter = b.dataset.f; try { localStorage.setItem('kk-filter', filter); } catch (e) {} renderList(); });
 
-async function setStatus(i, status, note) {
+const MSG = { acc: 'Judul di-ACC. Tim menulis naskah dan VO di pengecekan berikutnya.', 'vo-acc': 'Suara di-ACC. Animator mulai di pengecekan berikutnya.', 'vo-ulang': 'VO akan diulang sesuai catatan Anda.', tolak: 'Ditolak' };
+async function setStatus(i, status, note, field) {
   if (!db) return;
-  const patch = { status, diubah: new Date().toISOString() };
-  if (status === 'acc') patch.accAt = new Date().toISOString();
-  if (typeof note === 'string' && note.trim()) patch.catatan = note.trim();
-  try { await db.collection('ideas').doc(i.id).update(patch); toast(status === 'acc' ? 'Di-ACC. Tim mulai produksi di pengecekan berikutnya.' : status === 'tolak' ? 'Ditolak' : 'Diperbarui'); }
+  const now = new Date().toISOString(), patch = { status, diubah: now };
+  if (status === 'acc') patch.accAt = now;
+  if (status === 'vo-acc' || status === 'vo-ulang') patch.voKeputusanAt = now;
+  if (typeof note === 'string' && note.trim()) patch[field || 'catatan'] = note.trim();
+  else if (status === 'vo-acc') patch.catatanVo = { __delete__: true };
+  if (patch.catatanVo && patch.catatanVo.__delete__) delete patch.catatanVo;
+  try { await db.collection('ideas').doc(i.id).update(patch); toast(MSG[status] || 'Diperbarui'); }
   catch (e) { toast('Gagal menyimpan: ' + (e.message || e.code)); }
 }
 async function uploadVo(i, file) {
