@@ -52,3 +52,6 @@ thumbnails/*
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Rendered videos & voice samples (delivered directly, not versioned)
+video/out/
