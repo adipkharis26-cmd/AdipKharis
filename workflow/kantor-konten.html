@@ -885,7 +885,8 @@ function card(i) {
     if (i.upload) { const d = document.createElement('div'); d.className = 'kv'; const b = document.createElement('b'); b.textContent = 'Siap upload: '; d.append(b, i.upload); c.append(d); }
     const dl = document.createElement('div'); dl.className = 'actions';
     const b1 = document.createElement('button'); b1.className = 'btn acc'; b1.textContent = '⬇ Unduh MP4'; b1.onclick = () => downloadVideo(i, b1);
-    dl.append(b1);
+    const b3 = document.createElement('button'); b3.className = 'btn dl-alt'; b3.textContent = 'Buka video langsung'; b3.hidden = true; b3.onclick = () => openVideoLink(i);
+    dl.append(b1, b3);
     if (i.upload) { const b2 = document.createElement('button'); b2.className = 'btn'; b2.textContent = 'Salin teks upload'; b2.onclick = () => copyUpload(i); dl.append(b2); }
     c.append(dl);
   }
@@ -915,19 +916,47 @@ function card(i) {
   return c;
 }
 const slug = i => ((i.episode ? i.episode + '-' : '') + (i.judul || 'video')).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80);
-async function downloadVideo(i, b) {
-  const label = b.textContent; b.disabled = true; b.textContent = 'Menyiapkan…';
+const VCACHE = {};
+async function fetchVideo(url, onProg) {
+  if (VCACHE[url]) return VCACHE[url];
+  const ctl = new AbortController(); let idle = setTimeout(() => ctl.abort(), 30000);
   try {
-    const dls = window.claude && window.claude.use ? await window.claude.use('downloads') : null;
-    const blob = await (await fetch(i.videoUrl)).blob();
+    const r = await fetch(url, { signal: ctl.signal });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const total = +r.headers.get('content-length') || 0, parts = []; let got = 0;
+    if (r.body && r.body.getReader) {
+      const rd = r.body.getReader();
+      for (;;) {
+        const { done, value } = await rd.read(); if (done) break;
+        parts.push(value); got += value.length; onProg(total ? Math.round(got / total * 100) + '%' : (got / 1048576).toFixed(1) + ' MB');
+        clearTimeout(idle); idle = setTimeout(() => ctl.abort(), 30000);
+      }
+    } else parts.push(await r.arrayBuffer());
+    return (VCACHE[url] = new Blob(parts, { type: 'video/mp4' }));
+  } finally { clearTimeout(idle); }
+}
+function openVideoLink(i) {
+  const a = document.createElement('a'); a.href = i.videoUrl; a.target = '_blank'; a.rel = 'noopener'; a.download = slug(i) + '.mp4';
+  document.body.append(a); a.click(); setTimeout(() => a.remove(), 1000);
+}
+async function downloadVideo(i, b) {
+  if (b.dataset.busy) return;
+  const label = '⬇ Unduh MP4'; b.dataset.busy = '1'; b.textContent = 'Mengambil video…';
+  const alt = b.parentNode && b.parentNode.querySelector('.dl-alt');
+  const showAlt = () => { if (alt) alt.hidden = false; };
+  const slow = setTimeout(showAlt, 15000);
+  try {
+    const dls = window.claude && window.claude.use ? await Promise.race([window.claude.use('downloads'), new Promise(r => setTimeout(() => r(null), 5000))]) : null;
+    const blob = await fetchVideo(i.videoUrl, p => { b.textContent = 'Mengambil video ' + p; });
     if (dls) {
+      b.textContent = 'Konfirmasi simpan…'; toast('Tekan "Simpan" di jendela konfirmasi');
       try { await dls.save({ filename: slug(i) + '.mp4', data: blob }); toast('Video tersimpan'); }
-      catch (e) { toast(e.code === 'declined' ? 'Unduhan dibatalkan' : e.code === 'rate_limited' ? 'Tunggu sebentar lalu coba lagi' : 'Unduhan tidak tersedia di tampilan ini'); }
+      catch (e) { if (e.code === 'declined') toast('Unduhan dibatalkan'); else if (e.code === 'rate_limited') toast('Masih ada jendela konfirmasi terbuka, tutup dulu lalu coba lagi'); else { toast('Unduhan di tampilan ini tidak tersedia, pakai "Buka video langsung"'); showAlt(); } }
     } else {
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = slug(i) + '.mp4'; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
     }
-  } catch (e) { toast('Gagal mengambil video: ' + (e.message || e)); }
-  b.disabled = false; b.textContent = label;
+  } catch (e) { toast(e.name === 'AbortError' ? 'Koneksi macet, pakai "Buka video langsung"' : 'Gagal mengambil video: ' + (e.message || e)); showAlt(); }
+  clearTimeout(slow); delete b.dataset.busy; b.textContent = label;
 }
 async function copyUpload(i) {
   const text = String(i.upload || '').split(' | ').join('\n\n');
