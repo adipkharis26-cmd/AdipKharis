@@ -881,6 +881,11 @@ function card(i) {
   if (i.status === 'selesai' && i.videoUrl) {
     const v = document.createElement('video'); v.controls = true; v.preload = 'metadata'; v.playsInline = true; v.src = i.videoUrl; c.append(v);
     if (i.upload) { const d = document.createElement('div'); d.className = 'kv'; const b = document.createElement('b'); b.textContent = 'Siap upload: '; d.append(b, i.upload); c.append(d); }
+    const dl = document.createElement('div'); dl.className = 'actions';
+    const b1 = document.createElement('button'); b1.className = 'btn acc'; b1.textContent = '⬇ Unduh MP4'; b1.onclick = () => downloadVideo(i, b1);
+    dl.append(b1);
+    if (i.upload) { const b2 = document.createElement('button'); b2.className = 'btn'; b2.textContent = 'Salin teks upload'; b2.onclick = () => copyUpload(i); dl.append(b2); }
+    c.append(dl);
   }
   const act = document.createElement('div'); act.className = 'actions';
   if (i.status === 'usulan') {
@@ -906,6 +911,30 @@ function card(i) {
   }
   if (act.childNodes.length) c.append(act);
   return c;
+}
+const slug = i => ((i.episode ? i.episode + '-' : '') + (i.judul || 'video')).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80);
+async function downloadVideo(i, b) {
+  const label = b.textContent; b.disabled = true; b.textContent = 'Menyiapkan…';
+  try {
+    const dls = window.claude && window.claude.use ? await window.claude.use('downloads') : null;
+    const blob = await (await fetch(i.videoUrl)).blob();
+    if (dls) {
+      try { await dls.save({ filename: slug(i) + '.mp4', data: blob }); toast('Video tersimpan'); }
+      catch (e) { toast(e.code === 'declined' ? 'Unduhan dibatalkan' : e.code === 'rate_limited' ? 'Tunggu sebentar lalu coba lagi' : 'Unduhan tidak tersedia di tampilan ini'); }
+    } else {
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = slug(i) + '.mp4'; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+    }
+  } catch (e) { toast('Gagal mengambil video: ' + (e.message || e)); }
+  b.disabled = false; b.textContent = label;
+}
+async function copyUpload(i) {
+  const text = String(i.upload || '').split(' | ').join('\n\n');
+  try { await navigator.clipboard.writeText(text); toast('Teks upload disalin'); return; } catch (e) {}
+  try {
+    const dls = window.claude && window.claude.use ? await window.claude.use('downloads') : null;
+    if (dls) { await dls.save({ filename: slug(i) + '-upload.txt', data: new Blob([text], { type: 'text/plain' }) }); toast('Teks upload disimpan sebagai file'); return; }
+  } catch (e) { if (e && e.code === 'declined') return; }
+  toast('Tidak bisa menyalin di tampilan ini');
 }
 function btn(txt, cls, fn) { const b = document.createElement('button'); b.className = 'btn ' + cls; b.textContent = txt; b.disabled = !canWrite; b.onclick = fn; return b; }
 function renderList(state) {
