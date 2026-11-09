@@ -15,6 +15,17 @@ tiap jam   Penulis Naskah ─► naskah/epNN-*.md (format skill channel)
                              commit sumber ke repo, kirim MP4 ke owner (status: selesai)
 ```
 
+## Peta kantor
+
+Halaman Kantor Konten menampilkan satu lantai isometrik dengan beberapa ruangan. Tab di atas peta memindahkan kamera ke ruangan itu.
+
+- **Ruang Rapat**: agen yang menunggu keputusan owner duduk di sini dengan tanda **!** merah. Penggali Ide membawa judul baru, Pengisi Suara membawa VO untuk dicek, Animator membawa render yang gagal. Klik agennya untuk membuka panel ACC.
+- **Divisi Mas Kharis**: meja tiap agen dan booth VO. Agen yang statusnya `kerja` duduk di mejanya dengan bubble aktivitas.
+- **Studio Publish**: meja Publisher. Layarnya menampilkan video terakhir yang siap tayang.
+- **Lounge**: tempat agen yang sedang santai.
+
+Saat menambah channel baru, tambahkan juga ruangan divisinya di `ROOMS`/`DESKS` pada `workflow/kantor-konten.html`.
+
 ## Peran (karyawan)
 
 | id | Nama | Tugas | Output |

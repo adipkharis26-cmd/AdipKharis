@@ -45,7 +45,19 @@ h1 span { color: var(--teal); }
 .clock b { display: block; font-size: 22px; color: var(--ink); }
 
 .office { position: relative; border-radius: 18px; overflow: hidden; border: 3px solid var(--ink); background: #2B2E40; }
-.office canvas { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+.office canvas { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; }
+.rooms { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; margin-bottom: -12px; }
+.room { flex: none; font: 800 14px var(--f-body); border: 2px solid var(--ink); background: var(--panel); color: var(--ink); border-radius: 10px 10px 0 0; padding: 7px 14px; cursor: pointer; }
+.room[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.room:focus-visible, .waitbtn:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+.waitbtn { position: absolute; left: 12px; top: 12px; font: 900 15px var(--f-body); background: #fff; color: #1d2030; border: 2px solid #1d2030; border-radius: 999px; padding: 6px 14px; cursor: pointer; box-shadow: 3px 3px 0 #1d2030; }
+[hidden] { display: none !important; }
+.panel { position: fixed; inset: 0; z-index: 30; background: rgba(15,16,24,.55); display: grid; place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.panel .box { background: var(--bg); border: 3px solid var(--ink); border-radius: 18px; width: min(560px, 100%); max-height: 86vh; overflow-y: auto; padding: 18px; display: grid; gap: 12px; box-shadow: 6px 6px 0 var(--ink); }
+.panel .hd { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
+.panel h3 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: 22px; }
+.panel .ps { color: var(--muted); font-size: 13px; }
 .office .note { position: absolute; left: 12px; bottom: 10px; font-family: var(--f-mono); font-size: 11px; color: #F3F0E4;
   background: rgba(20,22,32,.7); padding: 4px 8px; border-radius: 6px; }
 
@@ -113,8 +125,16 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     <div class="clock" id="clock"><b>--:--</b>WIB</div>
   </header>
 
-  <div class="office" aria-label="Tampilan kantor: agen di meja masing-masing">
-    <canvas id="iso" width="1600" height="900"></canvas>
+  <nav class="rooms" aria-label="Ruangan kantor">
+    <button class="room" data-room="semua" aria-pressed="true">Semua</button>
+    <button class="room" data-room="rapat" aria-pressed="false">Ruang Rapat</button>
+    <button class="room" data-room="divisi" aria-pressed="false">Divisi Mas Kharis</button>
+    <button class="room" data-room="studio" aria-pressed="false">Studio Publish</button>
+    <button class="room" data-room="lounge" aria-pressed="false">Lounge</button>
+  </nav>
+  <div class="office" aria-label="Peta kantor: agen yang menunggu ACC duduk di Ruang Rapat dengan tanda seru; klik agen untuk membuka panelnya">
+    <canvas id="iso" width="1600" height="1000"></canvas>
+    <button class="waitbtn" id="waitBtn" hidden></button>
     <div class="note" id="liveNote">memuat status agen…</div>
   </div>
 
@@ -135,6 +155,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   <details>
     <summary>Cara kerja kantor ini</summary>
     <ol class="how">
+      <li>Peta kantor: agen yang menunggu keputusanmu pindah ke <b>Ruang Rapat</b> dengan tanda <b>!</b> merah. Klik agennya untuk ACC langsung dari situ. Agen yang bekerja ada di mejanya, dan yang santai ada di Lounge.</li>
       <li>Setiap pagi ±06:40 WIB, <b>Penggali Ide</b> menyetor beberapa judul baru (berbeda setiap hari) ke tab "Perlu ACC".</li>
       <li>Anda menekan <b>ACC</b> pada judul yang cocok. Catatan opsional bisa diisi, misalnya "fokus ke anak kos".</li>
       <li>Tiap jam (07:00–22:00 WIB) tim mengerjakan judul yang sudah di-ACC: Penulis Naskah, Cek Fakta, lalu Pengisi Suara (ElevenLabs). Hasilnya berhenti dulu di <b>Cek suara</b>.</li>
@@ -144,10 +165,17 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     </ol>
   </details>
 </div>
+<div class="panel" id="panel" hidden role="dialog" aria-modal="true" aria-labelledby="panelTitle">
+  <div class="box">
+    <div class="hd"><div><h3 id="panelTitle"></h3><div class="ps" id="panelSub"></div></div><button class="btn" id="panelClose">Tutup</button></div>
+    <div id="panelBody" style="display:grid;gap:12px"></div>
+  </div>
+</div>
 <div class="toast" id="toast" hidden></div>
 
 <script>
-/* ---------- office scene (canvas, isometric) ---------- */
+const $ = id => document.getElementById(id);
+/* ---------- office map (canvas, isometric, multi-room) ---------- */
 const AGENT_DEFAULTS = [
   { id: 'penggali', nama: 'Penggali Ide', peran: 'Riset tren & setor judul', warna: '#F29B4B', urut: 1 },
   { id: 'penulis',  nama: 'Penulis Naskah', peran: 'Naskah 8 bagian + CTA', warna: '#2F6FD0', urut: 2 },
@@ -157,107 +185,297 @@ const AGENT_DEFAULTS = [
   { id: 'publisher',nama: 'Publisher', peran: 'Judul, deskripsi, tag, stok upload', warna: '#1F8B95', urut: 6 },
 ];
 let agents = AGENT_DEFAULTS.map(a => ({ ...a, status: 'santai', aktivitas: 'Menunggu tugas' }));
+let ideas = [];
 
 const cv = document.getElementById('iso'), g = cv.getContext('2d');
-const TW = 128, TH = 64, OX = 800, OY = 175;
-const iso = (x, y, z = 0) => [OX + (x - y) * TW / 2, OY + (x + y) * TH / 2 - z];
-const OL = '#1d2030';
+const VW = cv.width, VH = cv.height;
+const TW = 128, TH = 64, OL = '#1d2030', WALL_H = 190;
+const iso = (x, y, z = 0) => [(x - y) * TW / 2, (x + y) * TH / 2 - z];
 function poly(pts, fill, stroke = OL, lw = 3) { g.beginPath(); pts.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.closePath(); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = lw; g.lineJoin = 'round'; g.stroke(); } }
-function shade(hex, f) { const n = parseInt(hex.slice(1), 16); let r = n >> 16, gg = n >> 8 & 255, b = n & 255; r = Math.round(r * f); gg = Math.round(gg * f); b = Math.round(b * f); return `rgb(${Math.min(255,r)},${Math.min(255,gg)},${Math.min(255,b)})`; }
-function isoBox(x, y, z, w, d, h, col) {
-  const t = [iso(x, y, z + h), iso(x + w, y, z + h), iso(x + w, y + d, z + h), iso(x, y + d, z + h)];
-  poly([iso(x, y + d, z), iso(x + w, y + d, z), iso(x + w, y + d, z + h), iso(x, y + d, z + h)], shade(col, .82));
-  poly([iso(x + w, y, z), iso(x + w, y + d, z), iso(x + w, y + d, z + h), iso(x + w, y, z + h)], shade(col, .68));
-  poly(t, col);
+function shade(hex, f) { const n = parseInt(hex.slice(1), 16); const c = [n >> 16, n >> 8 & 255, n & 255].map(v => Math.min(255, Math.round(v * f))); return `rgb(${c})`; }
+function isoBox(x, y, z, w, d, h, col, lw = 3) {
+  poly([iso(x, y + d, z), iso(x + w, y + d, z), iso(x + w, y + d, z + h), iso(x, y + d, z + h)], shade(col, .82), OL, lw);
+  poly([iso(x + w, y, z), iso(x + w, y + d, z), iso(x + w, y + d, z + h), iso(x + w, y, z + h)], shade(col, .68), OL, lw);
+  poly([iso(x, y, z + h), iso(x + w, y, z + h), iso(x + w, y + d, z + h), iso(x, y + d, z + h)], col, OL, lw);
 }
-const N = 10; // room size in tiles
-function room(t) {
-  g.fillStyle = '#2B2E40'; g.fillRect(0, 0, cv.width, cv.height);
-  // floor checker
-  for (let i = 0; i < N; i++) for (let j = 0; j < N; j++)
-    poly([iso(i, j), iso(i + 1, j), iso(i + 1, j + 1), iso(i, j + 1)], (i + j) % 2 ? '#EEF5F4' : '#1F8B95', 'rgba(29,32,48,.25)', 1);
-  // back walls
-  const WH = 190;
-  poly([iso(0, 0), iso(N, 0), iso(N, 0, WH), iso(0, 0, WH)], '#F2CC45');
-  poly([iso(0, 0), iso(0, N), iso(0, N, WH), iso(0, 0, WH)], '#E0B634');
-  // windows on right wall (city view)
-  for (let k = 0; k < 3; k++) {
-    const x0 = 1.2 + k * 3, x1 = x0 + 2.2;
-    poly([iso(x0, 0, 70), iso(x1, 0, 70), iso(x1, 0, 165), iso(x0, 0, 165)], '#9FD6F0');
-    for (let b = 0; b < 4; b++) { const bx = x0 + 0.25 + b * 0.5, bh = 85 + 40 * Math.abs(Math.sin(k * 3 + b * 1.7)); poly([iso(bx, 0, 70), iso(bx + 0.35, 0, 70), iso(bx + 0.35, 0, 70 + bh * .55), iso(bx, 0, 70 + bh * .55)], '#6FA9C9', null); }
-    g.strokeStyle = OL; g.lineWidth = 3; poly([iso(x0, 0, 70), iso(x1, 0, 70), iso(x1, 0, 165), iso(x0, 0, 165)], null);
-  }
-  // left wall: content board + clock
-  poly([iso(0, 1.3, 75), iso(0, 4.2, 75), iso(0, 4.2, 160), iso(0, 1.3, 160)], '#FFFFFF');
-  const cols = ['#FFD84A', '#7FD3D9', '#F29B4B', '#9ED6A0', '#E84545', '#B9A3E6'];
-  for (let k = 0; k < 6; k++) { const yy = 1.55 + (k % 3) * 0.9, zz = 128 - Math.floor(k / 3) * 38; poly([iso(0, yy, zz - 22), iso(0, yy + 0.6, zz - 22), iso(0, yy + 0.6, zz), iso(0, yy, zz)], cols[k], OL, 2); }
-  const [cx, cy] = iso(0, 6.2, 125); g.beginPath(); g.ellipse(cx, cy, 20, 26, -0.45, 0, 7); g.fillStyle = '#fff'; g.fill(); g.lineWidth = 4; g.strokeStyle = OL; g.stroke();
-  const d = new Date(), hh = (d.getHours() % 12) / 12 * 6.283, mm = d.getMinutes() / 60 * 6.283;
-  g.lineWidth = 3; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.sin(hh) * 10, cy - Math.cos(hh) * 13); g.moveTo(cx, cy); g.lineTo(cx + Math.sin(mm) * 14, cy - Math.cos(mm) * 19); g.stroke();
-  // plant + sofa corner
-  isoBox(0.3, 8.6, 0, 0.7, 0.7, 34, '#C9774A');
-  for (let k = 0; k < 5; k++) { const [px, py] = iso(0.65, 8.95, 40); g.beginPath(); g.ellipse(px + Math.cos(k * 1.3) * 18, py - 22 - Math.sin(k * 2) * 10, 16, 26, k * .6, 0, 7); g.fillStyle = '#3FA34D'; g.fill(); g.lineWidth = 3; g.strokeStyle = OL; g.stroke(); }
+function tile(x, y, w, d, col, stroke) { poly([iso(x, y), iso(x + w, y), iso(x + w, y + d), iso(x, y + d)], col, stroke || null, 1); }
+function text(t, x, y, font, col, align) { g.font = font; g.fillStyle = col; g.textAlign = align || 'center'; g.textBaseline = 'middle'; g.fillText(t, x, y); }
+function pill(x, y, label, bg, fg, font) {
+  g.font = font || '800 17px Nunito, sans-serif'; const w = g.measureText(label).width + 26;
+  g.fillStyle = bg; g.beginPath(); g.roundRect(x - w / 2, y - 14, w, 28, 14); g.fill(); g.lineWidth = 2; g.strokeStyle = OL; g.stroke();
+  g.fillStyle = fg; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(label, x, y + 1);
 }
-// desks: 2 rows x 3
-const SLOTS = [[2.2, 2.6], [4.9, 2.6], [7.6, 2.6], [2.2, 6.0], [4.9, 6.0], [7.6, 6.0]];
-function desk(x, y, on, t) {
-  isoBox(x - 1.05, y - 0.45, 0, 2.1, 0.9, 52, '#F6EFE2');
-  // monitor
-  isoBox(x - 0.45, y - 0.42, 52, 0.9, 0.12, 52, '#2A2D3E');
-  const scr = [iso(x - 0.38, y - 0.3, 58), iso(x + 0.38, y - 0.3, 58), iso(x + 0.38, y - 0.3, 98), iso(x - 0.38, y - 0.3, 98)];
-  poly(scr, on ? '#7FD3D9' : '#3B4058', null);
-  if (on) { g.strokeStyle = 'rgba(29,32,48,.55)'; g.lineWidth = 2; for (let k = 0; k < 3; k++) { const a = iso(x - 0.3, y - 0.3, 90 - k * 10), w = 0.25 + 0.3 * ((Math.sin(t * 3 + k + x) + 1) / 2), b = iso(x - 0.3 + w, y - 0.3, 90 - k * 10); g.beginPath(); g.moveTo(...a); g.lineTo(...b); g.stroke(); } }
-  // mug
-  isoBox(x + 0.62, y - 0.1, 52, 0.18, 0.18, 16, '#E84545');
+
+// ── the map: rooms on one floor ───────────────────────────────
+const MX = 28, MY = 15;
+const ROOMS = {
+  rapat:   { nama: 'Ruang Rapat', x: 0, y: 0, w: 9, d: 8, focus: [4.5, 4.2, 1.15] },
+  divisi:  { nama: 'Divisi Mas Kharis', x: 9, y: 0, w: 11, d: 8, focus: [14.5, 4.2, 1.0] },
+  studio:  { nama: 'Studio Publish', x: 20, y: 0, w: 8, d: 8, focus: [24, 4.2, 1.15] },
+  lounge:  { nama: 'Lounge', x: 0, y: 8, w: 28, d: 7, focus: [13, 11.8, 0.8] },
+};
+const OVERVIEW = [14, 7.5, 0.56];
+function floors(t) {
+  // meeting: warm wood planks
+  for (let i = 0; i < 9; i++) for (let j = 0; j < 8; j++) tile(i, j, 1, 1, (i + (j >> 1)) % 2 ? '#C99A6B' : '#BC8C5E', 'rgba(0,0,0,.08)');
+  // Mas Kharis division: the brand's teal checker
+  for (let i = 9; i < 20; i++) for (let j = 0; j < 8; j++) tile(i, j, 1, 1, (i + j) % 2 ? '#EEF5F4' : '#1F8B95', 'rgba(0,0,0,.12)');
+  // studio: light concrete with a blue rug
+  for (let i = 20; i < 28; i++) for (let j = 0; j < 8; j++) tile(i, j, 1, 1, (i + j) % 2 ? '#DAD6CF' : '#D1CCC4', 'rgba(0,0,0,.06)');
+  tile(21.5, 2.5, 4, 3, '#2C3E73', OL);
+  // lounge: wooden deck + pool
+  for (let i = 0; i < 28; i++) for (let j = 8; j < 15; j++) tile(i, j, 1, 1, i % 2 ? '#B97A4A' : '#AD6F40', 'rgba(0,0,0,.12)');
+  tile(17, 9.4, 8.6, 4.2, '#E9E2D6', OL);
+  tile(17.4, 9.8, 7.8, 3.4, '#4FC3E8', OL);
+  g.save(); g.globalAlpha = 0.5; g.strokeStyle = '#bff0ff'; g.lineWidth = 3;
+  for (let k = 0; k < 5; k++) { const a = iso(18 + k * 1.4 + Math.sin(t * 1.5 + k) * 0.2, 10.4 + (k % 3) * 0.9); g.beginPath(); g.moveTo(a[0] - 20, a[1]); g.quadraticCurveTo(a[0], a[1] - 6, a[0] + 20, a[1]); g.stroke(); }
+  g.restore();
+  tile(1.2, 9.2, 5.2, 3.2, '#E8D5B0', OL); // lounge rug
 }
-function stickman(x, y, col, on, t, i) {
-  const [fx, fy] = iso(x, y + 0.75);
-  const bob = on ? Math.sin(t * 8 + i) * 2 : 0;
-  // chair
-  g.fillStyle = '#3B4058'; g.beginPath(); g.ellipse(fx, fy + 4, 30, 12, 0, 0, 7); g.fill();
-  // body (bean), seen from behind/side
-  g.save(); g.translate(fx, fy - 46 + bob);
-  // arms reach forward to the keyboard (drawn behind the body)
-  g.lineCap = 'round'; g.lineWidth = 4; g.strokeStyle = OL; g.beginPath();
-  const tap = on ? Math.sin(t * 16 + i) * 3 : 0;
-  g.moveTo(-12, -14); g.lineTo(-20, -30 + tap); g.moveTo(12, -14); g.lineTo(20, -30 - tap); g.stroke();
-  g.beginPath(); g.ellipse(0, 0, 22, 30, 0, 0, 7); g.fillStyle = col; g.fill(); g.stroke();
-  // head
-  g.beginPath(); g.arc(0, -50, 22, 0, 7); g.fillStyle = '#fff'; g.fill(); g.stroke();
-  g.beginPath(); g.moveTo(2, -72); g.quadraticCurveTo(10, -88, 20, -84); g.lineWidth = 4; g.strokeStyle = '#3A2216'; g.stroke();
+function backWalls(t) {
+  const segs = [[0, 9, '#E6DED0', 'RUANG RAPAT'], [9, 20, '#F2CC45', 'DIVISI MAS KHARIS'], [20, 28, '#D7DCE6', 'STUDIO PUBLISH']];
+  segs.forEach(([a, b, col, label]) => {
+    poly([iso(a, 0), iso(b, 0), iso(b, 0, WALL_H), iso(a, 0, WALL_H)], col);
+    // windows with a city view
+    for (let x = a + 0.6; x + 1.6 <= b - 0.3; x += 2.4) {
+      poly([iso(x, 0, 70), iso(x + 1.6, 0, 70), iso(x + 1.6, 0, 165), iso(x, 0, 165)], '#A8DAF2');
+      for (let k = 0; k < 3; k++) { const bx = x + 0.2 + k * 0.48, bh = 40 + 40 * Math.abs(Math.sin(x * 3 + k * 1.7)); poly([iso(bx, 0, 70), iso(bx + 0.34, 0, 70), iso(bx + 0.34, 0, 70 + bh), iso(bx, 0, 70 + bh)], '#7FB2D0', null); }
+      poly([iso(x, 0, 70), iso(x + 1.6, 0, 70), iso(x + 1.6, 0, 165), iso(x, 0, 165)], null);
+    }
+    // name plate
+    const m = iso((a + b) / 2, 0, WALL_H - 14);
+    g.save(); g.translate(m[0], m[1]); g.transform(1, 0.5, 0, 1, 0, 0);
+    g.font = '400 22px Bungee, sans-serif'; const w = g.measureText(label).width + 30;
+    g.fillStyle = OL; g.beginPath(); g.roundRect(-w / 2, -16, w, 32, 8); g.fill();
+    g.fillStyle = '#FFD84A'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(label, 0, 1); g.restore();
+  });
+  // left wall
+  poly([iso(0, 0), iso(0, 8), iso(0, 8, WALL_H), iso(0, 0, WALL_H)], '#D6CCBB');
+  poly([iso(0, 8), iso(0, MY), iso(0, MY, WALL_H), iso(0, 8, WALL_H)], '#8FCBB9');
+  const m = iso(0, 11.5, 120);
+  g.save(); g.translate(m[0], m[1]); g.transform(1, -0.5, 0, 1, 0, 0);
+  g.font = '400 30px Bungee, sans-serif'; g.fillStyle = '#fff'; g.textAlign = 'center'; g.fillText('LOUNGE', 0, 0); g.restore();
+}
+// wall-mounted screens whose text comes from live data
+function wallScreen(x0, x1, z0, z1, lines, col) {
+  poly([iso(x0, 0.02, z0), iso(x1, 0.02, z0), iso(x1, 0.02, z1), iso(x0, 0.02, z1)], '#1b1e2c');
+  const c = iso((x0 + x1) / 2, 0.02, (z0 + z1) / 2);
+  g.save(); g.translate(c[0], c[1]); g.transform(1, 0.5, 0, 1, 0, 0);
+  lines.forEach((l, i) => { g.font = (i ? '700 15px' : '900 19px') + ' Nunito, sans-serif'; g.fillStyle = i ? '#cfe9ff' : col; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(l.length > 22 ? l.slice(0, 21) + '…' : l, 0, (i - (lines.length - 1) / 2) * 22); });
   g.restore();
 }
-function tags(x, y, on, t, i, label, status) {
-  const [fx, fy] = iso(x, y + 0.75);
-  const bob = on ? Math.sin(t * 8 + i) * 2 : 0;
-  const act = status && status.length > 28 ? status.slice(0, 27) + '…' : (status || '');
-  g.font = '900 16px Nunito, sans-serif'; const w1 = g.measureText(label).width + 22;
-  g.font = '700 14px Nunito, sans-serif'; const w2 = g.measureText(act).width;
-  const bw = Math.max(w1, w2) + 22, bh = act ? 46 : 28, bx = fx - bw / 2, by = fy - 132 - bh + bob;
-  g.fillStyle = '#fff'; g.beginPath(); g.roundRect(bx, by, bw, bh, 9); g.fill(); g.lineWidth = 2; g.strokeStyle = OL; g.stroke();
-  g.beginPath(); g.moveTo(fx - 6, by + bh); g.lineTo(fx, by + bh + 9); g.lineTo(fx + 6, by + bh); g.fillStyle = '#fff'; g.fill(); g.stroke();
-  g.fillStyle = on ? '#2E9E57' : '#9AA0B4'; g.beginPath(); g.arc(bx + 16, by + 15, 5, 0, 7); g.fill();
-  g.fillStyle = OL; g.font = '900 16px Nunito, sans-serif'; g.fillText(label, bx + 27, by + 20);
-  if (act) { g.font = '700 14px Nunito, sans-serif'; g.fillStyle = '#4A4E62'; g.fillText(act, bx + 11, by + 38); }
-  if (on) { for (let k = 0; k < 3; k++) { g.globalAlpha = (Math.floor(t * 3) % 3) === k ? 1 : 0.3; g.beginPath(); g.arc(bx + bw - 30 + k * 8, by + 15, 3, 0, 7); g.fillStyle = OL; g.fill(); } g.globalAlpha = 1; }
+
+// ── furniture (each returns depth-sorted draw jobs) ───────────
+function deskJob(x, y, on, t, col) {
+  return { d: x + y + 1.2, f: () => {
+    isoBox(x - 0.8, y - 0.4, 0, 1.6, 0.8, 50, '#F6EFE2');
+    isoBox(x - 0.35, y - 0.38, 50, 0.7, 0.1, 46, '#2A2D3E');
+    poly([iso(x - 0.28, y - 0.27, 56), iso(x + 0.28, y - 0.27, 56), iso(x + 0.28, y - 0.27, 90), iso(x - 0.28, y - 0.27, 90)], on ? '#7FD3D9' : '#3B4058', null);
+    if (on) { g.strokeStyle = 'rgba(29,32,48,.55)'; g.lineWidth = 2; for (let k = 0; k < 3; k++) { const a = iso(x - 0.22, y - 0.27, 84 - k * 9), b = iso(x - 0.22 + 0.2 + 0.25 * ((Math.sin(t * 3 + k + x) + 1) / 2), y - 0.27, 84 - k * 9); g.beginPath(); g.moveTo(...a); g.lineTo(...b); g.stroke(); } }
+    isoBox(x + 0.45, y - 0.05, 50, 0.15, 0.15, 14, col || '#E84545', 2);
+  } };
+}
+function plantJob(x, y, s = 1) {
+  return { d: x + y + 0.6, f: () => {
+    isoBox(x, y, 0, 0.5 * s, 0.5 * s, 30 * s, '#C9774A');
+    const [px, py] = iso(x + 0.25 * s, y + 0.25 * s, 34 * s);
+    for (let k = 0; k < 5; k++) { g.beginPath(); g.ellipse(px + Math.cos(k * 1.3) * 14 * s, py - 18 * s - Math.sin(k * 2) * 8 * s, 12 * s, 22 * s, k * .6, 0, 7); g.fillStyle = '#3FA34D'; g.fill(); g.lineWidth = 2.5; g.strokeStyle = OL; g.stroke(); }
+  } };
+}
+function glassJob(x0, y0, x1, y1) {
+  const d = (x0 + x1 + y0 + y1) / 2;
+  return { d, f: () => {
+    g.save(); g.globalAlpha = 0.28; poly([iso(x0, y0), iso(x1, y1), iso(x1, y1, 150), iso(x0, y0, 150)], '#BFE4FF', null); g.restore();
+    g.strokeStyle = 'rgba(29,32,48,.55)'; g.lineWidth = 3; g.beginPath(); g.moveTo(...iso(x0, y0, 150)); g.lineTo(...iso(x1, y1, 150)); g.moveTo(...iso(x0, y0)); g.lineTo(...iso(x1, y1)); g.stroke();
+    g.beginPath(); g.moveTo(...iso(x0, y0)); g.lineTo(...iso(x0, y0, 150)); g.stroke();
+  } };
+}
+function furniture(t) {
+  const J = [];
+  // meeting room: long table + owner chair
+  J.push({ d: 3 + 3.2 + 2, f: () => { isoBox(2.2, 2.8, 0, 4, 1.4, 44, '#7A4E2D'); } });
+  J.push(plantJob(0.4, 0.4)); J.push(plantJob(8.0, 0.4));
+  // glass partitions (with door gaps)
+  J.push(glassJob(9, 0.2, 9, 3)); J.push(glassJob(9, 4.6, 9, 8));
+  J.push(glassJob(20, 0.2, 20, 3)); J.push(glassJob(20, 4.6, 20, 8));
+  J.push(glassJob(0.2, 8, 3.5, 8)); J.push(glassJob(5.2, 8, 9, 8));
+  // division desks
+  const on = id => (agents.find(a => a.id === id) || {}).status === 'kerja';
+  DESKS.forEach(([id, x, y]) => { if (id !== 'suara') J.push(deskJob(x, y, on(id), t, (agents.find(a => a.id === id) || {}).warna)); });
+  // vocal booth
+  J.push({ d: 17.2 + 5.6 + 1.6, f: () => {
+    isoBox(16.8, 4.6, 0, 1.6, 1.4, 6, '#4A3F6B');
+    const [mx, my] = iso(17.6, 5.0, 0); g.strokeStyle = OL; g.lineWidth = 4; g.beginPath(); g.moveTo(mx, my - 6); g.lineTo(mx, my - 78); g.stroke();
+    g.beginPath(); g.ellipse(mx, my - 92, 10, 16, 0, 0, 7); g.fillStyle = '#9B6BD6'; g.fill(); g.stroke();
+    pill(...iso(18.3, 6.1, 4), 'BOOTH VO', '#9B6BD6', '#fff', '900 14px Nunito, sans-serif');
+  } });
+  J.push(plantJob(19.2, 0.4)); J.push(plantJob(9.4, 7.0, 0.8));
+  // studio: green screen, ring light, desk, schedule board
+  J.push({ d: 26 + 1.2, f: () => { isoBox(25.4, 0.8, 0, 2.2, 0.15, 150, '#4CC26A'); } });
+  J.push({ d: 23 + 2.4, f: () => {
+    const [rx, ry] = iso(23.2, 2.4); g.strokeStyle = OL; g.lineWidth = 4; g.beginPath(); g.moveTo(rx, ry); g.lineTo(rx, ry - 110); g.stroke();
+    g.beginPath(); g.arc(rx, ry - 128, 20, 0, 7); g.lineWidth = 8; g.strokeStyle = '#FFF6C8'; g.stroke(); g.lineWidth = 2; g.strokeStyle = OL; g.stroke();
+  } });
+  J.push(plantJob(27.2, 7.0, 0.8));
+  // lounge: sofa, coffee table, loungers, umbrella
+  J.push({ d: 2 + 9.6 + 0.5, f: () => { isoBox(1.6, 9.4, 0, 4, 0.7, 28, '#5B6BB5'); isoBox(1.6, 9.4, 28, 4, 0.25, 30, '#4E5DA3'); } });
+  J.push({ d: 3 + 11 + 0.5, f: () => { isoBox(2.6, 10.8, 0, 2, 0.9, 20, '#7A4E2D'); } });
+  [[18, 13.9], [20.2, 13.9], [22.4, 13.9]].forEach(([x, y]) => J.push({ d: x + y + 0.4, f: () => { isoBox(x, y, 0, 1.4, 0.55, 10, '#F4F1EA'); isoBox(x, y, 10, 0.4, 0.55, 18, '#F4F1EA'); } }));
+  J.push({ d: 26 + 12, f: () => { const [ux, uy] = iso(26.3, 12.2); g.strokeStyle = OL; g.lineWidth = 4; g.beginPath(); g.moveTo(ux, uy); g.lineTo(ux, uy - 120); g.stroke();
+    g.beginPath(); g.moveTo(ux - 70, uy - 100); g.quadraticCurveTo(ux, uy - 160, ux + 70, uy - 100); g.closePath(); g.fillStyle = '#E84545'; g.fill(); g.lineWidth = 3; g.stroke(); } });
+  J.push(plantJob(7.5, 9.0)); J.push(plantJob(14.5, 13.8)); J.push(plantJob(0.4, 13.8));
+  return J;
+}
+
+// ── where each agent goes ─────────────────────────────────────
+const DESKS = [['penggali', 11.2, 2.2], ['penulis', 13.8, 2.2], ['cekfakta', 16.4, 2.2], ['animator', 12.4, 5.4], ['suara', 17.6, 5.0], ['publisher', 23.6, 4.6]];
+const MEET = [[2.8, 2.25], [4.0, 2.25], [5.2, 2.25], [2.8, 4.75], [4.0, 4.75], [5.2, 4.75]];
+const LOUNGE = [[2.2, 10.4], [3.4, 10.4], [4.6, 10.4], [9.5, 11.0], [12.0, 10.4], [14.5, 11.6]];
+function waitingFor(id) {
+  if (id === 'penggali') { const n = ideas.filter(i => i.status === 'usulan').length; return n ? { n, txt: `${n} judul nunggu ACC`, filter: ['usulan'] } : null; }
+  if (id === 'suara') {
+    const cek = ideas.filter(i => i.status === 'cek-vo'), butuh = ideas.filter(i => i.status === 'butuh-vo');
+    if (cek.length) return { n: cek.length, txt: cek.length === 1 ? `VO ${cek[0].episode || ''} nunggu dicek`.replace('  ', ' ') : `${cek.length} VO nunggu dicek`, filter: ['cek-vo'] };
+    if (butuh.length) return { n: butuh.length, txt: 'Butuh VO dari kamu', filter: ['butuh-vo'] };
+  }
+  if (id === 'animator') { const n = ideas.filter(i => i.status === 'gagal').length; return n ? { n, txt: `${n} render gagal`, filter: ['gagal'] } : null; }
+  return null;
+}
+let HITS = [];
+function placeAgents() {
+  const out = []; let mi = 0, li = 0;
+  agents.slice().sort((a, b) => (a.urut || 9) - (b.urut || 9)).forEach(a => {
+    const w = waitingFor(a.id);
+    let pos, mode;
+    if (w) { pos = MEET[mi++ % MEET.length]; mode = 'wait'; }
+    else if (a.status === 'kerja') { const dk = DESKS.find(d => d[0] === a.id); pos = dk ? [dk[1], dk[2] + 0.75] : [14, 4]; mode = 'work'; }
+    else { pos = LOUNGE[li++ % LOUNGE.length]; mode = 'idle'; }
+    out.push({ a, w, mode, x: pos[0], y: pos[1] });
+  });
+  return out;
+}
+function stickman(p, t, i) {
+  const [fx, fy] = iso(p.x, p.y);
+  const work = p.mode === 'work', wait = p.mode === 'wait';
+  const bob = work ? Math.sin(t * 8 + i) * 2 : wait ? Math.sin(t * 3 + i) * 1.5 : Math.sin(t * 1.5 + i) * 1;
+  if (work || wait) { g.fillStyle = '#3B4058'; g.beginPath(); g.ellipse(fx, fy + 4, 28, 11, 0, 0, 7); g.fill(); }
+  else { g.fillStyle = 'rgba(0,0,0,.18)'; g.beginPath(); g.ellipse(fx, fy + 4, 24, 9, 0, 0, 7); g.fill(); }
+  g.save(); g.translate(fx, fy - 44 + bob);
+  if (!work && !wait) { g.strokeStyle = OL; g.lineWidth = 4; g.lineCap = 'round'; g.beginPath(); g.moveTo(-8, 22); g.lineTo(-10, 44 - bob); g.moveTo(8, 22); g.lineTo(10, 44 - bob); g.stroke(); }
+  g.lineCap = 'round'; g.lineWidth = 4; g.strokeStyle = OL; g.beginPath();
+  const tap = work ? Math.sin(t * 16 + i) * 3 : 0;
+  if (wait && p.a.id === 'penggali') { g.moveTo(-12, -14); g.lineTo(-20, -30); g.moveTo(12, -14); g.lineTo(26, -48 + Math.sin(t * 6) * 4); }
+  else { g.moveTo(-12, -14); g.lineTo(-20, -30 + tap); g.moveTo(12, -14); g.lineTo(20, -30 - tap); }
+  g.stroke();
+  g.beginPath(); g.ellipse(0, 0, 21, 29, 0, 0, 7); g.fillStyle = p.a.warna || '#2F6FD0'; g.fill(); g.stroke();
+  g.beginPath(); g.arc(0, -48, 21, 0, 7); g.fillStyle = '#fff'; g.fill(); g.stroke();
+  g.beginPath(); g.moveTo(2, -69); g.quadraticCurveTo(10, -85, 20, -81); g.lineWidth = 4; g.strokeStyle = '#3A2216'; g.stroke();
+  g.restore();
+  return [fx, fy - 44 + bob];
+}
+function ownerAvatar(t) {
+  const [fx, fy] = iso(1.7, 3.5);
+  g.fillStyle = '#3B4058'; g.beginPath(); g.ellipse(fx, fy + 4, 30, 12, 0, 0, 7); g.fill();
+  g.save(); g.translate(fx, fy - 46);
+  g.beginPath(); g.ellipse(0, 0, 23, 31, 0, 0, 7); g.fillStyle = '#FFD84A'; g.fill(); g.lineWidth = 4; g.strokeStyle = OL; g.stroke();
+  g.beginPath(); g.arc(0, -50, 22, 0, 7); g.fillStyle = '#fff'; g.fill(); g.stroke();
+  g.fillStyle = '#F5B82E'; g.beginPath(); g.moveTo(-16, -66); g.lineTo(-10, -84); g.lineTo(0, -72); g.lineTo(10, -84); g.lineTo(16, -66); g.closePath(); g.fill(); g.lineWidth = 2.5; g.stroke();
+  g.restore();
+  pill(fx, fy + 22, 'Adip · Owner', '#FFD84A', OL, '900 15px Nunito, sans-serif');
+}
+function bubble(p, hx, hy, t) {
+  const a = p.a, w = p.w;
+  const label = w ? w.txt : p.mode === 'work' ? (a.aktivitas || 'Kerja') : 'santai';
+  const txt = label.length > 26 ? label.slice(0, 25) + '…' : label;
+  g.font = '700 15px Nunito, sans-serif';
+  const bw = g.measureText(txt).width + (w ? 46 : 22), bh = 28, bx = hx - bw / 2, by = hy - 112;
+  if (p.mode !== 'idle' || w) {
+    g.fillStyle = '#fff'; g.beginPath(); g.roundRect(bx, by, bw, bh, 9); g.fill(); g.lineWidth = 2; g.strokeStyle = OL; g.stroke();
+    g.beginPath(); g.moveTo(hx - 6, by + bh); g.lineTo(hx, by + bh + 9); g.lineTo(hx + 6, by + bh); g.fill(); g.stroke();
+    g.fillStyle = OL; g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillText(txt, bx + 11, by + 15);
+    if (w) { const pulse = 1 + 0.12 * Math.sin(t * 6); g.save(); g.translate(bx + bw - 15, by + 14); g.scale(pulse, pulse); g.beginPath(); g.arc(0, 0, 11, 0, 7); g.fillStyle = '#E84545'; g.fill(); g.lineWidth = 2; g.stroke(); g.fillStyle = '#fff'; g.font = '900 15px Nunito, sans-serif'; g.textAlign = 'center'; g.fillText('!', 0, 1); g.restore(); }
+    if (p.mode === 'work') { for (let k = 0; k < 3; k++) { g.globalAlpha = (Math.floor(t * 3) % 3) === k ? 1 : 0.3; g.beginPath(); g.arc(bx + bw + 9 + k * 8, by + 14, 3, 0, 7); g.fillStyle = OL; g.fill(); } g.globalAlpha = 1; }
+  } else if (Math.floor(t / 4 + p.x) % 3 === 0) {
+    text('z z', hx + 26, hy - 40 - (t * 10 % 12), '900 18px Nunito, sans-serif', '#ffffff');
+  }
+  pill(hx, hy + 70, a.nama, w ? '#FFE3E3' : '#fff', OL, '800 15px Nunito, sans-serif');
+}
+
+// ── camera, room tabs, clicks ─────────────────────────────────
+let camT = OVERVIEW.slice(), camC = OVERVIEW.slice(), room = innerWidth < 560 ? 'rapat' : 'semua';
+try { const r = localStorage.getItem('kk-room'); if (r && (r === 'semua' || ROOMS[r])) { room = r; camT = (ROOMS[r] ? ROOMS[r].focus : OVERVIEW).slice(); camC = camT.slice(); } } catch (e) {}
+function setRoom(r) {
+  room = r; camT = (ROOMS[r] ? ROOMS[r].focus : OVERVIEW).slice();
+  document.querySelectorAll('.room').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.room === r)));
+  try { localStorage.setItem('kk-room', r); } catch (e) {}
+  if (reduce) requestAnimationFrame(draw);
 }
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 function draw(ts) {
   const t = reduce ? 0 : ts / 1000;
-  room(t);
-  const order = agents.slice().sort((a, b) => (a.urut || 9) - (b.urut || 9)).slice(0, 6);
-  order.forEach((a, i) => {
-    const [x, y] = SLOTS[i]; const on = a.status === 'kerja';
-    desk(x, y, on, t);
-    stickman(x, y, a.warna || '#2F6FD0', on, t, i);
-  });
-  order.forEach((a, i) => { const [x, y] = SLOTS[i]; tags(x, y, a.status === 'kerja', t, i, a.nama, a.aktivitas); });
+  const k = reduce ? 1 : 0.12; for (let i = 0; i < 3; i++) camC[i] += (camT[i] - camC[i]) * k;
+  const narrow = cv.clientWidth < 560, zBoost = narrow && room !== 'semua' ? 1.25 : 1;
+  const z = camC[2] * zBoost, [cx, cy] = iso(camC[0], camC[1], 60);
+  g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = '#20222D'; g.fillRect(0, 0, VW, VH);
+  g.setTransform(z, 0, 0, z, VW / 2 - cx * z, VH / 2 - cy * z);
+  floors(t); backWalls(t);
+  // live wall screens
+  const waitN = ideas.filter(i => ['usulan', 'cek-vo', 'butuh-vo'].includes(i.status)).length;
+  wallScreen(3.0, 6.2, 70, 150, waitN ? [`${waitN} NUNGGU ACC`, 'klik agen bertanda !'] : ['SEMUA BERES ✓', 'tidak ada antrean'], waitN ? '#FF8A8A' : '#7ff0a8');
+  const prod = ideas.filter(i => ['acc', 'produksi', 'vo-ulang', 'vo-acc'].includes(i.status));
+  const last = ideas.filter(i => i.status === 'selesai').sort((a, b) => String(b.diubah || '').localeCompare(String(a.diubah || '')))[0];
+  wallScreen(11.4, 14.6, 70, 150, prod.length ? ['SEDANG DIGARAP', prod[0].judul || ''] : last ? ['TERAKHIR SELESAI', last.judul || ''] : ['STANDBY', 'nunggu judul di-ACC'], '#FFD84A');
+  wallScreen(21.2, 24.6, 70, 150, last ? ['SIAP TAYANG', last.judul || ''] : ['JADWAL TAYANG', 'belum ada video'], '#7FD3D9');
+  // depth-sorted furniture + agents
+  const people = placeAgents();
+  const jobs = furniture(t);
+  const heads = [];
+  people.forEach((p, i) => jobs.push({ d: p.x + p.y + (p.mode === 'work' ? 1.0 : 0), f: () => { heads.push([p, ...stickman(p, t, i)]); } }));
+  jobs.push({ d: 1.7 + 3.5, f: ownerAvatar.bind(null, t) });
+  jobs.sort((a, b) => a.d - b.d).forEach(j => j.f());
+  // bubbles on top
+  HITS = [];
+  heads.forEach(([p, hx, hy]) => { bubble(p, hx, hy, t); const m = g.getTransform(), s = m.transformPoint(new DOMPoint(hx, hy)); HITS.push({ p, x: s.x, y: s.y, r: 60 * z }); });
+  // overlay counters
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  const wb = $('waitBtn'); if (wb) { wb.hidden = !waitN; wb.textContent = `🔴 ${waitN} nunggu kamu`; }
   if (!reduce) requestAnimationFrame(draw);
 }
+cv.addEventListener('click', ev => {
+  const r = cv.getBoundingClientRect(), sx = (ev.clientX - r.left) * VW / r.width, sy = (ev.clientY - r.top) * VH / r.height;
+  let best = null, bd = 1e9;
+  HITS.forEach(h => { const d = Math.hypot(h.x - sx, h.y - sy - 20); if (d < Math.max(h.r, 50) && d < bd) { bd = d; best = h; } });
+  if (best) openAgent(best.p.a.id);
+});
+cv.addEventListener('mousemove', ev => {
+  const r = cv.getBoundingClientRect(), sx = (ev.clientX - r.left) * VW / r.width, sy = (ev.clientY - r.top) * VH / r.height;
+  cv.style.cursor = HITS.some(h => Math.hypot(h.x - sx, h.y - sy - 20) < Math.max(h.r, 50)) ? 'pointer' : 'default';
+});
+document.querySelectorAll('.room').forEach(b => b.onclick = () => setRoom(b.dataset.room));
+setRoom(room);
 requestAnimationFrame(draw);
 
+// ── agent panel (ACC right from the office) ───────────────────
+let openId = null;
+function openAgent(id) { openId = id; renderPanel(); $('panel').hidden = false; $('panelClose').focus(); }
+function closePanel() { openId = null; $('panel').hidden = true; }
+function renderPanel() {
+  if (!openId) return;
+  const a = agents.find(x => x.id === openId) || {}, w = waitingFor(openId);
+  $('panelTitle').textContent = a.nama || '';
+  $('panelSub').textContent = (a.peran || '') + ' · ' + (w ? 'menunggu kamu' : a.status === 'kerja' ? 'sedang kerja' : 'santai');
+  const body = $('panelBody'); body.textContent = '';
+  if (a.aktivitas) { const p = document.createElement('p'); p.className = 'prog'; p.textContent = '▸ ' + a.aktivitas + (a.diubah ? ' · ' + new Date(a.diubah).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) + ' WIB' : ''); body.append(p); }
+  const items = w ? ideas.filter(i => w.filter.includes(i.status)) : [];
+  if (items.length) items.forEach(i => body.append(card(i)));
+  else { const e = document.createElement('div'); e.className = 'empty'; e.textContent = w ? 'Sudah beres semua.' : 'Tidak ada yang perlu kamu ACC dari agen ini.'; body.append(e); }
+}
+$('panelClose').onclick = closePanel;
+$('panel').addEventListener('click', e => { if (e.target.id === 'panel') closePanel(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && openId) closePanel(); });
+$('waitBtn').onclick = () => { setRoom('rapat'); const first = agents.find(a => waitingFor(a.id)); if (first) openAgent(first.id); };
+
 /* ---------- roster + clock ---------- */
-const $ = id => document.getElementById(id);
 function renderRoster() {
   const r = $('roster'); r.textContent = '';
   agents.slice().sort((a, b) => (a.urut || 9) - (b.urut || 9)).forEach(a => {
@@ -281,7 +499,7 @@ function tick() {
 tick(); setInterval(tick, 20000);
 
 /* ---------- ideas board ---------- */
-let ideas = [], filter = 'usulan', db = null, assets = null, canWrite = false;
+let filter = 'usulan', db = null, assets = null, canWrite = false;
 try { const f = localStorage.getItem('kk-filter'); if (f) filter = f; } catch (e) {}
 const GROUP = { usulan: ['cek-vo', 'usulan'], jalan: ['acc', 'produksi', 'vo-ulang', 'vo-acc', 'butuh-vo', 'gagal'], selesai: ['selesai'], tolak: ['tolak'] };
 const LABEL = { usulan: 'Judul baru', acc: 'Judul di-ACC · antre', produksi: 'Diproduksi', 'cek-vo': 'Cek suara', 'vo-ulang': 'VO diulang', 'vo-acc': 'Suara di-ACC · animasi', 'butuh-vo': 'Butuh VO', selesai: 'Selesai', tolak: 'Ditolak', gagal: 'Gagal' };
@@ -397,7 +615,7 @@ renderList('loading');
   canWrite = u ? (await u.can('data.write')) !== false : true;
   const timer = setTimeout(() => { const b = $('banner'); b.hidden = false; b.textContent = 'Data tim belum bisa dijangkau. Yang tampil mungkin belum terbaru.'; }, 10000);
   db.collection('agents').onSnapshot(s => {
-    if (s.size) { agents = s.docs.map(x => ({ id: x.id, ...x.data() })); renderRoster(); }
+    if (s.size) { agents = s.docs.map(x => ({ id: x.id, ...x.data() })); renderRoster(); renderPanel(); }
     const last = agents.map(x => x.diubah).filter(Boolean).sort().pop();
     $('liveNote').textContent = 'live · ' + (last ? 'update terakhir ' + new Date(last).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) + ' WIB' : 'belum ada aktivitas');
     if (reduce) requestAnimationFrame(draw);
@@ -405,7 +623,8 @@ renderList('loading');
   db.collection('ideas').onSnapshot(s => {
     if (!s.metadata.fromCache) { clearTimeout(timer); $('banner').hidden = true; }
     ideas = s.docs.map(x => ({ id: x.id, ...x.data() }));
-    renderList();
+    renderList(); renderPanel();
+    if (reduce) requestAnimationFrame(draw);
   }, e => { clearTimeout(timer); const b = $('banner'); b.hidden = false; b.textContent = 'Daftar ide tidak bisa dimuat (' + e.code + ').'; renderList(); });
 })();
 </script>
