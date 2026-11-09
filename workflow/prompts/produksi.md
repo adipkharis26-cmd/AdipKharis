@@ -19,7 +19,7 @@ Animator **tidak boleh** jalan sebelum owner menekan "ACC suara" (status `vo-acc
 - Pilih **satu** pekerjaan dengan prioritas: `vo-ulang` > `vo-acc` > `acc`. Di status yang sama, ambil yang `voKeputusanAt`/`accAt`-nya paling lama.
 - **Kalau tidak ada, langsung berhenti** dengan satu kalimat "Tidak ada pekerjaan baru". Jangan commit apa pun.
 - Pasang kunci di ide: `kunci: {oleh:"terjadwal", sampai:<sekarang+3 jam ISO>}`. Muat skill channelnya (`.claude/skills/<channel>/SKILL.md`) dan patuhi sepenuhnya. Gaya channel terkunci. `catatan` dan `catatanVo` owner wajib diikuti.
-- Setiap pindah langkah, perbarui `progres` di ide dan `agents/<id>` (kerja, lalu santai). Selalu pakai `if_version`.
+- **Wajib**: setiap pindah langkah, update `agents/<id>` agen yang sedang bekerja menjadi `{status:"kerja", aktivitas:"<apa yang dikerjakan, mis. 'Animasi EP04'>", diubah:<ISO>}`. Saat langkahnya selesai, ubah ke `{status:"santai", aktivitas:"<hasil singkat>"}`. Update juga `progres` di ide. Owner memantau ini di peta kantor, jadi jangan dilewati. Selalu pakai `if_version` (baca dulu dengan `get`).
 
 **Penyimpanan antarsesi.** Push git dari sesi terjadwal bisa gagal. Karena itu Kantor Konten adalah sumber kebenaran untuk berkas episode:
 - `naskahMd` berisi isi file naskah lengkap.

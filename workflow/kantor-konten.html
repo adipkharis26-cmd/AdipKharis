@@ -476,6 +476,18 @@ function waitingFor(id) {
   if (id === 'animator') { const n = ideas.filter(i => i.status === 'gagal').length; return n ? { n, txt: `${n} render gagal`, filter: ['gagal'] } : null; }
   return null;
 }
+// jobs waiting for the next scheduled production run, by the agent who picks them up
+function nextRunWIB() {
+  const h = wibHour(), m = Math.floor((h % 1) * 60), H = Math.floor(h);
+  let n = m < 13 ? H : H + 1; if (n < 7) n = 7; if (n > 22) n = 7;
+  return String(n).padStart(2, '0') + ':13';
+}
+function queuedFor(id) {
+  const ep = i => (i.episode || '').toUpperCase() || (i.judul || '').slice(0, 14);
+  const pick = st => ideas.filter(i => st.includes(i.status)).sort((a, b) => String(a.voKeputusanAt || a.accAt || '').localeCompare(String(b.voKeputusanAt || b.accAt || '')))[0];
+  const job = id === 'animator' ? pick(['vo-acc']) : id === 'penulis' ? pick(['acc']) : id === 'suara' ? pick(['vo-ulang']) : null;
+  return job ? `Antre: ${ep(job)} · mulai ${nextRunWIB()}` : null;
+}
 const WALK = {}; // id -> {x,y,path:[[x,y]...], pose}
 const roomOf = (x, y) => y >= 8 ? 'lounge' : x < 9 ? 'rapat' : x < 20 ? 'divisi' : 'studio';
 const DOOR = { rapat: [4.35, 8.4], divisi: [14.5, 8.4], studio: [20, 3.8], lounge: null };
@@ -496,7 +508,7 @@ function placeAgents(dt) {
     const w = waitingFor(a.id);
     let pos, mode, pose = 'sit';
     if (w) { pos = MEET[mi++ % MEET.length]; mode = 'wait'; }
-    else if (a.status === 'kerja') { const dk = DESKS.find(d => d[0] === a.id); pos = dk ? (a.id === 'suara' ? [dk[1], dk[2]] : [dk[1], dk[2] + 0.75]) : [14, 4]; mode = 'work'; }
+    else if (a.status === 'kerja' || queuedFor(a.id)) { const dk = DESKS.find(d => d[0] === a.id); pos = dk ? (a.id === 'suara' ? [dk[1], dk[2]] : [dk[1], dk[2] + 0.75]) : [14, 4]; mode = a.status === 'kerja' ? 'work' : 'queue'; }
     else { const L = LOUNGE[li++ % LOUNGE.length]; pos = [L[0], L[1]]; mode = 'idle'; pose = L[2]; }
     let s = WALK[a.id];
     if (!s) s = WALK[a.id] = { x: pos[0], y: pos[1], tx: pos[0], ty: pos[1], path: [] };
@@ -507,7 +519,7 @@ function placeAgents(dt) {
       if (dist <= step || reduce) { s.x = nx; s.y = ny; s.path.shift(); } else { s.x += dx / dist * step; s.y += dy / dist * step; }
       walking = s.path.length > 0; s.dir = dx + dy >= 0 ? 1 : -1;
     }
-    out.push({ a, w, mode, pose: walking ? 'walk' : pose, x: s.x, y: s.y });
+    out.push({ a, w, q: mode === 'queue' ? queuedFor(a.id) : null, mode, pose: walking ? 'walk' : pose, x: s.x, y: s.y });
   });
   return out;
 }
@@ -561,7 +573,7 @@ function nameTag(x, y, name, role, warn) {
 }
 function bubble(p, hx, hy, t, lift) {
   const a = p.a, w = p.w;
-  const label = w ? w.txt : p.pose === 'walk' ? 'otw…' : p.mode === 'work' ? (a.aktivitas || 'Kerja') : null;
+  const label = w ? w.txt : p.pose === 'walk' ? 'otw…' : p.mode === 'work' ? (a.aktivitas || 'Kerja') : p.q ? p.q : null;
   if (label) {
     const txt = label.length > 28 ? label.slice(0, 27) + '…' : label;
     g.font = '700 14px Nunito, sans-serif';
@@ -642,7 +654,7 @@ function renderPanel() {
   if (!openId) return;
   const a = agents.find(x => x.id === openId) || {}, w = waitingFor(openId);
   $('panelTitle').textContent = a.nama || '';
-  $('panelSub').textContent = (a.peran || '') + ' · ' + (w ? 'menunggu kamu' : a.status === 'kerja' ? 'sedang kerja' : 'santai');
+  $('panelSub').textContent = (a.peran || '') + ' · ' + (w ? 'menunggu kamu' : a.status === 'kerja' ? 'sedang kerja' : queuedFor(openId) || 'santai');
   const body = $('panelBody'); body.textContent = '';
   if (a.aktivitas) { const p = document.createElement('p'); p.className = 'prog'; p.textContent = '▸ ' + a.aktivitas + (a.diubah ? ' · ' + new Date(a.diubah).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) + ' WIB' : ''); body.append(p); }
   const items = w ? ideas.filter(i => w.filter.includes(i.status)) : [];
