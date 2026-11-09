@@ -13,15 +13,14 @@
   "elevenlabs": {
     "voice_id": "tX4zpyB6s34no1FgD0Mm",
     "voice_name": "Eyang - Deep, Calm and Mysterious",
-    "model_id": "eleven_multilingual_v2",
+    "model_id": "eleven_v4",
     "voice_settings": {
-      "stability": 0.45,
-      "similarity_boost": 0.8,
-      "style": 0.3,
-      "use_speaker_boost": true,
-      "speed": 1.1
+      "stability": 0.5,
+      "similarity_boost": 0.75,
+      "style": 0.0
     },
     "section_gap_s": 0.7,
-    "max_pause_s": 0.32
+    "max_pause_s": 0.32,
+    "catatan": "Setelan owner (ElevenLabs UI): Eleven v4, Stabilitas 0.5, Kesamaan 0.75, Kekuatan klon 0, Bahasa Auto, MP3 44.1kHz 128kbps."
   }
 }
