@@ -11,9 +11,17 @@
     }
   },
   "elevenlabs": {
-    "voice_id": "ISI_VOICE_ID",
+    "voice_id": "tX4zpyB6s34no1FgD0Mm",
+    "voice_name": "Eyang - Deep, Calm and Mysterious",
     "model_id": "eleven_multilingual_v2",
-    "voice_settings": { "stability": 0.45, "similarity_boost": 0.8, "style": 0.3, "use_speaker_boost": true },
-    "section_gap_s": 0.8
+    "voice_settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.8,
+      "style": 0.3,
+      "use_speaker_boost": true,
+      "speed": 1.1
+    },
+    "section_gap_s": 0.7,
+    "max_pause_s": 0.32
   }
 }

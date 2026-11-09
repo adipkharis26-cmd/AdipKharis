@@ -14,7 +14,7 @@ API key: ELEVENLABS_API_KEY if set; otherwise a placeholder is sent and the
 cloud session's network proxy injects the key saved for api.elevenlabs.io.
 Voice/model settings: workflow/config.json -> "elevenlabs".
 """
-import base64, json, os, subprocess, sys, tempfile
+import base64, json, os, re, subprocess, sys, tempfile, wave
 from pathlib import Path
 
 import requests
@@ -48,17 +48,48 @@ def tts(text, prev_text, next_text, voice):
     return r.json()
 
 
-def words_from_alignment(al, offset, sec):
+def tighten(wav, max_pause, lead=0.05, tail=0.12):
+    """Shorten every silence longer than max_pause (and trim lead/tail silence).
+    Rewrites wav in place; returns a function mapping old time -> new time."""
+    log = subprocess.run(['ffmpeg', '-i', str(wav), '-af', 'silencedetect=n=-38dB:d=0.2', '-f', 'null', '-'],
+                         capture_output=True, text=True).stderr
+    starts = [float(x) for x in re.findall(r'silence_start: ([\d.]+)', log)]
+    ends = [float(x) for x in re.findall(r'silence_end: ([\d.]+)', log)]
+    with wave.open(str(wav), 'rb') as w:
+        par = w.getparams(); data = w.readframes(par.nframes)
+    sr, bpf, dur = par.framerate, par.sampwidth * par.nchannels, par.nframes / par.framerate
+    cuts = []  # (cut_start, cut_end) in seconds
+    for a, b in zip(starts, ends + [dur] * (len(starts) - len(ends))):
+        if a <= 0.01:  cuts.append((0.0, max(0.0, b - lead)))
+        elif b >= dur - 0.01: cuts.append((a + tail, dur))
+        elif b - a > max_pause: cuts.append((a + max_pause / 2, b - max_pause / 2))
+    cuts = [(a, b) for a, b in cuts if b > a]
+    out, pos = bytearray(), 0.0
+    for a, b in cuts:
+        out += data[int(pos * sr) * bpf:int(a * sr) * bpf]; pos = b
+    out += data[int(pos * sr) * bpf:]
+    with wave.open(str(wav), 'wb') as w:
+        w.setparams(par); w.writeframes(bytes(out))
+    def remap(t):
+        shift = 0.0
+        for a, b in cuts:
+            if t >= b: shift += b - a
+            elif t > a: return a - shift
+        return t - shift
+    return remap
+
+
+def words_from_alignment(al, offset, sec, remap=lambda t: t):
     chars, st, en = al['characters'], al['character_start_times_seconds'], al['character_end_times_seconds']
     out, cur, s0, e0 = [], '', None, None
     for c, s, e in zip(chars, st, en):
         if c.isspace():
-            if cur: out.append({'w': cur, 's': round(offset + s0, 3), 'e': round(offset + e0, 3), 'sec': sec})
+            if cur: out.append({'w': cur, 's': round(offset + remap(s0), 3), 'e': round(offset + remap(e0), 3), 'sec': sec})
             cur = ''
             continue
         if not cur: s0 = s
         cur += c; e0 = e
-    if cur: out.append({'w': cur, 's': round(offset + s0, 3), 'e': round(offset + e0, 3), 'sec': sec})
+    if cur: out.append({'w': cur, 's': round(offset + remap(s0), 3), 'e': round(offset + remap(e0), 3), 'sec': sec})
     return out
 
 
@@ -83,7 +114,9 @@ def main():
         mp3 = tmp / f's{i}.mp3'; wav = tmp / f's{i}.wav'
         mp3.write_bytes(base64.b64decode(res['audio_base64']))
         subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', mp3, '-ar', '44100', '-ac', '1', wav], check=True)
-        words += words_from_alignment(res['alignment'], offset, i)
+        mp = float(CFG.get('max_pause_s', 0))
+        remap = tighten(wav, mp) if mp > 0 else (lambda t: t)
+        words += words_from_alignment(res['alignment'], offset, i, remap)
         dur = ffprobe_dur(wav)
         parts.append(wav)
         offset += dur
