@@ -47,7 +47,8 @@ File `naskah/epNN-slug.md`, bahasa Indonesia santai, narator orang ketiga yang s
 4. **Naskah** dengan 8 bagian. Tiap bagian berisi `### N. NAMA (a–b dtk)`, `- Visual:`, `- Teks layar:`, dan `- VO:` (blockquote).
    - Bagian 1: HOOK 0–5 dtk, konflik sehari-hari yang langsung terasa ("kok malah...?!").
    - Bagian 2–7: cerita, lalu fakta atau insight, lalu akibat, lalu solusi atau trik.
-   - Bagian 8: **CTA tinggi**. Ajak memilih kubu ("kamu tim A atau tim B?") atau komentar satu kata ("komen SAMA"), ajak follow, dan beri teaser episode berikutnya.
+   - Bagian 8: **CTA tinggi**. Ajak memilih kubu ("kamu tim A atau tim B?") atau komentar satu kata ("komen SAMA"), ajak follow, lalu tutup dengan **punchline atau teaser yang baru**.
+   - **Penutup tidak boleh sama dengan episode lain.** Sebelum menulis, baca bagian 8 di semua file `naskah/`. Jangan mengulang kalimat, lelucon, atau teaser yang sudah dipakai. Punchline sebaiknya lahir dari cerita episode itu sendiri (contoh Ep.03: Kharis ketahuan mengisi keranjang lagi). Kalau episode sebelumnya menjanjikan topik tertentu ("besok kita bongkar X") dan topik itu belum dibuat, prioritaskan X sebagai episode berikutnya. Jangan menjanjikannya ulang di episode lain.
 5. **VO lengkap** dengan 8 paragraf, satu paragraf per bagian (dipakai TTS dan align).
 6. **Catatan rekam VO**: suara sama, jeda ±1 detik antarbagian, durasi 55–65 detik.
 
