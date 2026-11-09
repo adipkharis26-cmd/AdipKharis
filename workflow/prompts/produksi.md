@@ -18,7 +18,12 @@ Animator **tidak boleh** jalan sebelum owner menekan "ACC suara" (status `vo-acc
 - Query `ideas`, lalu buang ide yang punya `kunci.sampai` lebih besar dari waktu sekarang (sedang dikerjakan di sesi lain).
 - Pilih **satu** pekerjaan dengan prioritas: `vo-ulang` > `vo-acc` > `acc`. Di status yang sama, ambil yang `voKeputusanAt`/`accAt`-nya paling lama.
 - **Kalau tidak ada, langsung berhenti** dengan satu kalimat "Tidak ada pekerjaan baru". Jangan commit apa pun.
-- Pasang kunci di ide: `kunci: {oleh:"terjadwal", sampai:<sekarang+3 jam ISO>}`. Muat skill channelnya (`.claude/skills/<channel>/SKILL.md`) dan patuhi sepenuhnya. Gaya channel terkunci. `catatan` dan `catatanVo` owner wajib diikuti.
+- Pasang kunci di ide: `kunci: {oleh:"terjadwal", sampai:<sekarang+3 jam ISO>}`. Muat skill channelnya (`config.channels[ide.channel].skill`) dan patuhi sepenuhnya. Gaya channel terkunci. `catatan` dan `catatanVo` owner wajib diikuti.
+- **Tiap channel punya gaya, suara, dan mesin render sendiri.** Jangan mencampur:
+  - `mas-kharis`: prefix episode `ep`, stikmen kanvas 2D, 8 bagian, suara Eyang.
+  - `ternyata-leluhur`: prefix `tl`, diorama 3D three.js, 7 beat, suara DK - Documentary, plus musik/SFX.
+  - Prefix ada di `config.channels.<id>.prefix`. `tts_elevenlabs.py` memilih suara dari prefix itu.
+- Agen per divisi: Mas Kharis memakai `penulis`, `suara`, `animator`; Ternyata Leluhur memakai `tl-penulis`, `tl-suara`, `tl-animator`. `cekfakta` dan `publisher` dipakai bersama.
 - **Wajib**: setiap pindah langkah, update `agents/<id>` agen yang sedang bekerja menjadi `{status:"kerja", aktivitas:"<apa yang dikerjakan, mis. 'Animasi EP04'>", diubah:<ISO>}`. Saat langkahnya selesai, ubah ke `{status:"santai", aktivitas:"<hasil singkat>"}`. Update juga `progres` di ide. Owner memantau ini di peta kantor, jadi jangan dilewati. Selalu pakai `if_version` (baca dulu dengan `get`).
 
 **Penyimpanan antarsesi.** Push git dari sesi terjadwal bisa gagal. Karena itu Kantor Konten adalah sumber kebenaran untuk berkas episode:
@@ -31,13 +36,13 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
 
 ## TAHAP A — status `acc`: Penulis Naskah → Cek Fakta → Pengisi Suara
 1. **Penulis Naskah.**
-   - Nomor episode = 1 + angka terbesar dari file `naskah/epNN-*` dan field `episode` di semua `ideas`. Dua digit.
-   - Tulis `naskah/epNN-slug.md` persis dengan format skill. Penutup bagian 8 **harus unik** (lihat aturan di skill).
-   - Tulis `video/vo/epNN.txt` (8 paragraf).
+   - Nomor episode = 1 + angka terbesar dari file `naskah/<prefix>NN-*` dan field `episode` di `ideas` **channel yang sama**. Dua digit, misalnya `ep05` atau `tl01`. Di bawah ini `epNN` berarti `<prefix>NN`.
+   - Tulis `naskah/epNN-slug.md` persis dengan format skill channel itu. Penutupnya **harus unik** (lihat aturan di skill).
+   - Tulis `video/vo/epNN.txt`: satu paragraf per bagian/beat, 8 untuk Mas Kharis dan 7 untuk Ternyata Leluhur.
 2. **Cek Fakta.** Verifikasi setiap klaim, pakai WebSearch bila perlu. Klaim yang tidak pasti dihapus atau dilunakkan. Jangan mengarang angka atau nama.
 3. **Pengisi Suara.**
    - Jalankan `python3 video/src/tts_elevenlabs.py epNN`. Setelan suara diambil dari `config.elevenlabs`; jangan diubah tanpa catatan owner.
-   - Durasi idealnya 55–75 detik. Kalau lebih dari 80 detik, pangkas kalimat naskah (bukan kecepatan suara), lalu ulangi.
+   - Durasi mengikuti skill: Mas Kharis 55–75 detik (pangkas naskah kalau lebih dari 80 detik), Ternyata Leluhur 85–100 detik (pangkas kalau lebih dari 105 detik). Yang dipangkas kalimat naskah, bukan kecepatan suara.
    - Kalau ElevenLabs gagal: set `{status:"butuh-vo", progres:"<alasan>"}`, simpan `naskahMd` dan `voText`, lalu berhenti.
 4. **Kirim untuk dicek.**
    - Jalankan `video/src/vo_preview.sh epNN "<judul>"`.
@@ -55,9 +60,11 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
 ## TAHAP B — status `vo-acc`: Animator → Publisher
 1. **Animator.**
    - Siapkan file episode (lihat Penyimpanan antarsesi).
-   - Buat `video/src/epNN.html` (pola `ep02.html`) dan `video/src/epNN.js` (8 scene, pola `ep02.js`/`ep03.js`). Semua waktu diambil dari `at()/atEnd()/CUT`.
-   - Render stills di 8–10 titik penting, gabungkan dengan ffmpeg hstack, lalu periksa sendiri (Read gambar). Pastikan wajah tidak tertutup teks, karakter besar, warna tidak monoton, dan hook judul besar. Perbaiki lalu ulangi maksimal 2 kali.
-   - Render: `cd video/src && EP=epNN node render.js video ../out/<channel>-epNN.mp4 30 ../vo/epNN.mp3`.
+   - Ikuti bagian "Pipeline produksi" di skill channelnya. Semua waktu diambil dari `at()/atEnd()/CUT`.
+     - **Mas Kharis:** `video/src/epNN.html` (pola `ep02.html`) dan `epNN.js` (8 scene, pola `ep02.js`/`ep03.js`). Audio adalah `../vo/epNN.mp3`.
+     - **Ternyata Leluhur:** `video/src/tlNN.html` (pola `tl00.html`) dan `tlNN.js` (7 beat, sekitar 30 potongan, pola `tl00.js`, mesin `leluhur3d.js`). Lalu jalankan `python3 video/src/leluhur_mix.py tlNN`. Audio adalah `../vo/tlNN-mix.m4a`.
+   - Render stills di 8–12 titik penting, gabungkan dengan ffmpeg hstack, lalu periksa sendiri (Read gambar). Pastikan wajah tidak tertutup teks, karakter besar, warna tidak monoton, hook atau label terbaca, dan kamera tidak masuk ke dinding. Perbaiki lalu ulangi maksimal 2 kali.
+   - Render: `cd video/src && EP=epNN node render.js video ../out/<channel>-epNN.mp4 30 <audio>`. Render 3D lama, jadi jalankan di background dan tunggu sampai selesai.
    - Kalau ada error yang tidak bisa diperbaiki: set `{status:"gagal", progres:"<error singkat>"}` dan lepas kunci.
 2. **Publisher.**
    - Kalau MP4 lebih dari 14 MB, buat salinan untuk diunggah: `-c:v libx264 -crf 24 -c:a copy -movflags +faststart`.

@@ -1,6 +1,7 @@
 // Usage (EP=ep01|ep02 picks the episode page, default ep01):
 //   node render.js video <out.mp4> [fps] [audio]   render full DURATION to mp4 (optional VO audio)
 //   node render.js stills <dir> t1 t2 ...          render single frames as PNG
+//   node render.js cues <out.json>                 dump audio cues (3D channels: collectCues())
 const { chromium } = require('playwright');
 const { spawn } = require('child_process');
 const fs = require('fs');
@@ -16,7 +17,9 @@ const path = require('path');
 
   const grab = t => page.evaluate(t => { renderFrame(t); return document.getElementById('c').toDataURL('image/png').split(',')[1]; }, t);
 
-  if (mode === 'stills') {
+  if (mode === 'cues') {
+    fs.writeFileSync(out, JSON.stringify(await page.evaluate(() => collectCues()), null, 1));
+  } else if (mode === 'stills') {
     fs.mkdirSync(out, { recursive: true });
     for (const t of rest) fs.writeFileSync(path.join(out, `f_${t}.png`), Buffer.from(await grab(parseFloat(t)), 'base64'));
   } else {

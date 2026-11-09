@@ -129,6 +129,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     <button class="room" data-room="semua" aria-pressed="true">Semua</button>
     <button class="room" data-room="rapat" aria-pressed="false">Ruang Rapat</button>
     <button class="room" data-room="divisi" aria-pressed="false">Divisi Mas Kharis</button>
+    <button class="room" data-room="leluhur" aria-pressed="false">Divisi Ternyata Leluhur</button>
     <button class="room" data-room="studio" aria-pressed="false">Studio Publish</button>
     <button class="room" data-room="lounge" aria-pressed="false">Lounge</button>
   </nav>
@@ -177,14 +178,22 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 const $ = id => document.getElementById(id);
 /* ---------- office map (canvas, isometric, multi-room, detailed) ---------- */
 const AGENT_DEFAULTS = [
-  { id: 'penggali', nama: 'Penggali Ide', peran: 'Riset tren & setor judul', warna: '#F29B4B', urut: 1 },
-  { id: 'penulis',  nama: 'Penulis Naskah', peran: 'Naskah 8 bagian + CTA', warna: '#2F6FD0', urut: 2 },
-  { id: 'cekfakta', nama: 'Cek Fakta', peran: 'Validasi fakta & sumber', warna: '#3FA34D', urut: 3 },
-  { id: 'suara',    nama: 'Pengisi Suara', peran: 'VO ElevenLabs + timestamp', warna: '#9B6BD6', urut: 4 },
-  { id: 'animator', nama: 'Animator', peran: 'Motion graphic & render MP4', warna: '#E84545', urut: 5 },
+  { id: 'penggali', nama: 'Penggali Ide', peran: 'Riset tren & setor judul semua divisi', warna: '#F29B4B', urut: 1 },
+  { id: 'penulis',  nama: 'Penulis Naskah', peran: 'Mas Kharis · naskah 8 bagian + CTA', warna: '#2F6FD0', urut: 2 },
+  { id: 'cekfakta', nama: 'Cek Fakta', peran: 'Validasi fakta & sumber semua divisi', warna: '#3FA34D', urut: 3 },
+  { id: 'suara',    nama: 'Pengisi Suara', peran: 'Mas Kharis · VO Eyang (ElevenLabs)', warna: '#9B6BD6', urut: 4 },
+  { id: 'animator', nama: 'Animator', peran: 'Mas Kharis · motion graphic & render', warna: '#E84545', urut: 5 },
   { id: 'publisher',nama: 'Publisher', peran: 'Judul, deskripsi, tag, stok upload', warna: '#1F8B95', urut: 6 },
+  { id: 'tl-penulis', nama: 'Penulis Leluhur', peran: 'Ternyata Leluhur · naskah 7 beat', warna: '#C7301F', urut: 7, ch: 'ternyata-leluhur' },
+  { id: 'tl-suara',   nama: 'Narator DK', peran: 'Ternyata Leluhur · VO DK - Documentary', warna: '#1E5A45', urut: 8, ch: 'ternyata-leluhur' },
+  { id: 'tl-animator',nama: 'Animator 3D', peran: 'Ternyata Leluhur · diorama 3D & render', warna: '#E9A92B', urut: 9, ch: 'ternyata-leluhur' },
 ];
-const ROLE_TAG = { penggali: 'Riset', penulis: 'Naskah', cekfakta: 'Fakta', suara: 'VO', animator: 'Animasi', publisher: 'Publish' };
+const ROLE_TAG = { penggali: 'Riset', penulis: 'Naskah', cekfakta: 'Fakta', suara: 'VO', animator: 'Animasi', publisher: 'Publish', 'tl-penulis': 'Naskah', 'tl-suara': 'VO', 'tl-animator': '3D' };
+// which channel an agent works for (null = shared by all divisions)
+const AG_CH = { penulis: 'mas-kharis', suara: 'mas-kharis', animator: 'mas-kharis', 'tl-penulis': 'ternyata-leluhur', 'tl-suara': 'ternyata-leluhur', 'tl-animator': 'ternyata-leluhur' };
+const chOf = i => i.channel || 'mas-kharis';
+const forAg = (id, list) => AG_CH[id] ? list.filter(i => chOf(i) === AG_CH[id]) : list;
+const baseRole = id => id.replace(/^tl-/, '');
 let agents = AGENT_DEFAULTS.map(a => ({ ...a, status: 'santai', aktivitas: 'Menunggu tugas' }));
 let ideas = [];
 
@@ -215,15 +224,16 @@ updateTOD(); setInterval(updateTOD, 60000);
 const SKY = { day: ['#7EC8F2', '#D8F0FF'], sunset: ['#F28C6B', '#FFD59A'], dawn: ['#9FB7E8', '#FFD9B8'], night: ['#0E1430', '#2A3566'] };
 
 // ── map ───────────────────────────────────────────────────────
-const MX = 28, MY = 15;
+const MX = 37, MY = 15;
 const ROOMS = {
   rapat:  { nama: 'Ruang Rapat', focus: [4.5, 4.4, 1.2] },
   divisi: { nama: 'Divisi Mas Kharis', focus: [14.5, 4.4, 1.05] },
   studio: { nama: 'Studio Publish', focus: [24, 4.4, 1.2] },
+  leluhur: { nama: 'Divisi Ternyata Leluhur', focus: [32.5, 4.4, 1.1] },
   lounge: { nama: 'Lounge & Pantry', focus: [13, 11.6, 0.82] },
 };
-const OVERVIEW = [14, 7.4, 0.56];
-const LIGHTS = [[4.5, 4.3], [12, 3.2], [16.5, 3.2], [14, 6.2], [24, 3.6], [4, 11.5], [11, 11.2], [21, 11.6]];
+const OVERVIEW = [17.4, 6.3, 0.45];
+const LIGHTS = [[4.5, 4.3], [12, 3.2], [16.5, 3.2], [14, 6.2], [24, 3.6], [31, 3.2], [33.5, 5.6], [4, 11.5], [11, 11.2], [21, 11.6], [31.5, 11.4]];
 
 function floorWood(x0, y0, w, d, c1, c2, seed) {
   poly(quad(x0, y0, w, d, 0), c1, null);
@@ -246,8 +256,14 @@ function floors(t) {
   for (let k = 0; k < 40; k++) { const x = 20 + rndv(k) * 8, y = rndv(k + 50) * 8; g.fillStyle = 'rgba(0,0,0,.05)'; g.beginPath(); g.ellipse(...iso(x, y), 10 + rndv(k + 9) * 22, 5 + rndv(k + 3) * 8, 0, 0, 7); g.fill(); }
   // studio rug
   poly(quad(21.2, 2.6, 4.2, 3.2, 0), '#26335E', OL, 2); poly(quad(21.5, 2.9, 3.6, 2.6, 0), null, 'rgba(255,255,255,.35)', 2);
+  // ternyata leluhur: bamboo floor + woven (anyaman) mat
+  floorWood(28, 0, 9, 8, '#D9B77E', 'rgba(140,90,40,.14)', 4);
+  poly(quad(29.0, 3.2, 4.6, 3.6, 0), '#C89A58', OL, 2);
+  g.save(); clipPoly(quad(29.0, 3.2, 4.6, 3.6, 0));
+  for (let i = 0; i < 23; i++) for (let j = 0; j < 18; j++) if ((i + j) % 2) poly(quad(29.0 + i * 0.2, 3.2 + j * 0.2, 0.2, 0.2, 0), '#A77A3E', null);
+  g.restore(); poly(quad(29.25, 3.45, 4.1, 3.1, 0), null, 'rgba(255,240,200,.45)', 2);
   // lounge: wood deck + pantry tiles + pool
-  floorWood(0, 8, 28, 7, '#A96F43', 'rgba(70,35,10,.15)', 7);
+  floorWood(0, 8, MX, 7, '#A96F43', 'rgba(70,35,10,.15)', 7);
   for (let i = 0; i < 5; i++) for (let j = 12; j < 15; j++) poly(quad(i, j, 1, 1, 0), (i + j) % 2 ? '#ECE7DF' : '#DCD5CA', 'rgba(0,0,0,.08)', 1);
   poly(quad(16.8, 9.2, 9, 4.6, 0), '#EFE8DC', OL, 2);
   for (let i = 0; i < 18; i++) { const a = iso(16.8 + i * 0.5, 9.2), b = iso(16.8 + i * 0.5, 9.45); g.strokeStyle = 'rgba(0,0,0,.08)'; g.lineWidth = 1; g.beginPath(); g.moveTo(...a); g.lineTo(...b); g.stroke(); }
@@ -299,12 +315,12 @@ function windowStrip(x0, x1, t, seed) {
 function backWalls(t) {
   // wall thickness caps
   poly([iso(-0.25, -0.25, WALL_H), iso(MX, -0.25, WALL_H), iso(MX, 0, WALL_H), iso(0, 0, WALL_H), iso(0, MY, WALL_H), iso(-0.25, MY, WALL_H)], '#4A4F66', OL, 2);
-  [[0, 9, '#E9E2D6', 'RUANG RAPAT'], [9, 20, '#F2CC45', 'DIVISI MAS KHARIS'], [20, 28, '#DDE1EA', 'STUDIO PUBLISH']].forEach(([a, b, col, label], si) => {
+  [[0, 9, '#E9E2D6', 'RUANG RAPAT'], [9, 20, '#F2CC45', 'DIVISI MAS KHARIS'], [20, 28, '#DDE1EA', 'STUDIO PUBLISH'], [28, 37, '#E9D3AE', 'DIVISI TERNYATA LELUHUR']].forEach(([a, b, col, label], si) => {
     poly([iso(a, 0), iso(b, 0), iso(b, 0, WALL_H), iso(a, 0, WALL_H)], col, OL, 2);
     poly([iso(a, 0, 0), iso(b, 0, 0), iso(b, 0, 10), iso(a, 0, 10)], shade(col, .75), null); // baseboard
-    const w0 = si === 1 ? 14.8 : a + 0.5, w1 = si === 1 ? 19.6 : si === 0 ? 2.6 : 25.0;
+    const w0 = si === 1 ? 14.8 : si === 3 ? 33.6 : a + 0.5, w1 = si === 1 ? 19.6 : si === 0 ? 2.6 : si === 3 ? 36.6 : 25.0;
     windowStrip(w0, w1, t, si * 17);
-    const m = iso((a + b) / 2 + (si === 1 ? -2.2 : si === 0 ? 1.6 : -0.9), 0, WALL_H - 6);
+    const m = iso((a + b) / 2 + (si === 1 ? -2.2 : si === 0 ? 1.6 : si === 3 ? -2.3 : -0.9), 0, WALL_H - 6);
     g.save(); g.translate(m[0], m[1]); g.transform(1, 0.5, 0, 1, 0, 0);
     g.font = '400 20px Bungee, sans-serif'; const w = g.measureText(label).width + 28;
     g.fillStyle = OL; g.beginPath(); g.roundRect(-w / 2, -2, w, 30, 6); g.fill();
@@ -323,8 +339,14 @@ function backWalls(t) {
   const onAir = (agents.find(a => a.id === 'publisher') || {}).status === 'kerja';
   poly(onWallY(25.6, 27.2, 150, 178), onAir ? '#E84545' : '#5a2a2a', OL, 2);
   const c = iso(26.4, 0.02, 164); g.save(); g.translate(c[0], c[1]); g.transform(1, 0.5, 0, 1, 0, 0); g.font = '900 16px Nunito, sans-serif'; g.fillStyle = onAir ? '#fff' : '#b88'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('ON AIR', 0, 0); g.restore();
+  // ternyata leluhur: woven bamboo wall panel + batik hanging
+  const wv = onWallY(28.4, 29.9, 30, 170); poly(wv, '#C89A58', OL, 2.5);
+  g.save(); clipPoly(wv); for (let r = 0; r < 14; r++) for (let c = 0; c < 15; c++) if ((r + c) % 2) poly(onWallY(28.4 + c * 0.1, 28.5 + c * 0.1, 30 + r * 10, 40 + r * 10, 0.03), '#A77A3E', null); g.restore();
+  const bt = onWallY(31.9, 33.1, 60, 170); poly(bt, '#A22B3A', OL, 2.5);
+  for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) { const x = 32.1 + c * 0.4, z = 75 + r * 26; poly([iso(x + 0.1, 0.03, z + 12), iso(x + 0.2, 0.03, z), iso(x + 0.1, 0.03, z - 12), iso(x, 0.03, z)], '#E9A92B', null); }
+  poly(onWallY(31.85, 33.15, 166, 174), '#5A3C1E', OL, 2);
   // wall sconces
-  [[1.4, 0], [7.6, 0], [21.0, 0]].forEach(([x]) => { const [sx, sy] = iso(x, 0.02, 130); g.fillStyle = '#F5B82E'; g.beginPath(); g.ellipse(sx, sy, 7, 12, 0, 0, 7); g.fill(); g.strokeStyle = OL; g.lineWidth = 2; g.stroke(); });
+  [[1.4, 0], [7.6, 0], [21.0, 0], [30.6, 0]].forEach(([x]) => { const [sx, sy] = iso(x, 0.02, 130); g.fillStyle = '#F5B82E'; g.beginPath(); g.ellipse(sx, sy, 7, 12, 0, 0, 7); g.fill(); g.strokeStyle = OL; g.lineWidth = 2; g.stroke(); });
 }
 function wallScreen(x0, x1, z0, z1, lines, col) {
   poly(onWallY(x0 - 0.06, x1 + 0.06, z0 - 6, z1 + 6), '#2A2D3E', OL, 2.5);
@@ -416,7 +438,26 @@ function furniture(t) {
   J.push(glass(9, 0, 9, 3)); J.push(glass(9, 4.6, 9, 8));
   J.push(glass(20, 0, 20, 3)); J.push(glass(20, 4.6, 20, 8));
   J.push(glass(0, 8, 3.6, 8)); J.push(glass(5.1, 8, 9, 8));
+  J.push(glass(28, 0, 28, 3)); J.push(glass(28, 4.6, 28, 8));
   // division
+  // ternyata leluhur: miniature rumah gadang, mic stand at the narrator desk, bamboo plants
+  J.push({ d: 35.6 + 5.6 + 0.6, f: () => {
+    shadowQ(35.0, 5.0, 1.2, 1.0, 0.2); isoBox(35.0, 5.0, 0, 1.2, 1.0, 44, '#7A4E27');
+    isoBox(35.15, 5.2, 44, 0.9, 0.6, 6, '#5A3C1E', 1.5);
+    [[35.2, 5.25], [35.95, 5.25], [35.2, 5.7], [35.95, 5.7]].forEach(([x, y]) => isoBox(x, y, 50, 0.05, 0.05, 14, '#3A2A20', 1));
+    isoBox(35.15, 5.2, 64, 0.9, 0.6, 22, '#B07A45', 1.5);
+    const r = [iso(35.0, 5.5, 86), iso(36.2, 5.5, 86), iso(36.2, 5.5, 110), iso(35.0, 5.5, 110)];
+    poly([iso(35.05, 5.15, 86), iso(36.15, 5.15, 86), iso(36.25, 5.5, 104), iso(34.95, 5.5, 104)], '#3A2A20', OL, 1.5);
+    poly([iso(34.95, 5.5, 104), iso(36.25, 5.5, 104), iso(36.15, 5.85, 86), iso(35.05, 5.85, 86)], '#2A1E16', OL, 1.5);
+    g.strokeStyle = '#3A2A20'; g.lineWidth = 5; g.lineCap = 'round';
+    [[34.95, 34.75], [36.25, 36.45]].forEach(([a, b]) => { g.beginPath(); g.moveTo(...iso(a, 5.5, 104)); g.quadraticCurveTo(...iso((a + b) / 2, 5.5, 108), ...iso(b, 5.5, 128)); g.stroke(); });
+    g.lineCap = 'butt'; void r;
+  } });
+  J.push({ d: 31.6 + 5.0 + 0.9, f: () => { const [mx, my] = iso(32.5, 5.3); g.strokeStyle = OL; g.lineWidth = 3; g.beginPath(); g.moveTo(mx, my); g.lineTo(mx, my - 78); g.stroke(); g.beginPath(); g.ellipse(mx, my - 92, 8, 13, 0, 0, 7); g.fillStyle = '#1E5A45'; g.fill(); g.stroke(); } });
+  [[36.3, 0.3], [28.5, 7.0]].forEach(([x, y]) => J.push({ d: x + y + 0.6, f: () => { shadowQ(x, y, 0.5, 0.5, 0.18); isoBox(x, y, 0, 0.5, 0.5, 26, '#8A6239'); [[0.12, 0.15, 150], [0.3, 0.2, 128], [0.22, 0.35, 165]].forEach(([dx, dy, h], k) => { const [bx, by] = iso(x + dx, y + dy, 26); g.strokeStyle = '#6E8B3D'; g.lineWidth = 5; g.beginPath(); g.moveTo(bx, by); g.lineTo(bx + (k - 1) * 6, by - h); g.stroke(); for (let n = 0; n < 5; n++) { g.save(); g.translate(bx + (k - 1) * 6 * (n + 1) / 6, by - h * (0.35 + n * 0.14)); g.rotate((n % 2 ? 1 : -1) * 0.9); g.beginPath(); g.ellipse(0, -12, 4, 13, 0, 0, 7); g.fillStyle = n % 2 ? '#3AA951' : '#2F9B48'; g.fill(); g.strokeStyle = OL; g.lineWidth = 1.2; g.stroke(); g.restore(); } }); } }));
+  // lounge extension: bale-bale bambu (gazebo) + plants
+  J.push({ d: 31.2 + 10.6 + 0.8, f: () => { shadowQ(29.6, 9.8, 3.2, 1.8, 0.2); [[29.7, 9.9], [32.6, 9.9], [29.7, 11.4], [32.6, 11.4]].forEach(([x, y]) => isoBox(x, y, 0, 0.12, 0.12, 30, '#8A6239', 1)); isoBox(29.6, 9.8, 30, 3.2, 1.8, 6, '#C89A58'); for (let k = 0; k < 15; k++) { const a = iso(29.65 + k * 0.21, 9.8, 36.5), b = iso(29.65 + k * 0.21, 11.6, 36.5); g.strokeStyle = 'rgba(90,60,20,.35)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(...a); g.lineTo(...b); g.stroke(); } isoBox(30.0, 10.1, 36, 0.9, 0.6, 2, '#E2C26A', 1); } });
+  J.push({ d: 36.3 + 14.0, f: () => plant(36.0, 13.9, 1.0, 1) }); J.push({ d: 34.3 + 9.0, f: () => plant(34.0, 8.8, 1.1) });
   DESKS.forEach(([id, x, y], k) => { if (id === 'suara' || id === 'publisher') return; J.push({ d: x + y + 0.5, f: () => desk(x, y, on(id), t, (agents.find(a => a.id === id) || {}).warna, k) }); J.push({ d: x + y + 0.8, f: () => chair(x, y + 0.75, '#2b2e3c', 's') }); });
   J.push({ d: 17.6 + 5 + 1.2, f: () => { // vocal booth: acoustic panels + mic
     shadowQ(16.7, 4.3, 1.8, 1.5, 0.2);
@@ -463,17 +504,18 @@ function furniture(t) {
 }
 
 // ── agents: placement, walking, drawing ───────────────────────
-const DESKS = [['penggali', 11.2, 2.0], ['penulis', 13.8, 2.0], ['cekfakta', 16.4, 2.0], ['animator', 12.4, 5.0], ['suara', 17.6, 5.75], ['publisher', 23.6, 4.6]];
+const DESKS = [['penggali', 11.2, 2.0], ['penulis', 13.8, 2.0], ['cekfakta', 16.4, 2.0], ['animator', 12.4, 5.0], ['suara', 17.6, 5.75], ['publisher', 23.6, 4.6], ['tl-penulis', 30.0, 2.0], ['tl-animator', 33.0, 2.0], ['tl-suara', 31.6, 5.0]];
 const MEET = [[2.6, 4.75], [4.2, 4.75], [5.8, 4.75], [2.8, 2.25], [4.0, 2.25], [5.2, 2.25]];
-const LOUNGE = [[2.3, 9.55, 'sit'], [9.4, 10.6, 'bean'], [11.3, 12.95, 'stand'], [10.9, 10.9, 'bean'], [3.5, 9.55, 'sit'], [1.9, 13.3, 'stand']];
+const LOUNGE = [[2.3, 9.55, 'sit'], [9.4, 10.6, 'bean'], [11.3, 12.95, 'stand'], [10.9, 10.9, 'bean'], [3.5, 9.55, 'sit'], [1.9, 13.3, 'stand'], [30.4, 10.6, 'bean'], [31.8, 10.9, 'bean'], [34.6, 12.4, 'stand']];
 function waitingFor(id) {
-  if (id === 'penggali') { const n = ideas.filter(i => i.status === 'usulan').length; return n ? { n, txt: `${n} judul nunggu ACC`, filter: ['usulan'] } : null; }
-  if (id === 'suara') {
-    const cek = ideas.filter(i => i.status === 'cek-vo'), butuh = ideas.filter(i => i.status === 'butuh-vo');
-    if (cek.length) return { n: cek.length, txt: cek.length === 1 ? `VO ${(cek[0].episode || '').toUpperCase()} nunggu dicek`.replace('  ', ' ') : `${cek.length} VO nunggu dicek`, filter: ['cek-vo'] };
-    if (butuh.length) return { n: butuh.length, txt: 'Butuh VO dari kamu', filter: ['butuh-vo'] };
+  const mine = forAg(id, ideas), role = baseRole(id);
+  if (role === 'penggali') { const n = ideas.filter(i => i.status === 'usulan').length; return n ? { n, txt: `${n} judul nunggu ACC`, filter: ['usulan'] } : null; }
+  if (role === 'suara') {
+    const cek = mine.filter(i => i.status === 'cek-vo'), butuh = mine.filter(i => i.status === 'butuh-vo');
+    if (cek.length) return { n: cek.length, txt: cek.length === 1 ? `VO ${(cek[0].episode || '').toUpperCase()} nunggu dicek`.replace('  ', ' ') : `${cek.length} VO nunggu dicek`, filter: ['cek-vo'], ch: AG_CH[id] };
+    if (butuh.length) return { n: butuh.length, txt: 'Butuh VO dari kamu', filter: ['butuh-vo'], ch: AG_CH[id] };
   }
-  if (id === 'animator') { const n = ideas.filter(i => i.status === 'gagal').length; return n ? { n, txt: `${n} render gagal`, filter: ['gagal'] } : null; }
+  if (role === 'animator') { const n = mine.filter(i => i.status === 'gagal').length; return n ? { n, txt: `${n} render gagal`, filter: ['gagal'], ch: AG_CH[id] } : null; }
   return null;
 }
 // jobs waiting for the next scheduled production run, by the agent who picks them up
@@ -484,12 +526,12 @@ function nextRunWIB() {
 }
 function queuedFor(id) {
   const ep = i => (i.episode || '').toUpperCase() || (i.judul || '').slice(0, 14);
-  const pick = st => ideas.filter(i => st.includes(i.status)).sort((a, b) => String(a.voKeputusanAt || a.accAt || '').localeCompare(String(b.voKeputusanAt || b.accAt || '')))[0];
-  const job = id === 'animator' ? pick(['vo-acc']) : id === 'penulis' ? pick(['acc']) : id === 'suara' ? pick(['vo-ulang']) : null;
+  const pick = st => forAg(id, ideas).filter(i => st.includes(i.status)).sort((a, b) => String(a.voKeputusanAt || a.accAt || '').localeCompare(String(b.voKeputusanAt || b.accAt || '')))[0];
+  const role = baseRole(id), job = role === 'animator' ? pick(['vo-acc']) : role === 'penulis' ? pick(['acc']) : role === 'suara' ? pick(['vo-ulang']) : null;
   return job ? `Antre: ${ep(job)} · mulai ${nextRunWIB()}` : null;
 }
 const WALK = {}; // id -> {x,y,path:[[x,y]...], pose}
-const roomOf = (x, y) => y >= 8 ? 'lounge' : x < 9 ? 'rapat' : x < 20 ? 'divisi' : 'studio';
+const roomOf = (x, y) => y >= 8 ? 'lounge' : x < 9 ? 'rapat' : x < 20 ? 'divisi' : x < 28 ? 'studio' : 'leluhur';
 const DOOR = { rapat: [4.35, 8.4], divisi: [14.5, 8.4], studio: [20, 3.8], lounge: null };
 function planPath(fx, fy, tx, ty) {
   const a = roomOf(fx, fy), b = roomOf(tx, ty); if (a === b) return [[tx, ty]];
@@ -497,9 +539,11 @@ function planPath(fx, fy, tx, ty) {
   if (a === 'rapat') P.push([4.35, 7.4], [4.35, 8.5]);
   if (a === 'studio') P.push([20.6, 3.8], [19.4, 3.8], [19.4, 7.6], [19.4, 8.5]);
   if (a === 'divisi') P.push([fx, 6.6 < fy ? fy : 6.6], [Math.min(Math.max(fx, 10), 19), 8.5]);
+  if (a === 'leluhur') P.push([fx < 34 ? 34.2 : fx, fy], [34.2, 7.6], [34.2, 8.5]);
   if (b === 'rapat') P.push([4.35, 8.5], [4.35, 7.4]);
   if (b === 'studio') P.push([19.4, 8.5], [19.4, 3.8], [20.6, 3.8]);
   if (b === 'divisi') P.push([Math.min(Math.max(tx, 10), 19), 8.5], [tx, 6.6]);
+  if (b === 'leluhur') P.push([34.2, 8.5], [34.2, 7.6], [tx < 34 ? 34.2 : tx, ty]);
   P.push([tx, ty]); return P;
 }
 function placeAgents(dt) {
@@ -613,9 +657,12 @@ function draw(ts) {
   floors(t); backWalls(t);
   const waitN = ideas.filter(i => ['usulan', 'cek-vo', 'butuh-vo'].includes(i.status)).length;
   wallScreen(3.2, 6.4, 72, 150, waitN ? [`${waitN} NUNGGU ACC`, 'klik agen bertanda !'] : ['SEMUA BERES ✓', 'tidak ada antrean'], waitN ? '#FF8A8A' : '#7ff0a8');
-  const prod = ideas.filter(i => ['acc', 'produksi', 'vo-ulang', 'vo-acc'].includes(i.status));
   const last = ideas.filter(i => i.status === 'selesai').sort((a, b) => String(b.diubah || '').localeCompare(String(a.diubah || '')))[0];
-  wallScreen(12.8, 14.4, 76, 150, prod.length ? ['DIGARAP', prod[0].judul || ''] : last ? ['SELESAI', last.judul || ''] : ['STANDBY', 'nunggu ACC'], '#FFD84A');
+  [['mas-kharis', 12.8, 14.4], ['ternyata-leluhur', 30.2, 31.6]].forEach(([ch, x0, x1]) => {
+    const mine = ideas.filter(i => chOf(i) === ch), prod = mine.filter(i => ['acc', 'produksi', 'vo-ulang', 'vo-acc'].includes(i.status));
+    const done = mine.filter(i => i.status === 'selesai').sort((a, b) => String(b.diubah || '').localeCompare(String(a.diubah || '')))[0];
+    wallScreen(x0, x1, 76, 150, prod.length ? ['DIGARAP', prod[0].judul || ''] : done ? ['SELESAI', done.judul || ''] : ['STANDBY', 'nunggu ACC'], '#FFD84A');
+  });
   wallScreen(21.4, 24.6, 72, 150, last ? ['SIAP TAYANG', last.judul || ''] : ['JADWAL TAYANG', 'belum ada video'], '#7FD3D9');
   const people = placeAgents(dt), jobs = furniture(t), heads = [];
   people.forEach((p, i) => jobs.push({ d: p.x + p.y + ((p.mode === 'work' || (p.mode === 'wait' && p.y > 4)) && p.pose !== 'walk' ? 1.0 : 0.05), f: () => { heads.push([p, ...stickman(p, t, i)]); } }));
@@ -657,7 +704,7 @@ function renderPanel() {
   $('panelSub').textContent = (a.peran || '') + ' · ' + (w ? 'menunggu kamu' : a.status === 'kerja' ? 'sedang kerja' : queuedFor(openId) || 'santai');
   const body = $('panelBody'); body.textContent = '';
   if (a.aktivitas) { const p = document.createElement('p'); p.className = 'prog'; p.textContent = '▸ ' + a.aktivitas + (a.diubah ? ' · ' + new Date(a.diubah).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) + ' WIB' : ''); body.append(p); }
-  const items = w ? ideas.filter(i => w.filter.includes(i.status)) : [];
+  const items = w ? ideas.filter(i => w.filter.includes(i.status) && (!w.ch || chOf(i) === w.ch)) : [];
   if (items.length) items.forEach(i => body.append(card(i)));
   else { const e = document.createElement('div'); e.className = 'empty'; e.textContent = w ? 'Sudah beres semua.' : 'Tidak ada yang perlu kamu ACC dari agen ini.'; body.append(e); }
 }
@@ -806,7 +853,13 @@ renderList('loading');
   canWrite = u ? (await u.can('data.write')) !== false : true;
   const timer = setTimeout(() => { const b = $('banner'); b.hidden = false; b.textContent = 'Data tim belum bisa dijangkau. Yang tampil mungkin belum terbaru.'; }, 10000);
   db.collection('agents').onSnapshot(s => {
-    if (s.size) { agents = s.docs.map(x => ({ id: x.id, ...x.data() })); renderRoster(); renderPanel(); }
+    if (s.size) {
+      const got = Object.fromEntries(s.docs.map(x => [x.id, { id: x.id, ...x.data() }]));
+      // defaults keep new divisions visible before their agent docs exist; db values win
+      agents = AGENT_DEFAULTS.map(d => ({ ...d, status: 'santai', aktivitas: 'Menunggu tugas', ...(got[d.id] || {}), urut: d.urut }))
+        .concat(Object.values(got).filter(x => !AGENT_DEFAULTS.some(d => d.id === x.id)));
+      renderRoster(); renderPanel();
+    }
     const last = agents.map(x => x.diubah).filter(Boolean).sort().pop();
     $('liveNote').textContent = 'live · ' + (last ? 'update terakhir ' + new Date(last).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) + ' WIB' : 'belum ada aktivitas');
     if (reduce) requestAnimationFrame(draw);

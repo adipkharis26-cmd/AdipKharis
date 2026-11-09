@@ -15,7 +15,9 @@ prosody) and joined with a fixed pause, so section boundaries are exact.
 
 API key: ELEVENLABS_API_KEY if set; otherwise a placeholder is sent and the
 cloud session's network proxy injects the key saved for api.elevenlabs.io.
-Voice/model settings: workflow/config.json -> "elevenlabs".
+Voice/model settings: workflow/config.json -> "elevenlabs", overridden per channel by
+channels.<id>.elevenlabs (channel picked from the episode prefix, e.g. ep03 -> mas-kharis,
+tl01 -> ternyata-leluhur, or --channel ID).
 """
 import base64, json, os, re, subprocess, sys, tempfile, wave
 from pathlib import Path
@@ -24,7 +26,19 @@ import requests
 
 ROOT = Path(__file__).resolve().parents[2]
 VO_DIR = ROOT / 'video' / 'vo'
-CFG = json.loads((ROOT / 'workflow' / 'config.json').read_text(encoding='utf-8'))['elevenlabs']
+_CONF = json.loads((ROOT / 'workflow' / 'config.json').read_text(encoding='utf-8'))
+CFG = dict(_CONF['elevenlabs'])
+
+
+def use_channel(ep, channel=None):
+    """Merge the channel's own ElevenLabs settings (voice etc.) over the defaults."""
+    chans = _CONF.get('channels', {})
+    if not channel:
+        hits = [k for k, v in chans.items() if v.get('prefix') and re.fullmatch(re.escape(v['prefix']) + r'\d+', ep)]
+        channel = hits[0] if hits else None
+    if channel:
+        CFG.update(chans[channel].get('elevenlabs', {}))
+    return channel
 
 
 def ffprobe_dur(p):
@@ -100,6 +114,8 @@ def main():
     args = sys.argv[1:]
     if not args: sys.exit(__doc__)
     ep = args[0]
+    ch = use_channel(ep, args[args.index('--channel') + 1] if '--channel' in args else None)
+    print(f'channel={ch} voice={CFG.get("voice_name", CFG.get("voice_id"))}')
     voice = args[args.index('--voice') + 1] if '--voice' in args else CFG.get('voice_id')
     if not voice or voice.startswith('ISI_'):
         sys.exit('Voice ID belum diisi: set workflow/config.json -> elevenlabs.voice_id atau pakai --voice')

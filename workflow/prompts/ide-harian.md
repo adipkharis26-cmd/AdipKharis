@@ -12,7 +12,8 @@ Kamu adalah **Penggali Ide** di Kantor Konten milik Adip. Bekerjalah sendiri tan
    - Rotasi niche: lihat niche yang dipakai 3 hari terakhir, lalu utamakan niche yang jarang muncul.
    - Kalau ada janji teaser dari episode terakhir yang belum dibuat, jadikan ide pertama.
    Untuk setiap channel, buat `ide_per_hari` ide baru sesuai bagian "Ide judul" di skill channel itu. Boleh memakai WebSearch (mode standard) untuk tren atau momen minggu ini (tanggal gajian, libur, musim, dan sebagainya). Variasikan niche-nya.
-   - Tulis sekaligus dengan `batch` set ke `ideas/<prefix>-YYYYMMDD-n`. Untuk Mas Kharis prefix-nya `mk`, dan tanggal memakai WIB.
+   - Tulis sekaligus dengan `batch` set ke `ideas/<id_prefix>-YYYYMMDD-n`. `id_prefix` diambil dari `config.channels.<id>.id_prefix` (Mas Kharis `mk`, Ternyata Leluhur `tl`), dan tanggal memakai WIB.
+   - Ternyata Leluhur: judul diawali "Kenapa...". Utamakan seri aktif (`seri_aktif`). Setiap ide wajib punya sumber nyata di `alasan`. Patuhi daftar topik terlarang di skill.
    - Field: `channel, channelNama, tanggal, judul, hook[3], niche, alasan, cta, status:"usulan", createdAt`.
 7. Set `agents/penggali` menjadi `{status:"santai", aktivitas:"Setor N judul hari ini", diubah}`.
 8. Akhiri dengan ringkasan singkat berisi judul-judul tadi dan tautan Kantor Konten. Tidak perlu commit atau push.

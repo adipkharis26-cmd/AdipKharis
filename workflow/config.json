@@ -7,7 +7,32 @@
     "mas-kharis": {
       "nama": "Mas Kharis",
       "skill": ".claude/skills/mas-kharis/SKILL.md",
-      "ide_per_hari": 4
+      "ide_per_hari": 4,
+      "prefix": "ep",
+      "renderer": "canvas2d (video/src/lib.js + story.js)",
+      "id_prefix": "mk"
+    },
+    "ternyata-leluhur": {
+      "nama": "Ternyata Leluhur",
+      "skill": ".claude/skills/ternyata-leluhur/SKILL.md",
+      "ide_per_hari": 4,
+      "prefix": "tl",
+      "renderer": "three.js diorama 3D (video/src/leluhur3d.js)",
+      "seri_aktif": "Rumah dan Bangunan Leluhur",
+      "elevenlabs": {
+        "voice_id": "W8aRyPTvOnlcvcu0uYX3",
+        "voice_name": "DK - Documentary",
+        "model_id": "eleven_v4",
+        "voice_settings": {
+          "stability": 0.5,
+          "similarity_boost": 0.75,
+          "style": 0.0
+        },
+        "section_gap_s": 0.55,
+        "max_pause_s": 0.38,
+        "catatan": "Setelan owner (ElevenLabs UI): DK - Documentary, Eleven v4, Stabilitas 0.5, Kesamaan 0.75, Kekuatan klon 0, Bahasa Auto, MP3 44.1kHz 128kbps."
+      },
+      "id_prefix": "tl"
     }
   },
   "elevenlabs": {
