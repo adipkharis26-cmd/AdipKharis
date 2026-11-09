@@ -826,6 +826,8 @@ try { const d = localStorage.getItem('kk-desk'); if (d && DIVS[d]) { curDesk = d
 const needsMe = ch => ideas.filter(i => chOf(i) === ch && ['usulan', 'cek-vo', 'butuh-vo'].includes(i.status)).length;
 function setDesk(d) { curDesk = d; deskPicked = true; try { localStorage.setItem('kk-desk', d); } catch (e) {} renderList(); }
 function renderDesks() {
+  // a division that exists in the data but has no room yet still gets its own desk (and download buttons)
+  ideas.forEach(i => { const k = chOf(i); if (!DIVS[k]) DIVS[k] = { nama: 'Divisi ' + (i.channelNama || k), warna: '#9AA0B4', ket: 'divisi baru', room: null }; });
   if (!deskPicked && !needsMe(curDesk)) { const other = Object.keys(DIVS).find(needsMe); if (other) curDesk = other; }
   const box = $('desks'); box.textContent = '';
   Object.entries(DIVS).forEach(([k, d]) => {
