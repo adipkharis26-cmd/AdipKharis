@@ -61,7 +61,19 @@ h1 span { color: var(--teal); }
 .office .note { position: absolute; left: 12px; bottom: 10px; font-family: var(--f-mono); font-size: 11px; color: #F3F0E4;
   background: rgba(20,22,32,.7); padding: 4px 8px; border-radius: 6px; }
 
-.roster { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.roster { display: grid; gap: 14px; }
+.rgroup { display: grid; gap: 8px; }
+.rgroup h4 { margin: 0; font: 900 13px var(--f-body); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.rgroup h4 i { width: 14px; height: 14px; border-radius: 4px; border: 2px solid var(--ink); display: inline-block; }
+.rgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.desks { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 10px; }
+.desk { text-align: left; font: 900 17px var(--f-body); color: var(--ink); background: var(--panel); border: 3px solid var(--line); border-radius: 14px; padding: 12px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+.desk .sw { width: 18px; height: 18px; border-radius: 5px; border: 2px solid var(--ink); flex: none; }
+.desk .sm { display: block; font: 700 12px var(--f-body); color: var(--muted); }
+.desk .bd { margin-left: auto; font: 900 13px var(--f-mono); background: var(--tolak); color: #fff; border-radius: 999px; padding: 2px 9px; }
+.desk[aria-pressed="true"] { border-color: var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+.desk:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+.deskhead { border-left: 8px solid var(--desk, var(--wall)); padding: 6px 12px; background: var(--panel); border-radius: 10px; font-weight: 800; }
 .agent { background: var(--panel); border: 2px solid var(--line); border-radius: 12px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
 .agent .nm { font-weight: 900; display: flex; align-items: center; gap: 8px; }
 .agent .dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ink); flex: none; }
@@ -143,6 +155,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 
   <section class="sec">
     <h2>MEJA OWNER</h2>
+    <div class="desks" id="desks" role="group" aria-label="Pilih meja divisi"></div>
+    <div class="deskhead" id="deskHead"></div>
     <div id="banner" class="banner" hidden></div>
     <div class="tabs" role="group" aria-label="Filter status">
       <button class="tab" id="tab-usulan" data-f="usulan" aria-pressed="true">Perlu ACC<span class="n"></span></button>
@@ -192,6 +206,10 @@ const ROLE_TAG = { penggali: 'Riset', penulis: 'Naskah', cekfakta: 'Fakta', suar
 // which channel an agent works for (null = shared by all divisions)
 const AG_CH = { penulis: 'mas-kharis', suara: 'mas-kharis', animator: 'mas-kharis', 'tl-penulis': 'ternyata-leluhur', 'tl-suara': 'ternyata-leluhur', 'tl-animator': 'ternyata-leluhur' };
 const chOf = i => i.channel || 'mas-kharis';
+const DIVS = {
+  'mas-kharis': { nama: 'Divisi Mas Kharis', warna: '#F2CC45', ket: 'stikmen kantor, suara Eyang', room: 'divisi' },
+  'ternyata-leluhur': { nama: 'Divisi Ternyata Leluhur', warna: '#C89A58', ket: 'diorama 3D kearifan lokal, suara DK', room: 'leluhur' },
+};
 const forAg = (id, list) => AG_CH[id] ? list.filter(i => chOf(i) === AG_CH[id]) : list;
 const baseRole = id => id.replace(/^tl-/, '');
 let agents = AGENT_DEFAULTS.map(a => ({ ...a, status: 'santai', aktivitas: 'Menunggu tugas' }));
@@ -689,7 +707,7 @@ function hitAt(ev) {
 }
 cv.addEventListener('click', ev => { const h = hitAt(ev); if (h) openAgent(h.p.a.id); });
 cv.addEventListener('mousemove', ev => { cv.style.cursor = hitAt(ev) ? 'pointer' : 'default'; });
-document.querySelectorAll('.room').forEach(b => b.onclick = () => setRoom(b.dataset.room));
+document.querySelectorAll('.room').forEach(b => b.onclick = () => { setRoom(b.dataset.room); const d = Object.keys(DIVS).find(k => DIVS[k].room === b.dataset.room); if (d && d !== curDesk) setDesk(d); });
 setRoom(room);
 requestAnimationFrame(draw);
 
@@ -716,7 +734,11 @@ $('waitBtn').onclick = () => { setRoom('rapat'); const first = agents.find(a => 
 /* ---------- roster + clock ---------- */
 function renderRoster() {
   const r = $('roster'); r.textContent = '';
-  agents.slice().sort((a, b) => (a.urut || 9) - (b.urut || 9)).forEach(a => {
+  [[null, 'Tim bersama (semua divisi)', '#9AA0B4'], ...Object.entries(DIVS).map(([k, d]) => [k, d.nama, d.warna])].forEach(([ch, title, col]) => {
+  const grp = document.createElement('div'); grp.className = 'rgroup';
+  const h = document.createElement('h4'); h.innerHTML = '<i></i><span></span>'; h.querySelector('i').style.background = col; h.querySelector('span').textContent = title;
+  const r2 = document.createElement('div'); r2.className = 'rgrid'; grp.append(h, r2); r.append(grp);
+  agents.filter(a => (AG_CH[a.id] || null) === ch).sort((a, b) => (a.urut || 9) - (b.urut || 9)).forEach(a => {
     const el = document.createElement('div'); el.className = 'agent' + (a.status === 'kerja' ? ' kerja' : '');
     el.innerHTML = '<div class="nm"><span class="dot"></span><span></span></div><div class="role"></div><div class="st"></div><div class="act"></div>';
     el.querySelector('.dot').style.background = a.warna || '#ccc';
@@ -724,7 +746,8 @@ function renderRoster() {
     el.querySelector('.role').textContent = a.peran || '';
     el.querySelector('.st').textContent = a.status === 'kerja' ? 'sedang kerja' : 'santai';
     el.querySelector('.act').textContent = a.aktivitas || '';
-    r.appendChild(el);
+    r2.appendChild(el);
+  });
   });
 }
 renderRoster();
@@ -738,6 +761,25 @@ tick(); setInterval(tick, 20000);
 
 /* ---------- ideas board ---------- */
 let filter = 'usulan', db = null, assets = null, canWrite = false;
+// one owner desk per division: the list, counts and tabs only show that division's titles
+let curDesk = 'mas-kharis', deskPicked = false;
+try { const d = localStorage.getItem('kk-desk'); if (d && DIVS[d]) { curDesk = d; deskPicked = true; } } catch (e) {}
+const needsMe = ch => ideas.filter(i => chOf(i) === ch && ['usulan', 'cek-vo', 'butuh-vo'].includes(i.status)).length;
+function setDesk(d) { curDesk = d; deskPicked = true; try { localStorage.setItem('kk-desk', d); } catch (e) {} renderList(); }
+function renderDesks() {
+  if (!deskPicked && !needsMe(curDesk)) { const other = Object.keys(DIVS).find(needsMe); if (other) curDesk = other; }
+  const box = $('desks'); box.textContent = '';
+  Object.entries(DIVS).forEach(([k, d]) => {
+    const b = document.createElement('button'); b.className = 'desk'; b.setAttribute('aria-pressed', String(k === curDesk));
+    b.innerHTML = '<span class="sw"></span><span><span class="t"></span><span class="sm"></span></span>';
+    b.querySelector('.sw').style.background = d.warna; b.querySelector('.t').textContent = 'Meja ' + d.nama;
+    const n = needsMe(k), prod = ideas.filter(i => chOf(i) === k && GROUP.jalan.includes(i.status)).length;
+    b.querySelector('.sm').textContent = (n ? n + ' perlu keputusanmu' : 'tidak ada yang menunggu') + (prod ? ' · ' + prod + ' diproduksi' : '');
+    if (n) { const bd = document.createElement('span'); bd.className = 'bd'; bd.textContent = n; b.append(bd); }
+    b.onclick = () => setDesk(k); box.append(b);
+  });
+  const h = $('deskHead'); h.style.setProperty('--desk', DIVS[curDesk].warna); h.textContent = 'Kamu sedang di meja ' + DIVS[curDesk].nama + ' · ' + DIVS[curDesk].ket;
+}
 try { const f = localStorage.getItem('kk-filter'); if (f) filter = f; } catch (e) {}
 const GROUP = { usulan: ['cek-vo', 'usulan'], jalan: ['acc', 'produksi', 'vo-ulang', 'vo-acc', 'butuh-vo', 'gagal'], selesai: ['selesai'], tolak: ['tolak'] };
 const LABEL = { usulan: 'Judul baru', acc: 'Judul di-ACC · antre', produksi: 'Diproduksi', 'cek-vo': 'Cek suara', 'vo-ulang': 'VO diulang', 'vo-acc': 'Suara di-ACC · animasi', 'butuh-vo': 'Butuh VO', selesai: 'Selesai', tolak: 'Ditolak', gagal: 'Gagal' };
@@ -748,7 +790,7 @@ function fmtDate(s) { if (!s) return ''; try { return new Date(s + (s.length ===
 function renderTabs() {
   document.querySelectorAll('.tab').forEach(b => {
     const f = b.dataset.f; b.setAttribute('aria-pressed', String(f === filter));
-    b.querySelector('.n').textContent = ideas.filter(i => GROUP[f].includes(i.status)).length || '';
+    b.querySelector('.n').textContent = ideas.filter(i => chOf(i) === curDesk && GROUP[f].includes(i.status)).length || '';
   });
 }
 function card(i) {
@@ -810,7 +852,8 @@ function btn(txt, cls, fn) { const b = document.createElement('button'); b.class
 function renderList(state) {
   renderTabs();
   const L = $('list'); L.textContent = '';
-  const items = ideas.filter(i => GROUP[filter].includes(i.status)).sort((a, b) => ((RANK[a.status] ?? 5) - (RANK[b.status] ?? 5)) || String(b.tanggal || '').localeCompare(String(a.tanggal || '')) || String(a.id).localeCompare(String(b.id)));
+  renderDesks();
+  const items = ideas.filter(i => chOf(i) === curDesk && GROUP[filter].includes(i.status)).sort((a, b) => ((RANK[a.status] ?? 5) - (RANK[b.status] ?? 5)) || String(b.tanggal || '').localeCompare(String(a.tanggal || '')) || String(a.id).localeCompare(String(b.id)));
   if (!items.length) {
     const e = document.createElement('div'); e.className = 'empty';
     e.textContent = state === 'loading' ? 'Memuat ide dari tim…' : filter === 'usulan'
@@ -856,7 +899,7 @@ renderList('loading');
     if (s.size) {
       const got = Object.fromEntries(s.docs.map(x => [x.id, { id: x.id, ...x.data() }]));
       // defaults keep new divisions visible before their agent docs exist; db values win
-      agents = AGENT_DEFAULTS.map(d => ({ ...d, status: 'santai', aktivitas: 'Menunggu tugas', ...(got[d.id] || {}), urut: d.urut }))
+      agents = AGENT_DEFAULTS.map(d => ({ ...d, status: 'santai', aktivitas: 'Menunggu tugas', ...(got[d.id] || {}), nama: d.nama, peran: d.peran, warna: d.warna, urut: d.urut }))
         .concat(Object.values(got).filter(x => !AGENT_DEFAULTS.some(d => d.id === x.id)));
       renderRoster(); renderPanel();
     }
