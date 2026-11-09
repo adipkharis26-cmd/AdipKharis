@@ -87,5 +87,6 @@ Dua tugas terjadwal menjalankan sesi Claude baru di environment `adipkharis` (ya
 |---|---|---|---|---|---|
 | Mas Kharis | `ep` / `mk` | `.claude/skills/mas-kharis` (stikmen 2.5D, 8 bagian) | Eyang | `video/src/lib.js` + `story.js` (canvas 2D) | `penulis`, `suara`, `animator` |
 | Ternyata Leluhur | `tl` / `tl` | `.claude/skills/ternyata-leluhur` (diorama 3D, 7 beat) | DK - Documentary | `video/src/leluhur3d.js` (three.js) + `leluhur_mix.py` (musik/SFX) | `tl-penulis`, `tl-suara`, `tl-animator` |
+| Dari 1 mnt | `dm` / `dm` | `.claude/skills/dari-1-mnt` (Hybrid Kinetic Pop 2D, 60–90 dtk) | Finn | `video/src/kinetic.js` + `leluhur_mix.py` (SFX, tanpa musik) | `dm-penulis`, `dm-suara`, `dm-animator` |
 
 Agen bersama: `penggali` (ide semua divisi), `cekfakta`, dan `publisher`. Suara dipilih otomatis oleh `tts_elevenlabs.py` dari prefix episode (`config.channels.<id>.elevenlabs`). Divisi baru ditambahkan dengan: skill gaya → entri di `config.channels` → agen + ruang di `kantor-konten.html`.

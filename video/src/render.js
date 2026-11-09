@@ -9,11 +9,12 @@ const path = require('path');
 
 (async () => {
   const [mode, out, ...rest] = process.argv.slice(2);
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ['--allow-file-access-from-files'] }); // lets canvases use local images (emoji, mascot) without tainting
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   page.on('pageerror', e => { console.error('PAGE ERROR', e.message); process.exit(1); });
   await page.goto('file://' + path.join(__dirname, (process.env.EP || 'ep01') + '.html'));
   await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(() => (window.prepare ? window.prepare() : null));
 
   const grab = t => page.evaluate(t => { renderFrame(t); return document.getElementById('c').toDataURL('image/png').split(',')[1]; }, t);
 

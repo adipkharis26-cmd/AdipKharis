@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Ternyata Leluhur audio: VO + soft pentatonic pluck music + SFX, then loudnorm.
+"""Channel audio mix: VO + (optional) soft pentatonic pluck music + synthesized SFX, then loudnorm.
+Used by Ternyata Leluhur (tlNN, with music) and Dari 1 mnt (dmNN, SFX only — no music).
+Music on/off comes from workflow/config.json channels.<id>.music (picked by the episode prefix).
 
-Usage:  python3 video/src/leluhur_mix.py tlNN
+Usage:  python3 video/src/leluhur_mix.py tlNN|dmNN
 Needs   video/vo/tlNN.mp3 and the cue list (made here with `node render.js cues`).
 Writes  video/vo/tlNN-mix.m4a  → pass it to render.js as the audio track.
 
-SFX types: whoosh, pop, stamp, ombak, gempa, api, langkah, ramai, angin, palu, kayu.
+SFX types: whoosh, pop, stamp, ombak, gempa, api, langkah, ramai, angin, palu, kayu,
+          tick, hit, boom, riser, drone, retak.
 Everything is synthesized (no downloads), deterministic per episode.
 """
 import json, subprocess, sys, tempfile, wave
@@ -50,6 +53,19 @@ def sfx(kind, d=None):
         body = np.sin(2 * np.pi * (70 * t + 40 * (1 - np.exp(-t * 20)) / 20)) * np.exp(-t * 11)
         click = lowpass(noise(0.35), 0.3) * np.exp(-t * 60)
         return (body * 0.9 + click * 0.6) * 0.8
+    if kind == 'tick':
+        n = int(0.03 * SR); t = np.arange(n) / SR
+        return np.sin(2 * np.pi * 2400 * t) * np.exp(-t * 180) * 0.5
+    if kind == 'hit':
+        n = int(0.3 * SR); t = np.arange(n) / SR
+        return (np.sin(2 * np.pi * (90 * t + 60 * (1 - np.exp(-t * 30)) / 30)) * np.exp(-t * 14) + lowpass(noise(0.3), 0.35) * np.exp(-t * 40) * 0.8) * 0.85
+    if kind == 'boom':
+        n = int(1.2 * SR); t = np.arange(n) / SR
+        return (np.sin(2 * np.pi * (48 * t + 30 * (1 - np.exp(-t * 6)) / 6)) * np.exp(-t * 3.2) + lowpass(noise(1.2), 0.05) * np.exp(-t * 4) * 2) * 0.9
+    if kind == 'retak':
+        n = int(0.5 * SR); y = np.zeros(n)
+        for i in rng.integers(0, n - 600, 18): y[i:i + 500] += rng.standard_normal(500) * np.exp(-np.arange(500) / 60)
+        return lowpass(y, 0.5) * 0.5
     if kind == 'palu':
         n = int(0.2 * SR); t = np.arange(n) / SR
         return (np.sin(2 * np.pi * 1800 * t) * 0.3 + lowpass(noise(0.2), 0.5)) * np.exp(-t * 45) * 0.6
@@ -67,6 +83,11 @@ def sfx(kind, d=None):
         x = lowpass(noise(d), 0.08) * 0.8; cr = np.zeros(n)
         for i in rng.integers(0, n - 400, int(d * 14)): cr[i:i + 300] += rng.standard_normal(300) * np.exp(-np.arange(300) / 40) * rng.uniform(0.3, 1)
         return (x + cr * 0.5) * env(n, 0.2, 0.5) * 0.7
+    if kind == 'riser':
+        f = 200 + 1400 * (t / d) ** 2; x = lowpass(noise(d), 0.2) * 0.6 + np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.25
+        return x * (t / d) ** 1.5 * env(n, 0.01, 0.05)
+    if kind == 'drone':
+        return (np.sin(2 * np.pi * 55 * t) + 0.5 * np.sin(2 * np.pi * 82.5 * t)) * 0.25 * env(n, 0.6, 0.8)
     if kind == 'angin':
         return lowpass(noise(d), 0.015) * 4 * (0.5 + 0.5 * np.sin(2 * np.pi * t / 2.3)) * env(n, 0.5, 0.8)
     if kind == 'langkah':
@@ -135,9 +156,11 @@ def main():
     total = C['duration']; n = int(total * SR)
     vo = read_mono(ROOT / 'video' / 'vo' / f'{ep}.mp3')
     mix = np.zeros(n); mix[:min(n, len(vo))] += vo[:n]
-    mus = music(total); mix += mus * 0.16
+    conf = json.loads((ROOT / 'workflow' / 'config.json').read_text())
+    ch = next((v for v in conf.get('channels', {}).values() if v.get('prefix') and ep.startswith(v['prefix'])), {})
+    if ch.get('music', True): mix += music(total) * 0.16
     for c in C['cues']:
-        s = sfx(c['type'], c.get('d')) * {'whoosh': 0.22, 'pop': 0.3, 'stamp': 0.35}.get(c['type'], 0.25) * c.get('gain', 1)
+        s = sfx(c['type'], c.get('d')) * {'whoosh': 0.22, 'pop': 0.3, 'stamp': 0.35, 'tick': 0.25, 'hit': 0.35, 'boom': 0.4, 'riser': 0.25, 'drone': 0.2}.get(c['type'], 0.25) * c.get('gain', 1)
         a = int(c['t'] * SR) - (int(0.2 * SR) if c['type'] == 'whoosh' else 0); a = max(0, a)
         m = min(len(s), n - a)
         if m > 0: mix[a:a + m] += s[:m]

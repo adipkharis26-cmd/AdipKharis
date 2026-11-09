@@ -32,7 +32,39 @@
         "max_pause_s": 0.38,
         "catatan": "Setelan owner (ElevenLabs UI): DK - Documentary, Eleven v4, Stabilitas 0.5, Kesamaan 0.75, Kekuatan klon 0, Bahasa Auto, MP3 44.1kHz 128kbps."
       },
-      "id_prefix": "tl"
+      "id_prefix": "tl",
+      "music": true
+    },
+    "dari-1-mnt": {
+      "nama": "Dari 1 mnt",
+      "skill": ".claude/skills/dari-1-mnt/SKILL.md",
+      "ide_per_hari": 4,
+      "prefix": "dm",
+      "id_prefix": "dm",
+      "renderer": "canvas 2D Hybrid Kinetic Pop (video/src/kinetic.js)",
+      "music": false,
+      "durasi_s": {
+        "min": 60,
+        "max": 90
+      },
+      "seri": [
+        "Paradoks & Dilema",
+        "Fakta vs Mitos",
+        "Indonesia vs Dunia"
+      ],
+      "elevenlabs": {
+        "voice_id": "zmTMXWr9TzPTCLvo0Uqr",
+        "voice_name": "Finn - Expressive & Ads Indonesian",
+        "model_id": "eleven_v4",
+        "voice_settings": {
+          "stability": 0.5,
+          "similarity_boost": 0.75,
+          "style": 0.0
+        },
+        "section_gap_s": 0.45,
+        "max_pause_s": 0.3,
+        "catatan": "Setelan owner (ElevenLabs UI): Finn - Expressive & Ads Indonesian, Eleven v4, Stabilitas 0.5, Kesamaan 0.75, Kekuatan klon 0, Bahasa Auto, MP3 44.1kHz 128kbps."
+      }
     }
   },
   "elevenlabs": {

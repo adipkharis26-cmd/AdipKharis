@@ -22,8 +22,9 @@ Animator **tidak boleh** jalan sebelum owner menekan "ACC suara" (status `vo-acc
 - **Tiap channel punya gaya, suara, dan mesin render sendiri.** Jangan mencampur:
   - `mas-kharis`: prefix episode `ep`, stikmen kanvas 2D, 8 bagian, suara Eyang.
   - `ternyata-leluhur`: prefix `tl`, diorama 3D three.js, 7 beat, suara DK - Documentary, plus musik/SFX.
+  - `dari-1-mnt`: prefix `dm`, Hybrid Kinetic Pop 2D (`kinetic.js`), suara Finn, SFX tanpa musik. **Durasi wajib 60–90 detik.**
   - Prefix ada di `config.channels.<id>.prefix`. `tts_elevenlabs.py` memilih suara dari prefix itu.
-- Agen per divisi: Mas Kharis memakai `penulis`, `suara`, `animator`; Ternyata Leluhur memakai `tl-penulis`, `tl-suara`, `tl-animator`. `cekfakta` dan `publisher` dipakai bersama.
+- Agen per divisi: Mas Kharis memakai `penulis`, `suara`, `animator`; Ternyata Leluhur memakai `tl-penulis`, `tl-suara`, `tl-animator`; Dari 1 mnt memakai `dm-penulis`, `dm-suara`, `dm-animator`. `cekfakta` dan `publisher` dipakai bersama.
 - **Wajib**: setiap pindah langkah, update `agents/<id>` agen yang sedang bekerja menjadi `{status:"kerja", aktivitas:"<apa yang dikerjakan, mis. 'Animasi EP04'>", diubah:<ISO>}`. Saat langkahnya selesai, ubah ke `{status:"santai", aktivitas:"<hasil singkat>"}`. Update juga `progres` di ide. Owner memantau ini di peta kantor, jadi jangan dilewati. Selalu pakai `if_version` (baca dulu dengan `get`).
 
 **Penyimpanan antarsesi.** Push git dari sesi terjadwal bisa gagal. Karena itu Kantor Konten adalah sumber kebenaran untuk berkas episode:
@@ -42,7 +43,7 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
 2. **Cek Fakta.** Verifikasi setiap klaim, pakai WebSearch bila perlu. Klaim yang tidak pasti dihapus atau dilunakkan. Jangan mengarang angka atau nama.
 3. **Pengisi Suara.**
    - Jalankan `python3 video/src/tts_elevenlabs.py epNN`. Setelan suara diambil dari `config.elevenlabs`; jangan diubah tanpa catatan owner.
-   - Durasi mengikuti skill: Mas Kharis 55–75 detik (pangkas naskah kalau lebih dari 80 detik), Ternyata Leluhur 85–100 detik (pangkas kalau lebih dari 105 detik). Yang dipangkas kalimat naskah, bukan kecepatan suara.
+   - Durasi mengikuti skill: Mas Kharis 55–75 detik (pangkas naskah kalau lebih dari 80 detik), Ternyata Leluhur 85–100 detik (pangkas kalau lebih dari 105 detik), Dari 1 mnt **60–90 detik** (di bawah 60 detik tambah isi, di atas 90 detik pangkas). Yang dipangkas kalimat naskah, bukan kecepatan suara.
    - Kalau ElevenLabs gagal: set `{status:"butuh-vo", progres:"<alasan>"}`, simpan `naskahMd` dan `voText`, lalu berhenti.
 4. **Kirim untuk dicek.**
    - Jalankan `video/src/vo_preview.sh epNN "<judul>"`.
@@ -62,6 +63,7 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
    - Siapkan file episode (lihat Penyimpanan antarsesi).
    - Ikuti bagian "Pipeline produksi" di skill channelnya. Semua waktu diambil dari `at()/atEnd()/CUT`.
      - **Mas Kharis:** `video/src/epNN.html` (pola `ep02.html`) dan `epNN.js` (8 scene, pola `ep02.js`/`ep03.js`). Audio adalah `../vo/epNN.mp3`.
+     - **Dari 1 mnt:** `video/src/dmNN.html` (pola `dm00.html`) dan `dmNN.js` (pola `dm00.js`, 25–35 potongan, latar berbeda tiap potongan, maskot 3–4 kali). Lalu jalankan `python3 video/src/leluhur_mix.py dmNN`. Audio adalah `../vo/dmNN-mix.m4a`.
      - **Ternyata Leluhur:** `video/src/tlNN.html` (pola `tl00.html`) dan `tlNN.js` (7 beat, sekitar 30 potongan, pola `tl00.js`, mesin `leluhur3d.js`). Lalu jalankan `python3 video/src/leluhur_mix.py tlNN`. Audio adalah `../vo/tlNN-mix.m4a`.
    - Render stills di 8–12 titik penting, gabungkan dengan ffmpeg hstack, lalu periksa sendiri (Read gambar). Pastikan wajah tidak tertutup teks, karakter besar, warna tidak monoton, hook atau label terbaca, dan kamera tidak masuk ke dinding. Perbaiki lalu ulangi maksimal 2 kali.
    - Render: `cd video/src && EP=epNN node render.js video ../out/<channel>-epNN.mp4 30 <audio>`. Render 3D lama, jadi jalankan di background dan tunggu sampai selesai.
