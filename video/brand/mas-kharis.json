@@ -1,0 +1,69 @@
+{
+  "channel": "mas-kharis",
+  "nama": "Mas Kharis",
+  "tagline": "Drama kantor yang relate banget",
+  "jadwal": "SHORTS BARU SETIAP HARI",
+  "warna": {
+    "bg1": "#2AA6B0",
+    "bg2": "#0E5E66",
+    "aksen": "#FFD84A"
+  },
+  "pola": "catur",
+  "art": {
+    "kharis": {
+      "exp": "happy"
+    }
+  },
+  "logo": [
+    {
+      "nama": "A",
+      "jenis": "karakter",
+      "crop": [
+        60,
+        330,
+        960,
+        1000
+      ],
+      "catatan": "Paling direkomendasikan: wajah karakter paling mudah dikenali di ukuran kecil."
+    },
+    {
+      "nama": "B",
+      "jenis": "monogram",
+      "teks": "MK",
+      "stiker": "1F4BC",
+      "sub": "MAS KHARIS",
+      "catatan": "Monogram kuning tegas; cocok bila channel ingin terlihat lebih 'brand'."
+    },
+    {
+      "nama": "C",
+      "jenis": "nama",
+      "baris": [
+        "MAS",
+        "KHARIS"
+      ],
+      "stiker": "1F4BC",
+      "catatan": "Nama langsung terbaca; bagus untuk pencarian, kurang kuat di ukuran sangat kecil."
+    }
+  ],
+  "banner": {
+    "artKiri": true,
+    "crop": [
+      150,
+      280,
+      780,
+      1050
+    ],
+    "hiasan": [
+      "1F4BC",
+      "2615",
+      "1F4C8",
+      "1F4BB",
+      "1F4C5",
+      "1F4A1"
+    ]
+  },
+  "bio": [
+    "Cerita kantor yang bikin kamu mikir: \"kok aku banget?\" 😅\nMas Kharis bahas gajian, lembur, bos, rekan kerja, dan cara bertahan di dunia kerja, dalam 1 menit.\n\n📌 Shorts baru setiap hari\n👇 Ceritain pengalaman kantormu di komentar, siapa tahu jadi episode berikutnya!",
+    "Animasi 1 menit tentang hidup karyawan Indonesia: dari tanggal tua sampai resign.\nTonton, ketawa, terus share ke teman kantor yang paling relate. 😆\n\n🔔 Subscribe biar nggak ketinggalan episode baru tiap hari."
+  ]
+}

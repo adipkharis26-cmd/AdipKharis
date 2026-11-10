@@ -81,4 +81,5 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
    - Simpan juga kode episode ke field `epJs` dan isi `video/thumb/epNN.json` ke field `thumbJson`, supaya tidak hilang kalau push gagal.
    - Commit (`feat: produce <channel> epNN (<judul singkat>)`) lalu push. Kalau push gagal, beri tanda `sumberBelumPush:true`. Jangan membuat PR.
    - Kalau tool SendUserFile tersedia, kirim MP4 dan thumbnail varian utama ke owner. Kalau tidak, lewati.
+   - **Divisi baru tanpa branding:** kalau dokumen `brand/<channel>` belum ada, buat logo, banner, dan bio dengan skill `.claude/skills/branding-channel/SKILL.md` (frame dari episode yang baru selesai bisa jadi `art`).
    - Semua agen kembali `santai`. Akhiri dengan ringkasan singkat.

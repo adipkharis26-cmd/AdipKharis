@@ -62,6 +62,17 @@ h1 span { color: var(--teal); }
   background: rgba(20,22,32,.7); padding: 4px 8px; border-radius: 6px; }
 
 .roster { display: grid; gap: 14px; }
+.busy { display: flex; flex-wrap: wrap; gap: 8px; font-size: 14px; color: var(--muted); }
+.bchip { display: inline-flex; align-items: center; gap: 6px; background: var(--panel); border: 2px solid var(--teal); border-radius: 999px; padding: 4px 12px; color: var(--ink); max-width: 100%; }
+.bchip i { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--ink); flex: none; }
+.bchip span { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.deskhead { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.brand-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.brand-grid figure { margin: 0; display: grid; gap: 6px; justify-items: center; text-align: center; font-size: 12px; }
+.brand-grid img { width: 100%; max-width: 150px; aspect-ratio: 1; border-radius: 50%; border: 2px solid var(--ink); }
+.brand-banner { width: 100%; border-radius: 10px; border: 2px solid var(--ink); }
+.bio { white-space: pre-wrap; font-size: 14px; background: var(--bg); border: 2px dashed var(--line); border-radius: 10px; padding: 10px; }
+.rek { font: 900 11px var(--f-mono); color: #fff; background: var(--acc); border-radius: 999px; padding: 1px 8px; }
 .rgroup { display: grid; gap: 8px; }
 .rgroup h4 { margin: 0; font: 900 13px var(--f-body); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); display: flex; align-items: center; gap: 8px; }
 .rgroup h4 i { width: 14px; height: 14px; border-radius: 4px; border: 2px solid var(--ink); display: inline-block; }
@@ -137,7 +148,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   <header>
     <div>
       <h1>KANTOR <span>KONTEN</span></h1>
-      <p class="sub">Tim agen Claude yang tiap pagi menyetor ide judul. Anda tinggal ACC, lalu mereka lanjut sendiri: naskah, cek fakta, voice over ElevenLabs, animasi, sampai MP4 siap upload.</p>
+      <p class="sub">ACC 1 judul → tim membuat videonya sampai siap upload.</p>
     </div>
     <div class="clock" id="clock"><b>--:--</b>WIB</div>
   </header>
@@ -174,15 +185,12 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   </section>
 
   <details>
-    <summary>Cara kerja kantor ini</summary>
+    <summary>Cara pakai</summary>
     <ol class="how">
-      <li>Peta kantor: agen yang menunggu keputusanmu pindah ke <b>Ruang Rapat</b> dengan tanda <b>!</b> merah. Klik agennya untuk ACC langsung dari situ. Agen yang bekerja ada di mejanya, dan yang santai ada di Lounge.</li>
-      <li>Setiap pagi ±06:40 WIB, <b>Penggali Ide</b> menyetor beberapa judul baru (berbeda setiap hari) ke tab "Perlu ACC".</li>
-      <li>Anda menekan <b>ACC</b> pada judul yang cocok. Catatan opsional bisa diisi, misalnya "fokus ke anak kos".</li>
-      <li>Begitu Anda ACC satu judul, tim langsung dipanggil dan mulai sekitar 5 menit kemudian. Judul lain dari divisi yang sama masuk arsip, bukan ditolak. Penulis, Cek Fakta, lalu Pengisi Suara bekerja, dan hasilnya berhenti dulu di <b>Cek suara</b>. Kalau panggilan langsung tidak tersedia, jadwal tiap jam (menit ke-13, 07:13–22:13 WIB) tetap mengerjakannya.</li>
-      <li>Dengarkan VO di kartu "Cek suara". Tekan <b>ACC suara</b> agar Animator dan Publisher melanjutkan, atau <b>Ulang VO</b> dengan catatan apa yang perlu diperbaiki.</li>
-      <li>MP4 lengkap muncul di tab "Selesai" dan bisa langsung diputar.</li>
-      <li>Kalau ElevenLabs belum siap, kartu berstatus "Butuh VO". Unggah rekaman VO Anda di kartu itu dan tim melanjutkan produksinya.</li>
+      <li><b>Perlu ACC</b>: pilih 1 judul, tekan ACC.</li>
+      <li><b>Cek suara</b>: dengarkan, lalu ACC suara atau Ulang VO.</li>
+      <li><b>Selesai</b>: unduh video dan thumbnail, salin teks upload.</li>
+      <li><b>🎨 Branding</b> di tiap meja: logo, banner, dan bio channel.</li>
     </ol>
   </details>
 </div>
@@ -779,7 +787,7 @@ requestAnimationFrame(draw);
 // ── agent panel (ACC right from the office) ───────────────────
 let openId = null;
 function openAgent(id) { openId = id; renderPanel(); $('panel').hidden = false; $('panelClose').focus(); }
-function closePanel() { openId = null; $('panel').hidden = true; }
+function closePanel() { openId = null; brandOpen = null; $('panel').hidden = true; }
 function renderPanel() {
   if (!openId) return;
   const a = agents.find(x => x.id === openId) || {}, w = waitingFor(openId);
@@ -792,28 +800,38 @@ function renderPanel() {
   else { const e = document.createElement('div'); e.className = 'empty'; e.textContent = w ? 'Sudah beres semua.' : 'Tidak ada yang perlu kamu ACC dari agen ini.'; body.append(e); }
 }
 $('panelClose').onclick = closePanel;
+// ---------- branding per division (logo 1:1, YouTube banner, bio) ----------
+let brands = {}, brandOpen = null;
+function dlBtn(label, url, name) { const b = document.createElement('button'); b.className = 'btn'; b.textContent = label; b.onclick = () => downloadThumb({}, { nama: '', url, file: name + '.png' }, b); return b; }
+function openBrand(ch) {
+  openId = null; brandOpen = ch; const B = brands[ch], body = $('panelBody'); body.textContent = '';
+  $('panelTitle').textContent = '🎨 Branding ' + (DIVS[ch] ? DIVS[ch].nama.replace(/^Divisi /, '') : ch);
+  $('panelSub').textContent = 'Logo profil 800×800 · banner 2560×1440 · bio';
+  if (!B) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = 'Branding divisi ini belum dibuat.'; body.append(e); }
+  else {
+    const h1 = document.createElement('b'); h1.textContent = 'Logo profil (pilih satu)'; const grid = document.createElement('div'); grid.className = 'brand-grid';
+    (B.logos || []).forEach(L => { const f = document.createElement('figure'); const im = document.createElement('img'); im.src = L.url; im.alt = 'Logo ' + L.nama; const cap = document.createElement('figcaption'); cap.textContent = 'Logo ' + L.nama + ' '; if (L.rekom) { const r = document.createElement('span'); r.className = 'rek'; r.textContent = 'Terbaik'; cap.append(r); }
+      f.append(im, cap, dlBtn('⬇ Unduh', L.url, 'logo-' + ch + '-' + L.nama)); grid.append(f); });
+    body.append(h1, grid);
+    if (B.banner) { const h2 = document.createElement('b'); h2.textContent = 'Banner YouTube'; const im = document.createElement('img'); im.className = 'brand-banner'; im.src = B.banner.url; im.alt = 'Banner';
+      const n = document.createElement('div'); n.className = 'prog'; n.textContent = 'Teks & karakter ada di area aman tengah, jadi rapi di HP, komputer, dan TV.'; body.append(h2, im, n, dlBtn('⬇ Unduh banner', B.banner.url, 'banner-' + ch)); }
+    (B.bio || []).forEach((t, k) => { const h3 = document.createElement('b'); h3.textContent = 'Bio ' + (k ? 'alternatif' : 'utama'); const d = document.createElement('div'); d.className = 'bio'; d.textContent = t;
+      const cb = document.createElement('button'); cb.className = 'btn'; cb.textContent = 'Salin bio'; cb.onclick = async () => { try { await navigator.clipboard.writeText(t); toast('Bio disalin'); } catch (e) { toast('Tidak bisa menyalin di tampilan ini'); } };
+      body.append(h3, d, cb); });
+  }
+  $('panel').hidden = false; $('panelClose').focus();
+}
 $('panel').addEventListener('click', e => { if (e.target.id === 'panel') closePanel(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && openId) closePanel(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && (openId || brandOpen)) closePanel(); });
 $('waitBtn').onclick = () => { setRoom('rapat'); const first = agents.find(a => waitingFor(a.id)); if (first) openAgent(first.id); };
 
 /* ---------- roster + clock ---------- */
 function renderRoster() {
   const r = $('roster'); r.textContent = '';
-  [[null, 'Tim bersama (semua divisi)', '#9AA0B4'], ...Object.entries(DIVS).map(([k, d]) => [k, d.nama, d.warna])].forEach(([ch, title, col]) => {
-  const grp = document.createElement('div'); grp.className = 'rgroup';
-  const h = document.createElement('h4'); h.innerHTML = '<i></i><span></span>'; h.querySelector('i').style.background = col; h.querySelector('span').textContent = title;
-  const r2 = document.createElement('div'); r2.className = 'rgrid'; grp.append(h, r2); r.append(grp);
-  agents.filter(a => (AG_CH[a.id] || null) === ch).sort((a, b) => (a.urut || 9) - (b.urut || 9)).forEach(a => {
-    const el = document.createElement('div'); el.className = 'agent' + (a.status === 'kerja' ? ' kerja' : '');
-    el.innerHTML = '<div class="nm"><span class="dot"></span><span></span></div><div class="role"></div><div class="st"></div><div class="act"></div>';
-    el.querySelector('.dot').style.background = a.warna || '#ccc';
-    el.querySelector('.nm span:last-child').textContent = a.nama;
-    el.querySelector('.role').textContent = a.peran || '';
-    el.querySelector('.st').textContent = a.status === 'kerja' ? 'sedang kerja' : 'santai';
-    el.querySelector('.act').textContent = a.aktivitas || '';
-    r2.appendChild(el);
-  });
-  });
+  const busy = agents.filter(a => a.status === 'kerja'), line = document.createElement('div'); line.className = 'busy';
+  if (!busy.length) line.textContent = 'Semua tim sedang santai.';
+  busy.forEach(a => { const c = document.createElement('span'); c.className = 'bchip'; c.innerHTML = '<i></i><b></b> <span></span>'; c.querySelector('i').style.background = a.warna || '#ccc'; c.querySelector('b').textContent = a.nama; c.querySelector('span').textContent = a.aktivitas || 'sedang kerja'; line.append(c); });
+  r.append(line);
 }
 renderRoster();
 function tick() {
@@ -839,13 +857,14 @@ function renderDesks() {
   Object.entries(DIVS).forEach(([k, d]) => {
     const b = document.createElement('button'); b.className = 'desk'; b.setAttribute('aria-pressed', String(k === curDesk));
     b.innerHTML = '<span class="sw"></span><span><span class="t"></span><span class="sm"></span></span>';
-    b.querySelector('.sw').style.background = d.warna; b.querySelector('.t').textContent = 'Meja ' + d.nama;
+    b.querySelector('.sw').style.background = d.warna; b.querySelector('.t').textContent = d.nama.replace(/^Divisi /, '');
     const n = needsMe(k), prod = ideas.filter(i => chOf(i) === k && GROUP.jalan.includes(i.status)).length;
-    b.querySelector('.sm').textContent = (n ? n + ' perlu keputusanmu' : 'tidak ada yang menunggu') + (prod ? ' · ' + prod + ' diproduksi' : '');
+    b.querySelector('.sm').textContent = (n ? n + ' menunggu' : 'beres') + (prod ? ' · ' + prod + ' jalan' : '');
     if (n) { const bd = document.createElement('span'); bd.className = 'bd'; bd.textContent = n; b.append(bd); }
     b.onclick = () => setDesk(k); box.append(b);
   });
-  const h = $('deskHead'); h.style.setProperty('--desk', DIVS[curDesk].warna); h.textContent = 'Kamu sedang di meja ' + DIVS[curDesk].nama + ' · ' + DIVS[curDesk].ket;
+  const h = $('deskHead'); h.style.setProperty('--desk', DIVS[curDesk].warna); h.textContent = '';
+  const ht = document.createElement('span'); ht.textContent = DIVS[curDesk].nama.replace(/^Divisi /, ''); const bb = document.createElement('button'); bb.className = 'btn'; bb.textContent = '🎨 Branding'; bb.onclick = () => openBrand(curDesk); h.append(ht, bb);
 }
 try { const f = localStorage.getItem('kk-filter'); if (f) filter = f; } catch (e) {}
 const GROUP = { usulan: ['cek-vo', 'usulan'], jalan: ['acc', 'produksi', 'vo-ulang', 'vo-acc', 'butuh-vo', 'gagal'], selesai: ['selesai'], tolak: ['tolak'] };
@@ -864,19 +883,21 @@ function card(i) {
   const c = document.createElement('article'); c.className = 'card';
   const meta = document.createElement('div'); meta.className = 'meta';
   const p = document.createElement('span'); p.className = 'pill s-' + i.status; p.textContent = LABEL[i.status] || i.status; meta.append(p);
-  [i.channelNama || i.channel, i.niche, fmtDate(i.tanggal)].filter(Boolean).forEach(x => { const s = document.createElement('span'); s.className = 'chip'; s.textContent = x; meta.append(s); });
+  [i.niche, fmtDate(i.tanggal)].filter(Boolean).forEach(x => { const s = document.createElement('span'); s.className = 'chip'; s.textContent = x; meta.append(s); });
   const h = document.createElement('h3'); h.textContent = i.judul || '(tanpa judul)';
   c.append(meta, h);
+  const more = document.createElement('details'); const ms = document.createElement('summary'); ms.textContent = 'Detail'; more.append(ms);
   if (Array.isArray(i.hook) && i.hook.length) {
     const hk = document.createElement('div'); hk.className = 'hook';
     i.hook.slice(0, 3).forEach((l, k) => { const d = document.createElement('div'); d.className = 'l' + (k + 1); d.textContent = l; hk.append(d); });
-    c.append(hk);
+    more.append(hk);
   }
   const kv = document.createElement('div'); kv.className = 'kv';
-  [['Kenapa CTA tinggi', i.alasan], ['CTA', i.cta], ['Konsep thumbnail', i.thumbIde], ['Catatan owner', i.catatan], ['Catatan suara', i.catatanVo], ['Naskah', i.naskahPath]].forEach(([k, v]) => {
+  [['Alasan', i.alasan], ['Thumbnail', i.thumbIde], ['Catatanmu', i.catatan], ['Catatan suara', i.catatanVo]].forEach(([k, v]) => {
     if (!v) return; const d = document.createElement('div'); const b = document.createElement('b'); b.textContent = k + ': '; d.append(b, v); kv.append(d);
   });
-  if (kv.childNodes.length) c.append(kv);
+  if (kv.childNodes.length) more.append(kv);
+  if (more.childNodes.length > 1) c.append(more);
   if (i.status === 'cek-vo' && i.voPreviewUrl) {
     const lb = document.createElement('div'); lb.className = 'kv'; const b = document.createElement('b'); b.textContent = 'Dengarkan VO' + (i.voDurasi ? ' (' + i.voDurasi + ' dtk)' : '') + ':'; lb.append(b);
     const v = document.createElement('video'); v.className = 'vo'; v.controls = true; v.preload = 'metadata'; v.playsInline = true; v.src = i.voPreviewUrl; c.append(lb, v);
@@ -888,7 +909,6 @@ function card(i) {
   if (i.progres) { const pr = document.createElement('div'); pr.className = 'prog'; pr.textContent = '▸ ' + i.progres; c.append(pr); }
   if (i.status === 'selesai' && i.videoUrl) {
     const v = document.createElement('video'); v.controls = true; v.preload = 'metadata'; v.playsInline = true; v.src = i.videoUrl; c.append(v);
-    if (i.upload) { const d = document.createElement('div'); d.className = 'kv'; const b = document.createElement('b'); b.textContent = 'Siap upload: '; d.append(b, i.upload); c.append(d); }
     const dl = document.createElement('div'); dl.className = 'actions';
     const b1 = document.createElement('button'); b1.className = 'btn acc'; b1.textContent = '⬇ Unduh MP4'; b1.onclick = () => downloadVideo(i, b1);
     const b3 = document.createElement('button'); b3.className = 'btn dl-alt'; b3.textContent = 'Buka video langsung'; b3.hidden = true; b3.onclick = () => openVideoLink(i);
@@ -902,13 +922,13 @@ function card(i) {
       if (!th || !th.url) return;
       const f = document.createElement('figure'); f.className = 'thumb' + (th.nama === i.thumbPilihan ? ' pilih' : '');
       const im = document.createElement('img'); im.src = th.url; im.alt = 'Thumbnail ' + th.nama; im.loading = 'lazy';
-      const cap = document.createElement('figcaption'); cap.textContent = (th.nama === i.thumbPilihan ? '★ ' : '') + 'Thumbnail ' + th.nama + (th.teks ? ' · ' + th.teks : '');
+      const cap = document.createElement('figcaption'); cap.textContent = (th.nama === i.thumbPilihan ? '★ Thumbnail ' : 'Thumbnail ') + th.nama;
       if (th.alasan) cap.title = th.alasan;
       const b = document.createElement('button'); b.className = 'btn'; b.textContent = '⬇ Unduh ' + th.nama;
       b.onclick = () => downloadThumb(i, th, b);
       f.append(im, cap, b); tw.append(f);
     });
-    if (tw.childNodes.length) { const h = document.createElement('div'); h.className = 'kv'; const bb = document.createElement('b'); bb.textContent = 'Thumbnail High CTA:'; h.append(bb); c.append(h, tw); }
+    if (tw.childNodes.length) c.append(tw);
   }
   const act = document.createElement('div'); act.className = 'actions';
   if (i.status === 'usulan') {
@@ -960,7 +980,7 @@ async function downloadThumb(i, th, b) {
   try {
     const dls = window.claude && window.claude.use ? await Promise.race([window.claude.use('downloads'), new Promise(r => setTimeout(() => r(null), 5000))]) : null;
     const blob = await fetchVideo(th.url, p => { b.textContent = 'Mengambil ' + p; });
-    const name = slug(i) + '-thumbnail-' + th.nama + '.png';
+    const name = th.file || (slug(i) + '-thumbnail-' + th.nama + '.png');
     if (dls) { b.textContent = 'Konfirmasi simpan…'; try { await dls.save({ filename: name, data: blob }); toast('Thumbnail tersimpan'); } catch (e) { toast(e.code === 'declined' ? 'Unduhan dibatalkan' : 'Unduhan tidak tersedia, tekan lama gambar lalu simpan'); } }
     else { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000); }
   } catch (e) { toast('Gagal mengambil thumbnail: ' + (e.message || e)); }
@@ -1007,7 +1027,7 @@ function renderList(state) {
   if (!items.length) {
     const e = document.createElement('div'); e.className = 'empty';
     e.textContent = state === 'loading' ? 'Memuat ide dari tim…' : filter === 'usulan'
-      ? 'Tidak ada yang perlu di-ACC. Penggali Ide menyetor judul baru setiap pagi ±06:40 WIB, dan VO yang siap dicek juga muncul di sini.'
+      ? 'Belum ada yang perlu di-ACC. Judul baru masuk tiap pagi ±06:40.'
       : 'Belum ada judul di sini.';
     L.append(e); return;
   }
@@ -1079,6 +1099,7 @@ renderList('loading');
     $('liveNote').textContent = 'live · ' + (last ? 'update terakhir ' + new Date(last).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) + ' WIB' : 'belum ada aktivitas');
     if (reduce) requestAnimationFrame(draw);
   }, e => { $('liveNote').textContent = 'status agen error: ' + e.code; });
+  db.collection('brand').onSnapshot(s => { brands = Object.fromEntries(s.docs.map(x => [x.id, x.data()])); if (brandOpen) openBrand(brandOpen); }, () => {});
   db.collection('ideas').onSnapshot(s => {
     if (!s.metadata.fromCache) { clearTimeout(timer); $('banner').hidden = true; }
     ideas = s.docs.map(x => ({ id: x.id, ...x.data() }));

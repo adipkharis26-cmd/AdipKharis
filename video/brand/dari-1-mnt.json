@@ -1,0 +1,64 @@
+{
+  "channel": "dari-1-mnt",
+  "nama": "Dari 1 mnt",
+  "tagline": "Fakta, dilema & perbandingan dalam 1 menit",
+  "jadwal": "VIDEO BARU SETIAP HARI",
+  "warna": {
+    "bg1": "#1E6EFF",
+    "bg2": "#0C1646",
+    "aksen": "#FFD60A"
+  },
+  "pola": "sunburst",
+  "art": {
+    "maskot": "senang"
+  },
+  "logo": [
+    {
+      "nama": "A",
+      "jenis": "karakter",
+      "size": 860,
+      "y": 1000,
+      "stiker": "1F55B",
+      "stikerXY": [
+        600,
+        180
+      ],
+      "stikerSize": 120,
+      "catatan": "Paling direkomendasikan: maskot dari wajah owner, unik dan membangun kedekatan."
+    },
+    {
+      "nama": "B",
+      "jenis": "monogram",
+      "teks": "1'",
+      "stiker": "1F55B",
+      "sub": "DARI 1 MNT",
+      "catatan": "Angka 1 dan jam: langsung menjelaskan formatnya (1 menit)."
+    },
+    {
+      "nama": "C",
+      "jenis": "nama",
+      "baris": [
+        "DARI",
+        "1 MNT"
+      ],
+      "stiker": "26A1",
+      "catatan": "Nama tegas warna pop; kuat di tema gelap YouTube."
+    }
+  ],
+  "banner": {
+    "artKiri": true,
+    "maskotExpr": "kaget",
+    "hiasan": [
+      "1F1EE-1F1E9",
+      "1F4A1",
+      "1F4C8",
+      "26A1",
+      "1F914",
+      "1F3AF"
+    ]
+  },
+  "bio": [
+    "Semua hal penasaran, dijawab dalam 1 menit. ⏱️\nFakta vs mitos, dilema \"bagaimana jika…\", dan Indonesia vs dunia, pakai data yang bisa dicek.\n\n📌 Video baru setiap hari\n👇 Kamu tim mana? Debat sehat di komentar!",
+    "Benar atau cuma katanya? 🤔\nKami bandingkan Indonesia dengan negara lain dan bongkar mitos populer, singkat, padat, bersumber.\n\n🔔 Subscribe biar tiap hari dapat 1 fakta baru."
+  ]
+}
