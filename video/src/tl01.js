@@ -1,16 +1,17 @@
-// Ternyata Leluhur TL01 — "Kenapa Candi Sebesar Ini Tidak Pakai Semen?"
+// Ternyata Leluhur TL01 — "Kenapa Candi Sebesar Ini Tidak Pakai Semen?" (v2: hook fakta dulu, ±71 dtk, tutup dengan tanya daerah)
 // Tokoh fiksi: Mbah Parto (pemandu tua) dan Mas Dion (mahasiswa teknik).
-KEYWORDS = new Set(['dilem', 'tonjolan', 'lubang', 'mengunci', 'roboh', 'borobudur', 'andesit', 'berat', 'kering', 'ekor', 'burung', 'lidah', 'alur', 'puzzle', 'kristal', 'menempel', 'sambungan']);
+KEYWORDS = new Set(['semen', 'gempa', 'daerahmu', 'dilem', 'tonjolan', 'lubang', 'mengunci', 'roboh', 'borobudur', 'andesit', 'berat', 'kering', 'ekor', 'burung', 'lidah', 'alur', 'puzzle', 'kristal', 'menempel', 'sambungan']);
 window.EXTRA_SFX = [
-  { t: 0, type: 'angin', d: 14.5, gain: 0.35 },
-  { t: at('Mas'), type: 'langkah', d: 1.6 },
+  { t: 0, type: 'boom', gain: 0.7 },
+  { t: at('gempa') - 0.1, type: 'gempa', d: 2.9, gain: 1.2 },
+  { t: at('gempa') + 0.2, type: 'ramai', d: 2.0, gain: 1.2 },
+  { t: at('Borobudur') - 0.05, type: 'stamp', gain: 1.0 },
+  { t: at('Mas'), type: 'langkah', d: 1.4 },
   { t: at('mengunci') - 0.05, type: 'kayu', gain: 1.2 },
-  { t: at('gempa', 1) - 0.1, type: 'gempa', d: 4.6, gain: 1.2 },
-  { t: at('orang-orang') - 0.1, type: 'ramai', d: 2.0, gain: 1.4 },
   { t: at('bergeser') + 0.1, type: 'kayu', gain: 0.8 },
   { t: at('burung') + 0.1, type: 'kayu', gain: 1.1 },
   { t: at('alur') + 0.1, type: 'kayu', gain: 1.1 },
-  { t: at('Sore'), type: 'angin', d: 12.5, gain: 0.35 },
+  { t: at('Sore'), type: 'angin', d: 16, gain: 0.35 },
 ];
 
 // ── tokoh ─────────────────────────────────────────────────────
@@ -143,123 +144,96 @@ function candiSet(m) { show(CANDI); sky(m === 'sore' ? 'sore' : 'desa'); if (m) 
 
 function scene(t) {
   const k = beatOf(t);
-  // ───────── Beat 1: pembuka ─────────
+  // ───────── Beat 1: HOOK — fakta paling mengejutkan dulu ─────────
   if (k === 0) {
-    candiSet();
-    if (t < at('berdiri') - 0.2) {                      // establishing: the giant temple, Parto tiny on the stairs
+    if (t < at('Tapi') - 0.15) {                         // giant temple, "no cement at all"
+      candiSet();
       pose(PARTO, t, { x: 0.15, y: 0, z: 2.0, ry: Math.PI, expr: 'smile' });
-      shot(t, 0, at('berdiri'), [5, 1.4, 17], [0, 3.8, -6], { eye2: [3.2, 1.6, 13.5] });
-    } else if (t < at('Dia') - 0.15) {                  // Parto at the foot of the stairs
-      pose(PARTO, t, { x: 1.4, z: 1.2, ry: -0.35, expr: 'smile' });
-      shot(t, at('berdiri') - 0.2, at('Dia'), [3.0, 1.0, 4.6], [1.2, 0.85, 0.9]);
-    } else if (t < at('Dia', 1) - 0.15) {               // he does NOT look at the top: tilt up the huge temple
-      pose(PARTO, t, { x: 1.4, z: 1.2, ry: Math.PI - 0.3, expr: 'closed' });
-      shot(t, at('Dia') - 0.15, at('Dia', 1), [2.4, 0.5, 4.2], [0.5, 4.5, -5], { target2: [0.2, 7.5, -8], push: 0.05 });
-    } else if (t < at('sambil') - 0.15) {               // his hand on the joints
-      pose(PARTO, t, { x: 2.3, z: 0.4, ry: Math.PI / 2 + 0.55, arms: [[-1.2, 0.2], [-1.25 + Math.sin(t * 2) * 0.12, 0.25]], expr: 'smile', look: 0.35 });
-      shot(t, at('Dia', 1) - 0.15, at('sambil'), [4.7, 0.95, 0.95], [2.1, 0.66, 0.15], { push: 0.2, drift: 0 });
-      chip('Sambungan batu', 540, 300, at('sambungan'), { size: 74 });
-    } else {                                            // smiling like greeting an old friend
-      pose(PARTO, t, { x: 2.3, z: 0.42, ry: 0.75, expr: t > at('tersenyum') ? 'happy' : 'smile', look: -0.2 });
-      shot(t, at('sambil') - 0.15, CUT[1], [3.5, 1.05, 2.3], [2.3, 0.82, 0.4], { push: 0.15 });
+      shot(t, 0, at('Tapi'), [4.2, 1.2, 14], [0, 4.2, -6], { eye2: [2.6, 1.5, 11.5] });
+      bigWord('TANPA SEMEN!', 0.05, at('Tapi') - 0.15, { y: 520, col: '#FFDD33' });
+    } else if (t < at('Borobudur') - 0.15) {             // 2006: the ground shakes
+      show(KAMPUNG); sky('desa'); farFog(); SHAKE = t > at('gempa') - 0.1 ? 0.09 : 0;
+      WARGA.forEach((W, i) => pose(W, t, { x: -1.6 + i * 1.0, z: 1.5 + (i % 2) * 0.5, ry: 0.2 - i * 0.15, expr: 'shock', shake: 1, arms: i % 2 ? 'up' : 'shrug' }));
+      shot(t, at('Tapi') - 0.15, at('Borobudur'), [0.6, 1.2, 6.2], [0, 0.8, 0.5]);
+      chip('Yogyakarta, 2006', 540, 260, at('Yogyakarta'), { size: 78 });
+      if (t > at('gempa')) bigWord('GEMPA!', at('gempa'), at('Yogyakarta') + 0.4, { y: 520, shake: true, col: '#FFDD33' });
+    } else {                                            // ...still standing
+      candiSet();
+      shot(t, at('Borobudur') - 0.15, CUT[1], [4.5, 1.2, 15], [0, 4.0, -6], { eye2: [3.0, 1.5, 12.5] });
+      chip('Borobudur', 540, 230, at('Borobudur'), { size: 70, bg: '#FFF7E6' });
+      if (t > at('berdiri')) chip('Tetap berdiri', 540, 380, at('berdiri'), { size: 92, stamp: true, bg: '#2F9B48', fg: '#FFFFFF' });
     }
   }
-  // ───────── Beat 2: rahasia ─────────
+  // ───────── Beat 2: konflik — Mas Dion tidak percaya ─────────
   else if (k === 1) {
-    if (t < at('Batu', 1) - 0.2) {                      // flashback: the teacher's message
+    candiSet();
+    if (t < at('Mbah') - 0.2) {
+      const wk = seg(t, CUT[1], CUT[1] + 1.4);
+      pose(DION, t, { x: lerp(4.4, 3.0, ease(wk)), z: 2.0, ry: -1.3, walk: wk < 1, expr: t > at('percaya') - 0.1 ? 'laugh' : 'smile', arms: t > at('percaya') ? 'hips' : 'down' });
+      pose(PARTO, t, { x: 1.9, z: 1.3, ry: 0.9, expr: 'smile' });
+      shot(t, CUT[1], at('Mbah'), [2.8, 1.05, 5.6], [2.5, 0.75, 1.5], { drift: 0.1 });
+      chip('Mahasiswa teknik', 540, 260, at('mahasiswa'), { size: 70 });
+    } else {
+      pose(DION, t, { x: 3.0, z: 2.0, ry: -1.0, expr: t < at('Kena') ? 'talk' : 'laugh', talk: true, arms: t > at('ditumpuk') && t < at('Kena') ? 'shrug' : t >= at('Kena') ? 'hips' : 'point' });
+      pose(PARTO, t, { x: 1.9, z: 1.3, ry: 0.9, expr: 'flat' });
+      shot(t, at('Mbah') - 0.2, CUT[2], [3.6, 1.0, 4.1], [2.6, 0.8, 1.6], { push: 0.15, drift: -0.1 });
+      card(['“Kena gempa sedikit,', 'bubar jalan!”'], 540, 330, at('Kena'), { size: 62, titleCol: '#17120F' });
+    }
+  }
+  // ───────── Beat 3: rahasia dari guru ─────────
+  else if (k === 2) {
+    if (t < at('Kata') - 0.15) {                         // Parto just smiles, hand on the joints
+      candiSet();
+      pose(PARTO, t, { x: 2.3, z: 0.42, ry: 0.75, expr: 'happy', look: -0.2 });
+      shot(t, CUT[2], at('Kata'), [3.5, 1.05, 2.3], [2.3, 0.82, 0.4], { push: 0.15 });
+    } else if (t < at('batu', 1) - 0.2) {               // flashback: the teacher's message
       candiSet('sore'); SEPIA = 0.85;
-      pose(GURU, t, { x: 0.2, z: 1.5, ry: -0.5, expr: t > at('pesan') - 0.3 ? 'talk' : 'smile', talk: t > at('pesan') - 0.3, arms: t > at('pesan') - 0.3 ? 'point' : 'down', nod: t < at('Mbah', 1) });
+      pose(GURU, t, { x: 0.2, z: 1.5, ry: -0.5, expr: 'talk', talk: true, arms: 'point' });
       pose(PARTO_MUDA, t, { x: 1.15, z: 1.75, ry: -1.3, expr: 'smile', look: -0.2 });
-      shot(t, CUT[1], at('Batu', 1), [0.9, 0.95, 4.5], [0.6, 0.7, 1.4]);
-      chip('Pesan guru', 540, 260, at('pesan'), { size: 70, bg: '#FFF7E6' });
+      shot(t, at('Kata') - 0.15, at('batu', 1), [0.9, 0.95, 4.5], [0.6, 0.7, 1.4]);
+      chip('Pesan guru', 540, 260, at('gurunya'), { size: 70, bg: '#FFF7E6' });
     } else if (t < at('Setiap') - 0.15) {               // "batu candi tidak dilem"
       candiSet('sore'); SEPIA = 0.85;
       pose(GURU, t, { x: 1.9, z: 0.42, ry: Math.PI / 2 + 0.55, arms: [[0, 0.12], [-1.3, 0.2]], expr: 'talk', talk: true, look: -0.3 });
-      shot(t, at('Batu', 1) - 0.2, at('Setiap'), [4.6, 0.95, 0.95], [2.0, 0.66, 0.15], { push: 0.15 });
+      shot(t, at('batu', 1) - 0.2, at('Setiap'), [4.6, 0.95, 0.95], [2.0, 0.66, 0.15], { push: 0.15 });
       chip('Tidak dilem!', 540, 300, at('dilem'), { size: 96, stamp: true, bg: '#FFFFFF', fg: '#C7301F' });
     } else {                                            // knob + notch lock together
       show(DEMO); sky('desa');
       const T = DEMO.userData.top, k2 = easeOut(seg(t, at('saling') - 0.25, at('mengunci') + 0.05));
-      T.position.set(0, 0.55 + lerp(0.75, 0, k2), 0);
-      T.rotation.z = (1 - k2) * 0.04 * Math.sin(t * 3);
-      shot(t, at('Setiap') - 0.15, CUT[2], [1.2, 1.8, 4.2], [0, 0.9, 0], { push: 0.1 });
+      T.position.set(0, 0.55 + lerp(0.75, 0, k2), 0); T.rotation.z = (1 - k2) * 0.04 * Math.sin(t * 3);
+      shot(t, at('Setiap') - 0.15, CUT[3], [1.2, 1.8, 4.2], [0, 0.9, 0], { push: 0.1 });
       chip('Tonjolan', 330, 230, at('tonjolan'), { size: 64 });
       chip('Lubang', 760, 230, at('lubang'), { size: 64, bg: '#FFF7E6' });
       if (t > at('mengunci')) chip('Saling mengunci', 540, 400, at('mengunci'), { size: 78, stamp: true, bg: '#2F9B48', fg: '#FFFFFF' });
     }
   }
-  // ───────── Beat 3: ejekan ─────────
-  else if (k === 2) {
-    candiSet();
-    if (t < at('mbah', 2) - 0.2) {                       // Dion walks in, laughs
-      const wk = seg(t, CUT[2], CUT[2] + 1.6);
-      pose(DION, t, { x: lerp(4.4, 3.0, ease(wk)), z: 2.0, ry: -1.3, walk: wk < 1, expr: t > at('tertawa') - 0.1 ? 'laugh' : 'smile', arms: t > at('tertawa') ? 'hips' : 'down' });
-      pose(PARTO, t, { x: 1.9, z: 1.3, ry: 0.9, expr: 'smile' });
-      shot(t, CUT[2], at('mbah', 2), [2.8, 1.05, 5.6], [2.5, 0.75, 1.5], { drift: 0.1 });
-    } else {                                            // the taunt
-      pose(DION, t, { x: 3.0, z: 2.0, ry: -1.0, expr: t < at('Kena') ? 'talk' : 'laugh', talk: true, arms: t > at('ditumpuk') && t < at('Kena') ? 'shrug' : t >= at('Kena') ? 'hips' : 'point' });
-      pose(PARTO, t, { x: 1.9, z: 1.3, ry: 0.9, expr: 'flat' });
-      shot(t, at('mbah', 2) - 0.2, CUT[3], [3.6, 1.0, 4.1], [2.6, 0.8, 1.6], { push: 0.15, drift: -0.1 });
-      card(['“Kena gempa sedikit,', 'bubar jalan!”'], 540, 330, at('Kena'), { size: 62, titleCol: '#17120F' });
-    }
-  }
-  // ───────── Beat 4: kejadian ─────────
+  // ───────── Beat 4: penjelasan sains ─────────
   else if (k === 3) {
-    if (t < at('orang-orang') - 0.15) {                 // 2006: the ground shakes
-      show(KAMPUNG); sky('desa'); farFog(); SHAKE = 0.08 * (1 - seg(t, at('Yogyakarta') + 1.0, at('orang-orang')) * 0.5);
-      WARGA.forEach((W, i) => pose(W, t, { x: -1.6 + i * 1.0, z: 1.5 + (i % 2) * 0.5, ry: 0.2 - i * 0.15, expr: 'shock', shake: 1, arms: i % 2 ? 'up' : 'shrug' }));
-      shot(t, CUT[3], at('orang-orang'), [0.6, 1.2, 6.2], [0, 0.8, 0.5]);
-      chip('Yogyakarta, 2006', 540, 260, at('tahun'), { size: 78 });
-      if (t > at('gempa', 1)) bigWord('GEMPA!', at('gempa', 1), at('mengguncang') + 0.4, { y: 520, shake: true, col: '#FFDD33' });
-    } else if (t < at('Mas', 1) - 0.15) {               // people running
-      show(KAMPUNG); sky('desa'); farFog(); SHAKE = 0.05;
-      WARGA.forEach((W, i) => pose(W, t, { x: -2.5 + i * 1.3 + (t - at('orang-orang')) * 2.2, z: 1.2 + (i % 2) * 0.7, ry: Math.PI / 2, run: true, expr: 'shock', arms: 'up' }));
-      shot(t, at('orang-orang') - 0.15, at('Mas', 1), [-0.5, 0.9, 5.0], [0.6, 0.6, 1.2]);
-    } else if (t < at('Tapi') - 0.15) {                 // Dion, sure that it all collapsed
-      show(KAMPUNG); sky('desa'); farFog(); SHAKE = 0.02;
-      pose(DION, t, { x: 0, z: 2.6, ry: 0.35, expr: t > at('roboh') - 0.3 ? 'shock' : 'worried', arms: t > at('yakin') ? 'chin' : 'down', look: -0.1 });
-      shot(t, at('Mas', 1) - 0.15, at('Tapi'), [0.9, 1.0, 4.6], [0.1, 0.75, 2.6], { push: 0.15 });
-      chip('Sudah roboh?', 540, 300, at('roboh'), { size: 84, stamp: true, bg: '#FFFFFF', fg: '#C7301F' });
-    } else {                                            // ...but Borobudur still stands
-      candiSet();
-      pose(DION, t, { x: 1.2, z: 6.0, ry: Math.PI, expr: 'shock' });
-      shot(t, at('Tapi') - 0.15, CUT[4], [4.5, 1.2, 15], [0, 4.0, -6], { eye2: [3.0, 1.5, 12.5] });
-      chip('Borobudur', 540, 230, at('Borobudur'), { size: 70, bg: '#FFF7E6' });
-      if (t > at('berdiri', 1)) chip('Tetap berdiri', 540, 380, at('berdiri', 1), { size: 92, stamp: true, bg: '#2F9B48', fg: '#FFFFFF' });
-    }
-  }
-  // ───────── Beat 5: penjelasan ─────────
-  else if (k === 4) {
     show(DEMO); sky('desa');
     const T = DEMO.userData.top; T.position.set(0, 0.55, 0); T.rotation.z = 0;
     if (t < at('sementara') - 0.15) {                   // heavy andesite pushes down
       T.position.y = 0.55 - Math.max(0, Math.sin(seg(t, at('menekan'), at('menekan') + 0.5) * Math.PI)) * 0.03;
-      shot(t, CUT[4], at('sementara'), [1.4, 1.5, 4.0], [0, 0.65, 0], { push: 0.12 });
+      shot(t, CUT[3], at('sementara'), [1.4, 1.5, 4.0], [0, 0.65, 0], { push: 0.12 });
       chip('Batu andesit', 540, 230, at('andesit'), { size: 74 });
       if (t > at('berat') - 0.05) chip('Berat', 540, 380, at('berat'), { size: 84, stamp: true, bg: '#FFF7E6' });
       arrow(540, 640, Math.PI / 2, at('menekan'), at('sementara') - 0.15);
-    } else if (t < at('Para') - 0.15) {                 // the lock stops sideways sliding
+    } else {                                            // the lock stops sideways sliding
       SHAKE = 0.015; T.position.x = Math.sin(t * 18) * 0.012;
-      shot(t, at('sementara') - 0.15, at('Para'), [-1.4, 1.3, 3.8], [0, 0.6, 0], { push: 0.15 });
+      shot(t, at('sementara') - 0.15, CUT[4], [-1.4, 1.3, 3.8], [0, 0.6, 0], { push: 0.15 });
       chip('Kunci', 540, 230, at('kunci'), { size: 74, bg: '#2F9B48', fg: '#FFFFFF' });
       if (t > at('bergeser')) chip('Tidak bergeser', 540, 380, at('bergeser'), { size: 80, stamp: true, bg: '#FFFFFF', fg: '#C7301F' });
-      arrow(250, 760, 0, at('samping') - 0.3, at('Para') - 0.15, '#FFFFFF');
-      arrow(830, 760, Math.PI, at('samping') - 0.3, at('Para') - 0.15, '#FFFFFF');
-    } else {                                            // dry masonry
-      candiSet();
-      pose(PARTO, t, { x: 2.0, z: 0.9, ry: 0.4, expr: 'smile', nod: true });
-      shot(t, at('Para') - 0.15, CUT[5], [4.6, 1.3, 4.6], [1.6, 0.8, 0], { push: 0.12, drift: -0.2 });
-      card(['SUSUNAN KERING', 'stabil karena beratnya', 'sendiri dan kuncinya'], 540, 360, at('susunan', 1), { size: 66 });
+      arrow(250, 760, 0, at('samping') - 0.3, CUT[4] - 0.15, '#FFFFFF');
+      arrow(830, 760, Math.PI, at('samping') - 0.3, CUT[4] - 0.15, '#FFFFFF');
     }
   }
-  // ───────── Beat 6: lapisan kedua ─────────
-  else if (k === 5) {
+  // ───────── Beat 5: lapisan kedua ─────────
+  else if (k === 4) {
     if (t < at('mirip') - 0.15) {                       // dovetail + tongue & groove
       show(JOINS); sky('desa');
       const J = JOINS.userData;
       J.dvB.position.y = lerp(0.8, 0, easeOut(seg(t, at('burung') - 0.3, at('burung') + 0.15)));
       J.tgB.position.x = lerp(0.7, 0, easeOut(seg(t, at('alur') - 0.4, at('alur') + 0.1)));
-      shot(t, CUT[5], at('mirip'), [0.1, 3.9, 2.9], [0.05, 0, -0.05], { push: 0.08, drift: 0.05 });
+      shot(t, CUT[4], at('mirip'), [0.1, 3.9, 2.9], [0.05, 0, -0.05], { push: 0.08, drift: 0.05 });
       chip('Ekor burung', 540, 230, at('ekor'), { size: 74 });
       chip('Lidah & alur', 540, 380, at('lidah'), { size: 74, bg: '#FFF7E6' });
     } else if (t < at('Bahkan') - 0.15) {               // a giant puzzle
@@ -271,28 +245,37 @@ function scene(t) {
       const g2 = seg(t, at('kristal') - 0.2, at('menempel') + 0.3);
       LAB.userData.cr.children.forEach(c => c.scale.setScalar(clamp((g2 - c.userData.k * 0.6) * 2.5, 0.001, 1)));
       pose(PENELITI, t, { x: -1.05, z: -0.5, ry: 0.5, expr: t > at('menemukan') ? 'talk' : 'smile', talk: t > at('menemukan') && t < at('kristal'), arms: t > at('kristal') ? 'point' : 'down', look: 0.2 });
-      shot(t, at('Bahkan') - 0.15, CUT[6], [-0.1, 1.95, 2.7], [-0.45, 0.95, -0.2], { push: 0.15 });
+      shot(t, at('Bahkan') - 0.15, CUT[5], [-0.1, 1.95, 2.7], [-0.45, 0.95, -0.2], { push: 0.15 });
       card(['PENELITIAN UGM', 'Sementasi alami (1999)'], 540, 300, at('Universitas'), { size: 64, t1: at('kristal') - 0.1 });
       if (t > at('kristal')) chip('Kristal mineral', 540, 260, at('kristal'), { size: 74, bg: '#9FE8F2' });
       if (t > at('menempel')) chip('Menempel sendiri', 540, 410, at('menempel'), { size: 74, stamp: true, bg: '#FFF7E6' });
     }
   }
-  // ───────── Beat 7: penutup ─────────
-  else {
+  // ───────── Beat 6: Mas Dion berubah ─────────
+  else if (k === 5) {
     candiSet('sore');
-    if (t < at('Dia', 2) - 0.15) {                      // Dion stops pointing at the top
+    if (t < at('Dia') - 0.15) {                         // Dion stops pointing at the top
       const stop = t > at('berhenti') + 0.1;
       pose(DION, t, { x: 1.5, z: 2.4, ry: Math.PI + 0.2, expr: stop ? 'smile' : 'talk', arms: stop ? 'down' : 'point', look: stop ? 0 : 0.15, tilt: stop ? 0 : -0.15 });
       pose(PARTO, t, { x: 2.5, z: 2.0, ry: Math.PI - 0.5, expr: 'smile' });
-      shot(t, CUT[6], at('Dia', 2), [2.2, 1.15, 5.8], [1.6, 1.1, 1.0], { drift: -0.1 });
+      shot(t, CUT[5], at('Dia'), [2.2, 1.15, 5.8], [1.6, 1.1, 1.0], { drift: -0.1 });
     } else if (t < at('persis') - 0.15) {               // he traces the joints one by one
       const k3 = seg(t, at('menyusuri'), at('persis'));
       pose(DION, t, { x: lerp(1.0, 2.3, k3), z: 0.42, ry: Math.PI / 2 + 0.55, arms: [[-1.2, 0.2], [-1.25 + Math.sin(t * 6) * 0.1, 0.25]], walk: false, expr: 'smile', look: 0.15 });
-      shot(t, at('Dia', 2) - 0.15, at('persis'), [lerp(3.6, 4.8, k3), 0.95, 0.95], [lerp(1.0, 2.2, k3), 0.66, 0.15], { push: 0.1, drift: 0 });
-    } else {                                            // and this time he is the one smiling
-      pose(DION, t, { x: 2.3, z: 0.45, ry: Math.PI - 0.7, arms: [[0, 0.12], [-1.1, 0.25]], expr: t > at('tersenyum', 1) - 0.1 ? 'happy' : 'smile', look: -0.3 });
-      pose(PARTO, t, { x: 3.3, z: 0.95, ry: -1.2, expr: 'happy', nod: t > at('dialah') });
-      shot(t, at('persis') - 0.15, DURATION, [3.6, 1.0, 3.0], [2.7, 0.85, 0.5], { push: 0.15 });
+      shot(t, at('Dia') - 0.15, at('persis'), [lerp(3.6, 4.8, k3), 0.95, 0.95], [lerp(1.0, 2.2, k3), 0.66, 0.15], { push: 0.1, drift: 0 });
+    } else {                                            // just like Mbah Parto
+      pose(DION, t, { x: 2.3, z: 0.45, ry: Math.PI - 0.7, arms: [[0, 0.12], [-1.1, 0.25]], expr: 'happy', look: -0.3 });
+      pose(PARTO, t, { x: 3.3, z: 0.95, ry: -1.2, expr: 'happy', nod: true });
+      shot(t, at('persis') - 0.15, CUT[6], [3.6, 1.0, 3.0], [2.7, 0.85, 0.5], { push: 0.15 });
     }
+  }
+  // ───────── Beat 7: CTA — tanya daerah penonton ─────────
+  else {
+    candiSet('sore');
+    pose(PARTO, t, { x: 1.2, z: 2.6, ry: 0.15, expr: 'happy', arms: t > at('Tulis') ? 'point' : 'down', look: 0 });
+    pose(DION, t, { x: 2.4, z: 2.7, ry: -0.2, expr: 'smile', arms: t > at('daerahmu') ? 'shrug' : 'down' });
+    shot(t, CUT[6], DURATION, [1.8, 1.1, 6.6], [1.8, 1.0, 2.5], { push: 0.12 });
+    card(['DI DAERAHMU ADA?', 'Bangunan leluhur tanpa', 'paku atau semen'], 540, 330, at('daerahmu'), { size: 62 });
+    if (t > at('Tulis')) chip('Tulis di komentar', 540, 600, at('Tulis'), { size: 80, stamp: true, bg: '#FFDD33' });
   }
 }

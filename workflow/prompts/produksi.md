@@ -39,11 +39,11 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
 1. **Penulis Naskah.**
    - Nomor episode = 1 + angka terbesar dari file `naskah/<prefix>NN-*` dan field `episode` di `ideas` **channel yang sama**. Dua digit, misalnya `ep05` atau `tl01`. Di bawah ini `epNN` berarti `<prefix>NN`.
    - Tulis `naskah/epNN-slug.md` persis dengan format skill channel itu. Penutupnya **harus unik** (lihat aturan di skill).
-   - Tulis `video/vo/epNN.txt`: satu paragraf per bagian/beat, 8 untuk Mas Kharis dan 7 untuk Ternyata Leluhur.
+   - Tulis `video/vo/epNN.txt`: satu paragraf per bagian/beat, 7 untuk Mas Kharis dan 7 untuk Ternyata Leluhur.
 2. **Cek Fakta.** Verifikasi setiap klaim, pakai WebSearch bila perlu. Klaim yang tidak pasti dihapus atau dilunakkan. Jangan mengarang angka atau nama.
 3. **Pengisi Suara.**
    - Jalankan `python3 video/src/tts_elevenlabs.py epNN`. Setelan suara diambil dari `config.elevenlabs`; jangan diubah tanpa catatan owner.
-   - Durasi mengikuti skill: Mas Kharis 55–75 detik (pangkas naskah kalau lebih dari 80 detik), Ternyata Leluhur 85–100 detik (pangkas kalau lebih dari 105 detik), Dari 1 mnt **60–90 detik** (di bawah 60 detik tambah isi, di atas 90 detik pangkas). Yang dipangkas kalimat naskah, bukan kecepatan suara.
+   - Durasi mengikuti skill: Mas Kharis **40–55 detik** (pangkas kalau lebih dari 58 detik), Ternyata Leluhur **65–80 detik** (pangkas kalau lebih dari 82 detik), Dari 1 mnt **60–90 detik** (di bawah 60 detik tambah isi, di atas 90 detik pangkas). Yang dipangkas kalimat naskah, bukan kecepatan suara.
    - Kalau ElevenLabs gagal: set `{status:"butuh-vo", progres:"<alasan>"}`, simpan `naskahMd` dan `voText`, lalu berhenti.
 4. **Kirim untuk dicek.**
    - Jalankan `video/src/vo_preview.sh epNN "<judul>"`.
@@ -62,7 +62,7 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
 1. **Animator.**
    - Siapkan file episode (lihat Penyimpanan antarsesi).
    - Ikuti bagian "Pipeline produksi" di skill channelnya. Semua waktu diambil dari `at()/atEnd()/CUT`.
-     - **Mas Kharis:** `video/src/epNN.html` (pola `ep02.html`) dan `epNN.js` (8 scene, pola `ep02.js`/`ep03.js`). Audio adalah `../vo/epNN.mp3`.
+     - **Mas Kharis:** `video/src/epNN.html` (pola `ep02.html`) dan `epNN.js` (7 scene, pola **`ep04.js` v2**: cold open, eskalasi, 1 fakta, pemicu debat, trik + lelucon, pilih kubu, punchline loop). Audio adalah `../vo/epNN.mp3`.
      - **Dari 1 mnt:** `video/src/dmNN.html` (pola `dm01.html`) dan `dmNN.js` (pola **`dm01.js`**, standar editing **Pop v2** di skill bagian 4b: hook penuh di detik 0, `kata`/`vs`/`race`/`fokus`/`burst`/`glitchAt`, layar terisi, latar berbeda tiap potongan, maskot 3–4 kali). Lalu jalankan `python3 video/src/leluhur_mix.py dmNN`. Audio adalah `../vo/dmNN-mix.m4a`.
      - **Ternyata Leluhur:** `video/src/tlNN.html` (pola `tl00.html`) dan `tlNN.js` (7 beat, sekitar 30 potongan, pola `tl00.js`, mesin `leluhur3d.js`). Lalu jalankan `python3 video/src/leluhur_mix.py tlNN`. Audio adalah `../vo/tlNN-mix.m4a`.
    - Render stills di 8–12 titik penting, gabungkan dengan ffmpeg hstack, lalu periksa sendiri (Read gambar). Pastikan wajah tidak tertutup teks, karakter besar, warna tidak monoton, hook atau label terbaca, dan kamera tidak masuk ke dinding. Perbaiki lalu ulangi maksimal 2 kali.

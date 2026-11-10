@@ -11,7 +11,7 @@ Patokan hidup: `video/src/leluhur3d.js` (mesin), `video/src/tl00.js` (sampel), d
 
 ## 1. Identitas
 - **Niche:** cerita kearifan lokal dengan penjelasan sains, tentang apa kata leluhur atau nenek moyang.
-- **Format:** YouTube Shorts (juga TikTok dan Reels), 9:16, 1080×1920, H.264, 30 fps. Durasi mengikuti VO, sekitar 85–100 detik.
+- **Format:** YouTube Shorts (juga TikTok dan Reels), 9:16, 1080×1920, H.264, 30 fps. Durasi mengikuti VO, **65–80 detik**.
 - **Referensi gaya:** @JadiBeginiClip ("Kenapa Petani Ini Mengubur Kendi Kosong di Ladangnya?"). Tokoh harus **milik channel sendiri** dan tidak identik dengan tokoh referensi. Ceritanya juga harus baru.
 - **Seri yang sudah dipakai:** Leluhur Membaca Bencana (Smong) dan Makanan Awet Tanpa Kulkas (Rendang). **Seri aktif:** `config.channels.ternyata-leluhur.seri_aktif`, saat ini Rumah dan Bangunan Leluhur.
 - Episode memakai prefix `tl`: `tl01`, `tl02`, dan seterusnya. `tl00` adalah sampel gaya, bukan episode.
@@ -74,21 +74,23 @@ Patokan hidup: `video/src/leluhur3d.js` (mesin), `video/src/tl00.js` (sampel), d
   - Mix akhir: loudnorm I=-15, TP=-1.5, LRA=11, limiter 0.95, AAC 192k.
 - **Cek audio:** sebelum publikasi, dengarkan hasil `tlNN-mix.m4a`. Dalam sesi otomatis, periksa level dengan `ffmpeg -af volumedetect` (max_volume < -1 dB) dan pastikan VO terdengar di atas musik.
 
-## 6. Struktur naskah (7 beat, wajib)
+## 6. Struktur naskah (7 beat, wajib) — versi high CTA (sejak TL01 v2)
+Alasan: di Shorts, penonton memutuskan menggeser lewat dalam 1–3 detik. Fakta paling mengejutkan **wajib di detik 0**, bukan di tengah.
 | Beat | Fungsi | Durasi |
 |---|---|---|
-| 1 | **Pembuka:** tokoh melakukan hal yang tampak aneh | 11–13 dtk |
-| 2 | **Rahasia:** "Jadi begini...", aturan atau pesan keluarga | 13–14 dtk |
-| 3 | **Ejekan:** satu kalimat lucu yang mudah diingat, dari pihak yang meremehkan | 9–13 dtk |
-| 4 | **Kejadian:** tokoh tampak kalah atau keadaan berbalik | 13–17 dtk |
-| 5 | **Penjelasan:** "Soalnya...", sains dengan bahasa sehari-hari | 12–13 dtk |
-| 6 | **Lapisan kedua:** asal-usul atau fakta tambahan | 12–13 dtk |
-| 7 | **Penutup:** kemenangan singkat, si pengejek berubah | 16–17 dtk |
+| 1 | **HOOK fakta:** klaim paling mengejutkan + bukti singkat, langsung di kalimat pertama ("Candi ini tak memakai semen sebutir pun. Tapi waktu gempa…, tetap berdiri.") | 7–9 dtk |
+| 2 | **Konflik:** si peragu/pengejek, satu kalimat lucu yang mudah diingat | 8–10 dtk |
+| 3 | **Rahasia leluhur:** pesan guru/keluarga, aturan tradisinya | 10–12 dtk |
+| 4 | **Penjelasan sains** dengan bahasa sehari-hari ("Rahasianya…", "Soalnya…") | 9–11 dtk |
+| 5 | **Lapisan kedua:** fakta tambahan/penelitian yang membuat "wow" kedua | 12–14 dtk |
+| 6 | **Perubahan:** si pengejek berubah (adegan singkat, tanpa menggurui) | 8–10 dtk |
+| 7 | **CTA tanya daerah:** pertanyaan tentang daerah/keluarga penonton + "tulis di komentar" (memancing komentar dan memberi ide episode) | 7–9 dtk |
 
-- Panjang 210–230 kata, kalimat pendek dan mengalir. **Angka ditulis dengan huruf** supaya enak dibacakan.
+- **Durasi 65–80 detik** (sekitar 140–165 kata). Di atas 80 detik, pangkas.
+- Kalimat pendek dan mengalir. **Angka ditulis dengan huruf** supaya enak dibacakan.
 - Kalimat khas: "Jadi begini..." dan "Soalnya...".
-- **Penutup:** tidak menggurui dan tanpa perintah di VO. Akhiri dengan adegan singkat yang menunjukkan perubahan. Tiap episode penutupnya harus unik; baca penutup semua `naskah/tl*.md` lebih dulu.
-- **CTA** hanya satu pertanyaan untuk komentar pertama, di luar VO.
+- **Penutup:** tidak menggurui. Beat 6 menunjukkan perubahan, Beat 7 bertanya ke penonton (daerahnya, neneknya, tradisinya). Pertanyaan tiap episode harus unik; baca penutup semua `naskah/tl*.md` lebih dulu.
+- Komentar yang disematkan mengulang pertanyaan Beat 7.
 - **File naskah** `naskah/tlNN-slug.md` berisi:
   - Baris paling atas: `> Voice Over: DK - Film Dokumenter (ElevenLabs "DK - Documentary")`.
   - Judul dan hook.
@@ -97,7 +99,7 @@ Patokan hidup: `video/src/leluhur3d.js` (mesin), `video/src/tl00.js` (sampel), d
   - **Paket posting:** judul, deskripsi yang menyebut bahwa tokoh fiksi, 5–8 hashtag, CTA pertanyaan, sumber.
 - `video/vo/tlNN.txt` berisi 7 paragraf (satu per beat) yang dipisah baris kosong.
 
-Contoh patokan (Smong, ringkas): "Laut tiba-tiba surut... Kakek Rusli malah menggendong cucunya, lari ke bukit. / Jadi begini, dari kecil Kakek Rusli hafal satu nyanyian dari neneknya... / 'Kek, mau selamat kok modal lagu nina bobo?' / Lalu Minggu pagi, dua puluh enam Desember dua ribu empat... Smong! Smong! / Soalnya laut surut itu bukan rezeki... / Dan nyanyian itu bukan dongeng. Tahun seribu sembilan ratus tujuh... / ...korban jiwanya tujuh orang. Si pedagang selamat juga... Sejak hari itu, dialah yang paling hafal lagunya."
+Contoh patokan alur v2: `naskah/tl01-candi-tanpa-semen.md` + `video/src/tl01.js`. Contoh lama (Smong, perlu dibalik agar hook fakta di depan): "Laut tiba-tiba surut... Kakek Rusli malah menggendong cucunya, lari ke bukit. / Jadi begini, dari kecil Kakek Rusli hafal satu nyanyian dari neneknya... / 'Kek, mau selamat kok modal lagu nina bobo?' / Lalu Minggu pagi, dua puluh enam Desember dua ribu empat... Smong! Smong! / Soalnya laut surut itu bukan rezeki... / Dan nyanyian itu bukan dongeng. Tahun seribu sembilan ratus tujuh... / ...korban jiwanya tujuh orang. Si pedagang selamat juga... Sejak hari itu, dialah yang paling hafal lagunya."
 
 ## 7. Pipeline produksi
 1. Naskah ditulis dulu, lalu VO: `python3 video/src/tts_elevenlabs.py tlNN` (suara DK dipilih otomatis).

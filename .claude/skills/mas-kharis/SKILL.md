@@ -44,19 +44,24 @@ File `naskah/epNN-slug.md`, bahasa Indonesia santai, narator orang ketiga yang s
 1. Judul `# Mas Kharis Ep.NN — "Judul"`, lalu header: Niche, Format (9:16, ±60 dtk), Gaya (sama dengan Ep.01), Narator.
 2. Tabel **Karakter** beserta perannya di episode ini.
 3. **Dasar fakta** jika niche berupa fakta, psikologi, atau finansial. Tulis sumber yang nyata, tanpa angka karangan.
-4. **Naskah** dengan 8 bagian. Tiap bagian berisi `### N. NAMA (a–b dtk)`, `- Visual:`, `- Teks layar:`, dan `- VO:` (blockquote).
-   - Bagian 1: HOOK 0–5 dtk, konflik sehari-hari yang langsung terasa ("kok malah...?!").
-   - Bagian 2–7: cerita, lalu fakta atau insight, lalu akibat, lalu solusi atau trik.
-   - Bagian 8: **CTA tinggi**. Ajak memilih kubu ("kamu tim A atau tim B?") atau komentar satu kata ("komen SAMA"), ajak follow, lalu tutup dengan **punchline atau teaser yang baru**.
-   - **Penutup tidak boleh sama dengan episode lain.** Sebelum menulis, baca bagian 8 di semua file `naskah/`. Jangan mengulang kalimat, lelucon, atau teaser yang sudah dipakai. Punchline sebaiknya lahir dari cerita episode itu sendiri (contoh Ep.03: Kharis ketahuan mengisi keranjang lagi). Kalau episode sebelumnya menjanjikan topik tertentu ("besok kita bongkar X") dan topik itu belum dibuat, prioritaskan X sebagai episode berikutnya. Jangan menjanjikannya ulang di episode lain.
-5. **VO lengkap** dengan 8 paragraf, satu paragraf per bagian (dipakai TTS dan align).
-6. **Catatan rekam VO**: suara sama, jeda ±1 detik antarbagian, durasi 55–65 detik.
+4. **Naskah** dengan **7 bagian, total 40–55 detik (±95–115 kata)** — versi high CTA sejak Ep.04 v2. Tiap bagian berisi `### N. NAMA (a–b dtk)`, `- Visual:`, `- Teks layar:`, dan `- VO:` (blockquote).
+   Prinsip: **komedi dulu, fakta sedikit.** Penonton menonton untuk merasa "kok aku banget", bukan kuliah.
+   1. **COLD OPEN (0–7 dtk):** langsung di tengah kejadian, sebaiknya dengan kalimat tokoh dalam tanda kutip ("“Aku resign ya, Kharis!”"), lalu konflik yang terasa.
+   2. **ESKALASI (±8 dtk):** 2–3 kejadian yang makin parah/lucu ("Besoknya… Lusanya…").
+   3. **SATU FAKTA (±6 dtk):** satu kalimat saja, tanpa nama peneliti di VO (nama & sumber cukup di deskripsi).
+   4. **PEMICU DEBAT (±6 dtk):** pernyataan yang mengundang setuju/tidak ("…itu namanya ikut-ikutan. Setuju nggak?"). Ini ajakan komentar di tengah video.
+   5. **TRIK + LELUCON (±8 dtk):** satu trik praktis yang ditutup lelucon ("kalau daftarnya kosong… mungkin kamu cuma kangen dia").
+   6. **PILIH KUBU (±4 dtk):** "Kamu tim A atau tim B? Tulis di komentar!" (tanpa ajakan follow yang panjang).
+   7. **PUNCHLINE LOOP (±10 dtk):** twist dari cerita, lalu kalimat terakhir menyambung ke detik 0 supaya video terasa berulang ("Dan malam itu… dia makin nggak bisa tidur.").
+   - **Penutup tidak boleh sama dengan episode lain.** Sebelum menulis, baca bagian penutup di semua file `naskah/`. Jangan mengulang kalimat, lelucon, atau teaser yang sudah dipakai. Punchline sebaiknya lahir dari cerita episode itu sendiri (contoh Ep.03: Kharis ketahuan mengisi keranjang lagi). Kalau episode sebelumnya menjanjikan topik tertentu ("besok kita bongkar X") dan topik itu belum dibuat, prioritaskan X sebagai episode berikutnya. Jangan menjanjikannya ulang di episode lain.
+5. **VO lengkap** dengan 7 paragraf, satu paragraf per bagian (dipakai TTS dan align).
+6. **Catatan rekam VO**: suara sama, jeda ±1 detik antarbagian, durasi 40–55 detik.
 
 ## 5. Pipeline produksi
 
 ```
 naskah/epNN-*.md
-  → video/vo/epNN.txt            (8 paragraf VO, dipisah baris kosong)
+  → video/vo/epNN.txt            (7 paragraf VO, dipisah baris kosong)
   → VO + timestamp:
        a) ElevenLabs: python3 video/src/tts_elevenlabs.py epNN
           → video/vo/epNN.mp3, epNN.json, epNN-words.js
@@ -64,7 +69,7 @@ naskah/epNN-*.md
           python3 video/src/align.py video/vo/epNN.mp3 video/vo/epNN.txt video/vo/epNN.json
           dan buat epNN-words.js = "const VO = " + json + ";"
   → video/src/epNN.html (salin ep02.html, ganti nama file VO & episode)
-  → video/src/epNN.js   (8 scene + hookTitle + renderFrame, pola sama dengan ep02.js)
+  → video/src/epNN.js   (7 scene + hookTitle + renderFrame, pola ep04.js v2)
   → cek stills:  cd video/src && EP=epNN node render.js stills /tmp/cek 1 5 12 ...
   → render:      EP=epNN node render.js video ../out/mas-kharis-epNN.mp4 30 ../vo/epNN.mp3
 ```

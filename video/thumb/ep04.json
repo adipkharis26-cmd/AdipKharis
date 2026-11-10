@@ -37,10 +37,10 @@
     },
     {
       "nama": "B",
-      "alasan": "Wajah sedih malam hari + pertanyaan dilema yang memancing jawaban di komentar.",
+      "alasan": "Wajah lelah tengah malam di meja penuh map + dilema: memancing jawaban di komentar.",
       "latar": {
-        "frame": 12,
-        "zoom": 1.35,
+        "frame": 51.5,
+        "zoom": 1.3,
         "fokus": [
           420,
           1000

@@ -3,37 +3,37 @@
 # Ternyata Leluhur Tl.01 — "Kenapa Candi Sebesar Ini Tidak Pakai Semen?"
 
 - Seri: Rumah dan Bangunan Leluhur
-- Format: video vertikal 9:16 (1080×1920), sekitar 85–100 detik
-- Hook: CANDI RAKSASA / TANPA SEMEN / KOK NGGAK RUNTUH?
+- Format: video vertikal 9:16 (1080×1920), sekitar 71 detik (alur v2: hook fakta di detik 0)
+- Hook: TANPA SEMEN! → GEMPA 2006 → TETAP BERDIRI
 - Tokoh (fiksi): Mbah Parto (pemandu tua, rambut abu-abu, janggut, baju garis), Mas Dion (tamu muda mahasiswa teknik, topi, baju bertitik)
 
-## Beat 1 — Pembuka
+## Beat 1 — HOOK fakta
 
-Pagi itu, seorang pemandu tua bernama Mbah Parto berdiri di tangga candi raksasa. Dia tidak menatap puncaknya. Dia malah meraba sambungan antar batu, satu per satu, sambil tersenyum seperti sedang menyapa teman lama.
+Candi ini tidak memakai semen sebutir pun. Tapi waktu gempa mengguncang Yogyakarta tahun dua ribu enam, Borobudur tetap berdiri.
 
-## Beat 2 — Rahasia
+## Beat 2 — Konflik
 
-Jadi begini, dari gurunya dulu, Mbah Parto dapat satu pesan. Batu candi tidak dilem. Setiap batu punya tonjolan dan lubang, dan dua batu baru boleh bersanding kalau sudah saling mengunci.
+Mas Dion, mahasiswa teknik, tidak percaya. "Mbah, bangunan segede gunung kok cuma ditumpuk? Kena gempa sedikit, bubar jalan!"
 
-## Beat 3 — Ejekan
+## Beat 3 — Rahasia leluhur
 
-Mas Dion, tamu muda yang kuliah teknik, tertawa. "Mbah, bangunan segede gunung kok cuma ditumpuk? Kena gempa sedikit, bubar jalan!"
+Mbah Parto cuma tersenyum. Kata gurunya dulu, batu candi tidak dilem. Setiap batu punya tonjolan dan lubang, dan baru boleh bersanding kalau sudah saling mengunci.
 
-## Beat 4 — Kejadian
+## Beat 4 — Penjelasan sains
 
-Lalu tahun dua ribu enam, gempa mengguncang Yogyakarta. Orang-orang berlarian. Mas Dion menatap ke arah candi dengan yakin semuanya sudah roboh. Tapi laporan pengelola menyebut, Borobudur tetap berdiri tanpa kerusakan berarti.
+Rahasianya, batu andesit itu berat. Beratnya menekan susunan ke bawah, sementara kunci tonjolan dan lubang menahan batu supaya tidak bergeser ke samping.
 
-## Beat 5 — Penjelasan
+## Beat 5 — Lapisan kedua
 
-Soalnya batu andesit itu berat. Beratnya menekan susunan ke bawah, sementara kunci tonjolan dan lubang menahan batu supaya tidak bergeser ke samping. Para peneliti menyebutnya susunan kering, stabil karena beratnya sendiri dan kuncinya.
+Kuncinya pun bermacam-macam: ekor burung, lidah dan alur, mirip puzzle raksasa. Bahkan, penelitian Universitas Gadjah Mada menemukan kristal mineral membuat sebagian batu menempel sendiri.
 
-## Beat 6 — Lapisan kedua
+## Beat 6 — Perubahan
 
-Dan kuncinya bukan satu macam. Ada yang berbentuk ekor burung, ada yang seperti lidah dan alur, mirip puzzle raksasa. Bahkan, sebuah penelitian Universitas Gadjah Mada menemukan, setelah berabad-abad, kristal mineral membuat sebagian permukaan batu menempel sendiri.
+Sore itu, Mas Dion berhenti menunjuk puncak candi. Dia menyusuri sambungan batu satu per satu, persis seperti Mbah Parto.
 
-## Beat 7 — Penutup
+## Beat 7 — CTA tanya daerah
 
-Sore itu, sebelum pulang, Mas Dion berhenti menunjuk puncak candi. Dia menyusuri sambungan batu satu per satu, persis seperti Mbah Parto, dan kali ini dialah yang tersenyum.
+Di daerahmu, ada bangunan leluhur yang kuat tanpa paku atau semen? Tulis di komentar, siapa tahu jadi cerita berikutnya.
 
 ## Dasar fakta
 
@@ -47,5 +47,5 @@ Sore itu, sebelum pulang, Mas Dion berhenti menunjuk puncak candi. Dia menyusuri
 - **Judul:** Kenapa Candi Sebesar Ini Tidak Pakai Semen?
 - **Deskripsi:** Mbah Parto meraba sambungan batu candi, sementara Mas Dion yakin bangunan tanpa semen pasti roboh. Ternyata batunya saling mengunci dan beratnya sendiri menjaganya tetap berdiri. Catatan: Mbah Parto dan Mas Dion adalah tokoh fiksi; faktanya (batu andesit Borobudur disusun kering dengan sistem kunci tanpa perekat) nyata dan bersumber.
 - **Hashtag:** #TernyataLeluhur #Borobudur #KearifanLokal #SainsIndonesia #CandiIndonesia #Shorts
-- **CTA (komentar pertama):** Pernah lihat langsung sambungan batu candi?
+- **CTA (komentar pertama):** Di daerahmu ada bangunan leluhur yang kuat tanpa paku atau semen? Sebutkan namanya!
 - **Sumber:** ITS (iptek.its.ac.id), Balai Konservasi Borobudur via Detik 2022, Dawn/AFP 2006, UGM 1999.

@@ -1,4 +1,4 @@
-// Ep.04 "Teman Kantor Resign, Kok Kita Ikut Galau?" — timeline synced to VO word timings
+// Ep.04 "Teman Kantor Resign, Kok Kita Ikut Galau?" — v2: 7 bagian, ±53 dtk (cold open → eskalasi → 1 fakta → pemicu debat → trik + lelucon → pilih kubu → punchline yang menyambung ke awal)
 
 // ── props for this episode ────────────────────────────────────
 function boxInHand(x, y, s) {
@@ -53,6 +53,7 @@ function scene1(t) {
     drawChar('kharis', kx, ky, ks, { exp: 'neutral', t, look: [-0.7, 0.2], arms: { l: 'down', r: 'down' } });
     drawLamp(false);
     g.setTransform(1, 0, 0, 1, 0, 0);
+    if (t < at('pamit')) bubble(330, 640, 'AKU RESIGN YA!', pop(t, 0.05, 0.25) * 0.95, 300, 820);
     return;
   }
   const l = t - E1.justru;
@@ -70,27 +71,9 @@ function scene1(t) {
   stampText(540 + Math.sin(t * 38) * 6, 560, 'KOK AKU GALAU?!', pop(t, E1.justru + 0.1, 0.3), -0.05, C.red, 84);
 }
 
-// ═════════════ SCENE 2 — MALAM GALAU ═════════════
-const E2 = { kursi: at('kursi'), mikir: at('mikir'), ketinggalan: at('ketinggalan'), padahal: at('Padahal') };
-function scene2(t) {
-  cam(1.3 + 0.03 * (t - CUT[1]) / 7, 560, 1000);
-  officeSet(true, 23.5); drawChairBack(-0.45, 4.7);
-  const st = kharisDesk(t, { exp: t >= E2.ketinggalan ? 'sad' : 'tired', look: [-1, -0.8], hairDroop: 1, arms: { l: 'down', r: 'down' } });
-  drawMug(0.42, 3.3, '#E84545'); drawDeskFront(); drawLamp(false);
-  nightGrade(0.75);
-  const [mx, my] = P(-0.4, 1.1, 3.6); glowAt(mx, my, 520, '110,200,255', 0.4);
-  const [hx, hy, hr] = st._head;
-  const which = t >= E2.ketinggalan ? 2 : t >= E2.mikir ? 1 : t >= E2.kursi ? 0 : -1;
-  const TX = ['DIA LEGA BANGET', 'AKU MASIH DI SINI?', 'AKU KETINGGALAN?'];
-  const t0 = [E2.kursi, E2.mikir, E2.ketinggalan][Math.max(which, 0)];
-  if (which >= 0) bubble(hx + 250, hy - hr - 170, TX[which], pop(t, t0, 0.28) * 0.9, hx + 70, hy - hr * 0.8);
-  g.setTransform(1, 0, 0, 1, 0, 0);
-  topLines([{ txt: 'MALAM-MALAM...', t: CUT[1] + 0.2, col: '#fff', size: 80 }, { txt: 'NGGAK BISA TIDUR', t: CUT[1] + 0.5, col: C.yellow, size: 84 }], t, 250);
-}
-
 // ═════════════ SCENE 3 — FAKTA: RESIGN BISA MENULAR ═════════════
-const E3 = { rekan: at('rekan'), pergi: at('pergi'), cari: at('cari'), ikut: at('ikut'), mikirin: at('mikirin'), hal: at('hal') };
-const INF = [E3.pergi, E3.cari, E3.ikut, E3.mikirin, E3.hal + 0.1];
+const E3 = { rekan: at('Ternyata'), pergi: at('pergi') };
+const INF = [at('pergi'), at('pergi') + 0.45, at('ikut'), at('ikut') + 0.25, at('gelisah')];
 const XS3 = [130, 335, 540, 745, 950], FY3 = 1180, S3 = 320;
 function scene3(t) {
   cam(1.0, 540, 960);
@@ -117,11 +100,11 @@ function scene3(t) {
     }
   });
   topLines([{ txt: 'RESIGN BISA', t: E3.rekan - 0.2, col: '#fff', size: 100 }, { txt: 'MENULAR!', t: E3.rekan + 0.1, col: C.red, size: 120 }], t, 250);
-  if (t >= E3.pergi) stampText(540, 1400, 'EFEK DOMINO', pop(t, E3.pergi + 0.5, 0.3), -0.06, C.red, 78);
+  if (t >= E3.pergi) stampText(540, 1330, 'EFEK DOMINO', pop(t, E3.pergi + 0.5, 0.3), -0.06, C.red, 78);
 }
 
 // ═════════════ SCENE 4 — PERBANDINGAN SOSIAL ═════════════
-const E4 = { psikolog: at('Psikolog'), festinger: at('Festinger'), otak: at('otak'), teman: at('Teman'), hitung: at('menghitung') };
+const E4 = { otak: at('jujur'), teman: at('teman', 1), nama: at('namanya'), hitung: at('Setuju') };
 function scene4(t) {
   cam(1.0, 540, 960);
   officeSet(false, 13.5);
@@ -142,13 +125,13 @@ function scene4(t) {
   });
   line([BX - ex, BY - ey], [BX + ex, BY + ey], C.ol, 22); line([BX - ex, BY - ey], [BX + ex, BY + ey], C.gold, 12);
   circ(BX, BY, 30, C.gold, C.ol, 6);
-  if (t < E4.otak) topLines([{ txt: 'PSIKOLOG FESTINGER:', t: E4.psikolog, col: '#fff', size: 70 }, { txt: 'PERBANDINGAN SOSIAL', t: E4.festinger, col: C.yellow, size: 84 }], t, 200);
-  else topLines([{ txt: 'OTAK SUKA', t: E4.otak, col: '#fff', size: 92 }, { txt: 'MEMBANDINGKAN', t: E4.otak + 0.3, col: C.red, size: 92 }], t, 200);
-  if (t >= E4.hitung) stampText(540, 1450 - 0, 'DIA > AKU?', pop(t, E4.hitung, 0.25), 0.05, C.red, 76);
+  if (t < E4.nama) topLines([{ txt: 'RESIGN KARENA', t: E4.otak, col: '#fff', size: 92 }, { txt: 'TEMAN RESIGN?', t: E4.teman, col: C.yellow, size: 92 }], t, 200);
+  else topLines([{ txt: 'ITU NAMANYA', t: E4.nama, col: '#fff', size: 92 }, { txt: 'IKUT-IKUTAN!', t: E4.nama + 0.35, col: C.red, size: 104 }], t, 200);
+  if (t >= E4.hitung) stampText(540, 1270 + Math.sin(t * 30) * 3, 'SETUJU NGGAK?', pop(t, E4.hitung, 0.25), 0.05, C.red, 80);
 }
 
 // ═════════════ SCENE 5 — AKIBATNYA: KEPUTUSAN SAAT GALAU ═════════════
-const E5 = { akibat: at('Akibatnya'), lowongan: at('lowongan'), surat: at('surat'), padahal: at('padahal', 1) };
+const E5 = { akibat: at('Besoknya'), lowongan: at('lowongan'), surat: at('surat'), padahal: at('padahal') };
 function scene5(t) {
   cam(1.3, 640, 1010);
   officeSet(false, 17.2);
@@ -169,11 +152,11 @@ function scene5(t) {
     g.restore();
   }
   if (t >= E5.padahal) stampText(540, 780 + Math.sin(t * 30) * 3, 'JANGAN DULU!', pop(t, E5.padahal, 0.25), -0.08, C.red, 88);
-  topLines([{ txt: 'IKUT-IKUTAN?', t: E5.akibat, col: C.yellow, size: 88 }], t, 190);
+  topLines([{ txt: t < at('Lusanya') ? 'BESOKNYA...' : 'LUSANYA...', t: t < at('Lusanya') ? E5.akibat : at('Lusanya'), col: C.yellow, size: 88 }], t, 190);
 }
 
 // ═════════════ SCENE 6 — TRIK: TULIS APA YANG KAMU MAU ═════════════
-const E6 = { trik: at('Triknya'), tulis: at('tulis'), kamu: at('kamu'), bukan: at('bukan'), baru: at('Baru') };
+const E6 = { trik: at('Coba'), tulis: at('tulis'), kamu: at('kamu'), bukan: at('bukan'), kosong: at('kosong'), baru: at('kangen') };
 function scene6(t) {
   cam(1.3, 640, 1010);
   officeSet(false, 10);
@@ -191,39 +174,17 @@ function scene6(t) {
     g.fillStyle = '#9aa0b4'; ['GAJI BESAR', 'JABATAN BARU'].forEach((s, i) => { g.font = `900 42px ${FONT}`; g.textAlign = 'left'; g.fillText(s, -440, -60 + i * 90); });
     const sk = ease(seg(t, E6.bukan, E6.bukan + 0.5));
     if (sk > 0) { line([-450, -20], [-450 + 400 * sk, 100], C.red, 10); line([-450, 100], [-450 + 400 * sk, -20], C.red, 10); }
-    item('WAKTU KELUARGA', 40, -60, E6.kamu); item('BELAJAR HAL BARU', 40, 30, E6.kamu + 0.9); item('HIDUP TENANG', 40, 120, E6.kamu + 1.8);
+    if (t < E6.kosong) { g.fillStyle = C.ol; g.font = `900 60px ${FONT}`; g.textAlign = 'left'; g.fillText(Math.floor(t * 2.5) % 2 ? '_' : '', 40, -40); }
+    else stampText(240, 30, 'KOSONG', pop(t, E6.kosong, 0.25), -0.1, C.red, 64);
     g.restore();
   }
   const ts = pop(t, E6.tulis, 0.3);
   if (ts > 0) { g.save(); g.translate(790, 170); g.rotate(0.07); g.scale(ts, ts); rr(-230, -50, 460, 100, 24); g.fillStyle = '#2fa55a'; g.fill(); g.strokeStyle = C.ol; g.lineWidth = 6; g.stroke(); g.fillStyle = '#fff'; g.font = `900 56px ${FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('TULIS DULU', 0, 4); g.restore(); }
-  if (t >= E6.baru) stampText(300, 790, 'PUTUSKAN ✓', pop(t, E6.baru, 0.25), -0.08, '#2fa55a', 72);
-}
-
-// ═════════════ SCENE 7 — DUA-DUANYA BOLEH ═════════════
-const E7 = { mau: at('Mau'), bertahan: at('bertahan'), sah: at('sah'), alasan: at('alasannya'), kursi: at('kursi', 1) };
-function scene7(t) {
-  cam(1.0, 540, 960);
-  officeSet(false, 12);
-  const [kx, ky] = P(0.1, 0, 2.8), ks = S(2.8);
-  const st = { exp: 'happy', t, look: [0, 0.2], arms: { l: t >= E7.sah ? 'up' : 'hip', r: t >= E7.sah ? 'up' : 'hip' } };
-  drawChar('kharis', kx, ky, ks, st);
-  drawLamp(false);
-  g.setTransform(1, 0, 0, 1, 0, 0);
-  [[215, 'IKUT RESIGN', E7.mau, C.red], [865, 'BERTAHAN', E7.bertahan, C.teal]].forEach(([x, lab, t0, col]) => {
-    const sc = pop(t, t0, 0.3); if (sc <= 0) return;
-    g.save(); g.translate(x, 1120); g.scale(sc, sc);
-    card(0, 0, 400, 240); rr(-200, -120, 400, 80, 30); g.fillStyle = col; g.fill(); g.strokeStyle = C.ol; g.lineWidth = 7; g.stroke();
-    g.fillStyle = '#fff'; g.font = `900 ${fitSize(lab, 48, 350)}px ${FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(lab, 0, -78);
-    const ck = pop(t, t0 + 0.4, 0.3); g.scale(ck, ck);
-    circ(0, 35, 60, '#2fa55a', C.ol, 6); line([-28, 38], [-8, 60], '#fff', 12); line([-8, 60], [32, 10], '#fff', 12);
-    g.restore();
-  });
-  topLines([{ txt: 'DUA-DUANYA', t: E7.mau - 0.1, col: '#fff', size: 100 }, { txt: 'BOLEH!', t: E7.mau + 0.15, col: C.yellow, size: 120 }], t, 230);
-  if (t >= E7.alasan) { const [hx, hy, hr] = st._head; bubble(hx, hy - hr - 130, 'ALASANKU SENDIRI', pop(t, E7.alasan, 0.28) * 0.95, hx, hy - hr * 0.9); }
+  if (t >= E6.baru) { const [hx, hy, hr] = st._head; bubble(hx - 60, hy - hr - 150, 'KANGEN DIA?', pop(t, E6.baru, 0.28) * 0.95, hx, hy - hr * 0.9); }
 }
 
 // ═════════════ SCENE 8 — CTA + PUNCHLINE ═════════════
-const E8 = { kamu: at('Kamu', 1), jawab: at('Jawab'), follow: at('follow'), eh: at('Eh'), pak: at('Pak'), map: at('map'), dimas: at('Dimas', 1), punya: at('punya') };
+const E8 = { kamu: at('Kamu', 2), jawab: at('Tulis', 1), follow: 1e9, eh: at('Eh'), pak: at('Pak'), map: at('map'), dimas: at('Dimas', 1), punya: at('punya'), dan: at('Dan') };
 function scene8(t) {
   if (t < E8.eh - 0.1) {
     cam(1.0, 540, 960);
@@ -252,6 +213,19 @@ function scene8(t) {
       g.fillStyle = '#fff'; g.font = `900 62px ${FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(tap ? 'DIIKUTI ✓' : '+ FOLLOW', 0, 4); g.restore();
       if (t > E8.follow + 0.4) { const q = easeOut(seg(t, E8.follow + 0.4, E8.follow + 0.9)); cursorHand(lerp(860, 600, q), lerp(700, 440, q), 1.1); }
     }
+    return;
+  }
+  // loop ending: malam itu dia makin nggak bisa tidur (menyambung ke hook)
+  if (t >= E8.dan - 0.1) {
+    cam(1.3 + 0.04 * seg(t, E8.dan, DURATION), 560, 1000);
+    officeSet(true, 23.8); drawChairBack(-0.45, 4.7);
+    const st = kharisDesk(t, { exp: 'tired', look: [-1, -0.8], hairDroop: 1, arms: { l: 'down', r: 'down' } });
+    drawStack(12, 1); drawMug(0.42, 3.3, '#E84545'); drawDeskFront(); drawLamp(false);
+    nightGrade(0.75);
+    const [mx, my] = P(-0.4, 1.1, 3.6); glowAt(mx, my, 520, '110,200,255', 0.4);
+    const [hx, hy, hr] = st._head; sweat(hx + hr * 0.95, hy - hr * 0.2 + (((t - E8.dan) * 40) % 25), 15);
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    topLines([{ txt: 'MAKIN NGGAK', t: at('makin'), col: '#fff', size: 92 }, { txt: 'BISA TIDUR!', t: at('makin') + 0.3, col: C.yellow, size: 104 }], t, 250);
     return;
   }
   // punchline: Pak Bos datang bawa map kerjaan Dimas
@@ -285,22 +259,22 @@ function hookTitle(t) {
   if (t >= E1.justru - 0.1) return;
   const sc = back(seg(t, 0, 0.35));
   g.save(); g.translate(W / 2, 300); g.scale(sc, sc);
-  const l1 = 'TEMAN RESIGN...', l2 = 'KOK KITA', l3 = 'YANG GALAU?!';
+  const l1 = 'TEMAN RESIGN,', l2 = 'KOK AKU', l3 = 'YANG GALAU?!';
   const s = Math.min(fitSize(l1, 92, W - 120), fitSize(l3, 106, W - 120));
   strokeText(l1, 0, -s * 1.1, s, '#fff'); strokeText(l2, 0, 0, s, C.yellow); strokeText(l3, 0, s * 1.15, Math.round(s * 1.15), C.red);
   g.restore();
 }
-const SCENES = [scene1, scene2, scene3, scene4, scene5, scene6, scene7, scene8];
+const SCENES = [scene1, scene5, scene3, scene4, scene6, scene8, scene8];
 function renderFrame(t) {
   g.reset();
   g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
-  let si = 0; while (si < 7 && t >= CUT[si + 1]) si++;
+  let si = 0; while (si < SCENES.length - 1 && t >= CUT[si + 1]) si++;
   SCENES[si](t);
   g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
   vignette();
   hookTitle(t);
   voCaption(t, 1480);
   let flash = 0;
-  CUT.slice(1, 8).forEach(c => { if (t >= c) flash = Math.max(flash, 0.55 * (1 - seg(t, c, c + 0.18))); });
+  CUT.slice(1, SCENES.length).forEach(c => { if (t >= c) flash = Math.max(flash, 0.55 * (1 - seg(t, c, c + 0.18))); });
   if (flash > 0) { g.fillStyle = `rgba(255,255,255,${flash})`; g.fillRect(0, 0, W, H); }
 }
