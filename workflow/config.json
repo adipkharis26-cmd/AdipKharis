@@ -115,6 +115,44 @@
         "label_bg": "#FFD60A",
         "label_fg": "#0C1646"
       }
+    },
+    "ohhiyaa": {
+      "nama": "Ohhiyaa!",
+      "skill": ".claude/skills/ohhiyaa/SKILL.md",
+      "ide_per_hari": 4,
+      "prefix": "oh",
+      "id_prefix": "oh",
+      "renderer": "three.js miniatur 3D mainan (video/src/ohhiyaa3d.js)",
+      "music": true,
+      "durasi_s": {
+        "min": 40,
+        "max": 60
+      },
+      "seri": [
+        "Ukur Pakai Barang Sehari-hari",
+        "Kalau Semua Orang Indonesia…",
+        "Tebak Dulu: Lebih Besar Mana?"
+      ],
+      "suara_menunggu": true,
+      "elevenlabs": {},
+      "thumbnail": {
+        "font": "Nunito",
+        "berat": "900",
+        "ol": "#24204A",
+        "warna": {
+          "putih": "#FFFFFF",
+          "kuning": "#FFC93C",
+          "pink": "#FF6FAE",
+          "mint": "#7EE8CF",
+          "biru": "#1E6EFF",
+          "merah": "#FF4F5E"
+        },
+        "aksen": "#FF6FAE",
+        "stiker": "putih",
+        "maskot": false,
+        "label_bg": "#FFC93C",
+        "label_fg": "#24204A"
+      }
     }
   },
   "elevenlabs": {

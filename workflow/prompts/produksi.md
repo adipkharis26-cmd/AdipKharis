@@ -22,9 +22,10 @@ Animator **tidak boleh** jalan sebelum owner menekan "ACC suara" (status `vo-acc
 - **Tiap channel punya gaya, suara, dan mesin render sendiri.** Jangan mencampur:
   - `mas-kharis`: prefix episode `ep`, stikmen kanvas 2D, 8 bagian, suara Eyang.
   - `ternyata-leluhur`: prefix `tl`, diorama 3D three.js, 7 beat, suara DK - Documentary, plus musik/SFX.
+  - `ohhiyaa`: prefix `oh`, miniatur 3D mainan (`ohhiyaa3d.js`), 6 bagian, maskot OHI, musik + SFX. **Durasi 40–60 detik.** Selama `suara_menunggu: true`, setelah naskah dan cek fakta set `{status:"butuh-vo", progres:"Menunggu ID suara Ohhiyaa! dari owner"}`.
   - `dari-1-mnt`: prefix `dm`, Hybrid Kinetic Pop 2D (`kinetic.js`), suara Finn, SFX tanpa musik. **Durasi wajib 60–90 detik.**
   - Prefix ada di `config.channels.<id>.prefix`. `tts_elevenlabs.py` memilih suara dari prefix itu.
-- Agen per divisi: Mas Kharis memakai `penulis`, `suara`, `animator`; Ternyata Leluhur memakai `tl-penulis`, `tl-suara`, `tl-animator`; Dari 1 mnt memakai `dm-penulis`, `dm-suara`, `dm-animator`. `cekfakta`, `thumbnail` (Desainer Thumbnail), dan `publisher` dipakai bersama.
+- Agen per divisi: Mas Kharis memakai `penulis`, `suara`, `animator`; Ternyata Leluhur memakai `tl-penulis`, `tl-suara`, `tl-animator`; Dari 1 mnt memakai `dm-penulis`, `dm-suara`, `dm-animator`; Ohhiyaa! memakai `oh-penulis`, `oh-suara`, `oh-animator`. `cekfakta`, `thumbnail` (Desainer Thumbnail), dan `publisher` dipakai bersama.
 - **Wajib**: setiap pindah langkah, update `agents/<id>` agen yang sedang bekerja menjadi `{status:"kerja", aktivitas:"<apa yang dikerjakan, mis. 'Animasi EP04'>", diubah:<ISO>}`. Saat langkahnya selesai, ubah ke `{status:"santai", aktivitas:"<hasil singkat>"}`. Update juga `progres` di ide. Owner memantau ini di peta kantor, jadi jangan dilewati. Selalu pakai `if_version` (baca dulu dengan `get`).
 
 **Penyimpanan antarsesi.** Push git dari sesi terjadwal bisa gagal. Karena itu Kantor Konten adalah sumber kebenaran untuk berkas episode:
@@ -64,6 +65,7 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
    - Ikuti bagian "Pipeline produksi" di skill channelnya. Semua waktu diambil dari `at()/atEnd()/CUT`.
      - **Mas Kharis:** `video/src/epNN.html` (pola `ep02.html`) dan `epNN.js` (7 scene, pola **`ep04.js` v2**: cold open, eskalasi, 1 fakta, pemicu debat, trik + lelucon, pilih kubu, punchline loop). Audio adalah `../vo/epNN.mp3`.
      - **Dari 1 mnt:** `video/src/dmNN.html` (pola `dm01.html`) dan `dmNN.js` (pola **`dm01.js`**, standar editing **Pop v2** di skill bagian 4b: hook penuh di detik 0, `kata`/`vs`/`race`/`fokus`/`burst`/`glitchAt`, layar terisi, latar berbeda tiap potongan, maskot 3–4 kali). Lalu jalankan `python3 video/src/leluhur_mix.py dmNN`. Audio adalah `../vo/dmNN-mix.m4a`.
+     - **Ohhiyaa!:** `video/src/ohNN.html` (pola `oh00.html`) dan `ohNN.js` (pola `oh00.js`, 6 bagian, mesin `ohhiyaa3d.js`). Lalu `python3 video/src/leluhur_mix.py ohNN`. Audio adalah `../vo/ohNN-mix.m4a`.
      - **Ternyata Leluhur:** `video/src/tlNN.html` (pola `tl00.html`) dan `tlNN.js` (7 beat, sekitar 30 potongan, pola `tl00.js`, mesin `leluhur3d.js`). Lalu jalankan `python3 video/src/leluhur_mix.py tlNN`. Audio adalah `../vo/tlNN-mix.m4a`.
    - Render stills di 8–12 titik penting, gabungkan dengan ffmpeg hstack, lalu periksa sendiri (Read gambar). Pastikan wajah tidak tertutup teks, karakter besar, warna tidak monoton, hook atau label terbaca, dan kamera tidak masuk ke dinding. Perbaiki lalu ulangi maksimal 2 kali.
    - Render: `cd video/src && EP=epNN node render.js video ../out/<channel>-epNN.mp4 30 <audio>`. Render 3D lama, jadi jalankan di background dan tunggu sampai selesai.

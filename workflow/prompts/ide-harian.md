@@ -12,8 +12,9 @@ Kamu adalah **Penggali Ide** di Kantor Konten milik Adip. Bekerjalah sendiri tan
    - Rotasi niche: lihat niche yang dipakai 3 hari terakhir, lalu utamakan niche yang jarang muncul.
    - Kalau ada janji teaser dari episode terakhir yang belum dibuat, jadikan ide pertama.
    Untuk setiap channel, buat `ide_per_hari` ide baru sesuai bagian "Ide judul" di skill channel itu. Boleh memakai WebSearch (mode standard) untuk tren atau momen minggu ini (tanggal gajian, libur, musim, dan sebagainya). Variasikan niche-nya.
-   - Tulis sekaligus dengan `batch` set ke `ideas/<id_prefix>-YYYYMMDD-n`. `id_prefix` diambil dari `config.channels.<id>.id_prefix` (Mas Kharis `mk`, Ternyata Leluhur `tl`, Dari 1 mnt `dm`), dan tanggal memakai WIB.
+   - Tulis sekaligus dengan `batch` set ke `ideas/<id_prefix>-YYYYMMDD-n`. `id_prefix` diambil dari `config.channels.<id>.id_prefix` (Mas Kharis `mk`, Ternyata Leluhur `tl`, Dari 1 mnt `dm`, Ohhiyaa! `oh`), dan tanggal memakai WIB.
    - Ternyata Leluhur: judul diawali "Kenapa...". Utamakan seri aktif (`seri_aktif`). Setiap ide wajib punya sumber nyata di `alasan`. Patuhi daftar topik terlarang di skill.
+   - Ohhiyaa!: rotasikan seri di `config.channels.ohhiyaa.seri`, isi `niche` dengan nama seri. Judul berupa pertanyaan angka raksasa + barang sehari-hari + sudut personal; tulis rencana hitungan dan sumber datanya di `alasan`. Jangan meniru judul @geserdikitaja.
    - Dari 1 mnt: rotasikan seri (Paradoks & Dilema, Fakta vs Mitos, Indonesia vs Dunia). Isi `niche` dengan nama seri. Setiap angka di `alasan` wajib punya sumber.
    - **Thumbnail High CTA:** muat skill `.claude/skills/thumbnail-high-cta/SKILL.md` dan berpikirlah sebagai kreator YouTube berpengalaman. Setiap ide wajib punya `thumbIde`: teks thumbnail 2–5 kata yang tidak mengulang judul + gambaran visual singkat, mis. `"TANPA SEMEN KOK KUAT? | wajah Mbah Parto meraba batu, panah ke sambungan"`. Pilih judul yang judul + thumbnail-nya kuat memancing klik dan jujur pada isi.
    - Field: `channel, channelNama, tanggal, judul, hook[3], niche, alasan, cta, thumbIde, status:"usulan", createdAt`.

@@ -1,0 +1,20 @@
+{
+  "channel": "ohhiyaa",
+  "nama": "Ohhiyaa!",
+  "tagline": "Ukur dunia pakai barang sehari-hari",
+  "jadwal": "",
+  "font": { "judul": "Nunito", "judulBerat": "900", "isi": "Nunito", "isiBerat": "900" },
+  "warna": { "bg1": "#FFE3EC", "bg2": "#FFF4E8", "aksen": "#FF6FAE" },
+  "pola": "default",
+  "art": {},
+  "logo": [
+    { "nama": "A", "jenis": "ohi", "expr": "senang", "latar": "solid", "warnaLatar": "#FFD6E5", "catatan": "Paling direkomendasikan: OHI si galon tersenyum — maskot unik yang langsung dikenali di feed." },
+    { "nama": "B", "jenis": "ohi", "expr": "kaget", "latar": "solid", "warnaLatar": "#FFC93C", "h": 600, "catatan": "OHI kaget di latar kuning: menggambarkan momen 'Ohhiyaa!', kontras tinggi." },
+    { "nama": "C", "jenis": "huruf", "teks": "Oh!", "catatan": "Tanda 'Oh!' tebal pink: ringkas, kuat sebagai ikon teks." }
+  ],
+  "banner": { "gaya": "mainan", "cta": "TEBAK DULU, BARU JAWAB!" },
+  "bio": [
+    "Angka raksasa, diukur pakai barang sehari-hari. 📏\nBerapa galon setinggi Monas? Berapa motor sepanjang Pulau Jawa? Tebak dulu, baru jawabannya, pakai data asli.\n\n📌 Shorts baru setiap hari\n👇 Tulis tebakanmu di komentar sebelum jawabannya muncul!",
+    "Kalau semua orang Indonesia… muat nggak? sampai mana? seberat apa? 🤔\nKami hitung pakai galon, nasi bungkus, motor, dan Monas, biar angka besar langsung kebayang.\n\n🔔 Subscribe dan adu tebakan tiap hari!"
+  ]
+}

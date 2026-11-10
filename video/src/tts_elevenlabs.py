@@ -37,6 +37,8 @@ def use_channel(ep, channel=None):
         hits = [k for k, v in chans.items() if v.get('prefix') and re.fullmatch(re.escape(v['prefix']) + r'\d+', ep)]
         channel = hits[0] if hits else None
     if channel:
+        if chans[channel].get('suara_menunggu'):
+            sys.exit(f"Suara ElevenLabs untuk channel '{channel}' belum diisi owner (config.channels.{channel}.suara_menunggu). Set status butuh-vo.")
         CFG.update(chans[channel].get('elevenlabs', {}))
     return channel
 

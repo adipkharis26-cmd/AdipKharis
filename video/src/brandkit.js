@@ -189,7 +189,7 @@ function seal(cx, cy, r, col, ol) {   // royal seal ring with dots
 const logoV1 = window.logo;
 window.logo = async (spec, preset, artUrl, L) => {
   BP = preset; BS = spec; g = MAIN; await document.fonts.ready;
-  if (!['kepala', 'huruf', 'stupa', 'stempel', 'stopwatch', 'wajah'].includes(L.jenis)) return logoV1(spec, preset, artUrl, L);
+  if (!['kepala', 'huruf', 'stupa', 'stempel', 'stopwatch', 'wajah', 'ohi'].includes(L.jenis)) return logoV1(spec, preset, artUrl, L);
   const S = 800, art = await bLoad(artUrl), W2 = BS.warna;
   g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, cv.width, cv.height);
   g.save(); g.beginPath(); g.rect(0, 0, S, S); g.clip();
@@ -210,6 +210,8 @@ window.logo = async (spec, preset, artUrl, L) => {
     if (L.sub) T(L.sub, 400, 600, fitF(fI, L.sub, 54, 360), '#fff', { f: fI, olW: 0.18 });
   } else if (L.jenis === 'stopwatch') {
     stopwatch(400, 440, 250, '#fff', W2.aksen, BP.ol, L.teks || '1');
+  } else if (L.jenis === 'ohi') {
+    ohi2d(400, 470, L.h || 560, L.expr || 'senang');
   } else if (L.jenis === 'wajah') {
     await Promise.all(PENDING); NOW = 10.32; mascot(10, 20, L.expr || 'kaget', { size: L.size || 1500, x: 400, y: L.y ?? 1560 });
   }
@@ -222,7 +224,7 @@ window.logo = async (spec, preset, artUrl, L) => {
 const bannerV1 = window.banner;
 window.banner = async (spec, preset, artUrl, B) => {
   BP = preset; BS = spec; g = MAIN; await document.fonts.ready;
-  const gaya = B.gaya; if (!['kantor', 'museum', 'versus'].includes(gaya)) return bannerV1(spec, preset, artUrl, B);
+  const gaya = B.gaya; if (!['kantor', 'museum', 'versus', 'mainan'].includes(gaya)) return bannerV1(spec, preset, artUrl, B);
   const art = await bLoad(artUrl), W2 = BS.warna, X0 = SAFE.x, Y0 = SAFE.y, X1 = SAFE.x + SAFE.w, Y1 = SAFE.y + SAFE.h;
   g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, 2560, 1440);
   if (gaya === 'kantor') {
@@ -271,6 +273,20 @@ window.banner = async (spec, preset, artUrl, B) => {
     const rt = B.cta || 'TIAP HARI 1 RAHASIA BARU', rs = 36; g.font = fI(rs); const rw = g.measureText(rt).width + 120, ry = Y1 - 48;
     g.save(); g.translate(tx, ry); g.fillStyle = '#7A1F1F'; g.beginPath(); g.moveTo(-rw / 2 - 40, -26); g.lineTo(-rw / 2 + 10, -26); g.lineTo(-rw / 2 + 10, 34); g.lineTo(-rw / 2 - 40, 34); g.lineTo(-rw / 2 - 18, 4); g.closePath(); g.fill(); g.beginPath(); g.moveTo(rw / 2 + 40, -26); g.lineTo(rw / 2 - 10, -26); g.lineTo(rw / 2 - 10, 34); g.lineTo(rw / 2 + 40, 34); g.lineTo(rw / 2 + 18, 4); g.closePath(); g.fill();
     rrect(-rw / 2, -34, rw, 64, 4, '#A52A2A', W2.aksen, 4); T(rt, 0, 0, rs, W2.aksen, { f: fI, olW: 0, shadow: false }); g.restore();
+  } else if (gaya === 'mainan') {
+    // Ohhiyaa!: pastel toy studio — measuring grid, giant ruler, OHI the gallon, guess-first CTA
+    const gr = g.createLinearGradient(0, 0, 0, 1440); gr.addColorStop(0, W2.bg1); gr.addColorStop(1, W2.bg2); g.fillStyle = gr; g.fillRect(0, 0, 2560, 1440);
+    g.save(); g.strokeStyle = 'rgba(255,111,174,.28)'; g.lineWidth = 3; for (let x = 0; x <= 2560; x += 80) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, 1440); g.stroke(); } for (let y = 0; y <= 1440; y += 80) { g.beginPath(); g.moveTo(0, y); g.lineTo(2560, y); g.stroke(); } g.restore();
+    for (const [e, x, y, s, r] of [['1F35A', 260, 420, 180, -0.15], ['1F3CD', 2300, 430, 190, 0.12], ['1F697', 230, 1080, 180, 0.1], ['1F4D0', 2330, 1060, 170, -0.2], ['1F914', 1280, 1240, 140, 0], ['2753', 1280, 210, 130, 0.12]]) await bSticker(e, x, y, s, r);
+    // giant ruler along the bottom of the desktop band
+    g.save(); g.translate(0, Y1 - 70); rrect(-20, 0, 2600, 64, 6, '#FFD84A', BP.ol, 6); g.strokeStyle = BP.ol; g.lineWidth = 4; for (let k = 0; k <= 128; k++) { const x = k * 20; g.beginPath(); g.moveTo(x, 0); g.lineTo(x, k % 5 ? 18 : 34); g.stroke(); } g.restore();
+    ohi2d(X0 + 190, Y0 + 205, 330, 'senang');
+    const tx = X0 + 380 + (SAFE.w - 400) / 2, tw = SAFE.w - 430;
+    T(BS.nama.toUpperCase(), tx, Y0 + 110, fitF(fJ, BS.nama.toUpperCase(), 190, tw), W2.aksen, { olW: 0.13, ol: '#FFFFFF', extrude: [0, 16, BP.ol] });
+    T(BS.tagline, tx, Y0 + 225, fitF(fI, BS.tagline, 58, tw - 40), BP.ol, { f: fI, olW: 0, shadow: false });
+    const ct = B.cta || 'TEBAK DULU, BARU JAWAB!'; g.font = fJ(48); const cw = g.measureText(ct).width + 150;
+    g.save(); g.translate(tx, Y0 + 305); rrect(-cw / 2, -40, cw, 80, 40, BP.ol); T(ct, 32, 2, 48, '#FFC93C', { olW: 0, shadow: false });
+    g.beginPath(); g.arc(-cw / 2 + 48, 0, 30, 0, 7); g.fillStyle = '#fff'; g.fill(); g.beginPath(); g.arc(-cw / 2 + 48, 0, 30, -Math.PI / 2, Math.PI); g.lineWidth = 7; g.strokeStyle = W2.aksen; g.stroke(); T('3', -cw / 2 + 48, 3, 38, BP.ol, { olW: 0, shadow: false }); g.restore();
   } else {
     // Dari 1 mnt: VERSUS pop — diagonal pink|blue split, Bangers title with 3D extrude, series tags, stopwatch, mascot
     splitBg(2560, 1440, W2.c1, W2.c2, BP.ol);
@@ -286,3 +302,20 @@ window.banner = async (spec, preset, artUrl, B) => {
   }
   return cv.toDataURL('image/png').split(',')[1];
 };
+
+// OHI the gallon mascot, flat 2D (logos/banners): centre (cx,cy), height h
+function ohi2d(cx, cy, h, expr) {
+  const w = h * 0.62, ol = BP.ol, lw = h * 0.025; g.save(); g.lineJoin = 'round';
+  g.shadowColor = 'rgba(0,0,0,.25)'; g.shadowBlur = h * 0.06; g.shadowOffsetY = h * 0.03;
+  rrect(cx - w / 2, cy - h * 0.32, w, h * 0.78, h * 0.12, '#8FD3FF', ol, lw); g.shadowColor = 'transparent';
+  g.beginPath(); g.moveTo(cx - w * 0.38, cy - h * 0.32); g.lineTo(cx - w * 0.16, cy - h * 0.47); g.lineTo(cx + w * 0.16, cy - h * 0.47); g.lineTo(cx + w * 0.38, cy - h * 0.32); g.closePath(); g.fillStyle = '#BFE8FF'; g.fill(); g.lineWidth = lw; g.strokeStyle = ol; g.stroke();
+  rrect(cx - w * 0.17, cy - h * 0.55, w * 0.34, h * 0.09, h * 0.02, '#1E6EFF', ol, lw);
+  rrect(cx - w / 2, cy + h * 0.04, w, h * 0.16, 0, '#FFFFFF', ol, lw);
+  g.globalAlpha = 0.35; rrect(cx - w * 0.36, cy - h * 0.26, w * 0.1, h * 0.58, w * 0.05, '#FFFFFF'); g.globalAlpha = 1;
+  [-1, 1].forEach(sd => { g.save(); g.translate(cx + sd * w * 0.5, cy - h * 0.02); g.rotate(sd * (expr === 'senang' ? -0.5 : 0.3)); rrect(-h * 0.035, 0, h * 0.07, h * 0.2, h * 0.035, '#1E6EFF', ol, lw * 0.8); g.beginPath(); g.arc(0, h * 0.22, h * 0.05, 0, 7); g.fillStyle = '#fff'; g.fill(); g.stroke(); g.restore(); });
+  const ey = cy - h * 0.12, ex = w * 0.2; g.strokeStyle = ol; g.fillStyle = ol; g.lineCap = 'round'; g.lineWidth = h * 0.03;
+  if (expr === 'kaget') { [-1, 1].forEach(sd => { g.beginPath(); g.arc(cx + sd * ex, ey, h * 0.05, 0, 7); g.fillStyle = '#fff'; g.fill(); g.stroke(); g.beginPath(); g.arc(cx + sd * ex, ey, h * 0.02, 0, 7); g.fillStyle = ol; g.fill(); }); g.beginPath(); g.ellipse(cx, ey + h * 0.11, h * 0.035, h * 0.045, 0, 0, 7); g.fillStyle = '#7A1E3A'; g.fill(); g.stroke(); }
+  else { [-1, 1].forEach(sd => { g.beginPath(); g.arc(cx + sd * ex, ey + h * 0.01, h * 0.04, Math.PI * 1.1, Math.PI * 1.9); g.stroke(); }); g.beginPath(); g.arc(cx, ey + h * 0.06, h * 0.07, 0.15, Math.PI - 0.15); g.closePath(); g.fillStyle = '#7A1E3A'; g.fill(); g.stroke(); }
+  g.fillStyle = 'rgba(255,111,174,.6)'; [-1, 1].forEach(sd => { g.beginPath(); g.ellipse(cx + sd * w * 0.32, ey + h * 0.07, h * 0.04, h * 0.025, 0, 0, 7); g.fill(); });
+  g.restore();
+}
