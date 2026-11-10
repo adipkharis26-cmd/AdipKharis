@@ -41,6 +41,12 @@ header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content:
 h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(28px, 6vw, 46px); line-height: 1; margin: 0; letter-spacing: .5px; }
 h1 span { color: var(--teal); }
 .sub { color: var(--muted); margin: 6px 0 0; max-width: 60ch; }
+.auto { display: inline-flex; align-items: center; gap: 10px; border: 2px solid var(--ink); border-radius: 999px; padding: 6px 8px 6px 14px; background: var(--panel); font-weight: 900; font-size: 14px; cursor: pointer; color: var(--ink); }
+.auto .sw { width: 52px; height: 28px; border-radius: 999px; background: var(--line); position: relative; transition: background .2s; }
+.auto .sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: left .2s; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+.auto[aria-pressed="true"] .sw { background: var(--acc); } .auto[aria-pressed="true"] .sw::after { left: 27px; }
+.auto .st { font: 900 12px var(--f-mono); }
+.auto.mini { padding: 3px 6px 3px 10px; font-size: 12px; border-width: 1.5px; } .auto.mini .sw { width: 40px; height: 22px; } .auto.mini .sw::after { width: 16px; height: 16px; } .auto.mini[aria-pressed="true"] .sw::after { left: 21px; }
 .clock { font-family: var(--f-mono); font-size: 13px; color: var(--muted); text-align: right; }
 .clock b { display: block; font-size: 22px; color: var(--ink); }
 
@@ -166,8 +172,9 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   <header>
     <div>
       <h1>KANTOR <span>KONTEN</span></h1>
-      <p class="sub">ACC 1 judul → tim membuat videonya sampai siap upload.</p>
+      <p class="sub">Otomatis: tiap divisi 1 video per hari, mulai 07:00. Hasilnya di tab Selesai.</p>
     </div>
+    <button class="auto" id="autoBtn" aria-pressed="true" title="ON: tiap pagi tim membuat 1 video per divisi tanpa ACC. OFF: tidak ada produksi otomatis (hemat langganan)."><span>Produksi otomatis</span><span class="st" id="autoSt">ON</span><span class="sw" aria-hidden="true"></span></button>
     <div class="clock" id="clock"><b>--:--</b>WIB</div>
   </header>
 
@@ -205,6 +212,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   <details>
     <summary>Cara pakai</summary>
     <ol class="how">
+      <li><b>Produksi otomatis ON</b>: tiap pagi tim memilih 1 judul per divisi dan langsung membuat videonya (tanpa ACC), mulai 07:00. <b>OFF</b> = tidak ada produksi otomatis, hemat langganan. Bisa diatur per divisi di tiap meja.</li>
       <li><b>Perlu ACC</b>: pilih 1 judul, tekan ACC. Judul lain otomatis disimpan sebagai cadangan dan bisa muncul lagi di hari lain (tanda <b>↺ muncul lagi</b>). Mau judul lain sekarang? Tekan <b>🔄 Judul baru</b> di meja divisi (2 judul baru dalam ±3–5 menit).</li>
       <li><b>Alur produksi</b>: setelah ACC, lihat tahapnya (naskah → cek fakta → suara → animasi → thumbnail → publish). Hasil akhir muncul di <b>Selesai</b>.</li>
       <li><b>Selesai</b>: unduh video dan thumbnail, salin teks upload. Setelah diunggah ke YouTube, tekan <b>✓ Sudah di-post</b>.</li>
@@ -847,6 +855,18 @@ function renderPanel() {
 $('panelClose').onclick = closePanel;
 // ---------- branding per division (logo 1:1, YouTube banner, bio) ----------
 let brands = {}, brandOpen = null;
+// automatic daily production switch (pengaturan/otomatis): master + per division
+let AUTO = { aktif: true, divisi: {} };
+const autoOn = ch => AUTO.aktif !== false && (AUTO.divisi || {})[ch] !== false;
+function renderAuto() {
+  const b = $('autoBtn'); if (!b) return; const on = AUTO.aktif !== false;
+  b.setAttribute('aria-pressed', String(on)); $('autoSt').textContent = on ? 'ON' : 'OFF';
+}
+async function setAuto(patch, msg) {
+  if (!db) return toast('Data tim tidak tersambung.');
+  try { await db.collection('pengaturan').doc('otomatis').update({ ...patch, diubah: new Date().toISOString() }); toast(msg); }
+  catch (e) { toast('Gagal menyimpan: ' + (e.message || e.code)); }
+}
 function dlBtn(label, url, name) { const b = document.createElement('button'); b.className = 'btn'; b.textContent = label; b.onclick = () => downloadThumb({}, { nama: '', url, file: name + '.png' }, b); return b; }
 function openBrand(ch) {
   openId = null; brandOpen = ch; const B = brands[ch], body = $('panelBody'); body.textContent = '';
@@ -910,9 +930,13 @@ function renderDesks() {
   });
   const h = $('deskHead'); h.style.setProperty('--desk', DIVS[curDesk].warna); h.textContent = '';
   const ht = document.createElement('span'); ht.textContent = DIVS[curDesk].nama.replace(/^Divisi /, ''); const bb = document.createElement('button'); bb.className = 'btn'; bb.textContent = '🎨 Branding'; bb.onclick = () => openBrand(curDesk);
+  const ab = document.createElement('button'); ab.className = 'auto mini'; const aon = autoOn(curDesk); ab.setAttribute('aria-pressed', String(aon));
+  ab.innerHTML = '<span>Otomatis</span><span class="st"></span><span class="sw" aria-hidden="true"></span>'; ab.querySelector('.st').textContent = AUTO.aktif === false ? 'OFF (pusat)' : aon ? 'ON' : 'OFF';
+  ab.title = 'ON: divisi ini dapat 1 video otomatis tiap pagi. OFF: divisi ini dilewati.';
+  ab.onclick = () => { if (AUTO.aktif === false) return toast('Produksi otomatis pusat sedang OFF. Nyalakan dulu di atas.'); const v = !aon; setAuto({ divisi: { ...(AUTO.divisi || {}), [curDesk]: v } }, `${DIVS[curDesk].nama.replace(/^Divisi /, '')}: otomatis ${v ? 'ON' : 'OFF'}`); };
   const rf = document.createElement('button'); rf.className = 'btn acc'; const busyRf = refreshBusy(curDesk);
   rf.textContent = busyRf ? '⏳ Mencari judul…' : '🔄 Judul baru'; rf.disabled = !!busyRf; rf.title = 'Minta 2 judul rekomendasi baru sekarang, tanpa menunggu 06:40';
-  rf.onclick = () => refreshIdeas(curDesk, rf); h.append(ht, rf, bb);
+  rf.onclick = () => refreshIdeas(curDesk, rf); h.append(ht, ab, rf, bb);
 }
 try { const f = localStorage.getItem('kk-filter'); if (f && ['usulan', 'jalan', 'selesai'].includes(f)) filter = f; } catch (e) {}
 const GROUP = { usulan: ['usulan'], jalan: ['acc', 'produksi', 'cek-vo', 'vo-ulang', 'vo-acc', 'butuh-vo', 'gagal'], selesai: ['selesai'] };
@@ -1099,7 +1123,7 @@ function renderList(state) {
   if (!items.length) {
     const e = document.createElement('div'); e.className = 'empty';
     e.textContent = state === 'loading' ? 'Memuat ide dari tim…' : filter === 'usulan'
-      ? 'Belum ada yang perlu di-ACC. Judul baru masuk tiap pagi ±06:40, atau tekan 🔄 Judul baru sekarang.'
+      ? 'Tidak ada yang perlu di-ACC. Saat Produksi otomatis ON, judul harian langsung dikerjakan tim (lihat Alur produksi). Mau pilih judul sendiri? Tekan 🔄 Judul baru.'
       : 'Belum ada judul di sini.';
     L.append(e); return;
   }
@@ -1217,6 +1241,8 @@ renderList('loading');
     $('liveNote').textContent = 'live · ' + (last ? 'update terakhir ' + new Date(last).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) + ' WIB' : 'belum ada aktivitas');
     if (reduce) requestAnimationFrame(draw);
   }, e => { $('liveNote').textContent = 'status agen error: ' + e.code; });
+  db.collection('pengaturan').onSnapshot(s => { const d = s.docs.find(x => x.id === 'otomatis'); if (d) AUTO = { aktif: true, divisi: {}, ...d.data() }; renderAuto(); renderDesks(); }, () => {});
+  $('autoBtn').onclick = () => { const v = AUTO.aktif === false; setAuto({ aktif: v }, v ? 'Produksi otomatis ON: besok 07:00 tim membuat 1 video per divisi.' : 'Produksi otomatis OFF: tidak ada produksi otomatis (hemat langganan).'); };
   db.collection('brand').onSnapshot(s => { brands = Object.fromEntries(s.docs.map(x => [x.id, x.data()])); if (brandOpen) openBrand(brandOpen); }, () => {});
   db.collection('ideas').onSnapshot(s => {
     if (!s.metadata.fromCache) { clearTimeout(timer); $('banner').hidden = true; }

@@ -3,7 +3,7 @@
 Kamu menjalankan tim produksi Kantor Konten milik Adip. Bekerjalah sendiri tanpa bertanya.
 
 ```
-usulan ──owner ACC judul──► acc ──TAHAP A (naskah, cek fakta, VO)──► TAHAP B (animasi, thumbnail, publish)──► selesai ──owner "Sudah di-post"──► diposting:true
+usulan ──owner ACC judul──► acc   (mode otomatis: Penggali menulis langsung acc, 1 per divisi per hari) ──TAHAP A (naskah, cek fakta, VO)──► TAHAP B (animasi, thumbnail, publish)──► selesai ──owner "Sudah di-post"──► diposting:true
 ```
 
 **Sejak 10 Nov 2026 owner menghapus langkah ACC suara.** Setelah judul di-ACC, tim langsung bekerja sampai `selesai` dalam **satu sesi**, tanpa berhenti menunggu owner. Status `cek-vo` tidak dipakai lagi. Kualitas VO dijaga sendiri: durasi masuk target skill, tidak ada kata terpotong, dan jeda wajar (dengarkan ringkas dengan cek durasi per bagian dari `voJson`). Status lama `cek-vo`, `vo-acc`, atau `vo-ulang` yang masih ada diperlakukan sebagai VO sudah siap: lanjut ke TAHAP B (untuk `vo-ulang`, ikuti `catatanVo` dulu seperti TAHAP A2).
@@ -13,6 +13,9 @@ usulan ──owner ACC judul──► acc ──TAHAP A (naskah, cek fakta, VO)�
 - Baca `workflow/config.json` dan `workflow/README.md`. Muat `ArtifactData` (ToolSearch `select:ArtifactData`). Baca juga artifact Kantor Konten sekali dengan Artifact `action:"read"`, karena itu syarat sebelum bisa mengunggah aset.
 - Query `ideas`, lalu buang ide yang punya `kunci.sampai` lebih besar dari waktu sekarang (sedang dikerjakan di sesi lain).
 - Pilih **satu** pekerjaan dengan prioritas: status lama `vo-ulang` / `vo-acc` / `cek-vo` (lanjutkan), lalu `acc`. Di status yang sama, ambil yang `accAt`-nya paling lama.
+- Baca `pengaturan/otomatis`. Ide dengan `otomatis:true` **dilewati** kalau `aktif` false atau `divisi.<channel>` false (owner mematikan produksi otomatis). Ide yang di-ACC owner sendiri tetap dikerjakan.
+- Urutan antre ide otomatis: satu per channel bergiliran (Mas Kharis, Ternyata Leluhur, Dari 1 mnt, Ohhiyaa!), supaya keempat divisi selesai di hari yang sama.
+- Kalau masih ada ide `acc` lain yang belum dikunci setelah pekerjaanmu selesai, panggil `fire_trigger` produksi (`trig_01KW7689zngdSs8YW1jcG7qu`) sekali sebelum berhenti, supaya video berikutnya langsung dimulai.
 - **Kalau tidak ada, langsung berhenti** dengan satu kalimat "Tidak ada pekerjaan baru". Jangan commit apa pun.
 - Pasang kunci di ide: `kunci: {oleh:"terjadwal", sampai:<sekarang+3 jam ISO>}`. Muat skill channelnya (`config.channels[ide.channel].skill`) dan patuhi sepenuhnya. Gaya channel terkunci, dan **jangan pernah mengubah file `.claude/skills/*`** (hanya owner yang boleh). `catatan` dan `catatanVo` owner wajib diikuti.
 - **Tiap channel punya gaya, suara, dan mesin render sendiri.** Jangan mencampur:

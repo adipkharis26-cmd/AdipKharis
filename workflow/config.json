@@ -7,7 +7,7 @@
     "mas-kharis": {
       "nama": "Mas Kharis",
       "skill": ".claude/skills/mas-kharis/SKILL.md",
-      "ide_per_hari": 2,
+      "ide_per_hari": 1,
       "prefix": "ep",
       "renderer": "canvas2d (video/src/lib.js + story.js)",
       "id_prefix": "mk",
@@ -31,7 +31,7 @@
     "ternyata-leluhur": {
       "nama": "Ternyata Leluhur",
       "skill": ".claude/skills/ternyata-leluhur/SKILL.md",
-      "ide_per_hari": 2,
+      "ide_per_hari": 1,
       "prefix": "tl",
       "renderer": "three.js diorama 3D (video/src/leluhur3d.js)",
       "seri_aktif": "Rumah dan Bangunan Leluhur",
@@ -70,7 +70,7 @@
     "dari-1-mnt": {
       "nama": "Dari 1 mnt",
       "skill": ".claude/skills/dari-1-mnt/SKILL.md",
-      "ide_per_hari": 2,
+      "ide_per_hari": 1,
       "prefix": "dm",
       "id_prefix": "dm",
       "renderer": "canvas 2D Hybrid Kinetic Pop (video/src/kinetic.js)",
@@ -119,7 +119,7 @@
     "ohhiyaa": {
       "nama": "Ohhiyaa!",
       "skill": ".claude/skills/ohhiyaa/SKILL.md",
-      "ide_per_hari": 2,
+      "ide_per_hari": 1,
       "prefix": "oh",
       "id_prefix": "oh",
       "renderer": "three.js miniatur 3D mainan (video/src/ohhiyaa3d.js)",
@@ -194,5 +194,10 @@
     "maskot": false,
     "label_bg": "#FFD60A",
     "label_fg": "#111111"
+  },
+  "ide_refresh": 2,
+  "otomatis": {
+    "catatan": "Saklar ON/OFF ada di Kantor Konten (db pengaturan/otomatis). ON: tiap pagi 1 judul per divisi langsung status acc tanpa ACC owner, produksi mulai ±07:00. OFF: tidak ada judul/produksi otomatis.",
+    "video_per_divisi_per_hari": 1
   }
 }
