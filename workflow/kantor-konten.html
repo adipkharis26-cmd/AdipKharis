@@ -119,6 +119,17 @@ h1 span { color: var(--teal); }
 .hook .l1 { color: #fff; } .hook .l2 { color: #FFD84A; } .hook .l3 { color: #E84545; }
 .kv { display: grid; gap: 4px; font-size: 14px; }
 .kv b { font-weight: 800; }
+.flow { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0; margin: 2px 0 0; padding: 0; list-style: none; }
+.flow li { position: relative; display: grid; justify-items: center; align-content: start; gap: 4px; padding: 0 1px; font: 700 9.5px var(--f-mono); line-height: 1.15; overflow-wrap: anywhere; color: var(--muted); text-align: center; }
+.flow li::before { content: ""; position: absolute; top: 11px; left: -50%; width: 100%; height: 3px; background: var(--line); z-index: 0; }
+.flow li:first-child::before { display: none; }
+.flow .dot { position: relative; z-index: 1; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; background: var(--panel); border: 2px solid var(--line); }
+.flow li.done { color: var(--acc); } .flow li.done .dot { background: var(--acc); border-color: var(--acc); color: #fff; } .flow li.done::before, .flow li.now::before { background: var(--acc); }
+.flow li.now { color: var(--ink); font-weight: 900; } .flow li.now .dot { border-color: var(--prod); background: var(--prod); color: #fff; box-shadow: 0 0 0 0 var(--prod); animation: pulse 1.6s infinite; }
+.flow li.err .dot { background: var(--tolak); border-color: var(--tolak); color: #fff; animation: none; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--prod) 60%, transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
+@media (prefers-reduced-motion: reduce) { .flow li.now .dot { animation: none; } }
+.nowline { font-weight: 800; font-size: 14px; }
 .card.posted { background: var(--acc-soft); border-color: var(--acc); box-shadow: 4px 4px 0 var(--acc); opacity: .9; }
 .card.posted h3 { color: var(--muted); }
 .card.posted .postbadge { display: inline-flex; align-items: center; gap: 6px; font: 900 13px var(--f-mono); color: #fff; background: var(--acc); border-radius: 999px; padding: 4px 12px; justify-self: start; }
@@ -185,7 +196,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     <div id="banner" class="banner" hidden></div>
     <div class="tabs" role="group" aria-label="Filter status">
       <button class="tab" id="tab-usulan" data-f="usulan" aria-pressed="true">Perlu ACC<span class="n"></span></button>
-      <button class="tab" id="tab-jalan" data-f="jalan" aria-pressed="false">Diproduksi<span class="n"></span></button>
+      <button class="tab" id="tab-jalan" data-f="jalan" aria-pressed="false">Alur produksi<span class="n"></span></button>
       <button class="tab" id="tab-selesai" data-f="selesai" aria-pressed="false">Selesai<span class="n"></span></button>
     </div>
     <div class="list" id="list"></div>
@@ -195,7 +206,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     <summary>Cara pakai</summary>
     <ol class="how">
       <li><b>Perlu ACC</b>: pilih 1 judul, tekan ACC. Mau judul lain sekarang? Tekan <b>🔄 Judul baru</b> di meja divisi (4 judul baru dalam ±3–5 menit).</li>
-      <li>Setelah ACC, tim langsung bekerja sampai video <b>Selesai</b> (tanpa cek suara).</li>
+      <li><b>Alur produksi</b>: setelah ACC, lihat tahapnya (naskah → cek fakta → suara → animasi → thumbnail → publish). Hasil akhir muncul di <b>Selesai</b>.</li>
       <li><b>Selesai</b>: unduh video dan thumbnail, salin teks upload. Setelah diunggah ke YouTube, tekan <b>✓ Sudah di-post</b>.</li>
       <li><b>🎨 Branding</b> di tiap meja: logo, banner, dan bio channel.</li>
     </ol>
@@ -916,11 +927,33 @@ function renderTabs() {
     b.querySelector('.n').textContent = ideas.filter(i => chOf(i) === curDesk && GROUP[f].includes(i.status) && !(f === 'selesai' && i.diposting)).length || '';
   });
 }
+// production flow: ACC → naskah → cek fakta → suara → animasi → thumbnail → publish → (tab Selesai)
+const STEPS = [['antre', 'Antre', '⏳'], ['naskah', 'Naskah', '✍'], ['cekfakta', 'Cek fakta', '🔎'], ['vo', 'Suara', '🎙'], ['animasi', 'Animasi', '🎬'], ['thumbnail', 'Thumb', '🖼'], ['publish', 'Publish', '🚀']];
+const STEP_NOW = { antre: 'Antre, menunggu tim', naskah: 'Sedang menulis naskah', cekfakta: 'Sedang cek fakta', vo: 'Sedang membuat suara (VO)', animasi: 'Sedang animasi & render', thumbnail: 'Sedang membuat thumbnail', publish: 'Sedang mengunggah hasil' };
+const isLocked = i => !!(i.kunci && Date.parse(i.kunci.sampai || '') > Date.now());
+function stageOf(i) {
+  if (STEPS.some(s => s[0] === i.tahap)) return i.tahap;
+  const p = String(i.progres || '');
+  if (i.status === 'butuh-vo') return 'vo';
+  if (/publish|unggah|upload|publisher/i.test(p)) return 'publish';
+  if (/thumbnail/i.test(p)) return 'thumbnail';
+  if (/anim|render|stills/i.test(p) || ['vo-acc', 'cek-vo'].includes(i.status)) return 'animasi';
+  if (/\bvo\b|suara|tts|elevenlabs/i.test(p) || i.status === 'vo-ulang') return 'vo';
+  if (/fakta/i.test(p)) return 'cekfakta';
+  if (/naskah|nulis|menulis/i.test(p) || isLocked(i)) return 'naskah';
+  return 'antre';
+}
+function flowEl(i) {
+  const st = stageOf(i), k = STEPS.findIndex(s => s[0] === st), ol = document.createElement('ol'); ol.className = 'flow'; ol.setAttribute('aria-label', 'Tahap produksi');
+  STEPS.forEach(([id, lab, ic], n) => { const li = document.createElement('li'); li.className = n < k ? 'done' : n === k ? (i.status === 'gagal' ? 'now err' : 'now') : ''; const d = document.createElement('span'); d.className = 'dot'; d.textContent = n < k ? '✓' : ic; li.append(d, lab); if (n === k) li.setAttribute('aria-current', 'step'); ol.append(li); });
+  return ol;
+}
 function card(i) {
   const posted = i.status === 'selesai' && i.diposting;
   const c = document.createElement('article'); c.className = 'card' + (posted ? ' posted' : '');
   const meta = document.createElement('div'); meta.className = 'meta';
-  const p = document.createElement('span'); p.className = 'pill s-' + i.status; p.textContent = posted ? 'Sudah di-post' : (LABEL[i.status] || i.status); meta.append(p);
+  const inFlow = GROUP.jalan.includes(i.status);
+  const p = document.createElement('span'); p.className = 'pill s-' + (inFlow && i.status !== 'gagal' ? 'vo-acc' : i.status); p.textContent = posted ? 'Sudah di-post' : inFlow ? (i.status === 'gagal' ? 'Gagal' : i.status === 'butuh-vo' ? 'Butuh VO' : 'Alur produksi') : (LABEL[i.status] || i.status); meta.append(p);
   [i.niche, fmtDate(i.tanggal)].filter(Boolean).forEach(x => { const s = document.createElement('span'); s.className = 'chip'; s.textContent = x; meta.append(s); });
   const h = document.createElement('h3'); h.textContent = i.judul || '(tanpa judul)';
   c.append(meta, h);
@@ -941,7 +974,12 @@ function card(i) {
     const d = document.createElement('details'); d.open = i.status === 'butuh-vo'; const s = document.createElement('summary'); s.textContent = i.status === 'cek-vo' ? 'Teks VO' : 'Teks VO untuk direkam';
     const pre = document.createElement('div'); pre.className = 'votext'; pre.textContent = i.voText; d.append(s, pre); c.append(d);
   }
-  if (i.progres) { const pr = document.createElement('div'); pr.className = 'prog'; pr.textContent = '▸ ' + i.progres; c.append(pr); }
+  if (inFlow) {
+    const nl = document.createElement('div'); nl.className = 'nowline';
+    nl.textContent = i.status === 'gagal' ? '⚠ Gagal di tahap ' + STEPS.find(s => s[0] === stageOf(i))[1] : i.status === 'butuh-vo' ? '🎙 Butuh VO dari kamu' : STEP_NOW[stageOf(i)] + (stageOf(i) !== 'antre' ? '…' : '');
+    c.append(flowEl(i), nl);
+  }
+  if (i.progres && i.status !== 'selesai') { const pr = document.createElement('div'); pr.className = 'prog'; pr.textContent = '▸ ' + i.progres; c.append(pr); }
   if (i.status === 'selesai' && i.videoUrl) {
     const v = document.createElement('video'); v.controls = true; v.preload = 'metadata'; v.playsInline = true; v.src = i.videoUrl;
     if (posted) { const vd = document.createElement('details'); vd.className = 'vid'; const vs = document.createElement('summary'); vs.textContent = 'Lihat video & thumbnail'; vd.append(vs, v); c.append(vd); c._vid = vd; }
@@ -981,9 +1019,7 @@ function card(i) {
     const u = btn('Unggah VO (mp4/audio)', 'acc', () => inp.click()); u.disabled = !assets;
     act.append(u, inp);
   } else if (['acc', 'cek-vo', 'vo-acc', 'vo-ulang'].includes(i.status)) {
-    const busy = i.kunci && Date.parse(i.kunci.sampai || '') > Date.now();
-    const b = btn(busy ? 'Sedang dikerjakan…' : '▶ Mulai sekarang', 'acc', () => startNow(i, b)); if (busy) b.disabled = true;
-    act.append(b);
+    if (!isLocked(i)) { const b = btn(i.mulaiSekarang ? 'Memanggil tim…' : '▶ Mulai sekarang', 'acc', () => startNow(i, b)); act.append(b); }
   } else if (i.status === 'gagal') {
     act.append(btn('Coba lagi', 'acc', () => setStatus(i, 'acc')));
   }
@@ -1077,11 +1113,11 @@ function renderList(state) {
 }
 document.querySelectorAll('.tab').forEach(b => b.onclick = () => { filter = b.dataset.f; try { localStorage.setItem('kk-filter', filter); } catch (e) {} renderList(); });
 
-const MSG = { acc: 'Judul di-ACC. Tim langsung bekerja sampai video selesai (tanpa cek suara). Mau lebih cepat? Tekan ▶ Mulai sekarang di tab Diproduksi.', 'vo-acc': 'Suara di-ACC. Animator dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', 'vo-ulang': 'VO diulang sesuai catatan. Tim dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', tolak: 'Ditolak' };
+const MSG = { acc: 'Judul di-ACC. Tim langsung bekerja sampai video selesai (tanpa cek suara). Pantau tahapnya di tab Alur produksi.', 'vo-acc': 'Suara di-ACC. Animator dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', 'vo-ulang': 'VO diulang sesuai catatan. Tim dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', tolak: 'Ditolak' };
 const MSG_LATE = { acc: 'Judul di-ACC. Tim mulai di jadwal berikutnya (menit ke-13) dan langsung sampai selesai.', 'vo-acc': 'Suara di-ACC. Animator mulai di jadwal berikutnya (menit ke-13).', 'vo-ulang': 'VO akan diulang di jadwal berikutnya (menit ke-13).' };
 // "🔄 Judul baru": run the daily idea scout now for one division (scheduled task "Kantor Konten: ide harian")
 const IDEA_TRIGGER = 'trig_01KVzAaEsV3BWHPtsjKX9pUs';
-function refreshBusy(ch) { try { const t = +localStorage.getItem('kk-refresh-' + ch) || 0; return Date.now() - t < 8 * 60000 && !ideas.some(i => chOf(i) === ch && i.status === 'usulan' && Date.parse(i.createdAt || '') > t); } catch (e) { return false; } }
+function refreshBusy(ch) { try { const t = +localStorage.getItem('kk-refresh-' + ch) || 0, pg = agents.find(a => a.id === 'penggali') || {}; return Date.now() - t < 10 * 60000 && pg.status === 'kerja' && String(pg.aktivitas || '').includes(DIVS[ch].nama.replace(/^Divisi /, '')); } catch (e) { return false; } }
 async function refreshIdeas(ch, b) {
   const nama = DIVS[ch].nama.replace(/^Divisi /, '');
   if (ideas.some(i => chOf(i) === ch && i.status === 'usulan') && !confirm(`Ganti judul ${nama} yang sekarang dengan 4 judul baru?`)) return;
@@ -1169,7 +1205,7 @@ renderList('loading');
         .concat(Object.values(got).filter(x => !AGENT_DEFAULTS.some(d => d.id === x.id)))
         // a session that ended without resetting its agent: "kerja" older than 3 hours is shown as resting
         .map(a => a.status === 'kerja' && Date.now() - (Date.parse(a.diubah || '') || 0) > 3 * 3600e3 ? { ...a, status: 'santai' } : a);
-      renderRoster(); renderPanel();
+      renderRoster(); renderPanel(); renderDesks();
     }
     const last = agents.map(x => x.diubah).filter(Boolean).sort().pop();
     $('liveNote').textContent = 'live · ' + (last ? 'update terakhir ' + new Date(last).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) + ' WIB' : 'belum ada aktivitas');
