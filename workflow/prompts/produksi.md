@@ -57,6 +57,7 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
   - Kalau catatan menyebut bagian tertentu, ubah teks bagian itu bila perlu, lalu jalankan `tts_elevenlabs.py epNN --from <N>` dari bagian pertama yang berubah.
   - Kalau catatan bersifat umum (intonasi, suara, tempo), buat ulang semuanya.
   - Kalau owner meminta suara atau setelan lain, ubah `workflow/config.json` hanya untuk hal yang diminta.
+  - Kalau catatan meminta **alur v2 / tulis ulang**, tulis ulang seluruh naskah (`naskah/epNN-*.md` dan `video/vo/epNN.txt`) mengikuti struktur di skill channel saat ini (penulis + cek fakta, fakta lama boleh dipakai ulang), lalu buat ulang semua VO dan pastikan durasinya masuk target skill.
 - Lalu jalankan langkah A.4 dan A.5 lagi. Status kembali `cek-vo`, dengan `progres:"VO diulang: <ringkas perubahan>"`.
 
 ## TAHAP B — status `vo-acc`: Animator → Publisher
