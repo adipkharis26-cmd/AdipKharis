@@ -133,8 +133,19 @@
         "Kalau Semua Orang Indonesia…",
         "Tebak Dulu: Lebih Besar Mana?"
       ],
-      "suara_menunggu": true,
-      "elevenlabs": {},
+      "elevenlabs": {
+        "voice_id": "CZ1zU0S6elSZD4eYUY6c",
+        "voice_name": "Papa Gufron",
+        "model_id": "eleven_v4",
+        "voice_settings": {
+          "stability": 0.5,
+          "similarity_boost": 0.75,
+          "style": 0.0
+        },
+        "section_gap_s": 0.5,
+        "max_pause_s": 0.35,
+        "catatan": "Setelan owner (ElevenLabs UI): Papa Gufron, Eleven v4, Stabilitas 0.5, Kesamaan 0.75, Bahasa Auto, MP3 44.1kHz 128kbps. Efek UI (kebisingan 'Pusat panggilan', ruang 'Big Room') TIDAK dipakai: VO harus bersih, suasana dari musik/SFX mixer."
+      },
       "thumbnail": {
         "font": "Nunito",
         "berat": "900",
