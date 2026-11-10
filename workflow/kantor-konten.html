@@ -108,8 +108,8 @@ h1 span { color: var(--teal); }
 .s-usulan { background: var(--warn-soft); color: var(--warn); }
 .s-acc, .s-produksi { background: var(--prod-soft); color: var(--prod); }
 .s-butuh-vo { background: var(--warn-soft); color: var(--warn); }
-.s-cek-vo { background: var(--tolak); color: #fff; }
-.s-vo-ulang { background: var(--warn-soft); color: var(--warn); }
+.s-cek-vo { background: var(--prod-soft); color: var(--prod); }
+.s-vo-ulang { background: var(--prod-soft); color: var(--prod); }
 .s-vo-acc { background: var(--prod-soft); color: var(--prod); }
 .s-selesai { background: var(--acc-soft); color: var(--acc); }
 .s-tolak, .s-gagal { background: var(--tolak-soft); color: var(--tolak); }
@@ -118,6 +118,12 @@ h1 span { color: var(--teal); }
 .hook .l1 { color: #fff; } .hook .l2 { color: #FFD84A; } .hook .l3 { color: #E84545; }
 .kv { display: grid; gap: 4px; font-size: 14px; }
 .kv b { font-weight: 800; }
+.card.posted { background: var(--acc-soft); border-color: var(--acc); box-shadow: 4px 4px 0 var(--acc); opacity: .9; }
+.card.posted h3 { color: var(--muted); }
+.card.posted .postbadge { display: inline-flex; align-items: center; gap: 6px; font: 900 13px var(--f-mono); color: #fff; background: var(--acc); border-radius: 999px; padding: 4px 12px; justify-self: start; }
+.card.posted details.vid > summary { cursor: pointer; font-size: 13px; color: var(--muted); }
+.btn.post { background: var(--acc); color: #fff; border-color: var(--acc); font-weight: 900; }
+.listsep { grid-column: 1 / -1; font: 800 12px var(--f-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); border-top: 1px dashed var(--muted); padding-top: 10px; margin-top: 4px; }
 .prog { font-size: 13px; color: var(--muted); font-family: var(--f-mono); }
 .actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .btn { font: 900 14px var(--f-body); border-radius: 10px; padding: 8px 16px; border: 2px solid var(--ink); cursor: pointer; background: var(--panel); color: var(--ink); }
@@ -180,7 +186,6 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       <button class="tab" id="tab-usulan" data-f="usulan" aria-pressed="true">Perlu ACC<span class="n"></span></button>
       <button class="tab" id="tab-jalan" data-f="jalan" aria-pressed="false">Diproduksi<span class="n"></span></button>
       <button class="tab" id="tab-selesai" data-f="selesai" aria-pressed="false">Selesai<span class="n"></span></button>
-      <button class="tab" id="tab-tolak" data-f="tolak" aria-pressed="false">Ditolak<span class="n"></span></button>
     </div>
     <div class="list" id="list"></div>
   </section>
@@ -189,8 +194,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     <summary>Cara pakai</summary>
     <ol class="how">
       <li><b>Perlu ACC</b>: pilih 1 judul, tekan ACC.</li>
-      <li><b>Cek suara</b>: dengarkan, lalu ACC suara atau Ulang VO.</li>
-      <li><b>Selesai</b>: unduh video dan thumbnail, salin teks upload.</li>
+      <li>Setelah ACC, tim langsung bekerja sampai video <b>Selesai</b> (tanpa cek suara).</li>
+      <li><b>Selesai</b>: unduh video dan thumbnail, salin teks upload. Setelah diunggah ke YouTube, tekan <b>✓ Sudah di-post</b>.</li>
       <li><b>🎨 Branding</b> di tiap meja: logo, banner, dan bio channel.</li>
     </ol>
   </details>
@@ -592,7 +597,6 @@ function waitingFor(id) {
   if (role === 'penggali') { const n = ideas.filter(i => i.status === 'usulan').length; return n ? { n, txt: `${n} judul nunggu ACC`, filter: ['usulan'] } : null; }
   if (role === 'suara') {
     const cek = mine.filter(i => i.status === 'cek-vo'), butuh = mine.filter(i => i.status === 'butuh-vo');
-    if (cek.length) return { n: cek.length, txt: cek.length === 1 ? `VO ${(cek[0].episode || '').toUpperCase()} nunggu dicek`.replace('  ', ' ') : `${cek.length} VO nunggu dicek`, filter: ['cek-vo'], ch: AG_CH[id] };
     if (butuh.length) return { n: butuh.length, txt: 'Butuh VO dari kamu', filter: ['butuh-vo'], ch: AG_CH[id] };
   }
   if (role === 'animator') { const n = mine.filter(i => i.status === 'gagal').length; return n ? { n, txt: `${n} render gagal`, filter: ['gagal'], ch: AG_CH[id] } : null; }
@@ -774,7 +778,7 @@ function draw(ts) {
   const bg = g.createLinearGradient(0, 0, 0, VH); bg.addColorStop(0, TOD === 'night' ? '#0B0F22' : '#1E2233'); bg.addColorStop(1, '#14161F'); g.fillStyle = bg; g.fillRect(0, 0, VW, VH);
   g.setTransform(z, 0, 0, z, VW / 2 - cx * z, VH / 2 - cy * z);
   floors(t); backWalls(t);
-  const waitN = ideas.filter(i => ['usulan', 'cek-vo', 'butuh-vo'].includes(i.status)).length;
+  const waitN = ideas.filter(i => ['usulan', 'butuh-vo'].includes(i.status)).length;
   wallScreen(3.2, 6.4, 72, 150, waitN ? [`${waitN} NUNGGU ACC`, 'klik agen bertanda !'] : ['SEMUA BERES ✓', 'tidak ada antrean'], waitN ? '#FF8A8A' : '#7ff0a8');
   const last = ideas.filter(i => i.status === 'selesai').sort((a, b) => String(b.diubah || '').localeCompare(String(a.diubah || '')))[0];
   [['mas-kharis', 12.8, 14.4], ['ternyata-leluhur', 30.2, 31.6], ['dari-1-mnt', 39.6, 41.2]].forEach(([ch, x0, x1]) => {
@@ -876,7 +880,7 @@ let filter = 'usulan', db = null, assets = null, canWrite = false;
 // one owner desk per division: the list, counts and tabs only show that division's titles
 let curDesk = 'mas-kharis', deskPicked = false;
 try { const d = localStorage.getItem('kk-desk'); if (d && DIVS[d]) { curDesk = d; deskPicked = true; } } catch (e) {}
-const needsMe = ch => ideas.filter(i => chOf(i) === ch && ['usulan', 'cek-vo', 'butuh-vo'].includes(i.status)).length;
+const needsMe = ch => ideas.filter(i => chOf(i) === ch && ['usulan', 'butuh-vo'].includes(i.status)).length;
 function setDesk(d) { curDesk = d; deskPicked = true; try { localStorage.setItem('kk-desk', d); } catch (e) {} renderList(); }
 function renderDesks() {
   // a division that exists in the data but has no room yet still gets its own desk (and download buttons)
@@ -895,26 +899,28 @@ function renderDesks() {
   const h = $('deskHead'); h.style.setProperty('--desk', DIVS[curDesk].warna); h.textContent = '';
   const ht = document.createElement('span'); ht.textContent = DIVS[curDesk].nama.replace(/^Divisi /, ''); const bb = document.createElement('button'); bb.className = 'btn'; bb.textContent = '🎨 Branding'; bb.onclick = () => openBrand(curDesk); h.append(ht, bb);
 }
-try { const f = localStorage.getItem('kk-filter'); if (f) filter = f; } catch (e) {}
-const GROUP = { usulan: ['cek-vo', 'usulan'], jalan: ['acc', 'produksi', 'vo-ulang', 'vo-acc', 'butuh-vo', 'gagal'], selesai: ['selesai'], tolak: ['tolak'] };
-const LABEL = { usulan: 'Judul baru', acc: 'Judul di-ACC · antre', produksi: 'Diproduksi', 'cek-vo': 'Cek suara', 'vo-ulang': 'VO diulang', 'vo-acc': 'Suara di-ACC · animasi', 'butuh-vo': 'Butuh VO', selesai: 'Selesai', tolak: 'Ditolak', gagal: 'Gagal' };
-const RANK = { 'cek-vo': 0, usulan: 1 };
+try { const f = localStorage.getItem('kk-filter'); if (f && ['usulan', 'jalan', 'selesai'].includes(f)) filter = f; } catch (e) {}
+const GROUP = { usulan: ['usulan'], jalan: ['acc', 'produksi', 'cek-vo', 'vo-ulang', 'vo-acc', 'butuh-vo', 'gagal'], selesai: ['selesai'] };
+const LABEL = { usulan: 'Judul baru', acc: 'Judul di-ACC · antre', produksi: 'Diproduksi', 'cek-vo': 'Diproduksi', 'vo-ulang': 'Diproduksi', 'vo-acc': 'Diproduksi', 'butuh-vo': 'Butuh VO', selesai: 'Selesai', tolak: 'Ditolak', gagal: 'Gagal' };
+const RANK = { usulan: 1 };
 function toast(msg) { const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 2600); }
 function fmtDate(s) { if (!s) return ''; try { return new Date(s + (s.length === 10 ? 'T00:00:00+07:00' : '')).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }); } catch (e) { return s; } }
 
 function renderTabs() {
   document.querySelectorAll('.tab').forEach(b => {
     const f = b.dataset.f; b.setAttribute('aria-pressed', String(f === filter));
-    b.querySelector('.n').textContent = ideas.filter(i => chOf(i) === curDesk && GROUP[f].includes(i.status)).length || '';
+    b.querySelector('.n').textContent = ideas.filter(i => chOf(i) === curDesk && GROUP[f].includes(i.status) && !(f === 'selesai' && i.diposting)).length || '';
   });
 }
 function card(i) {
-  const c = document.createElement('article'); c.className = 'card';
+  const posted = i.status === 'selesai' && i.diposting;
+  const c = document.createElement('article'); c.className = 'card' + (posted ? ' posted' : '');
   const meta = document.createElement('div'); meta.className = 'meta';
-  const p = document.createElement('span'); p.className = 'pill s-' + i.status; p.textContent = LABEL[i.status] || i.status; meta.append(p);
+  const p = document.createElement('span'); p.className = 'pill s-' + i.status; p.textContent = posted ? 'Sudah di-post' : (LABEL[i.status] || i.status); meta.append(p);
   [i.niche, fmtDate(i.tanggal)].filter(Boolean).forEach(x => { const s = document.createElement('span'); s.className = 'chip'; s.textContent = x; meta.append(s); });
   const h = document.createElement('h3'); h.textContent = i.judul || '(tanpa judul)';
   c.append(meta, h);
+  if (posted) { const pb = document.createElement('div'); pb.className = 'postbadge'; pb.textContent = '✓ SUDAH DI-POST' + (i.dipostingAt ? ' · ' + new Date(i.dipostingAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : ''); c.append(pb); }
   const more = document.createElement('details'); const ms = document.createElement('summary'); ms.textContent = 'Detail'; more.append(ms);
   if (Array.isArray(i.hook) && i.hook.length) {
     const hk = document.createElement('div'); hk.className = 'hook';
@@ -927,23 +933,21 @@ function card(i) {
   });
   if (kv.childNodes.length) more.append(kv);
   if (more.childNodes.length > 1) c.append(more);
-  if (i.status === 'cek-vo' && i.voPreviewUrl) {
-    const lb = document.createElement('div'); lb.className = 'kv'; const b = document.createElement('b'); b.textContent = 'Dengarkan VO' + (i.voDurasi ? ' (' + i.voDurasi + ' dtk)' : '') + ':'; lb.append(b);
-    const v = document.createElement('video'); v.className = 'vo'; v.controls = true; v.preload = 'metadata'; v.playsInline = true; v.src = i.voPreviewUrl; c.append(lb, v);
-  }
-  if ((i.status === 'butuh-vo' || i.status === 'cek-vo') && i.voText) {
+  if (i.status === 'butuh-vo' && i.voText) {
     const d = document.createElement('details'); d.open = i.status === 'butuh-vo'; const s = document.createElement('summary'); s.textContent = i.status === 'cek-vo' ? 'Teks VO' : 'Teks VO untuk direkam';
     const pre = document.createElement('div'); pre.className = 'votext'; pre.textContent = i.voText; d.append(s, pre); c.append(d);
   }
   if (i.progres) { const pr = document.createElement('div'); pr.className = 'prog'; pr.textContent = '▸ ' + i.progres; c.append(pr); }
   if (i.status === 'selesai' && i.videoUrl) {
-    const v = document.createElement('video'); v.controls = true; v.preload = 'metadata'; v.playsInline = true; v.src = i.videoUrl; c.append(v);
+    const v = document.createElement('video'); v.controls = true; v.preload = 'metadata'; v.playsInline = true; v.src = i.videoUrl;
+    if (posted) { const vd = document.createElement('details'); vd.className = 'vid'; const vs = document.createElement('summary'); vs.textContent = 'Lihat video & thumbnail'; vd.append(vs, v); c.append(vd); c._vid = vd; }
+    else c.append(v);
     const dl = document.createElement('div'); dl.className = 'actions';
     const b1 = document.createElement('button'); b1.className = 'btn acc'; b1.textContent = '⬇ Unduh MP4'; b1.onclick = () => downloadVideo(i, b1);
     const b3 = document.createElement('button'); b3.className = 'btn dl-alt'; b3.textContent = 'Buka video langsung'; b3.hidden = true; b3.onclick = () => openVideoLink(i);
     dl.append(b1, b3);
     if (i.upload) { const b2 = document.createElement('button'); b2.className = 'btn'; b2.textContent = 'Salin teks upload'; b2.onclick = () => copyUpload(i); dl.append(b2); }
-    c.append(dl);
+    (c._vid || c).append(dl);
   }
   if (i.status === 'selesai' && Array.isArray(i.thumbs) && i.thumbs.length) {
     const tw = document.createElement('div'); tw.className = 'thumbs';
@@ -957,28 +961,22 @@ function card(i) {
       b.onclick = () => downloadThumb(i, th, b);
       f.append(im, cap, b); tw.append(f);
     });
-    if (tw.childNodes.length) c.append(tw);
+    if (tw.childNodes.length) (c._vid || c).append(tw);
   }
   const act = document.createElement('div'); act.className = 'actions';
   if (i.status === 'usulan') {
     const ta = document.createElement('textarea'); ta.id = 'note-' + i.id; ta.placeholder = 'Catatan untuk tim (opsional)'; ta.rows = 1; ta.value = i.catatan || '';
     const a = btn('ACC', 'acc', () => setStatus(i, 'acc', ta.value));
-    const r = btn('Tolak', 'tolak', () => setStatus(i, 'tolak', ta.value));
-    c.append(ta); act.append(a, r);
-  } else if (i.status === 'cek-vo') {
-    const ta = document.createElement('textarea'); ta.id = 'vonote-' + i.id; ta.rows = 2;
-    ta.placeholder = 'Kalau diulang: apa yang kurang? Mis. "bagian 3 terlalu cepat", "intonasi hook kurang kaget", "ganti suara".';
-    act.append(btn('ACC suara → animasi', 'acc', () => setStatus(i, 'vo-acc', ta.value, 'catatanVo')),
-               btn('Ulang VO', 'tolak', () => setStatus(i, 'vo-ulang', ta.value, 'catatanVo')));
-    c.append(ta);
-  } else if (i.status === 'tolak') {
-    act.append(btn('Kembalikan ke usulan', '', () => setStatus(i, 'usulan')));
+    c.append(ta); act.append(a);
+  } else if (i.status === 'selesai') {
+    if (!posted) act.append(btn('✓ Sudah di-post', 'post', () => setPosted(i, true)));
+    else act.append(btn('Batalkan (belum di-post)', '', () => setPosted(i, false)));
   } else if (i.status === 'butuh-vo') {
     const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'video/mp4,audio/*'; inp.id = 'vo-' + i.id; inp.hidden = true;
     inp.onchange = () => inp.files[0] && uploadVo(i, inp.files[0]);
     const u = btn('Unggah VO (mp4/audio)', 'acc', () => inp.click()); u.disabled = !assets;
     act.append(u, inp);
-  } else if (['acc', 'vo-acc', 'vo-ulang'].includes(i.status)) {
+  } else if (['acc', 'cek-vo', 'vo-acc', 'vo-ulang'].includes(i.status)) {
     const busy = i.kunci && Date.parse(i.kunci.sampai || '') > Date.now();
     const b = btn(busy ? 'Sedang dikerjakan…' : '▶ Mulai sekarang', 'acc', () => startNow(i, b)); if (busy) b.disabled = true;
     act.append(b);
@@ -1064,12 +1062,19 @@ function renderList(state) {
       : 'Belum ada judul di sini.';
     L.append(e); return;
   }
+  if (filter === 'selesai') {
+    const belum = items.filter(i => !i.diposting), sudah = items.filter(i => i.diposting).sort((a, b) => String(b.dipostingAt || '').localeCompare(String(a.dipostingAt || '')));
+    const sep = t => { const d = document.createElement('div'); d.className = 'listsep'; d.textContent = t; L.append(d); };
+    if (belum.length) { sep('Belum di-post · ' + belum.length); belum.forEach(i => L.append(card(i))); }
+    if (sudah.length) { sep('Sudah di-post · ' + sudah.length); sudah.forEach(i => L.append(card(i))); }
+    return;
+  }
   items.forEach(i => L.append(card(i)));
 }
 document.querySelectorAll('.tab').forEach(b => b.onclick = () => { filter = b.dataset.f; try { localStorage.setItem('kk-filter', filter); } catch (e) {} renderList(); });
 
-const MSG = { acc: 'Judul di-ACC. Tim sudah dipanggil (±5 menit). Mau lebih cepat? Tekan ▶ Mulai sekarang di tab Diproduksi.', 'vo-acc': 'Suara di-ACC. Animator dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', 'vo-ulang': 'VO diulang sesuai catatan. Tim dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', tolak: 'Ditolak' };
-const MSG_LATE = { acc: 'Judul di-ACC. Tim mulai di jadwal berikutnya (menit ke-13).', 'vo-acc': 'Suara di-ACC. Animator mulai di jadwal berikutnya (menit ke-13).', 'vo-ulang': 'VO akan diulang di jadwal berikutnya (menit ke-13).' };
+const MSG = { acc: 'Judul di-ACC. Tim langsung bekerja sampai video selesai (tanpa cek suara). Mau lebih cepat? Tekan ▶ Mulai sekarang di tab Diproduksi.', 'vo-acc': 'Suara di-ACC. Animator dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', 'vo-ulang': 'VO diulang sesuai catatan. Tim dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', tolak: 'Ditolak' };
+const MSG_LATE = { acc: 'Judul di-ACC. Tim mulai di jadwal berikutnya (menit ke-13) dan langsung sampai selesai.', 'vo-acc': 'Suara di-ACC. Animator mulai di jadwal berikutnya (menit ke-13).', 'vo-ulang': 'VO akan diulang di jadwal berikutnya (menit ke-13).' };
 // start the production run right away (scheduled task "Kantor Konten: produksi"), through the
 // viewer's Claude Code Remote connector; without it the hourly :13 schedule still picks the job up
 const PROD_TRIGGER = 'trig_01KW7689zngdSs8YW1jcG7qu';
@@ -1108,6 +1113,12 @@ async function setStatus(i, status, note, field) {
     if (ok) { try { await db.collection('ideas').doc(i.id).update({ dipanggilAt: new Date().toISOString() }); } catch (e) {} }
     toast(ok ? MSG[status] : MSG_LATE[status]);
   } else toast(MSG[status] || 'Diperbarui');
+}
+async function setPosted(i, on) {
+  if (!db) return;
+  const patch = on ? { diposting: true, dipostingAt: new Date().toISOString() } : { diposting: false, dipostingAt: { __delete__: true } };
+  try { await db.collection('ideas').doc(i.id).update(patch); toast(on ? 'Ditandai sudah di-post ✓' : 'Dikembalikan ke belum di-post'); }
+  catch (e) { toast('Gagal menyimpan: ' + (e.message || e.code)); }
 }
 async function uploadVo(i, file) {
   try {

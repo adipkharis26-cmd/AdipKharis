@@ -4,15 +4,14 @@ Owner: **Adip**. Halaman kantor (tempat ACC): https://claude.ai/artifact/TPrLXh4
 
 ```
 06:40 WIB  Penggali Ide ──► setor N judul/channel ke Kantor Konten (status: usulan)
-           Owner ──────────► tekan ACC / Tolak (+ catatan opsional)
+           Owner ──────────► tekan ACC 1 judul (+ catatan opsional) → tim jalan sampai selesai
 tiap jam   Penulis Naskah ─► naskah/epNN-*.md (format skill channel)
 07–22 WIB  Cek Fakta ──────► verifikasi "Dasar fakta", koreksi naskah
            Pengisi Suara ──► ElevenLabs (tts_elevenlabs.py) → mp3 + timestamp kata
-                             → pratinjau VO (mp4) di kartu, status: cek-vo
-           Owner ──────────► ACC suara (vo-acc)  /  Ulang VO + catatan (vo-ulang)
            Animator ───────► epNN.js + render MP4 1080×1920 sinkron VO
            Publisher ──────► unggah MP4 ke Kantor Konten, isi judul/deskripsi/tag,
                              commit sumber ke repo, kirim MP4 ke owner (status: selesai)
+           Owner ──────────► setelah upload ke YouTube, tekan "Sudah di-post"
 ```
 
 ## Peta kantor
@@ -49,7 +48,7 @@ Setiap agen memperbarui dokumen `agents/<id>` saat mulai (`status: "kerja"`, `ak
 | `channel`, `channelNama` | `mas-kharis`, `Mas Kharis` |
 | `tanggal` | `YYYY-MM-DD` (WIB) |
 | `judul`, `hook[3]`, `niche`, `alasan`, `cta` | diisi Penggali Ide |
-| `status` | `usulan` → `acc` → `cek-vo` → `vo-acc` → `selesai`. Status lain: `vo-ulang`, `tolak`, `butuh-vo`, `gagal`, `produksi` |
+| `status` | `usulan` → `acc` → `selesai` (sejak 10 Nov 2026 tanpa ACC suara; tim langsung sampai selesai). Status lain: `butuh-vo`, `gagal`, `arsip`. Status lama `cek-vo`/`vo-acc`/`vo-ulang` dilanjutkan otomatis. `diposting:true` + `dipostingAt` = owner sudah memposting videonya |
 | `catatanVo` | catatan owner saat ACC atau ulang suara |
 | `voPreviewUrl`, `voMp4AssetId`, `voDurasi` | pratinjau VO (mp4) untuk dicek owner |
 | `naskahMd`, `voJson`, `epJs` | salinan berkas episode, untuk jaga-jaga kalau push dari sesi terjadwal gagal |

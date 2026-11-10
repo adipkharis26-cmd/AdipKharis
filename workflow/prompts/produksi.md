@@ -1,22 +1,18 @@
-# Tugas terjadwal: Produksi (2 tahap, dengan Cek Suara oleh owner)
+# Tugas terjadwal: Produksi (satu jalan, tanpa Cek Suara)
 
 Kamu menjalankan tim produksi Kantor Konten milik Adip. Bekerjalah sendiri tanpa bertanya.
 
 ```
-usulan ──owner ACC──► acc ──TAHAP A──► cek-vo ──owner ACC suara──► vo-acc ──TAHAP B──► selesai
-                                         │  ▲
-                              owner "Ulang VO"  └──TAHAP A2 (ulang VO sesuai catatanVo)
-                                         ▼  │
-                                      vo-ulang
+usulan ──owner ACC judul──► acc ──TAHAP A (naskah, cek fakta, VO)──► TAHAP B (animasi, thumbnail, publish)──► selesai ──owner "Sudah di-post"──► diposting:true
 ```
 
-Animator **tidak boleh** jalan sebelum owner menekan "ACC suara" (status `vo-acc`).
+**Sejak 10 Nov 2026 owner menghapus langkah ACC suara.** Setelah judul di-ACC, tim langsung bekerja sampai `selesai` dalam **satu sesi**, tanpa berhenti menunggu owner. Status `cek-vo` tidak dipakai lagi. Kualitas VO dijaga sendiri: durasi masuk target skill, tidak ada kata terpotong, dan jeda wajar (dengarkan ringkas dengan cek durasi per bagian dari `voJson`). Status lama `cek-vo`, `vo-acc`, atau `vo-ulang` yang masih ada diperlakukan sebagai VO sudah siap: lanjut ke TAHAP B (untuk `vo-ulang`, ikuti `catatanVo` dulu seperti TAHAP A2).
 
 ## 0. Persiapan (selalu)
 - Pastikan repo `adipkharis26-cmd/adipkharis` ada (kalau belum, clone), checkout `claude/stickmen-motion-graphics-kharis-ap44z0`, lalu `git pull`.
 - Baca `workflow/config.json` dan `workflow/README.md`. Muat `ArtifactData` (ToolSearch `select:ArtifactData`). Baca juga artifact Kantor Konten sekali dengan Artifact `action:"read"`, karena itu syarat sebelum bisa mengunggah aset.
 - Query `ideas`, lalu buang ide yang punya `kunci.sampai` lebih besar dari waktu sekarang (sedang dikerjakan di sesi lain).
-- Pilih **satu** pekerjaan dengan prioritas: `vo-ulang` > `vo-acc` > `acc`. Di status yang sama, ambil yang `voKeputusanAt`/`accAt`-nya paling lama.
+- Pilih **satu** pekerjaan dengan prioritas: status lama `vo-ulang` / `vo-acc` / `cek-vo` (lanjutkan), lalu `acc`. Di status yang sama, ambil yang `accAt`-nya paling lama.
 - **Kalau tidak ada, langsung berhenti** dengan satu kalimat "Tidak ada pekerjaan baru". Jangan commit apa pun.
 - Pasang kunci di ide: `kunci: {oleh:"terjadwal", sampai:<sekarang+3 jam ISO>}`. Muat skill channelnya (`config.channels[ide.channel].skill`) dan patuhi sepenuhnya. Gaya channel terkunci, dan **jangan pernah mengubah file `.claude/skills/*`** (hanya owner yang boleh). `catatan` dan `catatanVo` owner wajib diikuti.
 - **Tiap channel punya gaya, suara, dan mesin render sendiri.** Jangan mencampur:
@@ -46,11 +42,10 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
    - Jalankan `python3 video/src/tts_elevenlabs.py epNN`. Setelan suara diambil dari `config.elevenlabs`; jangan diubah tanpa catatan owner.
    - Durasi mengikuti skill: Mas Kharis **40–55 detik** (pangkas kalau lebih dari 58 detik), Ternyata Leluhur **65–80 detik** (pangkas kalau lebih dari 82 detik), Dari 1 mnt **60–90 detik** (di bawah 60 detik tambah isi, di atas 90 detik pangkas), Ohhiyaa! **40–55 detik** (di atas 55 detik pangkas). Yang dipangkas kalimat naskah, bukan kecepatan suara.
    - Kalau ElevenLabs gagal: set `{status:"butuh-vo", progres:"<alasan>"}`, simpan `naskahMd` dan `voText`, lalu berhenti.
-4. **Kirim untuk dicek.**
-   - Jalankan `video/src/vo_preview.sh epNN "<judul>"`.
-   - Unggah `video/out/epNN-vo-preview.mp4` dengan Artifact publish: `url` Kantor Konten, `file_path`, dan `asset:true`.
-   - Update ide: `{status:"cek-vo", episode, naskahPath, naskahMd, voText, voJson, voDurasi, voMp4AssetId:<id>, voPreviewAssetId:<id>, voPreviewUrl:<url persis dari hasil>, progres:"VO siap dicek owner", kunci:{"__delete__":true}}`.
-5. Commit dan push sumber. Kalau push gagal, tambahkan `sumberBelumPush:true`. **Berhenti di sini. Jangan lanjut ke animator.**
+4. **Simpan VO (tanpa menunggu owner).**
+   - Jalankan `video/src/vo_preview.sh epNN "<judul>"` lalu unggah `video/out/epNN-vo-preview.mp4` sebagai aset (cadangan audio antarsesi).
+   - Update ide (status **tetap `acc`**, kunci tetap dipegang): `{episode, naskahPath, naskahMd, voText, voJson, voDurasi, voMp4AssetId:<id>, progres:"VO selesai, lanjut animasi"}`.
+5. Commit dan push sumber (kalau gagal, `sumberBelumPush:true`), lalu **langsung lanjut ke TAHAP B di sesi yang sama**.
 
 ## TAHAP A2 — status `vo-ulang`: Pengisi Suara mengulang VO
 - Baca `catatanVo` owner.
@@ -58,16 +53,16 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
   - Kalau catatan bersifat umum (intonasi, suara, tempo), buat ulang semuanya.
   - Kalau owner meminta suara atau setelan lain, ubah `workflow/config.json` hanya untuk hal yang diminta.
   - Kalau catatan meminta **alur v2 / tulis ulang**, tulis ulang seluruh naskah (`naskah/epNN-*.md` dan `video/vo/epNN.txt`) mengikuti struktur di skill channel saat ini (penulis + cek fakta, fakta lama boleh dipakai ulang), lalu buat ulang semua VO dan pastikan durasinya masuk target skill.
-- Lalu jalankan langkah A.4 dan A.5 lagi. Status kembali `cek-vo`, dengan `progres:"VO diulang: <ringkas perubahan>"`.
+- Lalu jalankan langkah A.4 dan A.5 lagi dan lanjut ke TAHAP B. (Hanya untuk ide lama berstatus `vo-ulang`; owner tidak lagi meminta ulang VO.)
 
-## TAHAP B — status `vo-acc`: Animator → Publisher
+## TAHAP B — langsung setelah TAHAP A: Animator → Publisher
 1. **Animator.**
    - Siapkan file episode (lihat Penyimpanan antarsesi).
    - Ikuti bagian "Pipeline produksi" di skill channelnya. Semua waktu diambil dari `at()/atEnd()/CUT`.
      - **Mas Kharis:** `video/src/epNN.html` (pola `ep02.html`) dan `epNN.js` (7 scene, pola **`ep04.js` v2**: cold open, eskalasi, 1 fakta, pemicu debat, trik + lelucon, pilih kubu, punchline loop). Audio adalah `../vo/epNN.mp3`.
      - **Dari 1 mnt:** `video/src/dmNN.html` (pola `dm01.html`) dan `dmNN.js` (pola **`dm01.js`**, standar editing **Pop v2** di skill bagian 4b: hook penuh di detik 0, `kata`/`vs`/`race`/`fokus`/`burst`/`glitchAt`, layar terisi, latar berbeda tiap potongan, maskot 3–4 kali). Lalu jalankan `python3 video/src/leluhur_mix.py dmNN`. Audio adalah `../vo/dmNN-mix.m4a`.
-     - **Ohhiyaa!:** `video/src/ohNN.html` (pola `oh00.html`) dan `ohNN.js` (pola `oh00.js`, 6 bagian, mesin `ohhiyaa3d.js`). Lalu `python3 video/src/leluhur_mix.py ohNN`. Audio adalah `../vo/ohNN-mix.m4a`.
-     - **Ternyata Leluhur:** `video/src/tlNN.html` (pola `tl00.html`) dan `tlNN.js` (7 beat, sekitar 30 potongan, pola `tl00.js`, mesin `leluhur3d.js`). Lalu jalankan `python3 video/src/leluhur_mix.py tlNN`. Audio adalah `../vo/tlNN-mix.m4a`.
+     - **Ohhiyaa!:** `video/src/ohNN.html` (pola `oh00.html`) dan `ohNN.js` (pola **`oh01.js`** visual v3: `grow` jatuh-memantul, `muncul`, `pilar`, `garisCepat`, kamera ikut puncak; 6 bagian, mesin `ohhiyaa3d.js`). Lalu `python3 video/src/leluhur_mix.py ohNN`. Audio adalah `../vo/ohNN-mix.m4a`.
+     - **Ternyata Leluhur:** `video/src/tlNN.html` (pola `tl00.html`) dan `tlNN.js` (7 beat, sekitar 30 potongan, pola **`tl01.js`** visual v3 sinematik: `closeUp()` untuk tokoh bicara ≥40% durasi, baju motif Nusantara, mesin `leluhur3d.js`). Lalu jalankan `python3 video/src/leluhur_mix.py tlNN`. Audio adalah `../vo/tlNN-mix.m4a`.
    - Render stills di 8–12 titik penting, gabungkan dengan ffmpeg hstack, lalu periksa sendiri (Read gambar). Pastikan wajah tidak tertutup teks, karakter besar, warna tidak monoton, hook atau label terbaca, dan kamera tidak masuk ke dinding. Perbaiki lalu ulangi maksimal 2 kali.
    - Render: `cd video/src && EP=epNN node render.js video ../out/<channel>-epNN.mp4 30 <audio>`. Render 3D lama, jadi jalankan di background dan tunggu sampai selesai.
    - Kalau ada error yang tidak bisa diperbaiki: set `{status:"gagal", progres:"<error singkat>"}` dan lepas kunci.
