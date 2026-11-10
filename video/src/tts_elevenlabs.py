@@ -218,7 +218,9 @@ def main():
     lst = tmp / 'list.txt'
     lst.write_text(''.join(f"file '{p}'\n" for p in parts))
     out_mp3 = VO_DIR / f'{ep}.mp3'
-    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', lst,
+    # optional light room reverb per channel (config elevenlabs.reverb = ffmpeg aecho params)
+    af = ['-af', f"aecho={CFG['reverb']},apad=pad_dur=0.3"] if CFG.get('reverb') else []
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', lst, *af,
                     '-c:a', 'libmp3lame', '-b:a', '192k', out_mp3], check=True)
     dur = ffprobe_dur(out_mp3)
     data = {'duration': dur, 'words': words}
