@@ -5,10 +5,10 @@ description: Gaya terkunci channel "Ohhiyaa!": YouTube Shorts "ukur dunia pakai 
 
 # Ohhiyaa!: gaya terkunci
 
-> **STATUS: TERKUNCI** (versi 10 Nov 2026, disetujui owner). Gaya, alur, durasi, suara, dan mesin di skill ini hanya boleh diubah atas perintah langsung owner. Sesi otomatis (ide harian/produksi) **dilarang mengubah file skill ini**.
+> **STATUS: TERKUNCI** (versi 10 Nov 2026, disetujui owner; visual v3 "wow" 10 Nov 2026 atas perintah owner). Gaya, alur, durasi, suara, dan mesin di skill ini hanya boleh diubah atas perintah langsung owner. Sesi otomatis (ide harian/produksi) **dilarang mengubah file skill ini**.
 
 Jangan dicampur dengan stikmen Mas Kharis, diorama Ternyata Leluhur, atau Kinetic Pop Dari 1 mnt.
-Patokan: mesin `video/src/ohhiyaa3d.js`, contoh pola `video/src/oh00.js` (oh00 hanya contoh, bukan episode).
+Patokan: mesin `video/src/ohhiyaa3d.js` (visual v3), contoh episode lengkap `video/src/oh01.js` (Rp1 triliun), contoh pola singkat `video/src/oh00.js`.
 
 ## 1. Identitas & riset pasar
 - **Channel:** Ohhiyaa!. Fokus **YouTube Shorts** dulu (video panjang dibahas nanti). 9:16, 1080×1920, H.264, 30 fps.
@@ -62,7 +62,7 @@ Patokan: mesin `video/src/ohhiyaa3d.js`, contoh pola `video/src/oh00.js` (oh00 h
   - `studio(sky)`: meja studio dengan grid ukur, latar pastel `studio` (pink), `mint`, `langit`, `ungu`, atau `angkasa` (luar angkasa).
   - Ganti warna latar setiap bagian.
 - **Barang mainan (`TOY`)**, plastik mengkilap dengan garis tepi:
-  - `galon`, `motor`, `nasi` (nasi bungkus), `angkot`, `monas`, `orang`, `gedung`, `gunung`, `pesawat`, `satelit`, `bumi`, `bulan`, `penggaris`.
+  - `galon`, `motor`, `nasi` (nasi bungkus), `angkot`, `monas`, `orang`, `rumah`, `gedung`, `pencakar`, `gunung`, `awan`, `pesawat`, `satelit`, `bumi`, `bulan`, `penggaris`, `uang`, `gepok`.
   - Barang baru ditambahkan ke `TOY` dengan gaya sama: bentuk sederhana, warna cerah, outline.
 - **Penempatan:**
   - Satu barang: `toy(kind, id)` + `place(...)`.
@@ -81,6 +81,27 @@ Patokan: mesin `video/src/ohhiyaa3d.js`, contoh pola `video/src/oh00.js` (oh00 h
   - `chip`, `card`.
 - **Caption:** kata per kata, Nunito 900, kata kunci pink (`KEYWORDS`), di y 1500.
 - **Palet:** pink `#FF6FAE`, kuning `#FFC93C`, mint `#7EE8CF`, biru `#1E6EFF`, garis `#24204A`.
+
+### 5b. Visual v3 "wow" (wajib, otomatis dari mesin)
+Mesin sudah memberi tampilan ini tanpa kode tambahan:
+- **Plastik mengkilap** (clearcoat + pantulan softbox) untuk semua barang dan OHI.
+- **Dome studio** tanpa garis horizon, lantai cutting mat, mainan pastel melayang di latar (bintang di `angkasa`).
+- **Kamera hidup**: goyang tangan halus + **punch-in zoom** otomatis pada `angka`, `chip`, hitungan `tebak`, dan OHHIYAA!.
+- **Transisi garis permen** (pink-kuning-mint-biru) di setiap pergantian bagian.
+- **Angka berputar naik** dari 0 di `angka()` (matikan dengan `{hitung:false}`).
+- **Caption** memantul; kata kunci jadi stiker kuning bertulisan pink.
+- **OHHIYAA!**: kilat putih, sinar berputar, layar bergetar, dan OHI otomatis bermata bintang (`wow`). OHI berkedip dan bernapas sendiri.
+- Vignette + grain halus.
+
+Yang **wajib dipakai penulis episode** supaya "wow":
+- `grow(stack(kind, n, {...}), t, t0, t1, x, z, s)`: barang **jatuh satu per satu** dengan pantulan (bukan meregang). Pakai untuk momen "sepuluh juta lembar", "270 galon".
+- `muncul(obj, t, t0)` setelah `place()`: pop-in squash & stretch untuk barang baru.
+- `pilar(id, h, {w, d, col, label, per})`: menara tumpukan bertekstur lapisan + pita kertas, tinggi `h` boleh berubah tiap frame (menara naik).
+- `garisCepat(t0, t1, 'naik'|'zoom')`: garis kecepatan saat tumpukan naik / kamera meluncur.
+- Kamera yang **mengikuti puncak tumpukan** saat menara naik (lihat `oh01.js` bagian 4).
+- Landmark skala asli: `monas`, `pencakar` (gedung tertinggi), `gedung`, `rumah`, `gunung`, `awan`, `pesawat`, `satelit`, `bumi`, `bulan`.
+- Barang baru: `uang` (lembar), `gepok` (ikat uang), plus `galon` baru (rusuk, air di dalam, label 19 L).
+- Setiap bagian minimal **satu gerakan besar** (jatuh/naik/pop/kamera meluncur); tidak boleh ada bagian dengan layar diam.
 
 ## 6. Audio
 - **VO:** ElevenLabs **Papa Gufron** (`CZ1zU0S6elSZD4eYUY6c`), Eleven v4, Stabilitas 0.5, Kesamaan 0.75, Bahasa Auto.
