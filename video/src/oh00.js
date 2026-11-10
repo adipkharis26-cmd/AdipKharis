@@ -11,9 +11,9 @@ function scene(t) {
     shot(t, 0, CUT[1], [0.2, 1.6, 6.4], [0, 1.3, 0], { push: 0.15 });
     chip('Setinggi Monas?', 540, 300, at('Monas'), { size: 86, bg: '#FFC93C' });
   } else if (k === 1) {                            // guess first (comment bait)
-    ohi(t, { x: 0, z: 0.6, expr: t > at('satu') ? 'kaget' : 'senang', wave: t < at('Tiga'), jump: t > at('satu') });
+    ohi(t, { x: 0, z: -0.4, expr: t > at('satu') ? 'kaget' : 'senang', wave: t < at('Tiga'), jump: t > at('satu'), s: 0.8 });
     shot(t, CUT[1], CUT[2], [0, 1.3, 3.9], [0, 0.85, 0], { push: 0.1 });
-    tebak(at('Tebak'), CUT[2] - 0.1, { y: 260 });
+    tebak(at('Tebak'), CUT[2] - 0.1, { y: 260, opsi: ['A. ±50 galon', 'B. ±270 galon', 'C. ±1.000 galon'] });
   } else if (k === 2) {                            // measure: ruler next to the gallon, then Monas
     if (t < at('Monas', 1) - 0.15) {
       const G = toy('galon'); place(G, 0, 0, 0, 0.3, 2.2);
@@ -30,7 +30,8 @@ function scene(t) {
     grow(stack('galon', 13, { cols: 1, rows: 1, layer: 0.5 }), t, CUT[3], at('galon', 2), -1.0, 0, 1.0);
     ohi(t, { x: -1.9, z: 3.2, ry: 0.4, expr: t > at('Ohhiyaa') - 0.2 ? 'senang' : 'kaget', jump: t > at('Ohhiyaa') - 0.2, s: 0.7 });
     shot(t, CUT[3], DURATION, [0.2, 2.2, 10.5], [0, 3.0, 0], { push: 0.08 });
-    angka('± 270 GALON', 300, at('dua'), { col: '#FF6FAE' });
+    tangga([{ label: '1 galon', sub: '±0,5 m', t: CUT[3] + 0.1 }, { label: 'Rumah 2 lantai', sub: '±7 m', t: CUT[3] + 0.6 }, { label: 'Gedung 10 lantai', sub: '±35 m', t: CUT[3] + 1.1 }, { label: 'Monas', sub: '132 m', t: CUT[3] + 1.5 }], { t1: at('dua', 2) - 0.1 });
+    angka('± 270 GALON', 300, at('dua', 2), { col: '#FF6FAE' });
     ohhiyaa(at('Ohhiyaa'), { y: 760 });
     chip('Ilustrasi skala', 540, 1640, CUT[3] + 0.2, { size: 40, bg: '#FFFFFF' });
   }

@@ -22,7 +22,7 @@ Animator **tidak boleh** jalan sebelum owner menekan "ACC suara" (status `vo-acc
 - **Tiap channel punya gaya, suara, dan mesin render sendiri.** Jangan mencampur:
   - `mas-kharis`: prefix episode `ep`, stikmen kanvas 2D, 8 bagian, suara Eyang.
   - `ternyata-leluhur`: prefix `tl`, diorama 3D three.js, 7 beat, suara DK - Documentary, plus musik/SFX.
-  - `ohhiyaa`: prefix `oh`, miniatur 3D mainan (`ohhiyaa3d.js`), 6 bagian, maskot OHI, musik + SFX. **Durasi 40–60 detik.** Selama `suara_menunggu: true`, setelah naskah dan cek fakta set `{status:"butuh-vo", progres:"Menunggu ID suara Ohhiyaa! dari owner"}`.
+  - `ohhiyaa`: prefix `oh`, miniatur 3D mainan (`ohhiyaa3d.js`), 6 bagian v2 (tebak A/B/C, tangga landmark, OHHIYAA!, ending loop), maskot OHI, musik + SFX, suara Papa Gufron satu tarikan. **Durasi 40–55 detik.** Kalau ide punya `draftNaskah`, pakai sebagai dasar naskah.
   - `dari-1-mnt`: prefix `dm`, Hybrid Kinetic Pop 2D (`kinetic.js`), suara Finn, SFX tanpa musik. **Durasi wajib 60–90 detik.**
   - Prefix ada di `config.channels.<id>.prefix`. `tts_elevenlabs.py` memilih suara dari prefix itu.
 - Agen per divisi: Mas Kharis memakai `penulis`, `suara`, `animator`; Ternyata Leluhur memakai `tl-penulis`, `tl-suara`, `tl-animator`; Dari 1 mnt memakai `dm-penulis`, `dm-suara`, `dm-animator`; Ohhiyaa! memakai `oh-penulis`, `oh-suara`, `oh-animator`. `cekfakta`, `thumbnail` (Desainer Thumbnail), dan `publisher` dipakai bersama.

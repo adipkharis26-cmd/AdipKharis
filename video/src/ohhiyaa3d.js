@@ -680,6 +680,9 @@ const TOY = {
     const b = capsule(0.06, 0.1, PLASTIK(c), { ol: 0.005 }); b.position.y = 0.12;
     const h = sph(0.06, PLASTIK('#F2C9A0'), { ol: 0.005 }, 16, 12); h.position.y = 0.27; G.add(b, h); return G; },
   gedung: () => { const G = new THREE.Group(); const b = rbox(0.5, 1.8, 0.5, PLASTIK('#B9C3FF'), { ol: 0.008 }); b.position.y = 0.9; G.add(b); return G; },
+  gunung: () => { const G = new THREE.Group(); const m = cone(0.9, 1.4, PLASTIK('#6E8B5E', { flat: true }), { ol: 0.01 }, 7); m.position.y = 0.7; const sn = cone(0.33, 0.52, PLASTIK('#FFFFFF', { flat: true }), {}, 7); sn.position.y = 1.15; G.add(m, sn); return G; },
+  pesawat: () => { const G = new THREE.Group(); const b = capsule(0.07, 0.6, PLASTIK('#FFFFFF'), { ol: 0.006 }); b.rotation.z = Math.PI / 2; const w = rbox(0.18, 0.02, 0.8, PLASTIK('#1E6EFF')); const t = rbox(0.1, 0.16, 0.02, PLASTIK('#FF6FAE')); t.position.set(-0.32, 0.1, 0); G.add(b, w, t); return G; },
+  satelit: () => { const G = new THREE.Group(); const b = rbox(0.18, 0.18, 0.18, PLASTIK('#FFC93C'), { ol: 0.006 }); [-1, 1].forEach(sd => { const p = box(0.36, 0.01, 0.16, PLASTIK('#1E6EFF', { rough: 0.2 }), { ol: 0.004 }); p.position.x = sd * 0.3; G.add(p); }); const d = cone(0.08, 0.08, PLASTIK('#FFFFFF'), {}, 16); d.position.y = 0.14; G.add(b, d); return G; },
   bumi: () => { const tex = canvasTex('bumi', 512, 256, (x, w, h) => { x.fillStyle = '#3FA7FF'; x.fillRect(0, 0, w, h); x.fillStyle = '#5BD38A';
       for (let i = 0; i < 38; i++) { x.beginPath(); x.ellipse(rnd(i) * w, 30 + rnd(i + 5) * (h - 60), 18 + rnd(i + 9) * 46, 10 + rnd(i + 2) * 26, rnd(i) * 3, 0, 7); x.fill(); }
       x.fillStyle = '#FFFFFF'; x.fillRect(0, 0, w, 14); x.fillRect(0, h - 14, w, 14); });
@@ -753,6 +756,7 @@ function angka(txt, y, t0, o = {}) {
   });
 }
 // "TEBAK DULU!" + 3-2-1 countdown ring between t0..t1 (viewer guesses in the comments)
+// o.opsi = ['A. Setengah jalan', 'B. Pas sampai', 'C. Lewat!'] → multiple choice under the ring (easy one-letter comments)
 function tebak(t0, t1, o = {}) {
   cue(t0, 'pop'); [0, 1, 2].forEach(i => cue(t0 + (t1 - t0) * i / 3 + 0.05, 'tick', 0.8));
   ui(t => {
@@ -763,6 +767,10 @@ function tebak(t0, t1, o = {}) {
     g.translate(0, 190); g.beginPath(); g.arc(0, 0, 90, 0, 7); g.fillStyle = '#FFFFFF'; g.fill(); g.lineWidth = 10; g.strokeStyle = OL; g.stroke();
     g.beginPath(); g.arc(0, 0, 90, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * (1 - frac)); g.lineWidth = 16; g.strokeStyle = '#FF6FAE'; g.stroke();
     g.fillStyle = OL; g.font = `900 110px ${FONT}`; g.fillText(String(Math.max(1, left)), 0, 6);
+    (o.opsi || []).forEach((txt, i) => { const ti = t0 + 0.25 + i * 0.35; if (t < ti) return; const kk = back(seg(t, ti, ti + 0.25)), y = 170 + i * 120;
+      g.save(); g.translate(0, y); g.scale(kk, kk); const col = ['#FF6FAE', '#7EE8CF', '#FFC93C'][i % 3]; g.font = `900 58px ${FONT}`; const w = Math.max(520, g.measureText(txt).width + 80);
+      rr(-w / 2 + 6, -44, w, 92, 46); g.fillStyle = OL; g.fill(); rr(-w / 2, -50, w, 92, 46); g.fillStyle = col; g.fill(); g.lineWidth = 7; g.strokeStyle = OL; g.stroke();
+      g.fillStyle = OL; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt, 0, -2); g.restore(); });
     g.restore();
   });
 }
@@ -780,4 +788,30 @@ function ohhiyaa(t0, o = {}) {
     g.save(); g.globalAlpha = a; for (let i = 0; i < 30; i++) { const an = rnd(i) * 7, sp = 300 + rnd(i + 3) * 500, kk = easeOut(seg(t, t0, t0 + 0.9)); g.fillStyle = ['#FF6FAE', '#7EE8CF', '#FFC93C', '#8FB8FF'][i % 4]; g.fillRect(540 + Math.cos(an) * sp * kk - 8, (o.y || 640) + Math.sin(an) * sp * kk + 300 * kk * kk - 5, 16, 10); } g.restore();
   });
   if (!bigWord.spans) bigWord.spans = []; bigWord.spans.push([t0, t0 + (o.d || 1.4)]);
+}
+
+// landmark ladder: a vertical altimeter on the left; each checkpoint lights up when passed.
+// items = [{label, sub, t}] from bottom to top
+function tangga(items, o = {}) {
+  items.forEach(it => cue(it.t, 'pop', 0.8));
+  ui(t => {
+    if (t < items[0].t - 0.2 || (o.t1 && t > o.t1)) return;
+    const x = o.x || 120, y0 = o.y0 || 1380, y1 = o.y1 || 330, n = items.length, step = (y0 - y1) / (n - 1);
+    let k = 0; items.forEach((it, i) => { if (t >= it.t) k = i; });
+    const prog = k + clamp((t - items[k].t) / Math.max(0.3, ((items[k + 1] || items[k]).t - items[k].t)), 0, 1) * (k < n - 1 ? 1 : 0);
+    g.save(); rr(x - 16, y1 - 20, 32, y0 - y1 + 40, 16); g.fillStyle = 'rgba(255,255,255,.9)'; g.fill(); g.lineWidth = 6; g.strokeStyle = OL; g.stroke();
+    const yp = y0 - prog * step; rr(x - 10, yp, 20, y0 - yp + 14, 10); g.fillStyle = '#FF6FAE'; g.fill();
+    items.forEach((it, i) => {
+      const y = y0 - i * step, on = t >= it.t, kk = on ? back(seg(t, it.t, it.t + 0.25)) : 1;
+      g.beginPath(); g.arc(x, y, 20 * (on ? kk : 0.8), 0, 7); g.fillStyle = on ? '#FFC93C' : '#FFFFFF'; g.fill(); g.lineWidth = 5; g.strokeStyle = OL; g.stroke();
+      if (!on && i > k + 1) return;
+      g.save(); g.translate(x + 40, y); g.scale(on ? kk : 0.9, on ? kk : 0.9); g.globalAlpha = on ? 1 : 0.55;
+      const size = i === k ? 54 : 40; g.font = `900 ${size}px ${FONT}`; const w = g.measureText(it.label).width + 40;
+      rr(0, -size * 0.75, w, size * 1.5, 18); g.fillStyle = i === k ? OL : 'rgba(36,32,74,.75)'; g.fill();
+      g.fillStyle = i === k ? '#FFC93C' : '#FFFFFF'; g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillText(it.label, 20, 2);
+      if (it.sub && i === k) { g.font = `900 34px ${FONT}`; g.fillStyle = OL; g.fillText(it.sub, 20, size * 1.25); }
+      g.restore();
+    });
+    g.restore();
+  });
 }
