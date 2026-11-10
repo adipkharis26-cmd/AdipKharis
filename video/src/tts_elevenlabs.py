@@ -98,6 +98,51 @@ def tighten(wav, max_pause, lead=0.05, tail=0.12):
     return remap
 
 
+def smooth_pauses(wav, max_pause, xf=0.06, lead=0.04, tail=0.35):
+    """Like tighten(), but natural: long pauses are shortened with an equal-power crossfade
+    (breath / room tone fades instead of a hard cut), and the take ends with a gentle fade-out.
+    Rewrites wav in place; returns a function mapping old time -> new time."""
+    import numpy as np
+    log = subprocess.run(['ffmpeg', '-i', str(wav), '-af', 'silencedetect=n=-42dB:d=0.25', '-f', 'null', '-'],
+                         capture_output=True, text=True).stderr
+    starts = [float(x) for x in re.findall(r'silence_start: ([\d.]+)', log)]
+    ends = [float(x) for x in re.findall(r'silence_end: ([\d.]+)', log)]
+    with wave.open(str(wav), 'rb') as w:
+        par = w.getparams(); x = np.frombuffer(w.readframes(par.nframes), dtype=np.int16).astype(np.float32)
+    sr = par.framerate; dur = len(x) / sr
+    cuts = []
+    for a, b in zip(starts, ends + [dur] * (len(starts) - len(ends))):
+        if a <= 0.01: cuts.append((0.0, max(0.0, b - lead)))
+        elif b >= dur - 0.01: cuts.append((min(dur, a + tail), dur))
+        elif b - a > max_pause: cuts.append((a + max_pause / 2, b - max_pause / 2))
+    cuts = [(a, b) for a, b in cuts if b - a > 0.02]
+    n = int(xf * sr); fade_in = np.sqrt(np.linspace(0, 1, n)); fade_out = fade_in[::-1]
+    out, pos = np.zeros(0, np.float32), 0
+    for a, b in cuts:
+        ia, ib = int(a * sr), int(b * sr)
+        seg = x[pos:ia]
+        if ia == 0 or ib >= len(x) or len(out) == 0 and pos == 0 and ia == 0:
+            out = np.concatenate([out, seg]); pos = ib; continue
+        out = np.concatenate([out, seg])
+        if len(out) >= n and ib + n <= len(x):           # crossfade the end of the kept part into what follows the cut
+            out[-n:] = out[-n:] * fade_out + x[ib:ib + n] * fade_in
+            pos = ib + n
+        else:
+            pos = ib
+    out = np.concatenate([out, x[pos:]])
+    m = min(len(out), int(0.25 * sr)); out[-m:] *= np.linspace(1, 0, m) ** 2      # soft tail
+    m = min(len(out), int(0.02 * sr)); out[:m] *= np.linspace(0, 1, m)            # no click at the start
+    with wave.open(str(wav), 'wb') as w:
+        w.setparams(par); w.writeframes(np.clip(out, -32768, 32767).astype(np.int16).tobytes())
+    def remap(t):
+        shift = 0.0
+        for a, b in cuts:
+            if t >= b: shift += (b - a) + (xf if 0 < a and b < dur else 0)
+            elif t > a: return a - shift
+        return t - shift
+    return remap
+
+
 def words_from_alignment(al, offset, sec, remap=lambda t: t):
     chars, st, en = al['characters'], al['character_start_times_seconds'], al['character_end_times_seconds']
     out, cur, s0, e0 = [], '', None, None
@@ -138,6 +183,22 @@ def main():
         subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', VO_DIR / f'{ep}.mp3', '-t', f'{cut:.3f}',
                         '-ar', '44100', '-ac', '1', head], check=True)
         parts, offset = [head], ffprobe_dur(head)
+    if CFG.get('satu_tarikan') and not first:
+        # one continuous take: the whole script in a single request (natural breath & tone between
+        # paragraphs), words assigned to sections by count; long pauses smoothed with crossfades
+        print(f'[1 tarikan] {len(secs)} bagian...')
+        res = tts('\n\n'.join(secs), '', '', voice)
+        mp3 = tmp / 'all.mp3'; wav = tmp / 'all.wav'
+        mp3.write_bytes(base64.b64decode(res['audio_base64']))
+        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', mp3, '-ar', '44100', '-ac', '1', wav], check=True)
+        remap = smooth_pauses(wav, float(CFG.get('max_pause_s', 0.6)))
+        ws = words_from_alignment(res['alignment'], 0.0, 0, remap)
+        counts = [len(t.split()) for t in secs]; k = 0
+        for i, c in enumerate(counts):
+            for w in ws[k:k + c]: w['sec'] = i
+            k += c
+        words = ws; parts = [wav]
+        secs = []   # done
     for i, text in enumerate(secs):
         if i < first: continue
         print(f'[{i + 1}/{len(secs)}] {text[:60]}...')
