@@ -6,11 +6,11 @@
       "nama": "A",
       "alasan": "Wajah tokoh dekat batu candi + pertanyaan yang belum terjawab; teks 3 kata beda dari judul.",
       "latar": {
-        "frame": 9.5,
+        "frame": 19.0,
         "zoom": 1.15,
         "fokus": [
-          470,
-          835
+          560,
+          900
         ]
       },
       "posisi": "atas",
@@ -33,19 +33,6 @@
           "y": 1180,
           "s": 230,
           "rot": 0.15
-        }
-      ],
-      "panah": [
-        {
-          "dari": [
-            880,
-            780
-          ],
-          "ke": [
-            690,
-            1120
-          ],
-          "warna": "kuning"
         }
       ],
       "ukuran": 150
