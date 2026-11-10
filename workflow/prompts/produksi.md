@@ -18,7 +18,7 @@ Animator **tidak boleh** jalan sebelum owner menekan "ACC suara" (status `vo-acc
 - Query `ideas`, lalu buang ide yang punya `kunci.sampai` lebih besar dari waktu sekarang (sedang dikerjakan di sesi lain).
 - Pilih **satu** pekerjaan dengan prioritas: `vo-ulang` > `vo-acc` > `acc`. Di status yang sama, ambil yang `voKeputusanAt`/`accAt`-nya paling lama.
 - **Kalau tidak ada, langsung berhenti** dengan satu kalimat "Tidak ada pekerjaan baru". Jangan commit apa pun.
-- Pasang kunci di ide: `kunci: {oleh:"terjadwal", sampai:<sekarang+3 jam ISO>}`. Muat skill channelnya (`config.channels[ide.channel].skill`) dan patuhi sepenuhnya. Gaya channel terkunci. `catatan` dan `catatanVo` owner wajib diikuti.
+- Pasang kunci di ide: `kunci: {oleh:"terjadwal", sampai:<sekarang+3 jam ISO>}`. Muat skill channelnya (`config.channels[ide.channel].skill`) dan patuhi sepenuhnya. Gaya channel terkunci, dan **jangan pernah mengubah file `.claude/skills/*`** (hanya owner yang boleh). `catatan` dan `catatanVo` owner wajib diikuti.
 - **Tiap channel punya gaya, suara, dan mesin render sendiri.** Jangan mencampur:
   - `mas-kharis`: prefix episode `ep`, stikmen kanvas 2D, 8 bagian, suara Eyang.
   - `ternyata-leluhur`: prefix `tl`, diorama 3D three.js, 7 beat, suara DK - Documentary, plus musik/SFX.

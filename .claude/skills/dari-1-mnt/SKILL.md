@@ -5,6 +5,8 @@ description: Gaya terkunci channel "Dari 1 mnt": YouTube Shorts motion graphic 2
 
 # Dari 1 mnt: gaya terkunci
 
+> **STATUS: TERKUNCI** (versi 10 Nov 2026, disetujui owner). Gaya, alur, durasi, suara, dan mesin di skill ini hanya boleh diubah atas perintah langsung owner. Sesi otomatis (ide harian/produksi) **dilarang mengubah file skill ini**.
+
 Gaya ini **terkunci**. Jangan mencampurnya dengan stikmen Mas Kharis atau diorama 3D Ternyata Leluhur.
 Gaya lama channel ini juga tidak dipakai lagi: Electric Blue 3D Chibi, peta isometrik neon, kertas koran, maskot bertopi beanie, dan teks Poppins.
 Patokan: `video/src/kinetic.js` (mesin) dan **`video/src/dm01.js` (contoh episode standar Pop v2)**. `dm00.js` hanya contoh lama yang dipersingkat.

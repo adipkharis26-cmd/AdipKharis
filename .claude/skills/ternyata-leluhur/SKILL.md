@@ -5,6 +5,8 @@ description: Gaya terkunci channel "Ternyata Leluhur": cerita kearifan lokal Ind
 
 # Ternyata Leluhur: gaya terkunci
 
+> **STATUS: TERKUNCI** (versi 10 Nov 2026, disetujui owner). Gaya, alur, durasi, suara, dan mesin di skill ini hanya boleh diubah atas perintah langsung owner. Sesi otomatis (ide harian/produksi) **dilarang mengubah file skill ini**.
+
 Gaya ini **terkunci**. Karakter, palet, font, struktur naskah, dan suara tidak boleh diubah kecuali owner (Adip) memintanya langsung. Jangan mencampur gaya channel lain: stikmen Mas Kharis, "Hybrid Kinetic Pop", maskot chibi, dan suara Finn **bukan** milik channel ini.
 
 Patokan hidup: `video/src/leluhur3d.js` (mesin), `video/src/tl00.js` (sampel), dan semua `naskah/tlNN-*.md`.

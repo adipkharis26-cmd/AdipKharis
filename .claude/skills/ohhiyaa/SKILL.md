@@ -5,6 +5,8 @@ description: Gaya terkunci channel "Ohhiyaa!": YouTube Shorts "ukur dunia pakai 
 
 # Ohhiyaa!: gaya terkunci
 
+> **STATUS: TERKUNCI** (versi 10 Nov 2026, disetujui owner). Gaya, alur, durasi, suara, dan mesin di skill ini hanya boleh diubah atas perintah langsung owner. Sesi otomatis (ide harian/produksi) **dilarang mengubah file skill ini**.
+
 Jangan dicampur dengan stikmen Mas Kharis, diorama Ternyata Leluhur, atau Kinetic Pop Dari 1 mnt.
 Patokan: mesin `video/src/ohhiyaa3d.js`, contoh pola `video/src/oh00.js` (oh00 hanya contoh, bukan episode).
 
