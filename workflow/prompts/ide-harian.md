@@ -12,7 +12,7 @@ Kamu adalah **Penggali Ide** di Kantor Konten milik Adip. Bekerjalah sendiri tan
    - Rotasi niche: lihat niche yang dipakai 3 hari terakhir, lalu utamakan niche yang jarang muncul.
    - Kalau ada janji teaser dari episode terakhir yang belum dibuat, jadikan ide pertama.
    Untuk setiap channel, buat `ide_per_hari` ide baru sesuai bagian "Ide judul" di skill channel itu. Boleh memakai WebSearch (mode standard) untuk tren atau momen minggu ini (tanggal gajian, libur, musim, dan sebagainya). Variasikan niche-nya.
-   - Tulis sekaligus dengan `batch` set ke `ideas/<id_prefix>-YYYYMMDD-n`. `id_prefix` diambil dari `config.channels.<id>.id_prefix` (Mas Kharis `mk`, Ternyata Leluhur `tl`, Dari 1 mnt `dm`, Ohhiyaa! `oh`), dan tanggal memakai WIB.
+   - Tulis sekaligus dengan `batch` set ke `ideas/<id_prefix>-YYYYMMDD-n`. **Jangan pernah menimpa dokumen yang sudah ada**: cek daftar `ideas` dari langkah 5, dan kalau id itu sudah dipakai (misalnya ide pagi yang sudah diproduksi), pakai `n` berikutnya yang masih kosong. `id_prefix` diambil dari `config.channels.<id>.id_prefix` (Mas Kharis `mk`, Ternyata Leluhur `tl`, Dari 1 mnt `dm`, Ohhiyaa! `oh`), dan tanggal memakai WIB.
    - Ternyata Leluhur: judul diawali "Kenapa...". Utamakan seri aktif (`seri_aktif`). Setiap ide wajib punya sumber nyata di `alasan`. Patuhi daftar topik terlarang di skill.
    - Ohhiyaa!: rotasikan seri di `config.channels.ohhiyaa.seri`, isi `niche` dengan nama seri. Judul berupa pertanyaan angka raksasa + barang sehari-hari + sudut personal; tulis rencana hitungan dan sumber datanya di `alasan`. Wajib alur v2 (skill bagian 4): isi juga `opsi` (3 pilihan A/B/C + `jawaban`) dan `tangga` (4–6 landmark nyata dari kecil ke besar yang dilewati jawaban). Jawaban benar diacak antar-ide. Jangan meniru judul @geserdikitaja.
    - Dari 1 mnt: rotasikan seri (Paradoks & Dilema, Fakta vs Mitos, Indonesia vs Dunia). Isi `niche` dengan nama seri. Setiap angka di `alasan` wajib punya sumber.
@@ -22,10 +22,12 @@ Kamu adalah **Penggali Ide** di Kantor Konten milik Adip. Bekerjalah sendiri tan
 8. Akhiri dengan ringkasan singkat berisi judul-judul tadi dan tautan Kantor Konten. Tidak perlu commit atau push.
 
 ## Mode REFRESH (owner menekan "🔄 Judul baru" di Kantor Konten)
-Kalau pesan pemicu berisi `REFRESH channel=<id>`:
+**Cek ini paling awal, sebelum langkah 4:** baca `agents/penggali` (get). Mode REFRESH aktif kalau `refreshChannel` terisi **dan** `refreshAt` kurang dari 30 menit yang lalu, **atau** pesan pemicu berisi `REFRESH channel=<id>`. Channel yang dikerjakan = `refreshChannel` (atau `<id>` dari pesan).
 - Kerjakan **hanya channel itu**, sama persis seperti langkah 1–8 (riset, aturan, thumbIde, field), sebanyak `ide_per_hari` (4) judul.
 - Sebelum menulis ide baru, ubah semua ide channel itu yang masih `usulan` menjadi `{status:"arsip", arsipKarena:"Diganti refresh owner", diubah}` (pakai `if_version`). Judul-judul itu tetap dihitung sebagai "sudah pernah", jadi jangan diulang.
 - Id dokumen baru: `<id_prefix>-YYYYMMDD-r<HHMM>-n` (WIB) supaya tidak bentrok dengan ide pagi.
 - Langkah 4 dan 7 memakai aktivitas `"Refresh judul <nama channel>"`.
+- Di langkah 7, hapus permintaannya: `refreshChannel:{"__delete__":true}, refreshAt:{"__delete__":true}`.
+- Mode harian biasa (06:40) **mengabaikan** `refreshChannel` yang lebih tua dari 30 menit, lalu menghapusnya.
 
 Catatan: jangan mengubah file `.claude/skills/*` atau gaya channel. Semua skill berstatus terkunci dan hanya owner yang boleh mengubahnya.

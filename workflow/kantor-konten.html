@@ -1117,11 +1117,17 @@ const MSG = { acc: 'Judul di-ACC. Tim langsung bekerja sampai video selesai (tan
 const MSG_LATE = { acc: 'Judul di-ACC. Tim mulai di jadwal berikutnya (menit ke-13) dan langsung sampai selesai.', 'vo-acc': 'Suara di-ACC. Animator mulai di jadwal berikutnya (menit ke-13).', 'vo-ulang': 'VO akan diulang di jadwal berikutnya (menit ke-13).' };
 // "🔄 Judul baru": run the daily idea scout now for one division (scheduled task "Kantor Konten: ide harian")
 const IDEA_TRIGGER = 'trig_01KVzAaEsV3BWHPtsjKX9pUs';
-function refreshBusy(ch) { try { const t = +localStorage.getItem('kk-refresh-' + ch) || 0, pg = agents.find(a => a.id === 'penggali') || {}; return Date.now() - t < 10 * 60000 && pg.status === 'kerja' && String(pg.aktivitas || '').includes(DIVS[ch].nama.replace(/^Divisi /, '')); } catch (e) { return false; } }
+const penggali = () => agents.find(a => a.id === 'penggali') || {};
+function refreshBusy(ch) { const pg = penggali(); return pg.status === 'kerja' && pg.refreshChannel === ch && Date.now() - (Date.parse(pg.refreshAt || '') || 0) < 30 * 60000; }
 async function refreshIdeas(ch, b) {
   const nama = DIVS[ch].nama.replace(/^Divisi /, '');
+  if (penggali().status === 'kerja') { toast('Penggali Ide sedang bekerja (' + (penggali().aktivitas || '…') + '). Tunggu sampai selesai, lalu tekan lagi.'); return; }
   if (ideas.some(i => chOf(i) === ch && i.status === 'usulan') && !confirm(`Ganti judul ${nama} yang sekarang dengan 4 judul baru?`)) return;
   if (b) { b.disabled = true; b.textContent = 'Memanggil Penggali Ide…'; }
+  // the request lives in the database (the trigger's extra text is not always delivered to the session)
+  const now = new Date().toISOString();
+  try { await db.collection('agents').doc('penggali').update({ status: 'kerja', aktivitas: 'Refresh judul ' + nama, diubah: now, refreshChannel: ch, refreshAt: now }); }
+  catch (e) { toast('Gagal menyimpan permintaan: ' + (e.message || e.code)); renderDesks(); return; }
   let ok = false;
   try {
     const mcp = window.claude && window.claude.use ? await window.claude.use('mcp') : null;
@@ -1129,7 +1135,6 @@ async function refreshIdeas(ch, b) {
   } catch (e) { console.warn('refresh', e && e.message); }
   if (ok) {
     try { localStorage.setItem('kk-refresh-' + ch, String(Date.now())); } catch (e) {}
-    try { await db.collection('agents').doc('penggali').update({ status: 'kerja', aktivitas: 'Refresh judul ' + nama, diubah: new Date().toISOString() }); } catch (e) {}
     toast(`Penggali Ide mencari 4 judul ${nama} (±3–5 menit). Judul muncul otomatis di Perlu ACC.`);
   } else toast('Panggilan langsung tidak tersedia di tampilan ini. Judul baru datang besok ±06:40.');
   renderDesks();
