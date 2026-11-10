@@ -7,7 +7,7 @@ description: Gaya terkunci channel "Dari 1 mnt": YouTube Shorts motion graphic 2
 
 Gaya ini **terkunci**. Jangan mencampurnya dengan stikmen Mas Kharis atau diorama 3D Ternyata Leluhur.
 Gaya lama channel ini juga tidak dipakai lagi: Electric Blue 3D Chibi, peta isometrik neon, kertas koran, maskot bertopi beanie, dan teks Poppins.
-Patokan: `video/src/kinetic.js` (mesin) dan `video/src/dm00.js` (contoh pola; dm00 dipersingkat dan bukan episode).
+Patokan: `video/src/kinetic.js` (mesin) dan **`video/src/dm01.js` (contoh episode standar Pop v2)**. `dm00.js` hanya contoh lama yang dipersingkat.
 
 ## 1. Identitas
 - **Channel:** Dari 1 mnt. Platform YouTube Shorts, 9:16, 1080×1920, MP4 H.264, 30 fps.
@@ -56,6 +56,25 @@ Patokan: `video/src/kinetic.js` (mesin) dan `video/src/dm00.js` (contoh pola; dm
 - **Area konten:** y 250–1650. Bawah layar dikosongkan untuk antarmuka Shorts, kecuali maskot.
 - Tidak ada subtitle dinamis. Hanya kata kunci per frasa, sinkron per frasa.
 - Layar memudar ke hitam di akhir (otomatis). Efek punch dan goyang dipakai di momen penekanan.
+
+## 4b. Standar editing "Pop v2" (WOW, wajib sejak dm01)
+Owner menilai versi lama "kurang wow". Penyebabnya: layar kosong, elemen diam, angka hanya counter. Setiap episode wajib:
+- **Hook detik 0 penuh:** frame pertama sudah ramai (stiker besar + `burst` + `speed` + `punch`) dan pertanyaan muncul kata per kata (`kata`). Jangan ada frame kosong di detik 0–1.
+- **Layar terisi:** setiap potongan minimal 3 lapis: latar + visual utama besar (stiker 250–400 px, grafik, VS) + teks. Area konten y 300–1500 terisi sekitar 70%; jangan hanya satu baris teks.
+- **Selalu bergerak:** kamera otomatis mendorong pelan dan miring di setiap potongan, dan latar diberi partikel (bawaan mesin). Tambahkan `fokus(t, x, y, zoom, d)` saat VO menyebut bagian tertentu. Stiker masuk dengan `from:'left'|'right'|'top'|'bottom'`.
+- **Teks kata per kata:** pakai `kata(teks, y, t0, {hi, mark})`. Setiap kata muncul tepat saat diucapkan; kata kunci diberi stabilo (`mark`) atau kuning (`hi`). `txt`/`impact` untuk satu kata hentakan.
+- **Data = perbandingan visual, bukan hanya angka:**
+  - `vs(L, R, t0, {win, tw})`: layar terbelah dua negara/pilihan, dengan nilai muncul saat diucapkan (`tv`) dan mahkota untuk pemenang.
+  - `race(items, 0, {crown})`: batang berpacu untuk 3–5 item.
+  - `counter`, `timbangan`, `iconGrid`, dan `chat` (tebakan netizen) untuk variasi.
+- **Momen WOW sekitar setiap 10–15 detik:**
+  - `glitchAt` + `impact` + `shake` di twist ("Tapi tunggu").
+  - `burst` saat angka/mahkota muncul.
+  - `speed` saat hentakan.
+  - `hujan(emoji)` di penutup/dilema.
+  - `panah` untuk menunjuk.
+- **SFX tambahan:** `boom` di detik 0 dan twist, `riser` sebelum twist dan sebelum vonis.
+- **Cek stills:** tidak ada potongan yang lebih dari setengah layarnya kosong. Kalau ada, tambah visual, jangan memperbesar teks saja.
 
 ## 5. Audio
 - **VO:** ElevenLabs **Finn - Expressive & Ads Indonesian** (`zmTMXWr9TzPTCLvo0Uqr`), Eleven v4, Stabilitas 0.5, Kesamaan 0.75, Kekuatan klon 0, Bahasa Auto, MP3 44.1 kHz.
@@ -107,7 +126,7 @@ Patokan: `video/src/kinetic.js` (mesin) dan `video/src/dm00.js` (contoh pola; dm
 ## 7. Pipeline
 1. Jalankan `python3 video/src/tts_elevenlabs.py dmNN`, lalu **cek durasi 60–90 detik** (bagian 2).
 2. Buat `video/src/dmNN.html` (salin `dm00.html`, ganti nama file) dan `dmNN.js` (pola `dm00.js`).
-   - Sekitar 25–35 potongan; setiap potongan dengan `bg` berbeda dari potongan sebelumnya.
+   - Sekitar 18–30 potongan; setiap potongan dengan `bg` berbeda dari potongan sebelumnya, dan mengikuti standar Pop v2 (bagian 4b).
    - Waktu dari `at('kata', n)` dan `pauseBefore`. `at()` menghitung kemunculan kata dari awal VO, jadi periksa indeks `n`-nya.
 3. Render stills di 10–12 titik (`EP=dmNN node render.js stills ../out/dmNNs t...`), gabungkan dengan hstack, lalu cek sendiri:
    - Teks tidak keluar layar dan tidak bertumpuk.
@@ -134,7 +153,7 @@ Patokan: `video/src/kinetic.js` (mesin) dan `video/src/dm00.js` (contoh pola; dm
 
 ## 9. Kesalahan yang tidak boleh terulang
 - Satu latar untuk seluruh video.
-- Visual kurang meriah.
+- Visual kurang meriah / "kurang wow": layar kosong, elemen diam, angka hanya counter (lihat 4b).
 - Penutup bergaya perintah atau memakai label Kubu A/B.
 - Nomor "#01" di badge.
 - Maskot terlalu sering, atau ekspresinya sama terus.

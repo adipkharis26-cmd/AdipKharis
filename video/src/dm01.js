@@ -1,113 +1,145 @@
-// Dari 1 mnt dm01 — Indonesia vs Dunia: jam kerja Indonesia vs Jepang & Korea
+// Dari 1 mnt dm01 — Indonesia vs Dunia: jam kerja Indonesia vs Jepang & Korea (edit v2 "Pop v2": padat, gerak terus, perbandingan visual)
 BADGE = 'INDONESIA vs DUNIA';
-window.EXTRA_SFX = [{ t: pauseBefore('Tapi') - 0.6, type: 'riser', d: 0.7 }];
+window.EXTRA_SFX = [
+  { t: 0, type: 'boom', gain: 0.8 },
+  { t: pauseBefore('Tapi') - 0.7, type: 'riser', d: 0.8 },
+  { t: at('Tapi'), type: 'boom', gain: 0.9 },
+  { t: at('tergantung') - 0.5, type: 'riser', d: 0.5 },
+];
 const SHOTS = [
+  // 1 HOOK — jam raksasa meledak + pertanyaan kata per kata (detik 0 sudah penuh)
   shotAt(0, { bg: 'sunburst', c: [C.biru, C.biruTua] }, t => {
-    txt('SIAPA PALING', 540, 480, at('Negara'), { size: 120 });
-    impact('LEMBUR?', 700, at('paling'), { size: 210 });
-    sticker('jam', 540, 1050, 300, at('lama'));
-    mascot(at('Negara') + 0.3, at('Negara') + 3.2, 'mikir', { side: 'L' });
+    speed(0, 0.8); burst(540, 1080, 0.05, { n: 34 }); punch(0.05, 0.1);
+    sticker('jam', 540, 1080, 400, 0.02, { rot: -0.08 });
+    kata('SIAPA PALING LAMA KERJA?', 560, 0, { times: [0.05, 1.76, 2.28, 2.51], size: 150, mark: ['LAMA'], hi: ['KERJA?'] });
   }),
-  shotAt(pauseBefore('Indonesia'), { bg: 'confetti', c: [C.mint, '#0E8F6A'] }, t => {
-    sticker(flag('ID'), 300, 600, 240, at('Indonesia'));
-    sticker(flag('JP'), 780, 600, 240, at('Jepang'));
-    sticker(flag('KR'), 540, 950, 240, at('Korea'));
-    txt('SIAPA?', 540, 1280, at('Selatan'), { size: 170, col: C.kuning });
+  // 2 tiga bendera terbang masuk tepat saat disebut
+  shotAt(pauseBefore('Indonesia'), { bg: 'city' }, t => {
+    sticker(flag('ID'), 230, 720, 250, at('Indonesia'), { from: 'left', rot: -0.1 });
+    sticker(flag('JP'), 540, 560, 250, at('Jepang'), { from: 'top', rot: 0.05 });
+    sticker(flag('KR'), 850, 720, 250, at('Korea'), { from: 'right', rot: 0.1 });
+    txt('INDONESIA', 230, 920, at('Indonesia') + 0.15, { size: 60 });
+    txt('JEPANG', 540, 760, at('Jepang') + 0.15, { size: 60 });
+    txt('KOREA', 850, 920, at('Korea') + 0.15, { size: 60 });
+    impact('SIAPA JUARANYA?', 1220, at('Selatan') + 0.2, { size: 150 });
   }),
-  shotAt(pauseBefore('Kebanyakan'), { bg: 'stripes', c: [C.ungu, '#5B21B6'] }, t => {
-    txt('KEBANYAKAN', 540, 520, at('Kebanyakan'), { size: 120 });
-    txt('MENEBAK', 540, 690, at('menebak'), { size: 120 });
-    sticker(flag('JP'), 540, 1010, 320, at('Jepang', 1));
+  // 3 tebakan netizen (maskot 1)
+  shotAt(pauseBefore('Kebanyakan'), { bg: 'chat' }, t => {
+    chat('Pasti Jepang lah!', 420, at('Kebanyakan'), 'L', { size: 66 });
+    chat('Jepang kan gila kerja', 580, at('langsung'), 'R', { size: 66 });
+    chat('Jepang 100%', 740, at('menebak'), 'L', { size: 66 });
+    sticker(flag('JP'), 560, 1060, 300, at('Jepang', 1), { from: 'bottom' }); burst(560, 1060, at('Jepang', 1) + 0.3, { n: 18 });
+    mascot(at('Kebanyakan') + 0.2, pauseBefore('Menurut') - 0.05, 'mikir', { side: 'R' });
   }),
+  // 4 sumber data
   shotAt(pauseBefore('Menurut'), { bg: 'halftone', c: ['#2A3A8F', C.navy] }, t => {
-    pill('MENURUT DATA OECD', 540, 430, at('data'), { size: 56, bg: C.cyan });
-    sticker(flag('KR'), 540, 760, 260, at('Korea', 1));
-    txt('KOREA SELATAN', 540, 1020, at('Selatan', 1), { size: 120 });
+    pill('MENURUT DATA OECD', 540, 420, at('data'), { size: 60, bg: C.cyan });
+    sticker('grafikNaik', 540, 1050, 340, at('OECD'), { from: 'right' });
+    kata('JAM KERJA SETAHUN', 700, at('OECD'), { times: [at('OECD') + 0.2, at('OECD') + 0.45, at('OECD') + 0.7], size: 140, mark: ['SETAHUN'] });
   }),
-  shotAt(pauseBefore('rata-rata'), { bg: 'radial', c: [C.pink, '#B4123F'] }, t => {
-    counter(0, 1900, 540, 650, at('seribu'), 1.2, { suffix: ' JAM', size: 200 });
-    txt('PER TAHUN', 540, 880, at('setahun'), { size: 110 });
-    sticker('kalender', 540, 1150, 240, at('setahun'));
+  // 5 KOREA vs JEPANG — split versus, kamera fokus bergantian, mahkota untuk Korea
+  shotAt(pauseBefore('pekerja'), { bg: 'radial', c: ['#2A3A8F', C.navy], drift: 0.4 }, t => {
+    vs({ flag: 'KR', label: 'KOREA SEL.', valueText: '±1.900 JAM', col: C.pink, tv: at('seribu') },
+       { flag: 'JP', label: 'JEPANG', valueText: '±1.600 JAM', col: C.biru, tv: at('seribu', 1) },
+       at('pekerja'), { win: 'L', tw: at('jauh') });
+    fokus(at('seribu') - 0.1, 300, 900, 1.22, 1.6);
+    fokus(at('seribu', 1) - 0.1, 790, 900, 1.22, 1.0);
+    pill('PER TAHUN', 540, 1500, at('setahun'), { size: 54 });
   }),
-  shotAt(pauseBefore('Jepang', 2), { bg: 'solid', c: [C.biru] }, t => {
-    sticker(flag('JP'), 540, 560, 260, at('Jepang', 2));
-    txt('JEPANG DI BAWAHNYA', 540, 840, at('jauh'), { size: 105 });
-    counter(0, 1600, 540, 1100, at('seribu', 1), 1.0, { suffix: ' JAM', size: 190, col: C.putih });
+  // 6 twist kecil: Indonesia? (maskot 2)
+  shotAt(pauseBefore('Lalu'), { bg: 'warning' }, t => {
+    kata('LALU INDONESIA?', 600, at('Lalu'), { size: 160, hi: ['INDONESIA?'] });
+    sticker(flag('ID'), 540, 960, 340, at('Indonesia', 1), { from: 'bottom' }); speed(at('Indonesia', 1), at('Indonesia', 1) + 0.7);
+    mascot(at('Lalu') + 0.1, pauseBefore('Menurut', 1) - 0.05, 'kaget', { side: 'R' });
   }),
-  shotAt(pauseBefore('Lalu'), { bg: 'sunset' }, t => {
-    sticker(flag('ID'), 540, 560, 300, at('Indonesia', 1));
-    txt('LALU INDONESIA?', 540, 880, at('Lalu'), { size: 120 });
-    sticker('tanya', 540, 1160, 240, at('Indonesia', 1) + 0.2);
-    mascot(at('Lalu'), at('Lalu') + 2.8, 'kaget', { side: 'R' });
+  // 7 sumber kedua
+  shotAt(pauseBefore('Menurut', 1), { bg: 'radial', c: [C.cyan, '#0E9F8E'] }, t => {
+    pill('GRONINGEN GROWTH & DEVELOPMENT CENTRE', 540, 420, at('Groningen'), { size: 44, bg: C.kuning });
+    sticker('buku', 540, 860, 320, at('data', 1), { from: 'left' });
+    kata('DATA SEJARAH EKONOMI', 1180, at('Growth'), { times: [at('Growth'), at('and'), at('Development')], size: 110, hi: ['EKONOMI'] });
   }),
-  shotAt(pauseBefore('Menurut', 1), { bg: 'city' }, t => {
-    pill('GRONINGEN GROWTH & DEV. CENTRE', 540, 430, at('Groningen'), { size: 46, bg: C.kuning });
-    sticker('buku', 540, 760, 250, at('Growth'));
-    txt('SUMBER DATA', 540, 1040, at('Development'), { size: 120 });
+  // 8 RACE — tiga negara berpacu, Indonesia dapat mahkota
+  shotAt(pauseBefore('angkanya'), { bg: 'stripes', c: ['#2A3A8F', C.navy], drift: 0.5 }, t => {
+    kata('JAM KERJA SETAHUN', 400, at('angkanya'), { times: [at('angkanya'), at('angkanya') + 0.2, at('angkanya') + 0.4], size: 100 });
+    race([
+      { flag: 'JP', label: 'JEPANG', value: 1600, valueText: '±1.600', col: C.biru, t: at('angkanya') + 0.2 },
+      { flag: 'KR', label: 'KOREA', value: 1900, valueText: '±1.900', col: C.pink, t: at('angkanya') + 0.5 },
+      { flag: 'ID', label: 'INDONESIA', value: 1950, valueText: '±1.950', col: C.kuning, t: at('seribu', 2) },
+    ], 0, { crown: true, y: 1380, h: 560 });
+    burst(840, 640, at('seribu', 2) + 0.9, { n: 30 });
+    pill('OECD · GGDC', 540, 1560, at('setahun', 1), { size: 40, bg: 'rgba(255,255,255,.92)' });
   }),
-  shotAt(pauseBefore('angkanya'), { bg: 'sunburst', c: [C.oranye, '#C2410C'] }, t => {
-    counter(0, 1950, 540, 650, at('seribu', 2), 1.4, { suffix: ' JAM', size: 200 });
-    txt('SETAHUN DI INDONESIA', 540, 900, at('setahun', 1), { size: 100 });
-    sticker(flag('ID'), 540, 1150, 240, at('lima'));
+  // 9 selisih 9 minggu
+  shotAt(pauseBefore('Itu'), { bg: 'sunburst', c: [C.oranye, '#C2410C'] }, t => {
+    counter(0, 9, 540, 640, at('sembilan', 2), 0.6, { suffix: ' MINGGU', size: 230 }); burst(540, 640, at('sembilan', 2) + 0.6);
+    kata('LEBIH PANJANG DARIPADA JEPANG', 1000, at('lebih'), { size: 115, mark: ['PANJANG'] });
+    sticker('kalender', 220, 1330, 200, at('minggu'), { from: 'left' });
+    sticker(flag('JP'), 860, 1330, 200, at('Jepang', 3), { from: 'right' });
   }),
-  shotAt(pauseBefore('Itu'), { bg: 'warning' }, t => {
-    txt('LEBIH PANJANG', 540, 480, at('lebih'), { size: 120 });
-    counter(0, 9, 540, 780, at('sembilan', 1), 0.8, { suffix: ' MINGGU', size: 230 });
-    txt('DARIPADA JEPANG', 540, 1050, at('daripada'), { size: 110, col: C.kuning });
+  // 10 TWIST — glitch + "TAPI TUNGGU" (maskot 3)
+  shotAt(pauseBefore('Tapi'), { bg: 'warning', drift: 1.6 }, t => {
+    glitchAt(at('Tapi'), 0.5); speed(at('Tapi'), at('Tapi') + 0.8, { col: C.kuning, a: 0.35 });
+    impact('TAPI TUNGGU!', 540, at('Tapi'), { size: 200 }); shake(at('Tapi'), 22, 0.4);
+    kata('ANGKA INI RATA-RATA SEMUA PEKERJA', 960, at('Angka'), { size: 110, hi: ['SEMUA'] });
+    mascot(at('Tapi') + 0.15, pauseBefore('termasuk') - 0.05, 'kaget', { side: 'L' });
   }),
-  shotAt(pauseBefore('Tapi'), { bg: 'chat' , c: [C.navy]}, t => {
-    impact('TAPI TUNGGU', 760, at('Tapi'), { size: 190 });
-    sticker('mata', 540, 1100, 260, at('tunggu'));
-    mascot(at('Tapi') + 0.2, at('Tapi') + 3, 'kaget', { side: 'L' });
+  // 11 paruh waktu ikut dihitung
+  shotAt(pauseBefore('termasuk'), { bg: 'split' }, t => {
+    kata('TERMASUK PARUH WAKTU', 480, at('termasuk'), { size: 130, mark: ['PARUH', 'WAKTU'] });
+    iconGrid('orang', 10, 6, 540, 980, 5, 185, at('termasuk') + 0.2, { stagger: 0.05 });
+    panah(900, 1380, 860, 1130, at('paruh') + 0.2, { col: C.pink });
+    pill('PARUH WAKTU', 760, 1460, at('waktu') + 0.1, { size: 48, bg: C.pink, fg: C.putih });
   }),
-  shotAt(pauseBefore('Angka'), { bg: 'split' }, t => {
-    txt('RATA-RATA', 540, 480, at('rata-rata', 1), { size: 130 });
-    txt('SEMUA PEKERJA', 540, 660, at('semua'), { size: 120, col: C.kuning });
-    iconGrid('orang', 10, 6, 540, 980, 5, 130, at('pekerja'));
+  // 12 terlihat lebih ringan — timbangan
+  shotAt(pauseBefore('Negara', 1), { bg: 'confetti', c: [C.ungu, '#5B21B6'] }, t => {
+    kata('BANYAK PARUH WAKTU', 450, at('banyak'), { times: [at('banyak'), at('paruh', 1), at('waktu', 1)], size: 120 });
+    timbangan(540, 840, 0.9, at('akan'), 'kantor', 'kopi');
+    impact('TERLIHAT RINGAN', 1380, at('ringan'), { size: 150 });
   }),
-  shotAt(pauseBefore('termasuk'), { bg: 'radial', c: [C.cyan, '#0E9F8E'] }, t => {
-    txt('TERMASUK', 540, 560, at('termasuk'), { size: 120, col: C.navy, ol: C.putih });
-    stamp('PARUH WAKTU', 540, 880, at('paruh'), { col: C.merah, size: 120 });
-    sticker('jam', 540, 1200, 240, at('waktu'));
+  // 13 padahal...
+  shotAt(pauseBefore('padahal'), { bg: 'sunset' }, t => {
+    kata('PADAHAL PEKERJA PENUH WAKTUNYA', 560, at('padahal'), { size: 115, hi: ['PENUH'] });
+    stamp('BELUM TENTU', 540, 980, at('belum'), { col: C.merah, size: 130 });
+    sticker('mikir', 820, 1330, 230, at('tentu'), { from: 'bottom' });
   }),
-  shotAt(pauseBefore('Negara', 1), { bg: 'stripes', c: [C.pink, '#B4123F'] }, t => {
-    txt('BANYAK PARUH WAKTU', 540, 520, at('banyak'), { size: 100 });
-    txt('TERLIHAT LEBIH', 540, 720, at('terlihat'), { size: 120 });
-    impact('RINGAN', 930, at('ringan'), { size: 210 });
+  // 14 sumber beda-beda
+  shotAt(pauseBefore('Sumber'), { bg: 'halftone', c: ['#0E8F6A', '#064E3B'] }, t => {
+    kata('SUMBER LAIN ANGKANYA BEDA-BEDA', 520, at('Sumber'), { size: 120, mark: ['BEDA-BEDA'] });
+    sticker('buku', 260, 1080, 230, at('pun'), { from: 'left' });
+    sticker('grafikNaik', 540, 1140, 230, at('angkanya', 1), { from: 'bottom' });
+    sticker('grafikTurun', 820, 1080, 230, at('beda-beda'), { from: 'right' });
   }),
-  shotAt(pauseBefore('padahal'), { bg: 'halftone', c: ['#4C1D95', C.navy] }, t => {
-    txt('PADAHAL', 540, 560, at('padahal'), { size: 120 });
-    txt('PENUH WAKTU?', 540, 760, at('penuh'), { size: 140, col: C.kuning });
-    sticker('tanya', 540, 1100, 280, at('belum'));
-    mascot(at('belum'), at('belum') + 2.6, 'mikir', { side: 'R' });
+  // 15 data resmi Korea
+  shotAt(pauseBefore('Data', 2), { bg: 'city' }, t => {
+    pill('DATA RESMI KOREA', 540, 420, at('resmi'), { size: 60, bg: C.pink, fg: C.putih });
+    sticker(flag('KR'), 540, 720, 320, at('Korea', 2), { from: 'top' });
+    counter(1500, 1870, 540, 1080, at('seribu', 3), 1.6, { prefix: '±', suffix: ' JAM', size: 190 });
+    pill('PER TAHUN', 540, 1290, at('jam', 3), { size: 50 });
   }),
-  shotAt(pauseBefore('Sumber'), { bg: 'confetti', c: [C.biru, C.biruTua] }, t => {
-    txt('SUMBER LAIN', 540, 560, at('Sumber'), { size: 130 });
-    txt('ANGKANYA BEDA', 540, 760, at('angkanya', 1), { size: 130, col: C.kuning });
-    sticker('timbangan', 540, 1100, 280, at('beda-beda'));
+  // 16 BPS
+  shotAt(pauseBefore('dan'), { bg: 'sunburst', c: [C.hijau, '#0F7A55'] }, t => {
+    pill('BPS', 540, 420, at('BPS'), { size: 80, bg: C.cyan });
+    sticker(flag('ID'), 540, 720, 300, at('pekerja', 4), { from: 'left' });
+    counter(0, 41, 540, 1070, at('empat'), 0.9, { prefix: '±', suffix: ' JAM', size: 240 }); burst(540, 1070, at('empat') + 0.9);
+    kata('SEMINGGU', 1300, at('seminggu'), { size: 130, hi: ['SEMINGGU'] });
   }),
-  shotAt(pauseBefore('Data'), { bg: 'sunburst', c: [C.hijau, '#0F7A55'] }, t => {
-    pill('DATA RESMI KOREA', 540, 430, at('resmi'), { size: 56 });
-    sticker(flag('KR'), 540, 760, 240, at('Korea', 2));
-    counter(0, 1870, 540, 1060, at('seribu', 3), 1.2, { suffix: ' JAM', size: 190, col: C.putih });
+  // 17 jadi siapa?
+  shotAt(pauseBefore('Jadi'), { bg: 'stripes', c: [C.pink, '#B4123F'] }, t => {
+    kata('JADI SIAPA PALING LAMA?', 560, at('Jadi'), { size: 140, mark: ['LAMA?'], markCol: C.biru });
+    sticker(flag('ID'), 250, 1050, 230, at('paling', 1), { from: 'bottom', rot: -0.12 });
+    sticker(flag('JP'), 540, 1100, 230, at('lama', 1), { from: 'bottom' });
+    sticker(flag('KR'), 830, 1050, 230, at('bekerja', 2), { from: 'bottom', rot: 0.12 });
   }),
-  shotAt(pauseBefore('dan'), { bg: 'warning' }, t => {
-    pill('BPS', 540, 430, at('BPS'), { size: 70, bg: C.cyan });
-    sticker(flag('ID'), 540, 740, 240, at('BPS'));
-    counter(0, 41, 540, 1040, at('empat'), 0.8, { suffix: ' JAM', size: 220 });
-    txt('SEMINGGU', 540, 1260, at('seminggu'), { size: 130, col: C.kuning });
+  // 18 tergantung
+  shotAt(pauseBefore('tergantung'), { bg: 'radial', c: [C.ungu, '#3B0764'] }, t => {
+    hujan('tanya', at('tergantung'), at('dihitung') + 0.4, { n: 14, alpha: 0.75 });
+    impact('TERGANTUNG', 640, at('tergantung'), { size: 210 }); speed(at('tergantung'), at('tergantung') + 0.6);
+    kata('SIAPA YANG DIHITUNG', 960, at('siapa', 1), { size: 120, hi: ['DIHITUNG'] });
   }),
-  shotAt(pauseBefore('Jadi'), { bg: 'solid', c: [C.ungu] }, t => {
-    txt('SIAPA PALING LAMA?', 540, 560, at('siapa'), { size: 110 });
-    txt('TERGANTUNG', 540, 780, at('tergantung'), { size: 150, col: C.kuning });
-    txt('YANG DIHITUNG', 540, 960, at('dihitung'), { size: 120 });
-    sticker('timbangan', 540, 1250, 240, at('dihitung'));
-  }),
-  shotAt(pauseBefore('Kalau'), { bg: 'radial', c: [C.pink, '#B4123F'] }, t => {
-    txt('SEMINGGU INI', 540, 560, at('seminggu', 1), { size: 130 });
-    txt('KAMU KERJA', 540, 740, at('kamu'), { size: 130 });
-    txt('BERAPA JAM?', 540, 920, at('berapa'), { size: 150, col: C.kuning });
-    sticker('jam', 540, 1250, 280, at('jam', 5));
-    mascot(at('berapa') - 0.3, DURATION, 'senang', { side: 'L' });
+  // 19 penutup: pertanyaan untuk penonton (maskot 4)
+  shotAt(pauseBefore('Kalau'), { bg: 'sunburst', c: [C.pink, '#B4123F'] }, t => {
+    kata('SEMINGGU INI KAMU KERJA BERAPA JAM?', 620, at('seminggu', 1), { size: 140, hi: ['BERAPA', 'JAM?'], mark: ['KAMU'], markCol: C.biru });
+    sticker('jam', 540, 1120, 280, at('jam', 5), { from: 'bottom' }); burst(540, 1120, at('jam', 5) + 0.2);
+    mascot(at('Kalau') + 0.1, DURATION, 'senang', { side: 'L' });
   }),
 ];

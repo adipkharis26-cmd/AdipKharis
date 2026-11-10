@@ -54,8 +54,8 @@ function img(src) {
   return IMG[src];
 }
 const EMO = {   // friendly names → Noto codepoints (any codepoint string also works, e.g. '1F4B8')
-  uang: '1F4B0', duit: '1F4B5', terbang: '1F4B8', jam: '23F0', jamPasir: '231B', kalender: '1F4C5', rumah: '1F3E0', kantor: '1F3E2',
-  hp: '1F4F1', laptop: '1F4BB', nasi: '1F35A', mangkuk: '1F35C', kopi: '2615', ayam: '1F357', burger: '1F354', piring: '1F37D',
+  uang: '1F4B0', duit: '1F4B5', terbang: '1F4B8', jam: '1F570', jamPasir: '1F55B', kalender: '1F4C5', rumah: '1F3E0', kantor: '1F3E2',
+  hp: '1F4F1', laptop: '1F4BB', nasi: '1F35A', mangkuk: '1F963', kopi: '2615', ayam: '1F357', burger: '1F354', piring: '1F37D',
   timbangan: '2696', otak: '1F9E0', bohlam: '1F4A1', api: '1F525', petir: '26A1', bom: '1F4A3', ledak: '1F4A5', tanya: '2753', seru: '2757',
   centang: '2705', silang: '274C', grafikNaik: '1F4C8', grafikTurun: '1F4C9', target: '1F3AF', piala: '1F3C6', mahkota: '1F451', bintang: '2B50',
   mobil: '1F697', motor: '1F3CD', kereta: '1F686', pesawat: '2708', bumi: '1F30F', bulan: '1F319', matahari: '2600', tidur: '1F634',
@@ -149,7 +149,9 @@ function sticker(code, x, y, size, t0, o = {}) {
   cue(t0, 'pop', 0.5);
   const t = NOW; const sc = stickerCanvas(code.startsWith && code.startsWith('vendor/') ? code : emoSrc(code), Math.round(size));
   g.save();
-  if (popT(t, t0, x, y, { rot: o.rot ?? (rnd(x + y) - 0.5) * 0.3, ...o }) && sc) {
+  let spin = 0;
+  if (o.from && t >= t0) { const k = easeOut(seg(t, t0, t0 + 0.42)), d = (1 - k) * 900; g.translate({ left: -d, right: d }[o.from] || 0, { top: -d, bottom: d }[o.from] || 0); spin = (1 - k) * (o.from === 'left' ? -1.2 : 1.2); }
+  if (popT(t, t0, x, y, { ...o, rot: (o.rot ?? (rnd(x + y) - 0.5) * 0.3) + spin, dur: o.from ? 0.05 : o.dur }) && sc) {
     const bob = o.still ? 0 : Math.sin((t - t0) * 2.4 + x) * size * 0.03;
     g.shadowColor = 'rgba(5,10,40,.45)'; g.shadowOffsetY = size * 0.06; g.shadowBlur = size * 0.08;
     g.drawImage(sc, -sc.width / 2, -sc.height / 2 + bob);
@@ -339,15 +341,22 @@ let BADGE = '';
 const shotAt = (t0, look, draw) => ({ t0, look, draw });
 const TRANS = ['iris', 'slide', 'wipe', 'flash'];
 const bufA = document.createElement('canvas'), bufB = document.createElement('canvas');
+const SCRATCH = (() => { const c = document.createElement('canvas'); c.width = 8; c.height = 8; return c.getContext('2d'); })();   // first (bookkeeping) pass draws here
 [bufA, bufB].forEach(b => { b.width = W; b.height = H; });
 function drawShot(i, t, target) {
   const S = SHOTS[i], ctx = target.getContext('2d'), prev = g;
-  g = ctx; NOW = t; PUNCH = []; SHAKES = []; MASKOT_USES = [];
+  g = ctx; NOW = t; PUNCH = []; SHAKES = []; MASKOT_USES = []; FOCUS = [];
   g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, W, H);
   bg(S.look, t);
+  if (S.look.fx !== 'none') ambient(S.look, t, i);
   // content is drawn twice: once to register punches/shakes (no output), then for real with the camera applied
-  g.save(); g.globalAlpha = 0; S.draw(t, t - S.t0); g.restore();
-  const [z, sx, sy] = camFx(t); g.setTransform(z, 0, 0, z, 540 * (1 - z) + sx, 960 * (1 - z) + sy);
+  { const real = g; g = SCRATCH; g.setTransform(1, 0, 0, 1, 0, 0); g.save(); S.draw(t, t - S.t0); g.restore(); g = real; }
+  // camera: punches/shakes + a slow push-in & tilt on every shot (never a dead frame) + focus zooms
+  const [z, sx, sy] = camFx(t), age = t - S.t0, dr = S.look.drift ?? 1, ek = easeOut(clamp(age / 3.4));
+  const Z = z * (1 + 0.055 * dr * ek), rot = 0.014 * dr * ek * (i % 2 ? 1 : -1);
+  let fx = 540, fy = 960, fz = 1;
+  FOCUS.forEach(([t0, x, y, zz, d]) => { if (t >= t0 && t < t0 + d + 0.35) { const k = ease(seg(t, t0, t0 + 0.35)) * (1 - ease(seg(t, t0 + d, t0 + d + 0.35))); fx = lerp(540, x, k); fy = lerp(960, y, k); fz = lerp(1, zz, k); } });
+  g.setTransform(1, 0, 0, 1, 540 + sx, 960 + sy); g.rotate(rot); g.scale(Z * fz, Z * fz); g.translate(-fx, -fy);
   S.draw(t, t - S.t0);
   g.setTransform(1, 0, 0, 1, 0, 0); g = prev;
 }
@@ -370,6 +379,7 @@ function renderFrame(t) {
     else { g.drawImage(k < 0.5 ? bufA : bufB, 0, 0); g.fillStyle = `rgba(255,255,255,${1 - Math.abs(k - 0.5) * 2})`; g.fillRect(0, 0, W, H); }
     g.restore();
   }
+  glitchFx(t);
   // category badge (top centre, no episode number)
   if (BADGE) { const prev = NOW; NOW = 1e6; g.save(); pill(BADGE, 540, 190, -1, { size: 58, still: true, calm: 1, dur: 0.01 }); g.restore(); NOW = prev; }
   // fade to black at the end
@@ -391,3 +401,155 @@ window.prepare = async () => {
   await Promise.all(PENDING);
   return true;
 };
+
+// ══ Pop v2: elemen "wow" (gerak terus, perbandingan visual, ledakan, glitch) ══
+let FOCUS = [];
+// camera zooms toward (x,y) by zz for d seconds (eases in/out)
+const fokus = (t0, x, y, zz = 1.35, d = 1.2) => FOCUS.push([t0, x, y, zz, d]);
+// ambient layer on every background: drifting bokeh + twinkling stars
+function ambient(look, t, si) {
+  g.save();
+  for (let i = 0; i < 16; i++) {
+    const r = 6 + rnd(i + si * 31) * 22, x = rnd(i * 3 + si) * W + Math.sin(t * 0.7 + i) * 30, y = (rnd(i * 7 + si) * (H + 200) - t * (40 + rnd(i) * 70)) % (H + 200);
+    g.globalAlpha = 0.10 + 0.08 * Math.sin(t * 2 + i); g.fillStyle = '#fff'; g.beginPath(); g.arc(x, (y + H + 200) % (H + 200) - 100, r, 0, 7); g.fill();
+  }
+  for (let i = 0; i < 7; i++) {
+    const x = rnd(i * 11 + si * 5) * W, y = 260 + rnd(i * 13 + si) * 1300, k = Math.max(0, Math.sin(t * 3.2 + i * 1.7)), r = 16 * k;
+    g.globalAlpha = 0.55 * k; g.fillStyle = '#fff'; g.beginPath(); g.moveTo(x, y - r); g.quadraticCurveTo(x, y, x + r, y); g.quadraticCurveTo(x, y, x, y + r); g.quadraticCurveTo(x, y, x - r, y); g.quadraticCurveTo(x, y, x, y - r); g.fill();
+  }
+  g.restore();
+}
+// find when each displayed token is spoken (from t0 on); unmatched tokens follow the previous one
+function tokenTimes(toks, t0, o = {}) {
+  if (o.times) return o.times;
+  let j = WORDS.findIndex(w => w.s >= t0 - 0.08); if (j < 0) j = WORDS.length;
+  const out = [];
+  toks.forEach((tk, i) => {
+    const n = norm(tk); let tt = null;
+    for (let k = j; k < WORDS.length && WORDS[k].s < t0 + (o.win || 3.5); k++) { const w = norm(WORDS[k].w); if (n && (w === n || (n.length > 2 && w.startsWith(n)))) { tt = WORDS[k].s; j = k + 1; break; } }
+    out.push(tt ?? (i ? out[i - 1] + (o.gap || 0.13) : t0));
+  });
+  return out;
+}
+// word-by-word kinetic headline synced to the VO: each word slams in when spoken.
+// o.hi: words in yellow, o.mark: words on a marker swipe, o.size, o.maxW, o.col, o.markCol
+function kata(s, y, t0, o = {}) {
+  const toks = s.split(' '), times = tokenTimes(toks, t0, o), size0 = o.size || 130, maxW = o.maxW || 960, t = NOW;
+  g.font = `${size0}px ${FONT}`; const sp = g.measureText(' ').width;
+  const lines = [[]]; let lw = 0;
+  toks.forEach((tk, i) => { const w = g.measureText(tk).width; if (lw + w > maxW && lines[lines.length - 1].length) { lines.push([]); lw = 0; } lines[lines.length - 1].push(i); lw += w + sp; });
+  const lh = size0 * 1.08;
+  lines.forEach((L, li) => {
+    const widths = L.map(i => g.measureText(toks[i]).width), tot = widths.reduce((a, b) => a + b, 0) + sp * (L.length - 1);
+    let cx = 540 - tot / 2; const ly = y + (li - (lines.length - 1) / 2) * lh;
+    L.forEach((i, k) => {
+      const tk = toks[i], ti = times[i], wx = cx + widths[k] / 2; cx += widths[k] + sp;
+      cue(ti, 'pop', 0.35); if (t < ti) return;
+      const a = seg(t, ti, ti + 0.16), sc = lerp(1.9, 1, easeOut(a)) + Math.sin((t - ti) * 4 + i) * 0.012;
+      g.save(); g.translate(wx, ly); g.rotate((rnd(i + y) - 0.5) * 0.08 * (1 - a) + Math.sin((t - ti) * 2.5 + i) * 0.012); g.scale(sc, sc); g.globalAlpha = clamp(a * 3);
+      if (o.mark && o.mark.includes(tk)) { const mk = easeOut(seg(t, ti + 0.1, ti + 0.4)); g.save(); g.rotate(-0.04); rr(-widths[k] / 2 - 18, -size0 * 0.48, (widths[k] + 36) * mk, size0 * 0.92, 16); g.fillStyle = o.markCol || C.pink; g.fill(); g.restore(); }
+      outlined(tk, 0, 0, size0, o.hi && o.hi.includes(tk) ? C.kuning : (o.col || C.putih));
+      g.restore();
+    });
+  });
+}
+// VERSUS split: L/R = {flag, emoji, label, valueText, col}; o.y0/o.y1 panel area, o.tv time values appear, o.win 'L'|'R' + o.tw time crown
+function vs(L, R, t0, o = {}) {
+  const t = NOW; if (t < t0) return; const y0 = o.y0 ?? 300, y1 = o.y1 ?? 1380, ym = (y0 + y1) / 2;
+  cue(t0, 'whoosh', 0.9); cue(t0 + 0.25, 'whoosh', 0.8); cue(t0 + 0.5, 'hit', 1.1); punch(t0 + 0.5, 0.07); shake(t0 + 0.5, 16);
+  [[L, -1, t0], [R, 1, t0 + 0.25]].forEach(([P, sd, ts]) => {
+    if (t < ts) return; const k = easeOut(seg(t, ts, ts + 0.38)), off = (1 - k) * 700 * sd;
+    g.save(); g.translate(off, 0); g.beginPath();
+    if (sd < 0) { g.moveTo(-20, y0); g.lineTo(600, y0); g.lineTo(480, y1); g.lineTo(-20, y1); } else { g.moveTo(612, y0); g.lineTo(1100, y0); g.lineTo(1100, y1); g.lineTo(492, y1); }
+    g.closePath(); g.fillStyle = P.col || (sd < 0 ? C.pink : C.biru); g.fill(); g.lineWidth = 10; g.strokeStyle = C.navy; g.stroke();
+    g.clip(); g.globalAlpha = 0.14; g.fillStyle = '#fff'; for (let q = -12; q < 30; q++) g.fillRect(q * 70 + ((t * 60) % 70), y0, 26, y1 - y0); g.globalAlpha = 1;
+    g.restore();
+    const px = sd < 0 ? 270 : 810, sc = stickerCanvas(P.flag ? flag(P.flag) : emoSrc(P.emoji || 'tanya'), 230);
+    g.save(); g.translate(px + off, ym - 220 + Math.sin(t * 2.4 + sd) * 10); g.rotate(sd * -0.08);
+    if (o.win === (sd < 0 ? 'L' : 'R') && t > (o.tw ?? 1e9)) { const gk = seg(t, o.tw, o.tw + 0.3); g.shadowColor = C.kuning; g.shadowBlur = 60 * gk; }
+    if (sc) g.drawImage(sc, -sc.width / 2, -sc.height / 2); g.restore();
+    outlined(P.label, px + off, ym + 10, fitSize(P.label, 74, 420), C.putih);
+    const tv = P.tv ?? o.tv ?? t0 + 0.7; if (P.valueText) cue(tv, 'hit', 0.7);
+    if (P.valueText && t >= tv) { const vk = back(seg(t, tv, tv + 0.3)); g.save(); g.translate(px + off, ym + 150); g.scale(vk, vk); outlined(P.valueText, 0, 0, fitSize(P.valueText, 104, 440), C.kuning); g.restore(); }
+    if (o.win === (sd < 0 ? 'L' : 'R') && t >= (o.tw ?? 1e9)) { cue(o.tw, 'hit', 0.9); const ck = back(seg(t, o.tw, o.tw + 0.35)), cr = stickerCanvas(emoSrc('mahkota'), 150); if (cr) { g.save(); g.translate(px + off, ym - 400 - (1 - ck) * 200); g.rotate(-0.15); g.globalAlpha = clamp(ck * 2); g.drawImage(cr, -cr.width / 2, -cr.height / 2); g.restore(); } }
+  });
+  if (t >= t0 + 0.5) { // VS badge + lightning
+    const k = back(seg(t, t0 + 0.5, t0 + 0.75)); g.save(); g.translate(546, ym); g.scale(k, k); g.rotate(-0.1 + Math.sin(t * 6) * 0.03);
+    g.fillStyle = C.kuning; g.strokeStyle = C.navy; g.lineWidth = 10; g.beginPath(); [[-40, -260], [40, -60], [-10, -40], [50, 250], [-50, 30], [0, 10], [-70, -260]].forEach(([x, yy], q) => q ? g.lineTo(x, yy) : g.moveTo(x, yy)); g.closePath(); g.fill(); g.stroke();
+    g.beginPath(); g.arc(0, 0, 118, 0, 7); g.fillStyle = C.navy; g.fill(); g.beginPath(); g.arc(0, 0, 100, 0, 7); g.fillStyle = C.kuning; g.fill();
+    outlined('VS', 0, 6, 120, C.putih); g.restore();
+    burst(546, ym, t0 + 0.5, { n: 22 });
+  }
+}
+// vertical bar race: items [{flag|emoji, label, value, valueText, col, t}]; o.y baseline, o.h max height, o.crown true
+function race(items, t0, o = {}) {
+  const t = NOW, base = o.y ?? 1380, hmax = o.h ?? 760, n = items.length, colW = Math.min(230, 860 / n - 40), gap = 940 / n, max = o.max || Math.max(...items.map(i => i.value));
+  g.save(); g.fillStyle = C.navy; rr(60, base, 960, 16, 8); g.fill(); g.restore();
+  items.forEach((it, i) => {
+    const ti = it.t ?? t0 + i * (o.stagger ?? 0.45); cue(ti, 'riser', 0.35, 0.6); if (t < ti) return;
+    const k = easeOut(seg(t, ti, ti + 0.9)), h = Math.max(20, hmax * it.value / max * k), cx = 70 + gap * (i + 0.5);
+    for (let q = 0; q < 8; q++) cue(ti + q * 0.11, 'tick', 0.3);
+    g.save(); rr(cx - colW / 2 + 10, base - h + 12, colW, h, 22); g.fillStyle = 'rgba(5,10,40,.4)'; g.fill();
+    rr(cx - colW / 2, base - h, colW, h, 22); g.fillStyle = it.col || C.kuning; g.fill(); g.lineWidth = 8; g.strokeStyle = C.navy; g.stroke();
+    g.globalAlpha = 0.25; rr(cx - colW / 2 + 16, base - h + 16, colW * 0.18, Math.max(0, h - 32), 10); g.fillStyle = '#fff'; g.fill(); g.restore();
+    const v = (it.value * k), vt = it.fmt ? it.fmt(v) : Math.round(v).toLocaleString('id-ID') + (it.suffix || '');
+    outlined(k > 0.98 && it.valueText ? it.valueText : vt, cx, base - h - 175, fitSize(it.valueText || vt, 70, colW + 60), C.putih);
+    const sc = stickerCanvas(it.flag ? flag(it.flag) : emoSrc(it.emoji || 'tanya'), 120); if (sc) g.drawImage(sc, cx - sc.width / 2, base - h - 120 - sc.height / 2 + 40);
+    outlined(it.label, cx, base + 70, fitSize(it.label, 56, colW + 50), C.putih);
+    if (o.crown && it.value === max && k > 0.98) { const tc = ti + 0.9, ck = back(seg(t, tc, tc + 0.3)), cr = stickerCanvas(emoSrc('mahkota'), 110); cue(tc, 'hit', 0.8); if (cr) { g.save(); g.translate(cx, base - h - 270 - (1 - ck) * 120); g.rotate(0.12); g.globalAlpha = clamp(ck * 2); g.drawImage(cr, -cr.width / 2, -cr.height / 2); g.restore(); } }
+  });
+}
+// confetti/star explosion at (x,y)
+function burst(x, y, t0, o = {}) {
+  cue(t0, 'pop', 0.7); const t = NOW, d = o.d || 0.9; if (t < t0 || t > t0 + d) return;
+  const k = (t - t0) / d, cols = o.cols || [C.kuning, C.pink, C.cyan, C.mint, C.putih, C.oranye];
+  for (let i = 0; i < (o.n || 28); i++) {
+    const a = rnd(i + x) * Math.PI * 2, sp = (o.r || 520) * (0.5 + rnd(i * 3 + y) * 0.7), px = x + Math.cos(a) * sp * easeOut(k), py = y + Math.sin(a) * sp * easeOut(k) + 260 * k * k;
+    g.save(); g.globalAlpha = 1 - k; g.fillStyle = cols[i % cols.length]; g.translate(px, py); g.rotate(t * 8 + i);
+    if (i % 3) g.fillRect(-11, -6, 22, 12); else { g.beginPath(); for (let q = 0; q < 10; q++) { const r2 = q % 2 ? 7 : 16, aa = q * Math.PI / 5; g.lineTo(Math.cos(aa) * r2, Math.sin(aa) * r2); } g.closePath(); g.fill(); }
+    g.restore();
+  }
+}
+// anime speed lines between t0..t1 (focus on centre)
+function speed(t0, t1, o = {}) {
+  const t = NOW; if (t < t0 || t > t1) return; const f = Math.floor(t * 20);
+  g.save(); g.globalAlpha = (o.a ?? 0.5) * (1 - seg(t, t1 - 0.2, t1)); g.fillStyle = o.col || '#fff';
+  for (let i = 0; i < 46; i++) { const a = rnd(i + f * 0.37) * Math.PI * 2, w = 0.012 + rnd(i * 5 + f) * 0.02, r0 = 430 + rnd(i * 7 + f) * 260; g.beginPath(); g.moveTo(540 + Math.cos(a) * r0, (o.y || 900) + Math.sin(a) * r0); g.lineTo(540 + Math.cos(a - w) * 1700, (o.y || 900) + Math.sin(a - w) * 1700); g.lineTo(540 + Math.cos(a + w) * 1700, (o.y || 900) + Math.sin(a + w) * 1700); g.fill(); }
+  g.restore();
+}
+// emoji rain
+function hujan(code, t0, t1, o = {}) {
+  const t = NOW; if (t < t0 || t > t1 + 2) return; cue(t0, 'pop', 0.5);
+  for (let i = 0; i < (o.n || 12); i++) {
+    const ti = t0 + rnd(i * 9) * (t1 - t0); if (t < ti) continue;
+    const y = -150 + (t - ti) * (900 + rnd(i) * 500), x = 80 + rnd(i * 4 + 1) * 920, sc = stickerCanvas(code.startsWith && code.startsWith('vendor/') ? code : emoSrc(code), o.size || 110);
+    if (sc && y < H + 150) { g.save(); g.translate(x, y); g.rotate((t - ti) * (rnd(i) - 0.5) * 6); g.globalAlpha = o.alpha ?? 0.9; g.drawImage(sc, -sc.width / 2, -sc.height / 2); g.restore(); }
+  }
+}
+// animated arrow drawn from (x0,y0) to (x1,y1)
+function panah(x0, y0, x1, y1, t0, o = {}) {
+  const t = NOW; if (t < t0) return; cue(t0, 'whoosh', 0.5);
+  const k = easeOut(seg(t, t0, t0 + 0.35)), mx = (x0 + x1) / 2 + (y1 - y0) * 0.25, my = (y0 + y1) / 2 - (x1 - x0) * 0.25;
+  const q = u => [(1 - u) * (1 - u) * x0 + 2 * (1 - u) * u * mx + u * u * x1, (1 - u) * (1 - u) * y0 + 2 * (1 - u) * u * my + u * u * y1];
+  g.save(); g.lineCap = 'round'; g.lineJoin = 'round';
+  [[C.navy, 46], [o.col || C.kuning, 26]].forEach(([c, w]) => { g.beginPath(); for (let u = 0; u <= k; u += 0.04) { const [px, py] = q(u); u ? g.lineTo(px, py) : g.moveTo(px, py); } g.strokeStyle = c; g.lineWidth = w; g.stroke(); });
+  if (k > 0.95) { const [ax, ay] = q(0.93), ang = Math.atan2(y1 - ay, x1 - ax); g.translate(x1, y1); g.rotate(ang); g.beginPath(); g.moveTo(14, 0); g.lineTo(-60, -44); g.lineTo(-60, 44); g.closePath(); g.fillStyle = o.col || C.kuning; g.fill(); g.lineWidth = 9; g.strokeStyle = C.navy; g.stroke(); }
+  g.restore();
+}
+// glitch moment (twist): RGB split + displaced slices, applied to the composed frame
+const GLITCH = [];
+function glitchAt(t0, d = 0.45) { if (!GLITCH.some(([a]) => Math.abs(a - t0) < 0.05)) { GLITCH.push([t0, d]); cue(t0, 'retak', 0.8); } }
+const gbuf = document.createElement('canvas'); gbuf.width = W; gbuf.height = H;
+function glitchFx(t) {
+  const G = GLITCH.find(([a, d]) => t >= a && t < a + d); if (!G) return;
+  const k = 1 - (t - G[0]) / G[1], f = Math.floor(t * 30), gx = gbuf.getContext('2d');
+  gx.clearRect(0, 0, W, H); gx.drawImage(cv, 0, 0);
+  g.save(); g.setTransform(1, 0, 0, 1, 0, 0);
+  g.globalCompositeOperation = 'screen'; g.globalAlpha = 0.55 * k;
+  g.filter = 'sepia(1) saturate(8) hue-rotate(-50deg)'; g.drawImage(gbuf, 18 * k, 0);
+  g.filter = 'sepia(1) saturate(8) hue-rotate(140deg)'; g.drawImage(gbuf, -18 * k, 0); g.filter = 'none';
+  g.globalCompositeOperation = 'source-over'; g.globalAlpha = 1;
+  for (let i = 0; i < 9; i++) { const y = rnd(i + f) * H, h = 20 + rnd(i * 3 + f) * 90, dx = (rnd(i * 7 + f) - 0.5) * 160 * k; g.drawImage(gbuf, 0, y, W, h, dx, y, W, h); }
+  g.fillStyle = `rgba(0,0,0,${0.12 * k})`; for (let y = 0; y < H; y += 6) g.fillRect(0, y, W, 2);
+  g.restore();
+}

@@ -63,7 +63,7 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
    - Siapkan file episode (lihat Penyimpanan antarsesi).
    - Ikuti bagian "Pipeline produksi" di skill channelnya. Semua waktu diambil dari `at()/atEnd()/CUT`.
      - **Mas Kharis:** `video/src/epNN.html` (pola `ep02.html`) dan `epNN.js` (8 scene, pola `ep02.js`/`ep03.js`). Audio adalah `../vo/epNN.mp3`.
-     - **Dari 1 mnt:** `video/src/dmNN.html` (pola `dm00.html`) dan `dmNN.js` (pola `dm00.js`, 25–35 potongan, latar berbeda tiap potongan, maskot 3–4 kali). Lalu jalankan `python3 video/src/leluhur_mix.py dmNN`. Audio adalah `../vo/dmNN-mix.m4a`.
+     - **Dari 1 mnt:** `video/src/dmNN.html` (pola `dm01.html`) dan `dmNN.js` (pola **`dm01.js`**, standar editing **Pop v2** di skill bagian 4b: hook penuh di detik 0, `kata`/`vs`/`race`/`fokus`/`burst`/`glitchAt`, layar terisi, latar berbeda tiap potongan, maskot 3–4 kali). Lalu jalankan `python3 video/src/leluhur_mix.py dmNN`. Audio adalah `../vo/dmNN-mix.m4a`.
      - **Ternyata Leluhur:** `video/src/tlNN.html` (pola `tl00.html`) dan `tlNN.js` (7 beat, sekitar 30 potongan, pola `tl00.js`, mesin `leluhur3d.js`). Lalu jalankan `python3 video/src/leluhur_mix.py tlNN`. Audio adalah `../vo/tlNN-mix.m4a`.
    - Render stills di 8–12 titik penting, gabungkan dengan ffmpeg hstack, lalu periksa sendiri (Read gambar). Pastikan wajah tidak tertutup teks, karakter besar, warna tidak monoton, hook atau label terbaca, dan kamera tidak masuk ke dinding. Perbaiki lalu ulangi maksimal 2 kali.
    - Render: `cd video/src && EP=epNN node render.js video ../out/<channel>-epNN.mp4 30 <audio>`. Render 3D lama, jadi jalankan di background dan tunggu sampai selesai.
