@@ -193,7 +193,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   <details>
     <summary>Cara pakai</summary>
     <ol class="how">
-      <li><b>Perlu ACC</b>: pilih 1 judul, tekan ACC.</li>
+      <li><b>Perlu ACC</b>: pilih 1 judul, tekan ACC. Mau judul lain sekarang? Tekan <b>🔄 Judul baru</b> di meja divisi (4 judul baru dalam ±3–5 menit).</li>
       <li>Setelah ACC, tim langsung bekerja sampai video <b>Selesai</b> (tanpa cek suara).</li>
       <li><b>Selesai</b>: unduh video dan thumbnail, salin teks upload. Setelah diunggah ke YouTube, tekan <b>✓ Sudah di-post</b>.</li>
       <li><b>🎨 Branding</b> di tiap meja: logo, banner, dan bio channel.</li>
@@ -897,7 +897,10 @@ function renderDesks() {
     b.onclick = () => setDesk(k); box.append(b);
   });
   const h = $('deskHead'); h.style.setProperty('--desk', DIVS[curDesk].warna); h.textContent = '';
-  const ht = document.createElement('span'); ht.textContent = DIVS[curDesk].nama.replace(/^Divisi /, ''); const bb = document.createElement('button'); bb.className = 'btn'; bb.textContent = '🎨 Branding'; bb.onclick = () => openBrand(curDesk); h.append(ht, bb);
+  const ht = document.createElement('span'); ht.textContent = DIVS[curDesk].nama.replace(/^Divisi /, ''); const bb = document.createElement('button'); bb.className = 'btn'; bb.textContent = '🎨 Branding'; bb.onclick = () => openBrand(curDesk);
+  const rf = document.createElement('button'); rf.className = 'btn acc'; const busyRf = refreshBusy(curDesk);
+  rf.textContent = busyRf ? '⏳ Mencari judul…' : '🔄 Judul baru'; rf.disabled = !!busyRf; rf.title = 'Minta 4 judul rekomendasi baru sekarang, tanpa menunggu 06:40';
+  rf.onclick = () => refreshIdeas(curDesk, rf); h.append(ht, rf, bb);
 }
 try { const f = localStorage.getItem('kk-filter'); if (f && ['usulan', 'jalan', 'selesai'].includes(f)) filter = f; } catch (e) {}
 const GROUP = { usulan: ['usulan'], jalan: ['acc', 'produksi', 'cek-vo', 'vo-ulang', 'vo-acc', 'butuh-vo', 'gagal'], selesai: ['selesai'] };
@@ -1075,6 +1078,25 @@ document.querySelectorAll('.tab').forEach(b => b.onclick = () => { filter = b.da
 
 const MSG = { acc: 'Judul di-ACC. Tim langsung bekerja sampai video selesai (tanpa cek suara). Mau lebih cepat? Tekan ▶ Mulai sekarang di tab Diproduksi.', 'vo-acc': 'Suara di-ACC. Animator dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', 'vo-ulang': 'VO diulang sesuai catatan. Tim dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', tolak: 'Ditolak' };
 const MSG_LATE = { acc: 'Judul di-ACC. Tim mulai di jadwal berikutnya (menit ke-13) dan langsung sampai selesai.', 'vo-acc': 'Suara di-ACC. Animator mulai di jadwal berikutnya (menit ke-13).', 'vo-ulang': 'VO akan diulang di jadwal berikutnya (menit ke-13).' };
+// "🔄 Judul baru": run the daily idea scout now for one division (scheduled task "Kantor Konten: ide harian")
+const IDEA_TRIGGER = 'trig_01KVzAaEsV3BWHPtsjKX9pUs';
+function refreshBusy(ch) { try { const t = +localStorage.getItem('kk-refresh-' + ch) || 0; return Date.now() - t < 8 * 60000 && !ideas.some(i => chOf(i) === ch && i.status === 'usulan' && Date.parse(i.createdAt || '') > t); } catch (e) { return false; } }
+async function refreshIdeas(ch, b) {
+  const nama = DIVS[ch].nama.replace(/^Divisi /, '');
+  if (ideas.some(i => chOf(i) === ch && i.status === 'usulan') && !confirm(`Ganti judul ${nama} yang sekarang dengan 4 judul baru?`)) return;
+  if (b) { b.disabled = true; b.textContent = 'Memanggil Penggali Ide…'; }
+  let ok = false;
+  try {
+    const mcp = window.claude && window.claude.use ? await window.claude.use('mcp') : null;
+    if (mcp) { await mcp.callTool('Claude Code Remote', 'fire_trigger', { trigger_id: IDEA_TRIGGER, text: `REFRESH channel=${ch}. Owner menekan "Judul baru" untuk ${nama}: buat 4 judul rekomendasi baru sekarang sesuai Mode REFRESH di ide-harian.md.` }); ok = true; }
+  } catch (e) { console.warn('refresh', e && e.message); }
+  if (ok) {
+    try { localStorage.setItem('kk-refresh-' + ch, String(Date.now())); } catch (e) {}
+    try { await db.collection('agents').doc('penggali').update({ status: 'kerja', aktivitas: 'Refresh judul ' + nama, diubah: new Date().toISOString() }); } catch (e) {}
+    toast(`Penggali Ide mencari 4 judul ${nama} (±3–5 menit). Judul muncul otomatis di Perlu ACC.`);
+  } else toast('Panggilan langsung tidak tersedia di tampilan ini. Judul baru datang besok ±06:40.');
+  renderDesks();
+}
 // start the production run right away (scheduled task "Kantor Konten: produksi"), through the
 // viewer's Claude Code Remote connector; without it the hourly :13 schedule still picks the job up
 const PROD_TRIGGER = 'trig_01KW7689zngdSs8YW1jcG7qu';

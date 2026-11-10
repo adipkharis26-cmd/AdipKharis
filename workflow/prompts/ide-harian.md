@@ -21,4 +21,11 @@ Kamu adalah **Penggali Ide** di Kantor Konten milik Adip. Bekerjalah sendiri tan
 7. Set `agents/penggali` menjadi `{status:"santai", aktivitas:"Setor N judul hari ini", diubah}`.
 8. Akhiri dengan ringkasan singkat berisi judul-judul tadi dan tautan Kantor Konten. Tidak perlu commit atau push.
 
+## Mode REFRESH (owner menekan "🔄 Judul baru" di Kantor Konten)
+Kalau pesan pemicu berisi `REFRESH channel=<id>`:
+- Kerjakan **hanya channel itu**, sama persis seperti langkah 1–8 (riset, aturan, thumbIde, field), sebanyak `ide_per_hari` (4) judul.
+- Sebelum menulis ide baru, ubah semua ide channel itu yang masih `usulan` menjadi `{status:"arsip", arsipKarena:"Diganti refresh owner", diubah}` (pakai `if_version`). Judul-judul itu tetap dihitung sebagai "sudah pernah", jadi jangan diulang.
+- Id dokumen baru: `<id_prefix>-YYYYMMDD-r<HHMM>-n` (WIB) supaya tidak bentrok dengan ide pagi.
+- Langkah 4 dan 7 memakai aktivitas `"Refresh judul <nama channel>"`.
+
 Catatan: jangan mengubah file `.claude/skills/*` atau gaya channel. Semua skill berstatus terkunci dan hanya owner yang boleh mengubahnya.
