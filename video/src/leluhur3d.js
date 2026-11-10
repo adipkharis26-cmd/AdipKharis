@@ -13,7 +13,12 @@
 //     chip('TIDAK DITANAM', 540, 300, t0);     // 2D overlays (queued, drawn after 3D)
 //   }
 
-const W = 1080, H = 1920, FONT = 'Montserrat';
+const W = 1080, H = 1920, FONT = "'Baloo 2', Montserrat";
+// TL v3 "sinematik": rounded Baloo 2 is loaded by the engine itself (episode pages only need Montserrat as fallback)
+window.prepare = async () => {
+  for (const [w, f] of [['latin', 'U+0000-00FF,U+2000-206F'], ['latin-ext', 'U+0100-024F']]) { const F = new FontFace('Baloo 2', `url(vendor/baloo-2-${w}-800-normal.woff2)`, { weight: '800', unicodeRange: f }); document.fonts.add(await F.load()); }
+  await document.fonts.ready;
+};
 const OL = '#17120F';
 const cv = document.getElementById('c'), g = cv.getContext('2d');
 
@@ -75,7 +80,7 @@ const SUN_DIR = V3(4, 9, 5).normalize();
 
 // sky presets: [top, bottom]
 const SKY = {
-  pantai: ['#3F9BE8', '#CFEAF7'], desa: ['#4FA8EC', '#D6EEF8'], sore: ['#F08A5D', '#FFD9A0'],
+  pantai: ['#4C93C9', '#F1E3C8'], desa: ['#5E9CCB', '#F3E4C6'], sore: ['#F08A5D', '#FFD9A0'],
   malam: ['#0F1838', '#2C3D73'], dalam: ['#C9A777', '#E9D3AE'], lab: ['#BFE4EC', '#EEF8FA'],
 };
 const skyCache = {};
@@ -94,8 +99,8 @@ function sky(name) {
 // lighting mood: 'siang' (default), 'sore', 'malam', 'dalam'
 function mood(m) {
   const L = {
-    siang: [0xffffff, 0.48, 0.16, 0xfff0d8, 0.55], sore: [0xffe0c0, 0.42, 0.15, 0xffb46b, 0.6],
-    malam: [0x6f80c0, 0.35, 0.12, 0x9fb2ff, 0.22], dalam: [0xfff3e0, 0.55, 0.28, 0xffe2b0, 0.45],
+    siang: [0xdfe8ff, 0.42, 0.12, 0xffe2b8, 0.78], sore: [0xffd8b0, 0.36, 0.12, 0xff9f55, 0.82],
+    malam: [0x5f70b0, 0.32, 0.1, 0x9fb2ff, 0.25], dalam: [0xfff0dc, 0.5, 0.24, 0xffd9a0, 0.5],
   }[m || 'siang'];
   HEMI.color.setHex(L[0]); HEMI.intensity = L[1]; AMB.intensity = L[2]; SUN.color.setHex(L[3]); SUN.intensity = L[4];
 }
@@ -103,6 +108,7 @@ function mood(m) {
 // ── materials & primitives ────────────────────────────────────
 const matCache = {};
 function mat(col, o = {}) {
+  if (MATMODE === 'toon' && !o.basic) return toonMat(col, o);
   const key = col + JSON.stringify(o, (k, v) => (v && v.isTexture ? v.uuid : v));
   if (!matCache[key]) {
     matCache[key] = o.basic
@@ -157,6 +163,28 @@ function canvasTex(key, w, h, draw, rep) {
   return texCache[key];
 }
 const PAT = {
+  // Nusantara textiles + realistic ground textures (TL v3)
+  kawung: (a, b) => canvasTex('kawung' + a + b, 128, 128, (x, w, h) => { x.fillStyle = a; x.fillRect(0, 0, w, h); x.fillStyle = b;
+    for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { const u = i * 64, v = j * 64; [[0, -16], [16, 0], [0, 16], [-16, 0]].forEach(([dx, dy]) => { x.beginPath(); x.ellipse(u + dx, v + dy, dy ? 9 : 14, dy ? 14 : 9, 0, 0, 7); x.fill(); }); x.fillStyle = a; x.beginPath(); x.arc(u, v, 3, 0, 7); x.fill(); x.fillStyle = b; } }, [3, 3]),
+  parang: (a, b) => canvasTex('parang' + a + b, 128, 128, (x, w, h) => { x.fillStyle = a; x.fillRect(0, 0, w, h); x.strokeStyle = b; x.lineWidth = 9;
+    for (let i = -2; i < 4; i++) { x.beginPath(); for (let k = 0; k <= 8; k++) { const u = i * 48 + k * 16, v = k * 16; x.lineTo(u + Math.sin(k * 1.6) * 6, v); } x.stroke(); }
+    x.fillStyle = b; for (let i = -2; i < 4; i++) for (let k = 0; k < 4; k++) { x.beginPath(); x.arc(i * 48 + 24 + k * 32, k * 32 + 12, 4, 0, 7); x.fill(); } }, [3, 3]),
+  lurik: (a, b) => canvasTex('lurik' + a + b, 64, 64, (x, w, h) => { x.fillStyle = a; x.fillRect(0, 0, w, h); x.fillStyle = b; [4, 10, 13, 30, 36, 39, 52].forEach((u, i) => x.fillRect(u, 0, i % 3 ? 2 : 4, h)); }, [5, 1]),
+  tenun: (a, b) => canvasTex('tenun' + a + b, 128, 128, (x, w, h) => { x.fillStyle = a; x.fillRect(0, 0, w, h); x.fillStyle = b;
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) { const u = c * 32 + 16, v = r * 32 + 16; x.beginPath(); x.moveTo(u, v - 12); x.lineTo(u + 12, v); x.lineTo(u, v + 12); x.lineTo(u - 12, v); x.closePath(); x.fill(); x.fillStyle = a; x.fillRect(u - 3, v - 3, 6, 6); x.fillStyle = b; }
+    x.fillRect(0, 0, w, 4); x.fillRect(0, 62, w, 4); }, [3, 3]),
+  batik: (a, b) => canvasTex('batik' + a + b, 128, 128, (x, w, h) => { x.fillStyle = a; x.fillRect(0, 0, w, h); x.strokeStyle = b; x.fillStyle = b; x.lineWidth = 4;
+    for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) { const u = 32 + i * 64, v = 32 + j * 64; for (let k = 0; k < 6; k++) { const an = k / 6 * Math.PI * 2; x.beginPath(); x.ellipse(u + Math.cos(an) * 13, v + Math.sin(an) * 13, 9, 4, an, 0, 7); x.fill(); } x.beginPath(); x.arc(u, v, 5, 0, 7); x.stroke(); }
+    for (let k = 0; k < 30; k++) { x.fillRect(rnd(k) * w, rnd(k + 3) * h, 2.5, 2.5); } }, [3, 3]),
+  kotak: (a, b) => canvasTex('kotak' + a + b, 64, 64, (x, w, h) => { x.fillStyle = a; x.fillRect(0, 0, w, h); x.fillStyle = b; x.globalAlpha = 0.6; for (let i = 0; i < 4; i++) { x.fillRect(i * 16, 0, 6, h); x.fillRect(0, i * 16, w, 6); } x.globalAlpha = 0.3; x.fillStyle = '#fff'; for (let i = 0; i < 4; i++) x.fillRect(i * 16 + 10, 0, 2, h); }, [4, 2]),
+  genteng: (a, b) => canvasTex('genteng' + a + b, 128, 128, (x, w, h) => { x.fillStyle = b; x.fillRect(0, 0, w, h);
+    for (let r = 0; r < 6; r++) for (let c = 0; c < 6; c++) { const u = c * 22 + (r % 2 ? 11 : 0), v = r * 22; const gr = x.createLinearGradient(0, v, 0, v + 22); gr.addColorStop(0, a); gr.addColorStop(1, b); x.fillStyle = gr; x.beginPath(); x.moveTo(u, v); x.lineTo(u + 20, v); x.quadraticCurveTo(u + 20, v + 22, u + 10, v + 21); x.quadraticCurveTo(u, v + 22, u, v); x.fill(); } }, [6, 4]),
+  rumput2: (a, b) => canvasTex('rumput2' + a + b, 256, 256, (x, w, h) => { x.fillStyle = a; x.fillRect(0, 0, w, h);
+    for (let i = 0; i < 900; i++) { const u = rnd(i) * w, v = rnd(i + 7) * h, l = 4 + rnd(i + 3) * 9; x.strokeStyle = rnd(i + 1) > 0.5 ? b : 'rgba(255,255,230,.18)'; x.globalAlpha = 0.5 + rnd(i + 2) * 0.5; x.lineWidth = 1.5; x.beginPath(); x.moveTo(u, v); x.lineTo(u + (rnd(i + 5) - 0.5) * 4, v - l); x.stroke(); }
+    x.globalAlpha = 0.18; for (let i = 0; i < 40; i++) { x.fillStyle = rnd(i) > 0.5 ? '#3A5A28' : '#9DB070'; x.beginPath(); x.ellipse(rnd(i * 3) * w, rnd(i * 5) * h, 12 + rnd(i) * 20, 8 + rnd(i + 1) * 12, 0, 0, 7); x.fill(); } }, [10, 10]),
+  kerikil: (a, b) => canvasTex('kerikil' + a + b, 256, 256, (x, w, h) => { x.fillStyle = a; x.fillRect(0, 0, w, h);
+    for (let i = 0; i < 520; i++) { const u = rnd(i) * w, v = rnd(i + 9) * h, r = 2 + rnd(i + 4) * 5; const c = ['#8E8A82', '#B4A48A', '#6E665C', '#C9B898', '#7A6A58', '#A39C90'][i % 6]; x.fillStyle = c; x.beginPath(); x.ellipse(u, v, r * 1.3, r, rnd(i) * 3, 0, 7); x.fill(); x.fillStyle = 'rgba(255,255,255,.25)'; x.beginPath(); x.ellipse(u - r * 0.3, v - r * 0.3, r * 0.5, r * 0.3, 0, 0, 7); x.fill(); }
+    x.globalAlpha = 0.25; x.fillStyle = b; for (let i = 0; i < 30; i++) { x.beginPath(); x.ellipse(rnd(i * 2) * w, rnd(i * 3) * h, 20 + rnd(i) * 25, 12 + rnd(i) * 14, 0, 0, 7); x.fill(); } }, [10, 10]),
   plaid: (a, b) => canvasTex('plaid' + a + b, 128, 128, (x, w, h) => {
     x.fillStyle = a; x.fillRect(0, 0, w, h); x.fillStyle = b; x.globalAlpha = 0.55;
     for (let i = 0; i < 4; i++) { x.fillRect(i * 32 + 4, 0, 10, h); x.fillRect(0, i * 32 + 4, w, 10); }
@@ -218,105 +246,129 @@ let PROPS = [];
 function prop(obj) { PROPS.push(obj); obj.visible = false; SCN.add(obj); return obj; }
 function place(obj, x, y, z, ry = 0, s = 1) { obj.visible = true; obj.position.set(x, y, z); obj.rotation.set(0, ry, 0); obj.scale.setScalar(s); return obj; }
 
-// ── characters ────────────────────────────────────────────────
-// o: {skin, shirt, pattern:'plaid|stripe|dots|gold', pat2, pants, hair:'none|short|white|grey|bun|black',
-//     beard, mustache, hat:'headband|straw|peci|kerudung|cap', hatCol, glasses, kid, fat, sandal}
-const SKIN = '#B87A4B', PINK = '#EF8F80';
+// ── characters (TL v3 "sinematik"): big round head, cel-shaded toon skin & clothes, thick ink outline,
+//    ears + nose, shirt collar / buttons / pocket, Nusantara textile patterns (kawung, parang, lurik, tenun, batik)
+// o: {skin, shirt, pattern:'plaid|stripe|dots|gold|kawung|parang|lurik|tenun|batik', pat2, pants, sarung, hair:'none|short|white|grey|bun|black',
+//     beard, mustache, hat:'headband|straw|peci|kerudung|cap|caping|blangkon', hatCol, glasses, kid, fat, sandal, collar:false}
+const SKIN = '#B87A4B', PINK = '#E58A72';
+var MATMODE = null;                         // 'toon' while a character is being built (see mat())
+const TOON_RAMP = (() => { const d = new Uint8Array([150, 150, 150, 255, 205, 205, 205, 255, 255, 255, 255, 255]); const t = new THREE.DataTexture(d, 3, 1, THREE.RGBAFormat); t.minFilter = t.magFilter = THREE.NearestFilter; t.needsUpdate = true; return t; })();
+const toonCache = {};
+function toonMat(col, o = {}) {
+  const key = col + (o.map ? o.map.uuid : '') + (o.opacity ?? '') + (o.side || '');
+  if (!toonCache[key]) toonCache[key] = new THREE.MeshToonMaterial({ color: col, gradientMap: TOON_RAMP, map: o.map || null, transparent: o.opacity != null, opacity: o.opacity ?? 1, side: o.side || THREE.FrontSide });
+  return toonCache[key];
+}
 function makeChar(o = {}) {
+  MATMODE = 'toon';
   const C = new THREE.Group(); C.userData.o = o; C.visible = false; SCN.add(C); CHARS.push(C);
-  const s = o.kid ? 0.74 : 1, skin = o.skin || SKIN, ol = 0.012;
+  const s = o.kid ? 0.78 : 1, skin = o.skin || SKIN, ol = 0.02;
   const root = new THREE.Group(); C.add(root); root.scale.setScalar(s); C.userData.root = root;
   const fat = o.fat || 1;
+  const shade = (c, k) => '#' + new THREE.Color(c).multiplyScalar(k).getHexString();
   // legs + sandals
   const legs = [-1, 1].map(sd => {
-    const L = new THREE.Group(); at3(L, sd * 0.075 * fat, 0.17, 0);
-    L.add(at3(cyl(0.052, 0.05, 0.15, o.pants || '#3A3F5C', { ol }), 0, -0.075, 0));
-    L.add(at3(rbox(0.1, 0.035, 0.17, o.sandal || '#7A4E27', { ol }), 0, -0.155, 0.03));
+    const L = new THREE.Group(); at3(L, sd * 0.07 * fat, 0.16, 0);
+    L.add(at3(cyl(0.05, 0.048, 0.14, o.pants || '#3A3F5C', { ol }), 0, -0.07, 0));
+    L.add(at3(rbox(0.1, 0.04, 0.17, o.sandal || '#5A3A22', { ol }), 0, -0.145, 0.03));
     root.add(L); return L;
   });
   // body (clothes)
   const shirtMat = o.pattern ? texMat(o.pattern, o.shirt || '#1F5FBF', o.pat2 || '#ffffff') : mat(o.shirt || '#1F5FBF');
-  const body = capsule(0.165, 0.17, shirtMat, { ol }); at3(body, 0, 0.385, 0); body.scale.set(fat, 1, fat * 0.92); root.add(body);
-  const pantsBand = cyl(0.17 * fat, 0.17 * fat, 0.06, o.pants || '#3A3F5C'); at3(pantsBand, 0, 0.215, 0); pantsBand.scale.z = 0.92; root.add(pantsBand);
+  const body = capsule(0.16, 0.15, shirtMat, { ol }); at3(body, 0, 0.36, 0); body.scale.set(fat, 1, fat * 0.9); root.add(body);
+  if (o.sarung) { const sr = cyl(0.17 * fat, 0.2 * fat, 0.2, texMat('kotak', o.sarung, shade(o.sarung, 0.6)), { ol }); at3(sr, 0, 0.2, 0); sr.scale.z = 0.92; root.add(sr); }
+  else { const pb = cyl(0.165 * fat, 0.165 * fat, 0.05, o.pants || '#3A3F5C'); at3(pb, 0, 0.215, 0); pb.scale.z = 0.92; root.add(pb); }
+  // collar, buttons, pocket (front = +z)
+  if (o.collar !== false && o.hat !== 'kerudung') {
+    [-1, 1].forEach(sd => { const cl = rbox(0.1, 0.02, 0.07, shade(o.pattern ? (o.pat2 || '#ffffff') : (o.shirt || '#1F5FBF'), 0.95), { ol: 0.006 }); at3(cl, sd * 0.055, 0.5, 0.115, 0.5, sd * 0.5, sd * 0.35); root.add(cl); });
+    [0.43, 0.36, 0.29].forEach(y => { const b = sph(0.011, '#F4EEDF', { cast: false }); at3(b, 0, y, 0.15 * fat + 0.004); root.add(b); });
+    const pk = box(0.06, 0.05, 0.01, shade(o.shirt || '#1F5FBF', 0.82), { cast: false }); at3(pk, -0.075, 0.4, 0.14 * fat); root.add(pk);
+  }
   // arms (pivot at shoulder)
   const arms = [-1, 1].map(sd => {
-    const A = new THREE.Group(); at3(A, sd * 0.175 * fat, 0.53, 0);
-    A.add(at3(capsule(0.048, 0.16, shirtMat, { ol }), 0, -0.1, 0));
-    const hand = sph(0.055, skin, { ol }); at3(hand, 0, -0.215, 0); A.add(hand);
-    const holder = new THREE.Group(); at3(holder, 0, -0.24, 0.02); A.add(holder);
+    const A = new THREE.Group(); at3(A, sd * 0.165 * fat, 0.5, 0);
+    A.add(at3(capsule(0.046, 0.14, shirtMat, { ol }), 0, -0.09, 0));
+    const hand = sph(0.052, skin, { ol }); at3(hand, 0, -0.2, 0); A.add(hand);
+    const holder = new THREE.Group(); at3(holder, 0, -0.225, 0.02); A.add(holder);
     A.userData.holder = holder; root.add(A); return A;
   });
-  // head
-  const head = new THREE.Group(); at3(head, 0, 0.84, 0); root.add(head);
-  const HR = 0.27;
-  head.add(sph(HR, skin, { ol: 0.016 }, 40, 28));
+  // head: big & round (≈ body width × 2), ears, nose
+  const head = new THREE.Group(); at3(head, 0, 0.86, 0); root.add(head);
+  const HR = 0.33;
+  head.add(sph(HR, skin, { ol: 0.026 }, 44, 30));
   const onHead = (obj, lat, lon, lift = 0) => {
     const d = V3(Math.cos(lat) * Math.sin(lon), Math.sin(lat), Math.cos(lat) * Math.cos(lon));
     obj.position.copy(d.clone().multiplyScalar(HR + lift));
     obj.quaternion.setFromUnitVectors(V3(0, 0, 1), d); head.add(obj); return obj;
   };
+  [-1, 1].forEach(sd => { const ear = sph(0.07, skin, { ol: 0.012 }, 16, 12); ear.scale.set(0.55, 1, 0.8); at3(ear, sd * HR * 0.98, -0.02, -0.02); head.add(ear); });
+  const nose = sph(0.032, shade(skin, 0.88), { cast: false }); nose.scale.set(1.1, 0.8, 0.8); onHead(nose, -0.12, 0, -0.008);
   const eyes = [-1, 1].map(sd => {
     const E = new THREE.Group();
-    const ball = sph(0.042, OL, { cast: false }); ball.scale.set(0.82, 1.15, 0.45); E.add(ball);
-    const hl = sph(0.012, '#ffffff', { cast: false }); at3(hl, 0.012, 0.018, 0.018); E.add(hl);
-    const shut = torus(0.03, 0.009, OL, Math.PI, { cast: false }); shut.visible = false; E.add(shut);
-    E.userData = { ball, hl, shut };
-    return onHead(E, 0.06, sd * 0.36, -0.004);
+    const white = sph(0.062, '#FFFFFF', { cast: false, ol: 0.008 }); white.scale.set(0.9, 1.05, 0.4); white.visible = false; E.add(white);
+    const ball = sph(0.054, OL, { cast: false }); ball.scale.set(0.78, 1.12, 0.45); E.add(ball);
+    const hl = sph(0.017, '#ffffff', { cast: false }); at3(hl, 0.016, 0.024, 0.022); E.add(hl);
+    const shut = torus(0.036, 0.011, OL, Math.PI, { cast: false }); shut.visible = false; E.add(shut);
+    E.userData = { ball, hl, shut, white };
+    return onHead(E, 0.07, sd * 0.34, -0.004);
   });
-  const brows = [-1, 1].map(sd => { const B = new THREE.Group(); B.add(box(0.075, 0.02, 0.02, OL, { cast: false })); return onHead(B, 0.3, sd * 0.36, 0.006); });
-  onHead(sph(0.021, '#A5653B', { cast: false }), -0.1, 0, 0.002);
-  [-1, 1].forEach(sd => { const ck = mesh(new THREE.CircleGeometry(0.04, 20), mat(PINK, { opacity: 0.8 }), { cast: false }); onHead(ck, -0.14, sd * 0.56, 0.003); });
+  const brows = [-1, 1].map(sd => { const B = new THREE.Group(); B.add(rbox(0.1, 0.028, 0.024, o.hair === 'white' || o.hair === 'grey' ? '#8E8A84' : OL, { cast: false })); return onHead(B, 0.33, sd * 0.34, 0.008); });
+  [-1, 1].forEach(sd => { const ck = mesh(new THREE.CircleGeometry(0.046, 20), mat(PINK, { opacity: 0.55 }), { cast: false }); onHead(ck, -0.16, sd * 0.55, 0.003); });
   // mouth variants
-  const mouth = new THREE.Group(); onHead(mouth, -0.36, 0, 0.002);
-  const smile = torus(0.045, 0.011, OL, Math.PI, { cast: false }); smile.rotation.z = Math.PI; mouth.add(smile);
+  const mouth = new THREE.Group(); onHead(mouth, -0.34, 0, 0.002);
+  const smile = torus(0.05, 0.012, OL, Math.PI, { cast: false }); smile.rotation.z = Math.PI; mouth.add(smile);
   const open = new THREE.Group();
-  const cav = sph(0.05, '#6B1E1E', { cast: false }); cav.scale.set(1, 0.8, 0.35); open.add(cav);
-  const tongue = sph(0.025, '#E06C6C', { cast: false }); at3(tongue, 0, -0.022, 0.008); tongue.scale.set(1.2, 0.6, 0.4); open.add(tongue);
-  open.add(at3(mesh(new THREE.TorusGeometry(0.05, 0.008, 8, 28), OL, { cast: false }), 0, 0, 0.004)).scale.set(1, 0.8, 1);
+  const cav = sph(0.055, '#5B1A1A', { cast: false }); cav.scale.set(1, 0.85, 0.35); open.add(cav);
+  const tongue = sph(0.028, '#D9605F', { cast: false }); at3(tongue, 0, -0.024, 0.008); tongue.scale.set(1.2, 0.6, 0.4); open.add(tongue);
+  open.add(at3(mesh(new THREE.TorusGeometry(0.055, 0.009, 8, 28), OL, { cast: false }), 0, 0, 0.004)).scale.set(1, 0.85, 1);
   mouth.add(open);
-  const flat = box(0.06, 0.012, 0.01, OL, { cast: false }); mouth.add(flat);
+  const flat = rbox(0.07, 0.014, 0.012, OL, { cast: false }); mouth.add(flat);
   // hair / hats
-  const hairCol = { white: '#F4F1EA', grey: '#A9A6A0', black: '#1E1A18', short: '#1E1A18' }[o.hair] || o.hairCol || '#1E1A18';
+  const hairCol = { white: '#EDEAE2', grey: '#A9A6A0', black: '#1E1A18', short: '#1E1A18' }[o.hair] || o.hairCol || '#1E1A18';
   if (o.hair && o.hair !== 'none' && o.hat !== 'kerudung') {
-    const cap = mesh(new THREE.SphereGeometry(HR * 1.045, 32, 16, 0, Math.PI * 2, 0, Math.PI * 0.4), hairCol, { ol: 0.012 });
-    cap.rotation.x = -0.32; head.add(cap);
-    if (o.hair === 'bun') head.add(at3(sph(0.1, hairCol, { ol: 0.012 }), 0, 0.17, -0.2));
-    if (o.hair === 'white' || o.hair === 'grey') [-1, 1].forEach(sd => head.add(at3(sph(0.06, hairCol, { ol: 0.01 }), sd * 0.25, 0.04, -0.04)));
+    const cap = mesh(new THREE.SphereGeometry(HR * 1.05, 36, 18, 0, Math.PI * 2, 0, Math.PI * 0.42), hairCol, { ol: 0.016 });
+    cap.rotation.x = -0.3; head.add(cap);
+    const fringe = mesh(new THREE.SphereGeometry(HR * 1.055, 30, 8, Math.PI * 0.62, Math.PI * 0.76, Math.PI * 0.2, Math.PI * 0.1), hairCol, {}); fringe.rotation.y = Math.PI; head.add(fringe);
+    [-1, 1].forEach(sd => { const sb = rbox(0.05, 0.12, 0.08, hairCol, { cast: false }); at3(sb, sd * HR * 0.93, 0.07, 0.04); head.add(sb); });
+    if (o.hair === 'bun') head.add(at3(sph(0.12, hairCol, { ol: 0.014 }), 0, 0.2, -0.24));
+    if (o.hair === 'white' || o.hair === 'grey') [-1, 1].forEach(sd => head.add(at3(sph(0.075, hairCol, { ol: 0.012 }), sd * 0.3, 0.05, -0.05)));
   }
   if (o.beard) {
-    const bd = mesh(new THREE.SphereGeometry(HR * 1.035, 32, 12, Math.PI / 2 - 0.95, 1.9, Math.PI * 0.6, Math.PI * 0.32), o.beardCol || hairCol, { ol: 0.01 });
+    const bd = mesh(new THREE.SphereGeometry(HR * 1.03, 32, 12, Math.PI / 2 - 0.8, 1.6, Math.PI * 0.7, Math.PI * 0.24), o.beardCol || hairCol, { ol: 0.012 });
     head.add(bd); mouth.position.multiplyScalar(1.04);
   }
-  if (o.mustache) [-1, 1].forEach(sd => { const m = capsule(0.014, 0.045, o.beardCol || (o.beard ? hairCol : '#1E1A18'), { cast: false }); onHead(m, -0.215, sd * 0.09, 0.01); m.rotateZ(Math.PI / 2 + sd * 0.35); });
+  if (o.mustache) [-1, 1].forEach(sd => { const m = capsule(0.016, 0.05, o.beardCol || (o.beard ? hairCol : '#1E1A18'), { cast: false }); onHead(m, -0.2, sd * 0.09, 0.012); m.rotateZ(Math.PI / 2 + sd * 0.35); });
   if (o.glasses) {
-    eyes.forEach((E, i) => { const r = torus(0.06, 0.008, OL, Math.PI * 2, { cast: false }); onHead(r, 0.06, (i ? 1 : -1) * 0.36, 0.03); });
-    onHead(box(0.07, 0.01, 0.01, OL, { cast: false }), 0.08, 0, 0.03);
+    eyes.forEach((E, i) => { const r = torus(0.072, 0.01, OL, Math.PI * 2, { cast: false }); onHead(r, 0.07, (i ? 1 : -1) * 0.34, 0.035); });
+    onHead(box(0.08, 0.012, 0.012, OL, { cast: false }), 0.09, 0, 0.035);
   }
   const hc = o.hatCol;
   if (o.hat === 'headband') {
-    const hb = torus(Math.sqrt(HR * HR - 0.12 * 0.12) + 0.012, 0.03, hc || '#EE7A1F', Math.PI * 2, { ol: 0.008 }); at3(hb, 0, 0.12, 0, Math.PI / 2, 0, 0); head.add(hb);
-    const knot = sph(0.045, hc || '#EE7A1F', { ol: 0.008 }); at3(knot, 0.06, 0.05, -0.27); head.add(knot);
-    [0.25, -0.2].forEach(a => { const tail = rbox(0.05, 0.16, 0.02, hc || '#EE7A1F', { ol: 0.006 }); at3(tail, 0.08 + a * 0.15, -0.04, -0.29, 0, 0, a); head.add(tail); });
-  } else if (o.hat === 'straw') {
-    const sm = texMat('weave', hc || '#E2C26A', '#C9A44C', [6, 1]);
-    head.add(at3(cyl(0.5, 0.52, 0.025, sm, { ol: 0.01 }, 40), 0, 0.17, 0, -0.12, 0, 0));
-    head.add(at3(cyl(0.17, 0.25, 0.17, sm, { ol: 0.01 }), 0, 0.26, -0.02, -0.12, 0, 0));
-    head.add(at3(cyl(0.252, 0.252, 0.04, '#8B3A2E'), 0, 0.205, -0.01, -0.12, 0, 0));
+    const hb = torus(Math.sqrt(HR * HR - 0.14 * 0.14) + 0.014, 0.035, hc || '#EE7A1F', Math.PI * 2, { ol: 0.01 }); at3(hb, 0, 0.14, 0, Math.PI / 2, 0, 0); head.add(hb);
+    const knot = sph(0.05, hc || '#EE7A1F', { ol: 0.01 }); at3(knot, 0.07, 0.06, -0.32); head.add(knot);
+  } else if (o.hat === 'straw' || o.hat === 'caping') {   // caping: wide conical farmer hat
+    const sm = texMat('weave', hc || '#E2C26A', '#C9A44C', [8, 2]);
+    head.add(at3(cone(0.62, 0.3, sm, { ol: 0.014 }, 40), 0, 0.33, 0));
   } else if (o.hat === 'peci') {
-    head.add(at3(cyl(0.22, 0.235, 0.15, hc || '#1A1A1E', { ol: 0.01 }), 0, 0.22, -0.03, -0.18, 0, 0));
+    head.add(at3(cyl(0.27, 0.29, 0.17, hc || '#1A1A1E', { ol: 0.014 }), 0, 0.27, -0.03, -0.16, 0, 0));
+  } else if (o.hat === 'blangkon') {
+    head.add(at3(mesh(new THREE.SphereGeometry(HR * 1.06, 32, 14, 0, Math.PI * 2, 0, Math.PI * 0.45), texMat('parang', hc || '#5A3A22', '#E8C27A'), { ol: 0.014 }), 0, 0.01, 0, -0.18, 0, 0));
+    head.add(at3(sph(0.09, hc || '#5A3A22', { ol: 0.012 }), 0, 0.02, -0.34));
   } else if (o.hat === 'cap') {
-    head.add(at3(mesh(new THREE.SphereGeometry(HR * 1.05, 32, 12, 0, Math.PI * 2, 0, Math.PI * 0.42), hc || '#2E8B57', { ol: 0.01 }), 0, 0.01, 0, -0.2, 0, 0));
-    head.add(at3(rbox(0.26, 0.025, 0.18, hc || '#2E8B57', { ol: 0.008 }), 0, 0.15, 0.26, -0.15, 0, 0));
+    head.add(at3(mesh(new THREE.SphereGeometry(HR * 1.06, 32, 12, 0, Math.PI * 2, 0, Math.PI * 0.42), hc || '#2E8B57', { ol: 0.012 }), 0, 0.01, 0, -0.2, 0, 0));
+    head.add(at3(rbox(0.3, 0.03, 0.2, hc || '#2E8B57', { ol: 0.01 }), 0, 0.18, 0.31, -0.15, 0, 0));
   } else if (o.hat === 'kerudung') {
     const kc = hc || '#E9A92B';
-    head.add(mesh(new THREE.SphereGeometry(HR * 1.07, 36, 24, Math.PI / 2 + 0.78, Math.PI * 2 - 1.56, 0, Math.PI), kc, { ol: 0.012 }));
-    head.add(mesh(new THREE.SphereGeometry(HR * 1.07, 36, 12, 0, Math.PI * 2, 0, Math.PI * 0.27), kc, { ol: 0.012 }));
-    const drape = cyl(0.2, 0.3, 0.26, kc, { ol: 0.012 }); at3(drape, 0, 0.66, -0.02); root.add(drape);
+    head.add(mesh(new THREE.SphereGeometry(HR * 1.08, 40, 26, Math.PI / 2 + 0.8, Math.PI * 2 - 1.6, 0, Math.PI), kc, { ol: 0.016 }));
+    head.add(mesh(new THREE.SphereGeometry(HR * 1.08, 40, 12, 0, Math.PI * 2, 0, Math.PI * 0.27), kc, { ol: 0.016 }));
+    const pin = sph(0.018, '#FFD84A', { cast: false }); at3(pin, 0, -HR * 0.92, HR * 0.42); head.add(pin);
+    const drape = cyl(0.21, 0.3, 0.24, kc, { ol: 0.014 }); at3(drape, 0, 0.6, -0.02); root.add(drape);
   }
-  // shadow blob under feet (soft contact)
-  const blob = mesh(new THREE.CircleGeometry(0.26 * fat, 24), mat('#000000', { basic: true, opacity: 0.18 }), { cast: false, recv: false });
+  // soft contact shadow
+  const blob = mesh(new THREE.CircleGeometry(0.28 * fat, 24), mat('#000000', { basic: true, opacity: 0.2 }), { cast: false, recv: false });
   blob.rotation.x = -Math.PI / 2; blob.position.y = 0.004; root.add(blob);
   Object.assign(C.userData, { legs, arms, head, body, eyes, brows, mouth: { smile, open, flat, g: mouth }, s, fat, seed: CHARS.length * 1.7 });
+  MATMODE = null;
   return C;
 }
 
@@ -361,7 +413,8 @@ function pose(C, t, o = {}) {
     d.ball.visible = d.hl.visible = !happyEyes && !shut;
     d.shut.visible = happyEyes || shut;
     d.shut.rotation.z = happyEyes ? 0 : Math.PI;
-    d.ball.scale.set(0.82, e === 'shock' ? 1.45 : 1.15, 0.45);
+    d.ball.scale.set(e === 'shock' ? 0.5 : 0.78, e === 'shock' ? 0.62 : 1.12, 0.45);
+    if (d.white) { d.white.visible = e === 'shock' && !shut; d.ball.position.z = d.hl.position.z = e === 'shock' ? 0.03 : 0; d.hl.position.z += 0.022; }
   });
   U.brows.forEach((B, i) => {
     const sd = i ? 1 : -1;
@@ -378,11 +431,11 @@ const hold = (C, side, obj) => { const H = C.userData.arms[side === 'L' ? 0 : 1]
 
 // ── environment builders ──────────────────────────────────────
 function ground(kind = 'rumput', size = 60) {
-  const k = { rumput: ['#56B04E', '#3E9440'], pasir: ['#ECCD92', '#D2B27C'], tanah: ['#C79A62', '#A57C4A'], lantai: ['#B88A55', '#8F6638'], lab: ['#E8EEF0', '#C9D4D8'] }[kind];
-  const m = kind === 'lantai' ? texMat('planks', k[0], k[1], [size / 2, size / 2]) : texMat('speckle', k[0], k[1], [size / 4, size / 4]);
+  const k = { rumput: ['#6F9548', '#4E7334'], pasir: ['#D9BE8C', '#B89D70'], tanah: ['#A88560', '#7E6244'], lantai: ['#A87E52', '#7E5A36'], lab: ['#E2E6E4', '#C2CBCB'], kerikil: ['#9C8E78', '#6E6252'] }[kind];
+  const m = kind === 'lantai' ? texMat('planks', k[0], k[1], [size / 2, size / 2]) : kind === 'rumput' ? texMat('rumput2', k[0], k[1], [size / 3, size / 3]) : kind === 'lab' ? texMat('speckle', k[0], k[1], [size / 4, size / 4]) : texMat('kerikil', k[0], k[1], [size / 3, size / 3]);
   return flat(size, size, m);
 }
-function path(w, len, col = '#C79A62') { return flat(w, len, texMat('speckle', col, '#A57C4A', [w, len / 2]), 0.005); }
+function path(w, len, col = '#B0916A') { return flat(w, len, texMat('kerikil', col, '#7E6244', [w / 1.5, len / 3]), 0.005); }
 // horizontal plane wrapped in a group, so at3()/place() can move it without undoing the -90° tilt
 function flat(w, d, m, y = 0) { const P = mesh(new THREE.PlaneGeometry(w, d), m, { cast: false }); P.rotation.x = -Math.PI / 2; P.position.y = y; return grp(P); }
 function tree(h = 2.2, col = '#3AA951') {
@@ -422,7 +475,8 @@ function gableRoof(w, d, h, col, over = 0.25) {
   // two slanted slabs + triangular gable ends
   const R0 = new THREE.Group(), half = d / 2 + over, slope = Math.hypot(half, h);
   const ang = Math.atan2(h, half);
-  [-1, 1].forEach(sd => { const sl = box(w + over * 2, 0.08, slope, col, { ol: 0.01 }); at3(sl, 0, h / 2, sd * half / 2, sd * ang, 0, 0); R0.add(sl); });
+  const gm = texMat('genteng', col, '#' + new THREE.Color(col).multiplyScalar(0.6).getHexString(), [Math.max(1, (w + over * 2) * 1.5), Math.max(1, slope * 1.5)]);
+  [-1, 1].forEach(sd => { const sl = box(w + over * 2, 0.08, slope, gm, { ol: 0.01 }); at3(sl, 0, h / 2, sd * half / 2, sd * ang, 0, 0); R0.add(sl); });
   const sh = new THREE.Shape(); sh.moveTo(-d / 2, 0); sh.lineTo(d / 2, 0); sh.lineTo(0, h * (d / 2) / half); sh.closePath();
   [-1, 1].forEach(sd => { const gb = mesh(new THREE.ExtrudeGeometry(sh, { depth: 0.05, bevelEnabled: false }), texMat('planks', '#9C6B3C', '#6E4A28', [2, 1])); gb.rotation.y = Math.PI / 2; gb.position.set(sd * (w / 2) - (sd > 0 ? 0.05 : 0), 0, 0); R0.add(gb); });
   return R0;
@@ -503,14 +557,22 @@ const PROP = {
 };
 
 // ── camera ────────────────────────────────────────────────────
-let SHAKE = 0;
+let SHAKE = 0, FOV0 = 50;
+// closeUp(t, C, t0, t1, {side, dist, up, push, fov}): frames a character's FACE (the big-head look of TL v3).
+//   side: angle around the face (0 = straight on, + = from the character's left), dist: metres from the head
+function closeUp(t, C, t0, t1, o = {}) {
+  C.updateMatrixWorld(true); const hp = new THREE.Vector3(); C.userData.head.getWorldPosition(hp);
+  const a = C.rotation.y + (o.side ?? 0.35), d = (o.dist ?? 1.85) * C.scale.x, up = (o.up ?? 0.05) * C.scale.x;
+  const eye = [hp.x + Math.sin(a) * d, hp.y + up, hp.z + Math.cos(a) * d], tg = [hp.x, hp.y - 0.16 * C.scale.x, hp.z];
+  shot(t, t0, t1, eye, tg, { push: o.push ?? 0.1, drift: o.drift ?? 0.04, fov: o.fov || 40 });
+}
 // shot: from eye→eye2 looking target→target2 between t0..t1 (default: slow 12% push-in + slight drift)
 function shot(t, t0, t1, eye, target, o = {}) {
   const k = ease(seg(t, t0, t1));
   const e2 = o.eye2 || eye.map((v, i) => v + (target[i] - v) * (o.push ?? 0.12) + (i === 0 ? (o.drift ?? 0.15) : 0));
   const tg2 = o.target2 || target;
   const E = lerp3(eye, e2, k), T = lerp3(target, tg2, k);
-  CAM.fov = o.fov || 54; CAM.updateProjectionMatrix();
+  CAM.fov = o.fov || FOV0; CAM.updateProjectionMatrix();
   const sh = (o.shake || 0) + SHAKE;
   CAM.position.set(E[0] + (sh ? (rnd(Math.floor(t * 30)) - 0.5) * sh : 0), E[1] + (sh ? (rnd(Math.floor(t * 30) + 9) - 0.5) * sh : 0), E[2]);
   CAM.lookAt(T[0], T[1], T[2]);
@@ -523,11 +585,11 @@ let UI = [], SEPIA = 0, NOCAP = false, CAPY = 1320;
 const ui = fn => UI.push(fn);
 function rr(x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
 function strokeText(txt, x, y, size, col, sw) {
-  g.font = `900 ${size}px ${FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.font = `800 ${size}px ${FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle';
   g.lineJoin = 'round'; g.miterLimit = 2; g.strokeStyle = OL; g.lineWidth = sw ?? size * 0.22; g.strokeText(txt, x, y);
   g.fillStyle = col; g.fillText(txt, x, y);
 }
-function fitSize(txt, size, maxW) { g.font = `900 ${size}px ${FONT}`; const w = g.measureText(txt).width; return w > maxW ? Math.floor(size * maxW / w) : size; }
+function fitSize(txt, size, maxW) { g.font = `800 ${size}px ${FONT}`; const w = g.measureText(txt).width; return w > maxW ? Math.floor(size * maxW / w) : size; }
 const SFX = [];   // audio cues collected for the mixer: {t, type}
 const cue = (t, type, gain, d) => { if (!SFX.some(c => c.type === type && Math.abs(c.t - t) < 0.05)) SFX.push({ t: +t.toFixed(3), type, gain: gain ?? 1, d }); };
 // chip: uppercase label with black frame; stamp-in at t0 (until t1)
@@ -538,10 +600,11 @@ function chip(txt, x, y, t0, o = {}) {
     const k = o.stamp ? 1 + 0.6 * (1 - easeOut(seg(t, t0, t0 + 0.18))) : back(seg(t, t0, t0 + 0.28));
     const size = fitSize(txt.toUpperCase(), o.size || 64, (o.maxW || 900) - 60);
     g.save(); g.translate(x, y); g.rotate(o.rot || 0); g.scale(k, k);
-    g.font = `900 ${size}px ${FONT}`; const w = g.measureText(txt.toUpperCase()).width + size * 0.9, h = size * 1.45;
-    rr(-w / 2 + 6, -h / 2 + 8, w, h, h * 0.28); g.fillStyle = OL; g.fill();
-    rr(-w / 2, -h / 2, w, h, h * 0.28); g.fillStyle = o.bg || '#FFD84A'; g.fill(); g.lineWidth = 7; g.strokeStyle = OL; g.stroke();
-    g.fillStyle = o.fg || OL; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt.toUpperCase(), 0, size * 0.04);
+    g.font = `800 ${size}px ${FONT}`; const w = g.measureText(txt.toUpperCase()).width + size * 0.9, h = size * 1.45;
+    g.shadowColor = 'rgba(20,12,6,.45)'; g.shadowBlur = 18; g.shadowOffsetY = 8;
+    rr(-w / 2, -h / 2, w, h, h * 0.5); g.fillStyle = o.bg || '#F6E7C8'; g.fill(); g.shadowColor = 'transparent';
+    g.lineWidth = 6; g.strokeStyle = OL; g.stroke(); rr(-w / 2 + 9, -h / 2 + 9, w - 18, h - 18, h * 0.4); g.lineWidth = 2; g.strokeStyle = 'rgba(122,74,30,.45)'; g.setLineDash([8, 7]); g.stroke(); g.setLineDash([]);
+    g.fillStyle = o.fg || '#3A2414'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt.toUpperCase(), 0, size * 0.1);
     g.restore();
   });
 }
@@ -552,9 +615,11 @@ function card(lines, x, y, t0, o = {}) {
     if (t < t0 || (o.t1 && t > o.t1)) return;
     const k = back(seg(t, t0, t0 + 0.3)), size = o.size || 52, w = o.w || 760, h = size * 1.3 * lines.length + size * 0.9;
     g.save(); g.translate(x, y); g.rotate(o.rot ?? -0.02); g.scale(k, k);
-    rr(-w / 2 + 8, -h / 2 + 10, w, h, 26); g.fillStyle = 'rgba(23,18,15,0.9)'; g.fill();
-    rr(-w / 2, -h / 2, w, h, 26); g.fillStyle = '#FFF7E6'; g.fill(); g.lineWidth = 7; g.strokeStyle = OL; g.stroke();
-    lines.forEach((L, i) => { const s2 = fitSize(L, i ? size * 0.85 : size, w - 70); g.font = `900 ${s2}px ${FONT}`; g.fillStyle = i ? '#3B2F27' : (o.titleCol || '#C7301F'); g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(L, 0, -h / 2 + size * 0.95 + i * size * 1.3); });
+    g.shadowColor = 'rgba(20,12,6,.45)'; g.shadowBlur = 22; g.shadowOffsetY = 10;
+    rr(-w / 2, -h / 2, w, h, 34); g.fillStyle = '#FFF8EA'; g.fill(); g.shadowColor = 'transparent'; g.lineWidth = 6; g.strokeStyle = OL; g.stroke();
+    // speech-bubble tail
+    g.beginPath(); g.moveTo(-40, h / 2 - 3); g.lineTo(-70, h / 2 + 46); g.lineTo(10, h / 2 - 3); g.closePath(); g.fillStyle = '#FFF8EA'; g.fill(); g.stroke(); g.fillRect(-44, h / 2 - 9, 58, 8);
+    lines.forEach((L, i) => { const s2 = fitSize(L, i ? size * 0.85 : size, w - 70); g.font = `800 ${s2}px ${FONT}`; g.fillStyle = i ? '#3B2F27' : (o.titleCol || '#C7301F'); g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(L, 0, -h / 2 + size * 0.95 + i * size * 1.3); });
     g.restore();
   });
 }
@@ -565,9 +630,9 @@ function bigWord(txt, t0, t1, o = {}) {
     if (t < t0 || t > t1) return;
     const k = 1 + 0.5 * (1 - easeOut(seg(t, t0, t0 + 0.2))), size = fitSize(txt, o.size || 190, 980);
     g.save(); g.translate(540 + (o.shake ? Math.sin(t * 60) * 6 : 0), o.y || 760); g.rotate(o.rot ?? -0.04); g.scale(k, k);
-    strokeText(txt, 0, 0, size, o.col || '#FFDD33', 30); g.restore();
+    g.shadowColor = 'rgba(20,12,6,.55)'; g.shadowBlur = 24; g.shadowOffsetY = 12; strokeText(txt, 0, 0, size, o.col || '#FFC23C', 26); g.shadowColor = 'transparent'; g.restore();
   });
-  if (!bigWord.spans) bigWord.spans = []; bigWord.spans.push([t0, t1]);
+  if (!bigWord.spans) bigWord.spans = []; if (!bigWord.spans.some(([a]) => a === t0)) bigWord.spans.push([t0, t1]);
 }
 // arrow pointing at a screen position
 function arrow(x, y, ang, t0, t1, col = '#FFD84A') {
@@ -598,9 +663,10 @@ function drawCaption(t) {
   if (!c || t > c.e + 0.35) return;
   const nxt = CAPS[CAPS.indexOf(c) + 1]; if (nxt && t >= nxt.s - 0.04) c = nxt;
   const k = 0.72 + 0.28 * easeOut(seg(t, c.s - 0.04, c.s + 0.08));
-  const txt = c.txt.replace(/[.,!?…:;]+$/, '').toUpperCase(), size = fitSize(txt, 92, 950);
-  const key = c.words.some(w => KEYWORDS.has(norm(w.w))) || /\d/.test(txt);
-  g.save(); g.translate(540, CAPY); g.scale(k, k); strokeText(txt, 0, 0, size, key ? '#FFDD33' : '#FFFFFF', 20); g.restore();
+  const txt = c.txt.replace(/[.,!?…:;]+$/, ''), key = c.words.some(w => KEYWORDS.has(norm(w.w))) || /\d/.test(txt), size = fitSize(txt, key ? 92 : 82, 900);
+  g.save(); g.translate(540, CAPY); g.scale(k, k);
+  if (key) { g.font = `800 ${size}px ${FONT}`; const w = g.measureText(txt).width; g.beginPath(); g.moveTo(-w / 2 - 6, size * 0.5); g.quadraticCurveTo(0, size * 0.62, w / 2 + 10, size * 0.44); g.lineCap = 'round'; g.lineWidth = 12; g.strokeStyle = '#C8552E'; g.stroke(); }
+  g.shadowColor = 'rgba(15,8,4,.6)'; g.shadowBlur = 14; g.shadowOffsetY = 6; strokeText(txt, 0, 0, size, key ? '#FFC23C' : '#FFFFFF', 15); g.restore();
 }
 
 // ── frame ─────────────────────────────────────────────────────
@@ -612,13 +678,25 @@ function renderFrame(t) {
   sky('desa'); mood('siang');
   scene(t);
   SCN.traverse(o => { if (o.userData && o.userData.update && isShown(o)) o.userData.update(t); });
+  CAM.position.x += Math.sin(t * 0.8) * 0.006; CAM.position.y += Math.sin(t * 1.1 + 2) * 0.005;   // breathing hand-held camera
   R.render(SCN, CAM);
   g.setTransform(1, 0, 0, 1, 0, 0);
-  g.filter = SEPIA ? `sepia(${SEPIA}) contrast(1.05)` : 'none';
+  g.filter = SEPIA ? `sepia(${SEPIA}) contrast(1.05)` : 'saturate(0.9) contrast(1.07) brightness(1.02)';
   g.drawImage(glc, 0, 0); g.filter = 'none';
+  grade(t);
   if (SEPIA) { for (let i = 0; i < 60; i++) { const k = Math.floor(t * 24); g.fillStyle = `rgba(70,45,20,${0.22 * rnd(i + k * 7)})`; g.fillRect(rnd(i * 3 + k) * W, rnd(i * 5 + k * 3) * H, 3, 3); } }
   UI.forEach(f => f(t));
   drawCaption(t);
+}
+// TL v3 look: warm golden light leak from the top, deep vignette, fine film grain
+const TLGRAIN = (() => { const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d'), d = x.createImageData(256, 256);
+  for (let i = 0; i < d.data.length; i += 4) { const v = rnd(i * 0.29) * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 26; } x.putImageData(d, 0, 0); return c; })();
+function grade(t) {
+  g.save();
+  g.globalCompositeOperation = 'soft-light'; const lk = g.createLinearGradient(0, 0, 0, H); lk.addColorStop(0, 'rgba(255,190,110,.45)'); lk.addColorStop(0.5, 'rgba(255,220,170,0)'); lk.addColorStop(1, 'rgba(70,40,90,.35)'); g.fillStyle = lk; g.fillRect(0, 0, W, H);
+  g.globalCompositeOperation = 'source-over'; const vg = g.createRadialGradient(540, 900, 480, 540, 960, 1200); vg.addColorStop(0, 'rgba(20,10,4,0)'); vg.addColorStop(1, 'rgba(20,10,4,.42)'); g.fillStyle = vg; g.fillRect(0, 0, W, H);
+  const f = Math.floor(t * 24); g.globalCompositeOperation = 'overlay'; g.fillStyle = g.createPattern(TLGRAIN, 'repeat'); g.translate(rnd(f) * 256, rnd(f + 3) * 256); g.fillRect(-256, -256, W + 512, H + 512);
+  g.restore();
 }
 function isShown(o) { for (let p = o; p; p = p.parent) if (!p.visible) return false; return true; }
 // for the audio mixer: whooshes on every cut + cues from overlays across the whole video

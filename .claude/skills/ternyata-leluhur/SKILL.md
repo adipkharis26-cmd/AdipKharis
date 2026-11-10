@@ -1,15 +1,15 @@
 ---
 name: ternyata-leluhur
-description: Gaya terkunci channel "Ternyata Leluhur": cerita kearifan lokal Indonesia berbasis sains, berupa animasi diorama 3D cerah (three.js) 1080×1920 dengan tokoh chibi berkepala bulat dan bergaris tepi hitam, caption kata per kata Montserrat 900, VO "DK - Documentary". Pakai skill ini setiap kali membuat ide judul, naskah, VO, atau video MP4 untuk Ternyata Leluhur, termasuk saat dijalankan oleh jadwal otomatis Kantor Konten.
+description: Gaya terkunci channel "Ternyata Leluhur": cerita kearifan lokal Indonesia berbasis sains, berupa animasi 3D sinematik bertekstur (three.js) 1080×1920 dengan tokoh cel-shaded berkepala besar bergaris tinta, baju motif Nusantara, close-up wajah, caption kata per kata Baloo 2, VO "DK - Documentary". Pakai skill ini setiap kali membuat ide judul, naskah, VO, atau video MP4 untuk Ternyata Leluhur, termasuk saat dijalankan oleh jadwal otomatis Kantor Konten.
 ---
 
 # Ternyata Leluhur: gaya terkunci
 
-> **STATUS: TERKUNCI** (versi 10 Nov 2026, disetujui owner). Gaya, alur, durasi, suara, dan mesin di skill ini hanya boleh diubah atas perintah langsung owner. Sesi otomatis (ide harian/produksi) **dilarang mengubah file skill ini**.
+> **STATUS: TERKUNCI** (versi 10 Nov 2026, disetujui owner; visual v3 "sinematik" 10 Nov 2026 atas perintah owner, alur cerita tidak berubah). Gaya, alur, durasi, suara, dan mesin di skill ini hanya boleh diubah atas perintah langsung owner. Sesi otomatis (ide harian/produksi) **dilarang mengubah file skill ini**.
 
 Gaya ini **terkunci**. Karakter, palet, font, struktur naskah, dan suara tidak boleh diubah kecuali owner (Adip) memintanya langsung. Jangan mencampur gaya channel lain: stikmen Mas Kharis, "Hybrid Kinetic Pop", maskot chibi, dan suara Finn **bukan** milik channel ini.
 
-Patokan hidup: `video/src/leluhur3d.js` (mesin), `video/src/tl00.js` (sampel), dan semua `naskah/tlNN-*.md`.
+Patokan hidup: `video/src/leluhur3d.js` (mesin), `video/src/tl01.js` (contoh episode v3 dengan closeUp), `video/src/tl00.js` (sampel lama), dan semua `naskah/tlNN-*.md`.
 
 ## 1. Identitas
 - **Niche:** cerita kearifan lokal dengan penjelasan sains, tentang apa kata leluhur atau nenek moyang.
@@ -18,52 +18,65 @@ Patokan hidup: `video/src/leluhur3d.js` (mesin), `video/src/tl00.js` (sampel), d
 - **Seri yang sudah dipakai:** Leluhur Membaca Bencana (Smong) dan Makanan Awet Tanpa Kulkas (Rendang). **Seri aktif:** `config.channels.ternyata-leluhur.seri_aktif`, saat ini Rumah dan Bangunan Leluhur.
 - Episode memakai prefix `tl`: `tl01`, `tl02`, dan seterusnya. `tl00` adalah sampel gaya, bukan episode.
 
-## 2. Tokoh (diorama 3D, `makeChar()`)
-- **Bentuk dasar semua tokoh:**
-  - Kepala bulat besar sawo matang `#B87A4B` dengan garis tepi hitam `#17120F`.
-  - Mata hitam oval dengan titik putih, alis balok, hidung kecil, pipi `#EF8F80`.
-  - Badan kapsul, tangan dan kaki pendek, sandal cokelat.
-- Tokoh **berganti tiap cerita** dan semuanya fiksi. Bedakan lewat aksesori dan warna:
-  - `hat`: `headband | straw | peci | kerudung | cap`
+## 2. Tokoh — visual v3 "sinematik" (sejak 10 Nov 2026, atas perintah owner)
+- **Riset acuan:** @kononkatanyaya (Shorts cerita "konon", 86 rb–3,3 jt tayangan). Yang diambil hanya **tekniknya**: close-up wajah, tekstur nyata, cahaya hangat, caption bersih. Ciri pembeda kita **wajib** dipertahankan supaya tidak dikira tiruan atau "AI slop":
+  - baju bermotif kain Nusantara (lurik, batik, kawung, tenun, sarung kotak);
+  - penutup kepala daerah (blangkon, peci, caping, kerudung);
+  - grade "cahaya emas leluhur" (bocoran cahaya hangat di atas, vignette, grain);
+  - caption Baloo 2 dengan garis kuas terakota di bawah kata kunci;
+  - label kertas bergaris jahit dan balon bicara krem.
+- **Bentuk dasar semua tokoh** (`makeChar()`, otomatis):
+  - Kepala bulat besar (radius 0,33) sawo matang `#B87A4B`, **cel-shading** (MeshToon 3 nada), garis tepi tinta tebal `#17120F`.
+  - Telinga, hidung kecil, mata oval hitam besar dengan kilau putih, alis tebal, pipi `#E58A72`.
+  - Ekspresi `shock` otomatis memakai **mata putih besar dengan pupil kecil**.
+  - Baju berkerah dengan kancing dan saku. `sarung:'#warna'` mengganti celana dengan sarung kotak.
+- Tokoh **berganti tiap cerita** dan semuanya fiksi. Bedakan lewat aksesori, motif, dan warna:
+  - `hat`: `blangkon | peci | caping | kerudung | headband | straw | cap`
   - `hair`: `white | grey | black | bun`
-  - `beard`, `mustache`, `glasses`, `fat`, `kid`
-  - `pattern`: `plaid | stripe | dots | gold`
+  - `beard`, `mustache`, `glasses`, `fat`, `kid`, `sarung`
+  - `pattern`: **`lurik | batik | kawung | parang | tenun | kotak`** (utama), `plaid | stripe | dots | gold`
+  - Orang tua/adat → lurik, kawung, blangkon, peci. Anak muda → polos, dots, cap.
 - Tokoh yang sudah dipakai (jangan dipakai ulang dengan ciri yang sama):
   - Kakek Rusli: ikat kepala oranye, baju kotak biru.
   - Si pedagang: topi jerami, kumis, baju garis kuning-merah.
   - Amak Ros: kerudung kuning, baju merah bermotif emas.
   - Uda Jamal: peci, kacamata, baju kotak hijau, gemuk.
+  - Mbah Parto (TL01): blangkon parang, baju lurik hijau, sarung cokelat, jenggot abu.
+  - Mas Dion (TL01): topi merah, kacamata, kaus kuning dots.
   - Pak Darma dan si tukang (sampel tl00).
 - **Ekspresi** (`pose(C,t,{expr})`): `smile, talk (+talk:true agar mulut ikut VO), happy, shock, angry, worried, laugh (badan berguncang), closed, flat`. Berkedip otomatis.
 - **Lengan:** `down, hips, wave, point, pointL, up, hold, carry, shrug, cheer, stir, chin, cross, reach`.
 - **Gerak:** `walk`, `run`, `jump:[t0]`, `nod`, `shake`, `look`, `tilt`, `lean`. Benda di tangan dipasang dengan `hold(C,'R',obj)`.
 - Tokoh baru **hanya** lewat `makeChar()`. Jangan memodel tokoh dengan cara lain.
 
-## 3. Visual
-- **Gaya:** animasi diorama 3D cerah (three.js r149, `video/src/vendor/three.min.js`), **bukan stikmen**. Sains dijelaskan lewat penampang, kartu, dan label.
-- **Palet** (pakai hex ini):
-  - Langit pantai `#3F9BE8`→`#CFEAF7` (`sky('pantai')`); langit desa `#4FA8EC`→`#D6EEF8` (`sky('desa')`).
-  - Pasir `#ECCD92/#D2B27C`; laut `#25AFC6`, buih `#EAFBFF`.
-  - Rumput dan bukit `#56B04E #66B84F #2F9B48 #3AA951`.
-  - Anyaman bambu `#C89A58/#A77A3E`; papan hijau `#1E5A45/#123F31`, bingkai `#7A4E27`.
-  - Kuning aksen `#FFD84A #FFE15A #FFDD33`; merah `#D5301F #C7301F`; krem kartu `#FFF7E6`; garis `#17120F`.
+## 3. Visual (v3 sinematik)
+- **Gaya:** animasi 3D low-poly bertekstur nyata (three.js r149) dengan tokoh cel-shaded, **bukan stikmen**. Sains dijelaskan lewat penampang, kartu, dan label.
+- **Palet** (tanah hangat, tidak menyala):
+  - Langit desa `#5E9CCB`→`#F3E4C6`, pantai `#4C93C9`→`#F1E3C8`, sore `#F08A5D`→`#FFD9A0`.
+  - Rumput `#6F9548/#4E7334` (tekstur helai), tanah kerikil `#A88560/#7E6244`, pasir `#D9BE8C`.
+  - Aksen emas `#FFC23C`, terakota `#C8552E`, krem label `#F6E7C8`, garis `#17120F`.
+- **Tekstur otomatis:** `ground()` memakai rumput berhelai / kerikil warna-warni, `path()` kerikil, atap `gableRoof` memakai **genteng**. Jangan memakai warna polos untuk tanah atau atap.
 - **Set dan properti** di `leluhur3d.js`:
-  - Alam dan rumah: `ground(rumput|pasir|tanah|lantai|lab)`, `path`, `tree`, `palm`, `bush`, `hill`, `cloud`, `sea` (bergelombang), `stone`, `rumahPanggung({stilt, planted, weave, gonjong})`, `gonjongRoof` (rumah gadang), `rumahBeton` (pembanding modern), `board` (papan hijau berteks).
+  - Alam dan rumah: `ground(rumput|pasir|tanah|kerikil|lantai|lab)`, `path`, `tree`, `palm`, `bush`, `hill`, `cloud`, `sea` (bergelombang), `stone`, `rumahPanggung({stilt, planted, weave, gonjong})`, `gonjongRoof` (rumah gadang), `rumahBeton` (pembanding modern), `board` (papan hijau berteks).
   - `PROP.*`: ember, ikan, kuali, sendok, tungku, api, rantang, bungkusDaun, kendi, meja, tikar, lampu, kalender, batu, palu, paku.
-  - Set baru dibuat sekali dengan `build('nama', () => grp(...))`. Properti baru ditulis di file episode memakai primitif yang sama: `box/rbox/sph/cyl/capsule/cone/torus`, warna dari palet, dan `{ol}` untuk garis tepi benda penting.
-- **Suasana:** `sky(...)` dan `mood('siang'|'sore'|'malam'|'dalam')`. Kilas balik memakai `SEPIA = 0.85`.
-- **Kamera:** `shot(t,t0,t1,eye,target,{push,drift,shake,eye2,target2})`. FOV 54° wajib. Default-nya maju perlahan 12% sambil sedikit bergeser. Guncangan untuk gempa memakai `shake`.
-- **Potongan langsung** tanpa transisi, sekitar setiap 3 detik (sekitar 30 adegan per video). Setiap potongan otomatis mendapat whoosh.
+  - Set baru dibuat sekali dengan `build('nama', () => grp(...))`. Properti baru ditulis di file episode memakai primitif yang sama, dengan tekstur (`texMat`) bila permukaannya luas.
+- **Suasana:** `sky(...)` dan `mood('siang'|'sore'|'malam'|'dalam')` (cahaya kunci hangat, bayangan tegas). Kilas balik memakai `SEPIA = 0.85`. Grade, vignette, dan grain otomatis.
+- **Kamera (wajib):**
+  - **`closeUp(t, C, t0, t1, {side, dist, up, push})`** untuk **setiap tokoh yang sedang bicara atau bereaksi** (kepala + bahu memenuhi layar). Minimal **40% durasi video** berupa close-up.
+  - `shot(...)` untuk establishing (bangunan, desa) dan demo sains. FOV default 50°.
+  - Pola potongan: lebar (tempat) → close-up (siapa bicara) → detail (benda/sains) → close-up reaksi.
+  - Guncangan gempa memakai `shake` / `SHAKE`.
+- **Potongan langsung** tanpa transisi, sekitar setiap 2–3 detik. Setiap potongan otomatis mendapat whoosh.
 
 ## 4. Teks di layar (lapisan 2D di atas 3D)
 - **Caption** otomatis:
-  - Kata per kata, kadang 2 kata pendek. Montserrat 900, maksimal 92 px, lebar maksimal 950, di tengah y=1320.
-  - Putih dengan garis hitam 20 px. Kata kunci berwarna `#FFDD33`, diatur lewat `KEYWORDS = new Set([...])`.
-  - Muncul dengan pop 72%→100%.
-- **`chip(txt,x,y,t0,{size,bg,stamp})`:** label kapital berbingkai hitam, 40–104 px, di area **y 170–440**.
-- **`card(lines,x,y,t0)`:** kartu krem dengan judul merah. **`arrow`:** penunjuk.
-- **`bigWord('SMONG!',t0,t1)`:** 190 px dengan garis 30 px. Caption mati otomatis selama kata besar tampil.
-- **Wajib:** elemen layar tidak boleh menabrak area caption (y sekitar 1230–1410). Wajah tokoh tidak boleh tertutup caption atau kartu.
+  - Kata per kata, kadang 2 kata pendek, **huruf sesuai naskah (bukan kapital semua)**. Baloo 2 ExtraBold 82 px (kata kunci 92 px), di tengah y=1320, putih bergaris tinta + bayangan lembut.
+  - Kata kunci berwarna emas `#FFC23C` dengan **garis kuas terakota** di bawahnya, diatur lewat `KEYWORDS = new Set([...])`.
+- **`chip(txt,x,y,t0,{size,bg,stamp})`:** label kertas krem membulat dengan jahitan putus-putus, di area **y 170–440** (atau di bawah caption, y ≥ 1500, saat close-up).
+- **`card(lines,x,y,t0)`:** balon bicara krem berekor (kutipan tokoh / pertanyaan). **`arrow`:** penunjuk.
+- **`bigWord('SMONG!',t0,t1)`:** emas dengan bayangan. Caption mati otomatis selama kata besar tampil.
+- **Wajib:** elemen layar tidak boleh menabrak area caption (y sekitar 1230–1410). **Wajah tokoh tidak boleh tertutup** caption, kartu, atau label: saat close-up, taruh label di atas kepala atau di bawah caption.
+- Sedikit teks: maksimal 1 label + caption di layar pada satu waktu (gaya bercerita, bukan infografis).
 
 ## 5. Audio
 - **VO:** ElevenLabs **"DK - Documentary"** (`W8aRyPTvOnlcvcu0uYX3`), Eleven v4, Stabilitas 0.5, Kesamaan 0.75, Kekuatan klon 0, Bahasa Auto, MP3 44.1 kHz.
@@ -106,7 +119,7 @@ Contoh patokan alur v2: `naskah/tl01-candi-tanpa-semen.md` + `video/src/tl01.js`
 ## 7. Pipeline produksi
 1. Naskah ditulis dulu, lalu VO: `python3 video/src/tts_elevenlabs.py tlNN` (suara DK dipilih otomatis).
 2. Video **mengikuti durasi VO**. Semua waktu memakai `at('kata', n)`, `atEnd`, `CUT[k]`, dan `beatOf(t)`. `at()` menghitung kemunculan kata dari awal VO, jadi periksa indeks `n`-nya.
-3. Buat `video/src/tlNN.html` (salin `tl00.html`, ganti nama file words/js) dan `tlNN.js` (pola `tl00.js`).
+3. Buat `video/src/tlNN.html` (salin `tl00.html`, ganti nama file words/js) dan `tlNN.js` (pola `tl01.js`: closeUp untuk tokoh bicara).
 4. Render stills di 10–12 titik (`EP=tlNN node render.js stills ../out/tlNNs t...`), gabungkan dengan hstack, lalu periksa sendiri. Perbaiki lalu ulangi.
 5. Audio: `python3 video/src/leluhur_mix.py tlNN` menghasilkan `video/vo/tlNN-mix.m4a`.
 6. Render: `cd video/src && EP=tlNN node render.js video ../out/ternyata-leluhur-tlNN.mp4 30 ../vo/tlNN-mix.m4a`. Kecepatannya sekitar 0,2–0,4 detik per frame, jadi jalankan di background.
@@ -141,7 +154,7 @@ Contoh patokan alur v2: `naskah/tl01-candi-tanpa-semen.md` + `video/src/tl01.js`
 - Jangan menyebut lama simpan, angka, atau tanggal tanpa bukti kuat. Arah peta dan posisi geografis harus dicek.
 - **Kamera:**
   - Jangan masuk ke dalam bangunan, karena akan muncul bidang besar sewarna. Jaga jarak dari dinding.
-  - FOV 54°. Cek batas 9:16 supaya papan dan dua tokoh tidak terpotong.
+  - FOV 50° (close-up 40°). Cek batas 9:16 supaya papan dan dua tokoh tidak terpotong.
 - Kartu, angka, dan tanggal harus berada **di atas** area caption. Teks tidak boleh keluar dari kartu, dan label tidak boleh menabrak papan nama.
 - **Properti dan efek:**
   - Uap dibuat kecil dan transparan. Properti di tangan tidak boleh menutupi wajah.
