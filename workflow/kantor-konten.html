@@ -205,7 +205,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   <details>
     <summary>Cara pakai</summary>
     <ol class="how">
-      <li><b>Perlu ACC</b>: pilih 1 judul, tekan ACC. Judul lain otomatis disimpan sebagai cadangan dan bisa muncul lagi di hari lain (tanda <b>↺ muncul lagi</b>). Mau judul lain sekarang? Tekan <b>🔄 Judul baru</b> di meja divisi (4 judul baru dalam ±3–5 menit).</li>
+      <li><b>Perlu ACC</b>: pilih 1 judul, tekan ACC. Judul lain otomatis disimpan sebagai cadangan dan bisa muncul lagi di hari lain (tanda <b>↺ muncul lagi</b>). Mau judul lain sekarang? Tekan <b>🔄 Judul baru</b> di meja divisi (2 judul baru dalam ±3–5 menit).</li>
       <li><b>Alur produksi</b>: setelah ACC, lihat tahapnya (naskah → cek fakta → suara → animasi → thumbnail → publish). Hasil akhir muncul di <b>Selesai</b>.</li>
       <li><b>Selesai</b>: unduh video dan thumbnail, salin teks upload. Setelah diunggah ke YouTube, tekan <b>✓ Sudah di-post</b>.</li>
       <li><b>🎨 Branding</b> di tiap meja: logo, banner, dan bio channel.</li>
@@ -911,7 +911,7 @@ function renderDesks() {
   const h = $('deskHead'); h.style.setProperty('--desk', DIVS[curDesk].warna); h.textContent = '';
   const ht = document.createElement('span'); ht.textContent = DIVS[curDesk].nama.replace(/^Divisi /, ''); const bb = document.createElement('button'); bb.className = 'btn'; bb.textContent = '🎨 Branding'; bb.onclick = () => openBrand(curDesk);
   const rf = document.createElement('button'); rf.className = 'btn acc'; const busyRf = refreshBusy(curDesk);
-  rf.textContent = busyRf ? '⏳ Mencari judul…' : '🔄 Judul baru'; rf.disabled = !!busyRf; rf.title = 'Minta 4 judul rekomendasi baru sekarang, tanpa menunggu 06:40';
+  rf.textContent = busyRf ? '⏳ Mencari judul…' : '🔄 Judul baru'; rf.disabled = !!busyRf; rf.title = 'Minta 2 judul rekomendasi baru sekarang, tanpa menunggu 06:40';
   rf.onclick = () => refreshIdeas(curDesk, rf); h.append(ht, rf, bb);
 }
 try { const f = localStorage.getItem('kk-filter'); if (f && ['usulan', 'jalan', 'selesai'].includes(f)) filter = f; } catch (e) {}
@@ -1123,7 +1123,7 @@ function refreshBusy(ch) { const pg = penggali(); return pg.status === 'kerja' &
 async function refreshIdeas(ch, b) {
   const nama = DIVS[ch].nama.replace(/^Divisi /, '');
   if (penggali().status === 'kerja') { toast('Penggali Ide sedang bekerja (' + (penggali().aktivitas || '…') + '). Tunggu sampai selesai, lalu tekan lagi.'); return; }
-  if (ideas.some(i => chOf(i) === ch && i.status === 'usulan') && !confirm(`Ganti judul ${nama} yang sekarang dengan 4 judul baru?`)) return;
+  if (ideas.some(i => chOf(i) === ch && i.status === 'usulan') && !confirm(`Ganti judul ${nama} yang sekarang dengan 2 judul baru?`)) return;
   if (b) { b.disabled = true; b.textContent = 'Memanggil Penggali Ide…'; }
   // the request lives in the database (the trigger's extra text is not always delivered to the session)
   const now = new Date().toISOString();
@@ -1132,11 +1132,11 @@ async function refreshIdeas(ch, b) {
   let ok = false;
   try {
     const mcp = window.claude && window.claude.use ? await window.claude.use('mcp') : null;
-    if (mcp) { await mcp.callTool('Claude Code Remote', 'fire_trigger', { trigger_id: IDEA_TRIGGER, text: `REFRESH channel=${ch}. Owner menekan "Judul baru" untuk ${nama}: buat 4 judul rekomendasi baru sekarang sesuai Mode REFRESH di ide-harian.md.` }); ok = true; }
+    if (mcp) { await mcp.callTool('Claude Code Remote', 'fire_trigger', { trigger_id: IDEA_TRIGGER, text: `REFRESH channel=${ch}. Owner menekan "Judul baru" untuk ${nama}: buat 2 judul rekomendasi baru sekarang sesuai Mode REFRESH di ide-harian.md.` }); ok = true; }
   } catch (e) { console.warn('refresh', e && e.message); }
   if (ok) {
     try { localStorage.setItem('kk-refresh-' + ch, String(Date.now())); } catch (e) {}
-    toast(`Penggali Ide mencari 4 judul ${nama} (±3–5 menit). Judul muncul otomatis di Perlu ACC.`);
+    toast(`Penggali Ide mencari 2 judul ${nama} (±3–5 menit). Judul muncul otomatis di Perlu ACC.`);
   } else toast('Panggilan langsung tidak tersedia di tampilan ini. Judul baru datang besok ±06:40.');
   renderDesks();
 }
