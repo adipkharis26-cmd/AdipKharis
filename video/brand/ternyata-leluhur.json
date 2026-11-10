@@ -1,12 +1,12 @@
 {
   "channel": "ternyata-leluhur",
   "nama": "Ternyata Leluhur",
-  "tagline": "Kearifan Nusantara, dijelaskan sains",
+  "tagline": "Rahasia sains di balik warisan nenek moyang",
   "jadwal": "CERITA BARU SETIAP HARI",
   "warna": {
-    "bg1": "#E9A92B",
-    "bg2": "#8A4B12",
-    "aksen": "#FFDD33"
+    "bg1": "#0F4A43",
+    "bg2": "#06201D",
+    "aksen": "#E9B949"
   },
   "pola": "batik",
   "art": {
@@ -35,43 +35,36 @@
     },
     {
       "nama": "B",
-      "jenis": "monogram",
-      "teks": "TL",
-      "stiker": "1F3DB",
-      "sub": "LELUHUR",
-      "catatan": "Monogram dengan ikon bangunan kuno; kesan edukatif dan kuat."
+      "jenis": "stupa",
+      "catatan": "Siluet stupa emas dalam cap kerajaan: identitas warisan Nusantara tanpa teks."
     },
     {
       "nama": "C",
-      "jenis": "nama",
-      "baris": [
-        "TERNYATA",
-        "LELUHUR"
-      ],
-      "stiker": "1F3DB",
-      "catatan": "Nama lengkap terbaca; bagus saat orang mencari channel."
+      "jenis": "stempel",
+      "teks": "TL",
+      "sub": "SEJAK DULU",
+      "catatan": "Cap/segel emas bergaya prasasti: elegan dan edukatif."
     }
   ],
   "banner": {
-    "artKiri": true,
+    "gaya": "museum",
     "crop": [
       40,
       440,
       720,
       720
     ],
-    "hiasan": [
-      "1F3DB",
-      "1F33E",
-      "1F3E0",
-      "1F52C",
-      "1F30F",
-      "1F4DC"
-    ],
-    "bingkai": "lingkaran"
+    "atas": "KEARIFAN NUSANTARA × SAINS",
+    "cta": "TIAP HARI 1 RAHASIA BARU"
   },
   "bio": [
     "Nenek moyang kita ternyata sudah paham sains sejak dulu. 🤯\nTernyata Leluhur membedah rumah adat, candi, dan tradisi Nusantara lewat animasi 3D singkat: apa rahasianya, dan apa kata ilmuwan?\n\n📌 Cerita baru setiap hari\n👇 Tradisi dari daerahmu mau dibahas? Tulis di komentar!",
     "Kenapa candi tanpa semen tak runtuh? Kenapa rumah panggung tahan gempa?\nJawabannya ada di sini, dalam 1,5 menit. 🏛️🔬\n\n🔔 Subscribe untuk belajar kearifan Nusantara setiap hari."
-  ]
+  ],
+  "font": {
+    "judul": "Cinzel",
+    "judulBerat": "900",
+    "isi": "Montserrat",
+    "isiBerat": "900"
+  }
 }

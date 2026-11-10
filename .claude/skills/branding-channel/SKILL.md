@@ -23,6 +23,30 @@ Kamu kreator YouTube berpengalaman. Logo dan banner adalah "kemasan" channel: or
    baris 1 = janji/hook ("Semua hal penasaran, dijawab dalam 1 menit"), baris 2 = isi channel + kata kunci pencarian,
    lalu jadwal, lalu ajakan komentar/subscribe yang spesifik. Sediakan 2 versi.
 
+## Wajib BERBEDA per divisi (permintaan owner)
+- **Font sendiri** (`font.judul`/`font.isi` di spec; file di `video/src/vendor`, dimuat di `brand.html`):
+  - Mas Kharis: Fredoka + Baloo 2 (bulat, ramah, komedi kantor).
+  - Ternyata Leluhur: Cinzel (prasasti klasik) + Montserrat.
+  - Dari 1 mnt: Bangers (komik, cepat, debat).
+  - Divisi baru pilih font lain yang cocok dengan temanya (paket `@fontsource/<nama>` via `npm pack`, salin woff2 latin + latin-ext).
+- **Susunan banner sendiri** (`banner.gaya`):
+  - `kantor`: dinding + lantai catur, papan tulis nama, sticky notes topik, stempel CTA.
+  - `museum`: hijau zamrud-emas, medali tokoh, judul emas, pita CTA, siluet stupa.
+  - `versus`: latar belah pink|biru, maskot, judul 3D, tag seri, stopwatch, CTA.
+  - Divisi baru dibuatkan gaya baru di `brandkit.js` (jangan memakai ulang susunan divisi lain).
+- **Teks CTA berbeda**, sesuai janji channel (bukan kalimat jadwal yang sama untuk semua):
+  - Mas Kharis: "1 DRAMA TIAP HARI".
+  - Ternyata Leluhur: "TIAP HARI 1 RAHASIA BARU".
+  - Dari 1 mnt: "60 DETIK, LANGSUNG PAHAM".
+- **Logo tidak harus teks.** Utamakan 1 tanda khas:
+  - kepala karakter (`kepala`);
+  - satu huruf dengan ciri karakter (`huruf` + `rambut`);
+  - ikon (`stupa`, `stopwatch`);
+  - cap (`stempel`);
+  - wajah maskot close-up (`wajah`);
+  - karakter (`karakter`).
+- Logo A Mas Kharis (karakter di lantai catur) sudah disetujui owner, jadi jangan diubah.
+
 ## Cara membuat
 1. Tulis `video/brand/<channel-id>.json`: `nama`, `tagline`, `jadwal`, `warna {bg1,bg2,aksen}`, `pola` (`catur`, `batik`, `sunburst`, atau lainnya = titik),
    `art` (`{"kharis":{"exp":"happy"}}`, `{"frame":{"ep":"xx01","t":9.5}}` untuk frame bersih episode, `{"maskot":"senang"}`, atau kosong),

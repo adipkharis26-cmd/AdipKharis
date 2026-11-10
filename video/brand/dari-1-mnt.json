@@ -6,7 +6,9 @@
   "warna": {
     "bg1": "#1E6EFF",
     "bg2": "#0C1646",
-    "aksen": "#FFD60A"
+    "aksen": "#FFD60A",
+    "c1": "#FF3D71",
+    "c2": "#1E6EFF"
   },
   "pola": "sunburst",
   "art": {
@@ -28,37 +30,39 @@
     },
     {
       "nama": "B",
-      "jenis": "monogram",
-      "teks": "1'",
-      "stiker": "1F55B",
-      "sub": "DARI 1 MNT",
-      "catatan": "Angka 1 dan jam: langsung menjelaskan formatnya (1 menit)."
+      "jenis": "stopwatch",
+      "teks": "1",
+      "latar": "split",
+      "catatan": "Stopwatch angka 1 di latar VS: langsung menjelaskan format 1 menit & debat."
     },
     {
       "nama": "C",
-      "jenis": "nama",
-      "baris": [
-        "DARI",
-        "1 MNT"
-      ],
-      "stiker": "26A1",
-      "catatan": "Nama tegas warna pop; kuat di tema gelap YouTube."
+      "jenis": "wajah",
+      "expr": "kaget",
+      "latar": "split",
+      "size": 1000,
+      "y": 1000,
+      "catatan": "Wajah maskot kaget close-up: emosi kuat, memancing rasa penasaran."
     }
   ],
   "banner": {
-    "artKiri": true,
+    "gaya": "versus",
     "maskotExpr": "kaget",
-    "hiasan": [
-      "1F1EE-1F1E9",
-      "1F4A1",
-      "1F4C8",
-      "26A1",
-      "1F914",
-      "1F3AF"
-    ]
+    "tags": [
+      "FAKTA vs MITOS",
+      "INDONESIA vs DUNIA",
+      "BAGAIMANA JIKA?"
+    ],
+    "cta": "60 DETIK, LANGSUNG PAHAM"
   },
   "bio": [
     "Semua hal penasaran, dijawab dalam 1 menit. ⏱️\nFakta vs mitos, dilema \"bagaimana jika…\", dan Indonesia vs dunia, pakai data yang bisa dicek.\n\n📌 Video baru setiap hari\n👇 Kamu tim mana? Debat sehat di komentar!",
     "Benar atau cuma katanya? 🤔\nKami bandingkan Indonesia dengan negara lain dan bongkar mitos populer, singkat, padat, bersumber.\n\n🔔 Subscribe biar tiap hari dapat 1 fakta baru."
-  ]
+  ],
+  "font": {
+    "judul": "Bangers",
+    "judulBerat": "400",
+    "isi": "Bangers",
+    "isiBerat": "400"
+  }
 }

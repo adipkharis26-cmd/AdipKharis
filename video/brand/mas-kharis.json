@@ -1,7 +1,7 @@
 {
   "channel": "mas-kharis",
   "nama": "Mas Kharis",
-  "tagline": "Drama kantor yang relate banget",
+  "tagline": "Drama kantor yang kamu banget",
   "jadwal": "SHORTS BARU SETIAP HARI",
   "warna": {
     "bg1": "#2AA6B0",
@@ -28,42 +28,52 @@
     },
     {
       "nama": "B",
-      "jenis": "monogram",
-      "teks": "MK",
-      "stiker": "1F4BC",
-      "sub": "MAS KHARIS",
-      "catatan": "Monogram kuning tegas; cocok bila channel ingin terlihat lebih 'brand'."
+      "jenis": "kepala",
+      "latar": "solid",
+      "warnaLatar": "#F2CC45",
+      "crop": [
+        110,
+        320,
+        860,
+        980
+      ],
+      "catatan": "Ikon kepala satu helai rambut: paling ringkas, jelas di ukuran sangat kecil."
     },
     {
       "nama": "C",
-      "jenis": "nama",
-      "baris": [
-        "MAS",
-        "KHARIS"
-      ],
-      "stiker": "1F4BC",
-      "catatan": "Nama langsung terbaca; bagus untuk pencarian, kurang kuat di ukuran sangat kecil."
+      "jenis": "huruf",
+      "teks": "K",
+      "rambut": true,
+      "catatan": "Huruf K dengan rambut khas Kharis: kesan brand, tetap ada ciri karakternya."
     }
   ],
   "banner": {
-    "artKiri": true,
+    "gaya": "kantor",
     "crop": [
-      150,
-      280,
-      780,
-      1050
+      100,
+      330,
+      880,
+      1000
     ],
-    "hiasan": [
-      "1F4BC",
-      "2615",
-      "1F4C8",
-      "1F4BB",
-      "1F4C5",
-      "1F4A1"
+    "catatan": [
+      "Gajian",
+      "Lembur",
+      "Bos",
+      "Resign?"
+    ],
+    "cta": [
+      "1 DRAMA",
+      "TIAP HARI"
     ]
   },
   "bio": [
     "Cerita kantor yang bikin kamu mikir: \"kok aku banget?\" 😅\nMas Kharis bahas gajian, lembur, bos, rekan kerja, dan cara bertahan di dunia kerja, dalam 1 menit.\n\n📌 Shorts baru setiap hari\n👇 Ceritain pengalaman kantormu di komentar, siapa tahu jadi episode berikutnya!",
     "Animasi 1 menit tentang hidup karyawan Indonesia: dari tanggal tua sampai resign.\nTonton, ketawa, terus share ke teman kantor yang paling relate. 😆\n\n🔔 Subscribe biar nggak ketinggalan episode baru tiap hari."
-  ]
+  ],
+  "font": {
+    "judul": "Fredoka",
+    "judulBerat": "700",
+    "isi": "Baloo 2",
+    "isiBerat": "800"
+  }
 }
