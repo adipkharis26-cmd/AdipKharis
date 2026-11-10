@@ -611,6 +611,7 @@ function queuedFor(id) {
   const role = baseRole(id), job = role === 'animator' ? pick(['vo-acc']) : role === 'penulis' ? pick(['acc']) : role === 'suara' ? pick(['vo-ulang']) : null;
   if (!job) return null;
   const kick = Date.parse(job.dipanggilAt || '');
+  if (job.mulaiSekarang && kick) return `Memulai ${ep(job)} sekarang…`;
   if (kick) { const go = kick + 5 * 60000; return Date.now() < go ? `Siap-siap: ${ep(job)} · mulai ${hhmm(go)}` : `Mulai ${ep(job)} sebentar lagi…`; }
   return `Antre: ${ep(job)} · mulai ${nextRunWIB()}`;
 }
@@ -977,6 +978,10 @@ function card(i) {
     inp.onchange = () => inp.files[0] && uploadVo(i, inp.files[0]);
     const u = btn('Unggah VO (mp4/audio)', 'acc', () => inp.click()); u.disabled = !assets;
     act.append(u, inp);
+  } else if (['acc', 'vo-acc', 'vo-ulang'].includes(i.status)) {
+    const busy = i.kunci && Date.parse(i.kunci.sampai || '') > Date.now();
+    const b = btn(busy ? 'Sedang dikerjakan…' : '▶ Mulai sekarang', 'acc', () => startNow(i, b)); if (busy) b.disabled = true;
+    act.append(b);
   } else if (i.status === 'gagal') {
     act.append(btn('Coba lagi', 'acc', () => setStatus(i, 'acc')));
   }
@@ -1063,7 +1068,7 @@ function renderList(state) {
 }
 document.querySelectorAll('.tab').forEach(b => b.onclick = () => { filter = b.dataset.f; try { localStorage.setItem('kk-filter', filter); } catch (e) {} renderList(); });
 
-const MSG = { acc: 'Judul di-ACC. Tim siap-siap, mulai ±5 menit.', 'vo-acc': 'Suara di-ACC. Animator siap-siap, mulai ±5 menit.', 'vo-ulang': 'VO diulang sesuai catatan. Mulai ±5 menit.', tolak: 'Ditolak' };
+const MSG = { acc: 'Judul di-ACC. Tim sudah dipanggil (±5 menit). Mau lebih cepat? Tekan ▶ Mulai sekarang di tab Diproduksi.', 'vo-acc': 'Suara di-ACC. Animator dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', 'vo-ulang': 'VO diulang sesuai catatan. Tim dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', tolak: 'Ditolak' };
 const MSG_LATE = { acc: 'Judul di-ACC. Tim mulai di jadwal berikutnya (menit ke-13).', 'vo-acc': 'Suara di-ACC. Animator mulai di jadwal berikutnya (menit ke-13).', 'vo-ulang': 'VO akan diulang di jadwal berikutnya (menit ke-13).' };
 // start the production run right away (scheduled task "Kantor Konten: produksi"), through the
 // viewer's Claude Code Remote connector; without it the hourly :13 schedule still picks the job up
@@ -1076,9 +1081,16 @@ async function kickTeam(i, status) {
     return true;
   } catch (e) { console.warn('fire_trigger', e && e.code, e && e.message); return false; }
 }
+// owner skips the wait: call the production team right now (a running session holding the lock just ignores it)
+async function startNow(i, b) {
+  if (b) { b.disabled = true; b.textContent = 'Memanggil tim…'; }
+  const ok = await kickTeam(i, i.status + ' (MULAI SEKARANG)');
+  if (ok) { try { await db.collection('ideas').doc(i.id).update({ dipanggilAt: new Date().toISOString(), mulaiSekarang: true }); } catch (e) {} toast('Tim dipanggil sekarang, mulai dalam hitungan detik–menit.'); }
+  else { toast('Panggilan langsung tidak tersedia di tampilan ini. Tim mulai di jadwal menit ke-13.'); if (b) { b.disabled = false; b.textContent = '▶ Mulai sekarang'; } }
+}
 async function setStatus(i, status, note, field) {
   if (!db) return;
-  const now = new Date().toISOString(), patch = { status, diubah: now };
+  const now = new Date().toISOString(), patch = { status, diubah: now, mulaiSekarang: false };
   if (status === 'acc') patch.accAt = now;
   if (status === 'vo-acc' || status === 'vo-ulang') patch.voKeputusanAt = now;
   if (typeof note === 'string' && note.trim()) patch[field || 'catatan'] = note.trim();
