@@ -205,7 +205,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   <details>
     <summary>Cara pakai</summary>
     <ol class="how">
-      <li><b>Perlu ACC</b>: pilih 1 judul, tekan ACC. Mau judul lain sekarang? Tekan <b>🔄 Judul baru</b> di meja divisi (4 judul baru dalam ±3–5 menit).</li>
+      <li><b>Perlu ACC</b>: pilih 1 judul, tekan ACC. Judul lain otomatis disimpan sebagai cadangan dan bisa muncul lagi di hari lain (tanda <b>↺ muncul lagi</b>). Mau judul lain sekarang? Tekan <b>🔄 Judul baru</b> di meja divisi (4 judul baru dalam ±3–5 menit).</li>
       <li><b>Alur produksi</b>: setelah ACC, lihat tahapnya (naskah → cek fakta → suara → animasi → thumbnail → publish). Hasil akhir muncul di <b>Selesai</b>.</li>
       <li><b>Selesai</b>: unduh video dan thumbnail, salin teks upload. Setelah diunggah ke YouTube, tekan <b>✓ Sudah di-post</b>.</li>
       <li><b>🎨 Branding</b> di tiap meja: logo, banner, dan bio channel.</li>
@@ -955,6 +955,7 @@ function card(i) {
   const inFlow = GROUP.jalan.includes(i.status);
   const p = document.createElement('span'); p.className = 'pill s-' + (inFlow && i.status !== 'gagal' ? 'vo-acc' : i.status); p.textContent = posted ? 'Sudah di-post' : inFlow ? (i.status === 'gagal' ? 'Gagal' : i.status === 'butuh-vo' ? 'Butuh VO' : 'Alur produksi') : (LABEL[i.status] || i.status); meta.append(p);
   [i.niche, fmtDate(i.tanggal)].filter(Boolean).forEach(x => { const s = document.createElement('span'); s.className = 'chip'; s.textContent = x; meta.append(s); });
+  if (i.status === 'usulan' && i.muncullagi) { const s = document.createElement('span'); s.className = 'chip'; s.textContent = '↺ muncul lagi'; s.title = 'Judul ini pernah diusulkan dan belum dipilih'; meta.append(s); }
   const h = document.createElement('h3'); h.textContent = i.judul || '(tanpa judul)';
   c.append(meta, h);
   if (posted) { const pb = document.createElement('div'); pb.className = 'postbadge'; pb.textContent = '✓ SUDAH DI-POST' + (i.dipostingAt ? ' · ' + new Date(i.dipostingAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : ''); c.append(pb); }
@@ -1167,10 +1168,10 @@ async function setStatus(i, status, note, field) {
   if (patch.catatanVo && patch.catatanVo.__delete__) delete patch.catatanVo;
   try { await db.collection('ideas').doc(i.id).update(patch); }
   catch (e) { toast('Gagal menyimpan: ' + (e.message || e.code)); return; }
-  // one title per division: the other proposals of that division quietly go to the archive (not "ditolak")
+  // one title per division: the other proposals of that division go to the archive — a reserve the idea scout may propose again later
   if (status === 'acc') {
     const others = ideas.filter(x => x.id !== i.id && x.status === 'usulan' && chOf(x) === chOf(i));
-    for (const x of others) { try { await db.collection('ideas').doc(x.id).update({ status: 'arsip', arsipKarena: 'Judul lain di-ACC: ' + (i.judul || ''), diubah: now }); } catch (e) {} }
+    for (const x of others) { try { await db.collection('ideas').doc(x.id).update({ status: 'arsip', arsipKarena: 'Judul lain di-ACC: ' + (i.judul || '') + ' (cadangan, boleh muncul lagi)', diubah: now }); } catch (e) {} }
   }
   if (['acc', 'vo-acc', 'vo-ulang'].includes(status)) {
     const ok = await kickTeam(i, status);
