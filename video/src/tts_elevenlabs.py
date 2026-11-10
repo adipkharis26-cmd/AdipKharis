@@ -143,6 +143,20 @@ def smooth_pauses(wav, max_pause, xf=0.06, lead=0.04, tail=0.35):
     return remap
 
 
+def para_of_words(chars):
+    """Paragraph index of every word (words split on whitespace, like words_from_alignment)."""
+    out, sec, nl, in_word = [], 0, 0, False
+    for c in chars:
+        if c.isspace():
+            if c == '\n': nl += 1
+            in_word = False
+            continue
+        if not in_word:
+            if nl >= 2: sec += 1
+            nl = 0; out.append(sec); in_word = True
+    return out
+
+
 def words_from_alignment(al, offset, sec, remap=lambda t: t):
     chars, st, en = al['characters'], al['character_start_times_seconds'], al['character_end_times_seconds']
     out, cur, s0, e0 = [], '', None, None
@@ -193,10 +207,16 @@ def main():
         subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', mp3, '-ar', '44100', '-ac', '1', wav], check=True)
         remap = smooth_pauses(wav, float(CFG.get('max_pause_s', 0.6)))
         ws = words_from_alignment(res['alignment'], 0.0, 0, remap)
-        counts = [len(t.split()) for t in secs]; k = 0
-        for i, c in enumerate(counts):
-            for w in ws[k:k + c]: w['sec'] = i
-            k += c
+        # section of each word = number of paragraph breaks ("\n\n") before it in the aligned characters
+        for w, sec in zip(ws, para_of_words(res['alignment']['characters'])): w['sec'] = min(sec, len(secs) - 1)
+        found = sorted({w['sec'] for w in ws})
+        if found != list(range(len(secs))):   # safety net: fall back to word counts
+            print(f'peringatan: paragraf terdeteksi {found}, pakai pembagian jumlah kata')
+            counts = [len(t.split()) for t in secs]; k = 0
+            for i, c in enumerate(counts):
+                for w in ws[k:k + c]: w['sec'] = i
+                k += c
+            for w in ws[k:]: w['sec'] = len(secs) - 1
         words = ws; parts = [wav]
         secs = []   # done
     for i, text in enumerate(secs):

@@ -1,0 +1,14 @@
+{
+  "ep": "oh00",
+  "catatan": "Contoh pola thumbnail Ohhiyaa! (oh00 bukan episode). Jangan tampilkan angka jawaban.",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "OHI kaget + pertanyaan yang belum terjawab; angka disembunyikan supaya penonton klik untuk tahu.",
+      "latar": { "frame": 4.5, "zoom": 1.1, "fokus": [540, 1100] },
+      "y": 360,
+      "teks": [ { "t": "BERAPA GALON", "warna": "putih" }, { "t": "SETINGGI MONAS?", "kotak": "pink" } ],
+      "stiker": [ { "e": "2753", "x": 880, "y": 1250, "s": 200, "rot": 0.15 } ]
+    }
+  ]
+}

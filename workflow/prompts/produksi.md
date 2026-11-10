@@ -40,11 +40,11 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
 1. **Penulis Naskah.**
    - Nomor episode = 1 + angka terbesar dari file `naskah/<prefix>NN-*` dan field `episode` di `ideas` **channel yang sama**. Dua digit, misalnya `ep05` atau `tl01`. Di bawah ini `epNN` berarti `<prefix>NN`.
    - Tulis `naskah/epNN-slug.md` persis dengan format skill channel itu. Penutupnya **harus unik** (lihat aturan di skill).
-   - Tulis `video/vo/epNN.txt`: satu paragraf per bagian/beat, 7 untuk Mas Kharis dan 7 untuk Ternyata Leluhur.
+   - Tulis `video/vo/epNN.txt`: satu paragraf per bagian/beat sesuai skill channel: Mas Kharis 7, Ternyata Leluhur 7, Dari 1 mnt 6, Ohhiyaa! 6.
 2. **Cek Fakta.** Verifikasi setiap klaim, pakai WebSearch bila perlu. Klaim yang tidak pasti dihapus atau dilunakkan. Jangan mengarang angka atau nama.
 3. **Pengisi Suara.**
    - Jalankan `python3 video/src/tts_elevenlabs.py epNN`. Setelan suara diambil dari `config.elevenlabs`; jangan diubah tanpa catatan owner.
-   - Durasi mengikuti skill: Mas Kharis **40–55 detik** (pangkas kalau lebih dari 58 detik), Ternyata Leluhur **65–80 detik** (pangkas kalau lebih dari 82 detik), Dari 1 mnt **60–90 detik** (di bawah 60 detik tambah isi, di atas 90 detik pangkas). Yang dipangkas kalimat naskah, bukan kecepatan suara.
+   - Durasi mengikuti skill: Mas Kharis **40–55 detik** (pangkas kalau lebih dari 58 detik), Ternyata Leluhur **65–80 detik** (pangkas kalau lebih dari 82 detik), Dari 1 mnt **60–90 detik** (di bawah 60 detik tambah isi, di atas 90 detik pangkas), Ohhiyaa! **40–55 detik** (di atas 55 detik pangkas). Yang dipangkas kalimat naskah, bukan kecepatan suara.
    - Kalau ElevenLabs gagal: set `{status:"butuh-vo", progres:"<alasan>"}`, simpan `naskahMd` dan `voText`, lalu berhenti.
 4. **Kirim untuk dicek.**
    - Jalankan `video/src/vo_preview.sh epNN "<judul>"`.

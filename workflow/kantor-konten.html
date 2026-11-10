@@ -236,7 +236,7 @@ const DIVS = {
   'ohhiyaa': { nama: 'Divisi Ohhiyaa!', warna: '#FF6FAE', ket: 'miniatur 3D mainan 40–60 detik', room: 'ohhiyaa' },
 };
 const forAg = (id, list) => AG_CH[id] ? list.filter(i => chOf(i) === AG_CH[id]) : list;
-const baseRole = id => id.replace(/^(tl|dm)-/, '');
+const baseRole = id => id.replace(/^[a-z0-9]+-(?=(penulis|suara|animator)$)/, '');   // any division prefix (tl-, dm-, oh-, …)
 let agents = AGENT_DEFAULTS.map(a => ({ ...a, status: 'santai', aktivitas: 'Menunggu tugas' }));
 let ideas = [];
 
