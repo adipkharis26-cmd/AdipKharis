@@ -10,7 +10,23 @@
       "ide_per_hari": 4,
       "prefix": "ep",
       "renderer": "canvas2d (video/src/lib.js + story.js)",
-      "id_prefix": "mk"
+      "id_prefix": "mk",
+      "thumbnail": {
+        "font": "Inter",
+        "berat": "900",
+        "ol": "#000000",
+        "warna": {
+          "putih": "#FFFFFF",
+          "kuning": "#FFD84A",
+          "merah": "#E84545",
+          "emas": "#F5B82E"
+        },
+        "aksen": "#E84545",
+        "stiker": "bayangan",
+        "maskot": false,
+        "label_bg": "#F5B82E",
+        "label_fg": "#000000"
+      }
     },
     "ternyata-leluhur": {
       "nama": "Ternyata Leluhur",
@@ -33,7 +49,23 @@
         "catatan": "Setelan owner (ElevenLabs UI): DK - Documentary, Eleven v4, Stabilitas 0.5, Kesamaan 0.75, Kekuatan klon 0, Bahasa Auto, MP3 44.1kHz 128kbps."
       },
       "id_prefix": "tl",
-      "music": true
+      "music": true,
+      "thumbnail": {
+        "font": "Montserrat",
+        "berat": "900",
+        "ol": "#17120F",
+        "warna": {
+          "putih": "#FFFFFF",
+          "kuning": "#FFDD33",
+          "oranye": "#EE7A1F",
+          "merah": "#E84545"
+        },
+        "aksen": "#FFDD33",
+        "stiker": "bayangan",
+        "maskot": false,
+        "label_bg": "#FFD84A",
+        "label_fg": "#17120F"
+      }
     },
     "dari-1-mnt": {
       "nama": "Dari 1 mnt",
@@ -64,6 +96,24 @@
         "section_gap_s": 0.45,
         "max_pause_s": 0.3,
         "catatan": "Setelan owner (ElevenLabs UI): Finn - Expressive & Ads Indonesian, Eleven v4, Stabilitas 0.5, Kesamaan 0.75, Kekuatan klon 0, Bahasa Auto, MP3 44.1kHz 128kbps."
+      },
+      "thumbnail": {
+        "font": "Lilita One",
+        "berat": "",
+        "ol": "#0C1646",
+        "warna": {
+          "putih": "#FFFFFF",
+          "kuning": "#FFD60A",
+          "pink": "#FF3D71",
+          "merah": "#EF4444",
+          "cyan": "#00F5D4",
+          "mint": "#00E5A0"
+        },
+        "aksen": "#FF3D71",
+        "stiker": "putih",
+        "maskot": true,
+        "label_bg": "#FFD60A",
+        "label_fg": "#0C1646"
       }
     }
   },
@@ -79,5 +129,20 @@
     "section_gap_s": 0.7,
     "max_pause_s": 0.32,
     "catatan": "Setelan owner (ElevenLabs UI): Eleven v4, Stabilitas 0.5, Kesamaan 0.75, Kekuatan klon 0, Bahasa Auto, MP3 44.1kHz 128kbps."
+  },
+  "thumbnail_default": {
+    "font": "Montserrat",
+    "berat": "900",
+    "ol": "#111111",
+    "warna": {
+      "putih": "#FFFFFF",
+      "kuning": "#FFD60A",
+      "merah": "#EF4444"
+    },
+    "aksen": "#EF4444",
+    "stiker": "bayangan",
+    "maskot": false,
+    "label_bg": "#FFD60A",
+    "label_fg": "#111111"
   }
 }

@@ -1,0 +1,37 @@
+{
+  "ep": "ep03",
+  "catatan": "Contoh pola thumbnail Mas Kharis.",
+  "varian": [
+    {
+      "nama": "A",
+      "latar": {
+        "frame": 40,
+        "zoom": 1.25,
+        "fokus": [
+          700,
+          1050
+        ]
+      },
+      "y": 400,
+      "teks": [
+        {
+          "t": "BARU GAJIAN",
+          "warna": "putih"
+        },
+        {
+          "t": "KOK UDAH HABIS?!",
+          "kotak": "merah"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "terbang",
+          "x": 250,
+          "y": 1250,
+          "s": 230,
+          "rot": -0.15
+        }
+      ]
+    }
+  ]
+}

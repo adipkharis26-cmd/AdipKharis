@@ -1,0 +1,72 @@
+{
+  "ep": "ep04",
+  "judul": "Teman Kantor Resign, Kok Kita Ikut Galau?",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Momen teman bawa kardus + wajah Kharis bengong: situasi yang langsung dikenali pekerja kantoran.",
+      "latar": {
+        "frame": 3,
+        "zoom": 1.2,
+        "fokus": [
+          560,
+          1050
+        ]
+      },
+      "y": 320,
+      "teks": [
+        {
+          "t": "TEMAN RESIGN",
+          "warna": "putih"
+        },
+        {
+          "t": "KOK AKU GALAU?",
+          "kotak": "merah"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "sedih",
+          "x": 900,
+          "y": 1350,
+          "s": 200,
+          "rot": 0.12
+        }
+      ],
+      "ukuran": 150
+    },
+    {
+      "nama": "B",
+      "alasan": "Wajah sedih malam hari + pertanyaan dilema yang memancing jawaban di komentar.",
+      "latar": {
+        "frame": 12,
+        "zoom": 1.35,
+        "fokus": [
+          420,
+          1000
+        ]
+      },
+      "y": 380,
+      "teks": [
+        {
+          "t": "IKUT RESIGN",
+          "warna": "kuning",
+          "besar": 1.1
+        },
+        {
+          "t": "ATAU BERTAHAN?",
+          "kotak": "merah"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "mikir",
+          "x": 880,
+          "y": 1200,
+          "s": 220,
+          "rot": 0.12
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "ep": "dm01",
+  "judul": "Jam Kerja Orang Indonesia vs Jepang dan Korea, Siapa Paling Lama?",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Tiga bendera = perbandingan instan; menantang tebakan umum (Jepang) tanpa membocorkan jawaban.",
+      "latar": {
+        "bg": "sunburst",
+        "c": [
+          "#1E6EFF",
+          "#1455E1"
+        ]
+      },
+      "label": "INDONESIA vs DUNIA",
+      "y": 560,
+      "teks": [
+        {
+          "t": "BUKAN JEPANG",
+          "warna": "putih"
+        },
+        {
+          "t": "YANG PALING LEMBUR?",
+          "kotak": "pink",
+          "besar": 0.8
+        }
+      ],
+      "stiker": [
+        {
+          "flag": "ID",
+          "x": 200,
+          "y": 950,
+          "s": 230,
+          "rot": -0.12
+        },
+        {
+          "flag": "JP",
+          "x": 480,
+          "y": 990,
+          "s": 230,
+          "rot": 0.06
+        },
+        {
+          "flag": "KR",
+          "x": 760,
+          "y": 950,
+          "s": 230,
+          "rot": 0.14
+        }
+      ],
+      "maskot": {
+        "expr": "mikir",
+        "side": "L",
+        "size": 640
+      }
+    },
+    {
+      "nama": "B",
+      "alasan": "Angka besar kontras (data OECD/GGDC di video) memancing debat di komentar.",
+      "latar": {
+        "bg": "warning"
+      },
+      "label": "INDONESIA vs DUNIA",
+      "y": 640,
+      "teks": [
+        {
+          "t": "1.950 JAM",
+          "warna": "kuning",
+          "besar": 1.1
+        },
+        {
+          "t": "vs",
+          "warna": "putih",
+          "besar": 0.6
+        },
+        {
+          "t": "1.600 JAM",
+          "kotak": "merah"
+        }
+      ],
+      "stiker": [
+        {
+          "flag": "ID",
+          "x": 250,
+          "y": 1000,
+          "s": 190,
+          "rot": -0.12
+        },
+        {
+          "flag": "JP",
+          "x": 520,
+          "y": 1030,
+          "s": 190,
+          "rot": 0.1
+        }
+      ],
+      "maskot": {
+        "expr": "kaget",
+        "side": "R",
+        "size": 640
+      }
+    }
+  ]
+}

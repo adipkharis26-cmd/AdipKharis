@@ -21,7 +21,7 @@ Halaman Kantor Konten menampilkan satu lantai isometrik dengan beberapa ruangan.
 
 - **Ruang Rapat**: agen yang menunggu keputusan owner duduk di sini dengan tanda **!** merah. Penggali Ide membawa judul baru, Pengisi Suara membawa VO untuk dicek, Animator membawa render yang gagal. Klik agennya untuk membuka panel ACC.
 - **Divisi Mas Kharis**: meja tiap agen dan booth VO. Agen yang statusnya `kerja` duduk di mejanya dengan bubble aktivitas.
-- **Studio Publish**: meja Publisher. Layarnya menampilkan video terakhir yang siap tayang.
+- **Studio Publish**: meja Publisher dan Desainer Thumbnail. Layarnya menampilkan video terakhir yang siap tayang.
 - **Lounge**: tempat agen yang sedang santai.
 
 Saat menambah channel baru, tambahkan juga ruangan divisinya di `ROOMS`/`DESKS` pada `workflow/kantor-konten.html`.
@@ -35,6 +35,7 @@ Saat menambah channel baru, tambahkan juga ruangan divisinya di `ROOMS`/`DESKS` 
 | `cekfakta` | Cek Fakta | Pastikan setiap klaim fakta punya sumber nyata. Klaim tanpa sumber dihapus atau dilunakkan | naskah terkoreksi |
 | `suara` | Pengisi Suara | VO ElevenLabs dengan timestamp kata | `video/vo/epNN.mp3/.json/-words.js` |
 | `animator` | Animator | Kode scene episode, cek stills, render | `video/src/epNN.{html,js}`, MP4 |
+| `thumbnail` | Desainer Thumbnail | Thumbnail High CTA 2 varian (skill `thumbnail-high-cta`, `node video/src/thumbnail.js epNN`) | kartu `selesai` |
 | `publisher` | Publisher | Unggah MP4 ke kartu, siapkan teks upload, commit dan push sumber | kartu `selesai` |
 
 Setiap agen memperbarui dokumen `agents/<id>` saat mulai (`status: "kerja"`, `aktivitas: "…"`) dan saat selesai (`status: "santai"`), supaya kantor di halaman ikut bergerak.
@@ -89,4 +90,4 @@ Dua tugas terjadwal menjalankan sesi Claude baru di environment `adipkharis` (ya
 | Ternyata Leluhur | `tl` / `tl` | `.claude/skills/ternyata-leluhur` (diorama 3D, 7 beat) | DK - Documentary | `video/src/leluhur3d.js` (three.js) + `leluhur_mix.py` (musik/SFX) | `tl-penulis`, `tl-suara`, `tl-animator` |
 | Dari 1 mnt | `dm` / `dm` | `.claude/skills/dari-1-mnt` (Hybrid Kinetic Pop 2D, 60–90 dtk) | Finn | `video/src/kinetic.js` + `leluhur_mix.py` (SFX, tanpa musik) | `dm-penulis`, `dm-suara`, `dm-animator` |
 
-Agen bersama: `penggali` (ide semua divisi), `cekfakta`, dan `publisher`. Suara dipilih otomatis oleh `tts_elevenlabs.py` dari prefix episode (`config.channels.<id>.elevenlabs`). Divisi baru ditambahkan dengan: skill gaya → entri di `config.channels` → agen + ruang di `kantor-konten.html`.
+Agen bersama: `penggali` (ide semua divisi), `cekfakta`, `thumbnail`, dan `publisher`. Suara dipilih otomatis oleh `tts_elevenlabs.py` dari prefix episode (`config.channels.<id>.elevenlabs`). Divisi baru ditambahkan dengan: skill gaya → entri di `config.channels` (termasuk `thumbnail` untuk gaya thumbnail-nya) → agen + ruang di `kantor-konten.html`.

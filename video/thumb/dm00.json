@@ -1,0 +1,55 @@
+{
+  "ep": "dm00",
+  "catatan": "Contoh pola thumbnail Dari 1 mnt (dm00 bukan episode).",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Kontras angka ekstrem + dua bendera = perbandingan instan, tanya memancing komentar.",
+      "latar": {
+        "bg": "sunburst",
+        "c": [
+          "#1E6EFF",
+          "#1455E1"
+        ]
+      },
+      "label": "INDONESIA vs DUNIA",
+      "y": 640,
+      "teks": [
+        {
+          "t": "Rp500 RIBU",
+          "warna": "kuning",
+          "besar": 1.15
+        },
+        {
+          "t": "VS",
+          "warna": "putih",
+          "besar": 0.7
+        },
+        {
+          "t": "Rp30 RIBU",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "flag": "CH",
+          "x": 210,
+          "y": 1060,
+          "s": 250,
+          "rot": -0.15
+        },
+        {
+          "flag": "ID",
+          "x": 480,
+          "y": 1090,
+          "s": 250,
+          "rot": 0.12
+        }
+      ],
+      "maskot": {
+        "expr": "kaget",
+        "side": "R"
+      }
+    }
+  ]
+}

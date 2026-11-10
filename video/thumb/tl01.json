@@ -1,0 +1,93 @@
+{
+  "ep": "tl01",
+  "judul": "Kenapa Candi Sebesar Ini Tidak Pakai Semen?",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Wajah tokoh dekat batu candi + pertanyaan yang belum terjawab; teks 3 kata beda dari judul.",
+      "latar": {
+        "frame": 9.5,
+        "zoom": 1.15,
+        "fokus": [
+          470,
+          835
+        ]
+      },
+      "posisi": "atas",
+      "y": 360,
+      "teks": [
+        {
+          "t": "TANPA SEMEN",
+          "warna": "putih"
+        },
+        {
+          "t": "KOK KUAT?",
+          "kotak": "merah",
+          "besar": 1.1
+        }
+      ],
+      "stiker": [
+        {
+          "e": "mikir",
+          "x": 880,
+          "y": 1180,
+          "s": 230,
+          "rot": 0.15
+        }
+      ],
+      "panah": [
+        {
+          "dari": [
+            880,
+            780
+          ],
+          "ke": [
+            690,
+            1120
+          ],
+          "warna": "kuning"
+        }
+      ],
+      "ukuran": 150
+    },
+    {
+      "nama": "B",
+      "alasan": "Candi utuh + angka umur = rasa penasaran; cocok untuk penonton yang suka sejarah.",
+      "latar": {
+        "frame": 1.5,
+        "zoom": 1.5,
+        "fokus": [
+          300,
+          1050
+        ]
+      },
+      "posisi": "atas",
+      "y": 520,
+      "teks": [
+        {
+          "t": "1.200 TAHUN",
+          "warna": "kuning",
+          "besar": 1.1
+        },
+        {
+          "t": "TANPA SEMEN",
+          "warna": "putih"
+        },
+        {
+          "t": "NGGAK RUNTUH?!",
+          "kotak": "merah",
+          "besar": 0.85
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1F92F",
+          "x": 860,
+          "y": 1300,
+          "s": 240,
+          "rot": -0.12
+        }
+      ]
+    }
+  ]
+}

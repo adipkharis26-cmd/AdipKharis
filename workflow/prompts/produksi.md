@@ -24,7 +24,7 @@ Animator **tidak boleh** jalan sebelum owner menekan "ACC suara" (status `vo-acc
   - `ternyata-leluhur`: prefix `tl`, diorama 3D three.js, 7 beat, suara DK - Documentary, plus musik/SFX.
   - `dari-1-mnt`: prefix `dm`, Hybrid Kinetic Pop 2D (`kinetic.js`), suara Finn, SFX tanpa musik. **Durasi wajib 60–90 detik.**
   - Prefix ada di `config.channels.<id>.prefix`. `tts_elevenlabs.py` memilih suara dari prefix itu.
-- Agen per divisi: Mas Kharis memakai `penulis`, `suara`, `animator`; Ternyata Leluhur memakai `tl-penulis`, `tl-suara`, `tl-animator`; Dari 1 mnt memakai `dm-penulis`, `dm-suara`, `dm-animator`. `cekfakta` dan `publisher` dipakai bersama.
+- Agen per divisi: Mas Kharis memakai `penulis`, `suara`, `animator`; Ternyata Leluhur memakai `tl-penulis`, `tl-suara`, `tl-animator`; Dari 1 mnt memakai `dm-penulis`, `dm-suara`, `dm-animator`. `cekfakta`, `thumbnail` (Desainer Thumbnail), dan `publisher` dipakai bersama.
 - **Wajib**: setiap pindah langkah, update `agents/<id>` agen yang sedang bekerja menjadi `{status:"kerja", aktivitas:"<apa yang dikerjakan, mis. 'Animasi EP04'>", diubah:<ISO>}`. Saat langkahnya selesai, ubah ke `{status:"santai", aktivitas:"<hasil singkat>"}`. Update juga `progres` di ide. Owner memantau ini di peta kantor, jadi jangan dilewati. Selalu pakai `if_version` (baca dulu dengan `get`).
 
 **Penyimpanan antarsesi.** Push git dari sesi terjadwal bisa gagal. Karena itu Kantor Konten adalah sumber kebenaran untuk berkas episode:
@@ -68,11 +68,17 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
    - Render stills di 8–12 titik penting, gabungkan dengan ffmpeg hstack, lalu periksa sendiri (Read gambar). Pastikan wajah tidak tertutup teks, karakter besar, warna tidak monoton, hook atau label terbaca, dan kamera tidak masuk ke dinding. Perbaiki lalu ulangi maksimal 2 kali.
    - Render: `cd video/src && EP=epNN node render.js video ../out/<channel>-epNN.mp4 30 <audio>`. Render 3D lama, jadi jalankan di background dan tunggu sampai selesai.
    - Kalau ada error yang tidak bisa diperbaiki: set `{status:"gagal", progres:"<error singkat>"}` dan lepas kunci.
-2. **Publisher.**
+2. **Thumbnail High CTA** (agen `thumbnail`, semua divisi).
+   - Muat skill `.claude/skills/thumbnail-high-cta/SKILL.md`. Berperan sebagai kreator YouTube berpengalaman yang paham algoritma (CTR + durasi tonton).
+   - Mulai dari `thumbIde` di ide (kalau ada) dan `catatan` owner. Pilih frame terkuat dari stills, tulis `video/thumb/epNN.json` dengan **2 varian** (A dan B, pendekatan berbeda).
+   - Jalankan `cd video/src && node thumbnail.js epNN`, lalu buka `video/out/thumb/epNN-cek.png` dan periksa sesuai skill (terbaca di ukuran feed, wajah tidak tertutup, angka cocok). Perbaiki maksimal 3 kali.
+   - Kalau gagal, jangan hentikan produksi: tulis `progres` singkat dan lanjut ke Publisher tanpa thumbnail.
+3. **Publisher.**
    - Kalau MP4 lebih dari 14 MB, buat salinan untuk diunggah: `-c:v libx264 -crf 24 -c:a copy -movflags +faststart`.
    - Unggah sebagai aset ke Kantor Konten.
-   - Update ide: `{status:"selesai", videoAssetId, videoUrl, progres:"Selesai", upload:"Judul: … | Deskripsi: … | Tag: #…", kunci:{"__delete__":true}}`. Judul upload maksimal 70 karakter dan memakai hook. Tag 5–8 buah.
-   - Simpan juga kode episode ke field `epJs`, supaya tidak hilang kalau push gagal.
+   - Unggah juga `video/out/thumb/epNN-A.png` dan `epNN-B.png` sebagai aset (PNG, di bawah 20 MB).
+   - Update ide: `{status:"selesai", videoAssetId, videoUrl, thumbs:[{nama:"A", assetId, url, teks:"<teks thumbnail>", alasan}, {nama:"B", ...}], thumbPilihan:"A", progres:"Selesai", upload:"Judul: … | Deskripsi: … | Tag: #…", kunci:{"__delete__":true}}`. Judul upload maksimal 70 karakter dan memakai hook. Tag 5–8 buah.
+   - Simpan juga kode episode ke field `epJs` dan isi `video/thumb/epNN.json` ke field `thumbJson`, supaya tidak hilang kalau push gagal.
    - Commit (`feat: produce <channel> epNN (<judul singkat>)`) lalu push. Kalau push gagal, beri tanda `sumberBelumPush:true`. Jangan membuat PR.
-   - Kalau tool SendUserFile tersedia, kirim MP4 ke owner. Kalau tidak, lewati.
+   - Kalau tool SendUserFile tersedia, kirim MP4 dan thumbnail varian utama ke owner. Kalau tidak, lewati.
    - Semua agen kembali `santai`. Akhiri dengan ringkasan singkat.
