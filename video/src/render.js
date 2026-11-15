@@ -28,7 +28,7 @@ const path = require('path');
     const dur = await page.evaluate(() => DURATION);
     const args = ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-'];
     if (audio) args.push('-i', audio); else args.push('-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo');
-    args.push('-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p',
+    args.push('-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'fast', '-crf', '28', '-pix_fmt', 'yuv420p',
       '-c:a', 'aac', '-b:a', '192k', '-t', String(dur), '-movflags', '+faststart', out);
     const ff = spawn('ffmpeg', args, { stdio: ['pipe', 'inherit', 'inherit'] });
     const total = Math.round(dur * fps);
