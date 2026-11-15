@@ -199,13 +199,9 @@ function scene(t) {
     if (t < at('bocor') - 0.2) {
       shot(t, CUT[1], at('bocor') - 0.2, [0.4, 1.0, 5.8], [0.6, 0.65, 0], { drift: 0.04 });
     } else if (t < at('Daeng', 0) - 0.1) {
-      // close-up Hendra shock
-      shot(t, at('bocor') - 0.2, at('Daeng', 0) - 0.1,
-        [0.5, 1.2, 1.8], [0.5, 0.75, 0.9], { push: 0.07 });
+      closeUp(t, HENDRA, at('bocor') - 0.2, at('Daeng', 0) - 0.1, { side: -0.4 });
     } else {
-      // close-up Pak Daeng senyum
-      shot(t, at('Daeng', 0) - 0.1, CUT[2],
-        [1.4, 1.2, 2.0], [1.4, 0.75, 1.1], { drift: 0.04 });
+      closeUp(t, PAK_DAENG, at('Daeng', 0) - 0.1, CUT[2], { side: 0.3 });
     }
   }
 
@@ -224,8 +220,7 @@ function scene(t) {
         expr: 'worried', arms: 'chin',
       });
       if (t < at('pasak', 1) - 0.1) {
-        shot(t, CUT[2], at('pasak', 1) - 0.1,
-          [1.4, 1.2, 2.0], [1.4, 0.75, 1.1], { push: 0.08 });
+        closeUp(t, PAK_DAENG, CUT[2], at('pasak', 1) - 0.1, { side: 0.3 });
       } else {
         // show hull planks — push ke sambungan
         shot(t, at('pasak', 1) - 0.1, tLaut,
@@ -313,13 +308,9 @@ function scene(t) {
       shot(t, CUT[5], at('pasak', 2) + 0.5,
         [0.4, 1.0, 5.5], [0.7, 0.65, 0], { drift: 0.03 });
     } else if (t < at('Daeng', 1) - 0.2) {
-      // close-up Hendra
-      shot(t, at('pasak', 2) + 0.5, at('Daeng', 1) - 0.2,
-        [0.5, 1.2, 1.9], [0.5, 0.75, 0.9], { push: 0.07 });
+      closeUp(t, HENDRA, at('pasak', 2) + 0.5, at('Daeng', 1) - 0.2, { side: -0.35 });
     } else {
-      // close-up Pak Daeng angguk
-      shot(t, at('Daeng', 1) - 0.2, CUT[6],
-        [1.5, 1.2, 2.1], [1.5, 0.75, 1.1], { drift: 0.05 });
+      closeUp(t, PAK_DAENG, at('Daeng', 1) - 0.2, CUT[6], { side: 0.3 });
     }
   }
 

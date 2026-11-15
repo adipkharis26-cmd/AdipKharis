@@ -171,9 +171,9 @@ function scene(t) {
       shot(t, CUT[1], at('ambruk') + 0.5, [0.4, 0.9, 5.2], [0.1, 0.55, 0], { drift: 0.06 });
     } else if (t < at('Intan', 0) - 0.1) {
       // closeUp Reza saat dialog
-      closeUp(t, REZA, at('ambruk') + 0.5, at('Intan', 0) - 0.1, { side: 'L' });
+      closeUp(t, REZA, at('ambruk') + 0.5, at('Intan', 0) - 0.1, { side: -0.4 });
     } else {
-      closeUp(t, MAK_INTAN, at('Intan', 0) - 0.1, CUT[2], { side: 'R' });
+      closeUp(t, MAK_INTAN, at('Intan', 0) - 0.1, CUT[2], { side: 0.3 });
       chip('Justru sebaliknya!', 0, 350, at('Intan', 0), { size: 1.0, bg: '#C8552E', stamp: true });
     }
   }
@@ -192,13 +192,13 @@ function scene(t) {
 
     // MAK_INTAN x=-0.3, z=1.0  → closeUp kanan: cam (0.65, 1.2, 1.9) → target (-0.3, 0.75, 1.0)
     if (t < at('sandi', 0) - 0.5) {
-      shot(t, CUT[2], at('sandi', 0) - 0.5, [0.65, 1.2, 1.9], [-0.3, 0.75, 1.0], { push: 0.08 });
+      closeUp(t, MAK_INTAN, CUT[2], at('sandi', 0) - 0.5, { side: 0.3 });
     } else if (t < at('duduk', 1) + 0.2) {
       shot(t, at('sandi', 0) - 0.5, at('duduk', 1) + 0.2,
         [-1.4, 0.75, 2.0], [-1.3, 0.1, -2.8], { push: 0.14 });
       chip('Namanya sandi', 0, 320, at('sandi', 0), { size: 1.0, stamp: true });
     } else {
-      shot(t, at('duduk', 1) + 0.2, CUT[3], [0.65, 1.2, 1.9], [-0.3, 0.75, 1.0], { drift: 0.04 });
+      closeUp(t, MAK_INTAN, at('duduk', 1) + 0.2, CUT[3], { side: 0.2 });
       chip('Tiang bergeser—lalu balik', 0, 350, at('duduk', 1) + 0.5, { size: 0.85 });
     }
   }
@@ -270,11 +270,10 @@ function scene(t) {
       shot(t, CUT[5], at('isolation', 0) - 0.2,
         [0.6, 0.6, 3.5], [0.1, 0.2, -1.5], { push: 0.12 });
     } else if (t < at('Intan', 2) - 0.2) {
-      shot(t, at('isolation', 0) - 0.2, at('Intan', 2) - 0.2,
-        [-0.4, 1.2, 1.9], [0.4, 0.75, 1.0], { push: 0.07 });
+      closeUp(t, REZA, at('isolation', 0) - 0.2, at('Intan', 2) - 0.2, { side: -0.3 });
       chip('Base isolation', 0, 350, at('base') + 0.1, { size: 1.1, stamp: true });
     } else {
-      shot(t, at('Intan', 2) - 0.2, CUT[6], [0.55, 1.2, 2.1], [-0.5, 0.75, 1.2], { drift: 0.04 });
+      closeUp(t, MAK_INTAN, at('Intan', 2) - 0.2, CUT[6], { side: 0.25 });
       chip('Rumah yang hidup,\ntidak boleh kaku', 0, 320, at('kaku') - 0.4, { size: 0.82 });
     }
   }
