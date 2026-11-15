@@ -118,10 +118,10 @@ const SAWAH = build('sawah', () => {
 
   // rumpun padi 4 baris
   [
-    { xBase:  1.1, n: 24 },
-    { xBase:  2.5, n: 20 },
-    { xBase: -1.1, n: 24 },
-    { xBase: -2.5, n: 20 },
+    { xBase:  1.1, n: 34 }, { xBase:  1.8, n: 32 }, { xBase:  2.5, n: 30 },
+    { xBase:  3.3, n: 28 }, { xBase:  4.2, n: 26 },
+    { xBase: -1.1, n: 34 }, { xBase: -1.8, n: 32 }, { xBase: -2.5, n: 30 },
+    { xBase: -3.3, n: 28 }, { xBase: -4.2, n: 26 },
   ].forEach(({ xBase, n }) => {
     for (let k = 0; k < n; k++) {
       const x  = xBase + (rnd(xBase * 7 + k) - 0.5) * 0.6;
@@ -167,11 +167,9 @@ const SAWAH = build('sawah', () => {
 // ── RESEARCH set (papan IPB) ──────────────────────────────────────────────
 const RESEARCH = build('research', () => {
   const G = grp(ground('rumput', 20));
-  // Board bertumpu di tanah: posisi grup di y=1.4 agar kaki menyentuh y=0
   G.add(at3(
-    board('ipb-suryana', ['SISTEM PADI-BEBEK', 'Institut Pertanian Bogor', 'Suryana et al. (2019)'],
-          { w: 1.5, h: 1.0, hi: [0] }),
-    0.2, 1.4, -4));
+    board('ipb-padibebek', ['PADI-BEBEK', 'RISET IPB', '2019'], { w: 1.6, h: 0.8, hi: [0] }),
+    0.2, 1.35, -4));
   G.add(at3(palm(2.8, 0.15), -3.0, 0, -3));
   G.add(at3(tree(2.2),        3.5, 0, -4));
   G.add(at3(hill(10, 4, '#5A9E4A'), -10, -1, -20));
@@ -207,7 +205,7 @@ function scene(t) {
   if (k === 0) {
     sawahSet();
     pose(MAK, t, {
-      x: 0.1, z: 1.6, ry: 0.08,
+      x: 0.1, z: lerp(0.2, 1.6, seg(t, 0, at('Tapi') - 0.1)), ry: 0.08,
       walk: t < at('Tapi') - 0.1,
       expr: t > at('panennya', 0) ? 'happy' : 'talk',
       arms: 'down',
@@ -231,27 +229,27 @@ function scene(t) {
   // ── Beat 1: Konflik — Bagas masuk, mengejek pakai bebek ───────────────
   } else if (k === 1) {
     sawahSet();
-    const enter = seg(t, CUT[1], CUT[1] + 1.2);
+    const enter = seg(t, CUT[1], CUT[1] + 1.6);
     pose(BAGAS, t, {
-      x: lerp(3.5, 2.0, ease(enter)),
-      z: lerp(2.5, 1.8, ease(enter)),
-      ry: -1.1,
+      x: 0.45,
+      z: lerp(-2.5, 1.7, ease(enter)),
+      ry: -0.35,
       walk: enter < 1,
       expr: t > at('bebek', 0) - 0.1 ? 'laugh' : 'smile',
       arms: t > at('bebek', 0) ? 'hips' : 'down',
     });
-    pose(MAK, t, { x: 0.1, z: 1.0, ry: 0.9, expr: 'flat', arms: 'down' });
+    pose(MAK, t, { x: -0.4, z: 1.2, ry: 0.5, expr: 'flat', arms: 'down' });
     poseDuck(D1, t, { x: 1.6, z: -0.5, ry: 1.2, phase: 0.0 });
     poseDuck(D2, t, { x: 2.8, z:  0.4, ry: -0.3, phase: 1.3 });
 
     if (t < at('mak', 1) - 0.1) {
       shot(t, CUT[1], at('mak', 1) - 0.1,
-           [2.0, 1.1, 6.0], [1.2, 0.75, 1.5], { drift: -0.1 });
+           [0.6, 1.15, 5.6], [0.0, 0.75, 1.4], { drift: -0.1 });
       chip('Ponakan dari kota',
            540, 280, at('ponakan'), { size: 70 });
     } else {
       pose(BAGAS, t, {
-        x: 2.0, z: 1.8, ry: -0.9,
+        x: 0.45, z: 1.7, ry: -0.45,
         expr: t < at('Masa') ? 'talk' : 'laugh',
         talk: true,
         arms: t > at('bebek', 0) ? 'point' : 'hips',
@@ -338,7 +336,7 @@ function scene(t) {
     SCN.fog.near = 18; SCN.fog.far = 50;
 
     pose(PENELITI, t, {
-      x: -0.4, z: 0.5, ry: 0.5,
+      x: 0.1, z: 0.5, ry: 0.5,
       expr: t > at('menemukan') ? 'talk' : 'smile',
       talk: t > at('menemukan') && t < at('persen', 0) + 0.3,
       arms: t > at('padi-bebek') ? 'point' : 'down',
@@ -371,37 +369,35 @@ function scene(t) {
   } else if (k === 5) {
     sawahSet('sore');
 
-    const herding = t > at('menggiring') - 0.1;
-    const putDown  = t > at('meletakkan') && !herding;
+    const tPut = at('meletakkan'), tHerd = at('menggiring') - 0.1;
+    const herding = t > tHerd;
+    const put = ease(seg(t, tPut, tPut + 0.6));
+    const h = ease(seg(t, tHerd, at('sawah', 3) + 0.8));
 
-    pose(MAK, t, {
-      x: 1.8, z: 1.3, ry: -1.3,
-      expr: 'happy', arms: 'down',
-    });
+    pose(MAK, t, { x: 0.6, z: 0.3, ry: -0.4, expr: 'happy', arms: 'down' });
     pose(BAGAS, t, {
-      x: 0.1, z: 2.0, ry: 0.0,
-      expr: herding ? 'happy' : (putDown ? 'flat' : 'talk'),
-      arms: herding ? 'wave' : (putDown ? 'carry' : 'down'),
-      walk: herding,
+      x: -0.15, z: 2.2, ry: herding ? -0.5 : 0.1,
+      expr: herding ? 'happy' : (put > 0 ? 'smile' : 'flat'),
+      arms: herding ? 'wave' : (put < 1 ? 'carry' : 'down'),
     });
 
-    if (!herding) {
-      place(SPRAY, 0.0, 0.05, 2.5);
-      SPRAY.rotation.set(0.3, Math.PI * 0.4, -0.4);
-    }
+    place(SPRAY, lerp(-0.15, 0.3, put), lerp(0.2, 0.0, put), lerp(2.52, 2.45, put));
 
-    poseDuck(D1, t, { x:  1.3, z:  0.5, ry: 0.8, phase: 0.0, walk: herding });
-    poseDuck(D2, t, { x:  2.0, z: -0.5, ry: 1.2, phase: 1.4, walk: herding });
-    poseDuck(D3, t, { x:  0.8, z:  1.2, ry: 0.3, phase: 2.2, walk: herding });
-    poseDuck(D4, t, { x: -1.5, z:  0.3, ry: -1.8, phase: 1.0, walk: herding });
+    [[D1, 0.1, 1.5, -1.6, 1.0, 0.0], [D2, -0.2, 1.1, -2.2, 0.3, 1.4],
+     [D3, 0.2, 1.0, -1.4, -0.2, 2.2], [D4, -0.1, 0.6, -2.4, -0.9, 1.0]].forEach(([D, x0, z0, x1, z1, ph]) =>
+      poseDuck(D, t, {
+        x: lerp(x0, x1, h), z: lerp(z0, z1, h), y: lerp(0, -0.09, h),
+        ry: herding ? -1.4 : 0.3 + ph * 0.4, phase: ph, walk: herding && h < 1,
+      }));
 
-    if (t < at('meletakkan') + 0.6) {
-      shot(t, CUT[5], at('meletakkan') + 0.6,
-           [2.0, 1.1, 6.0], [0.8, 0.75, 1.8], { drift: 0.1 });
+    if (t < tPut + 0.6) {
+      shot(t, CUT[5], tPut + 0.6, [0.9, 1.1, 6.0], [0.0, 0.7, 1.8], { drift: 0.1 });
     } else if (t < at('menggiring') + 0.3) {
-      closeUp(t, BAGAS, at('meletakkan') + 0.6, at('menggiring') + 0.3, { side: 0.2 });
+      closeUp(t, BAGAS, tPut + 0.6, at('menggiring') + 0.3, { side: 0.2 });
+    } else if (t < at('persis')) {
+      shot(t, at('menggiring') + 0.3, at('persis'), [-1.6, 1.4, 6.4], [-0.7, 0.35, 1.2], { push: 0.1 });
     } else {
-      closeUp(t, BAGAS, at('menggiring') + 0.3, CUT[6], { side: -0.3 });
+      closeUp(t, BAGAS, at('persis'), CUT[6], { side: -0.3 });
     }
 
   // ── Beat 6: CTA — tanya daerah ────────────────────────────────────────
@@ -411,13 +407,13 @@ function scene(t) {
     poseDuck(D2, t, { x: -1.4, z:  0.4, ry: -1.5, phase: 1.6 });
 
     pose(MAK, t, {
-      x: -0.6, z: 2.4, ry: 0.2,
+      x: -0.45, z: 2.4, ry: 0.2,
       expr: 'happy',
       arms: t > at('Tulis') ? 'point' : 'down',
       look: 0.05,
     });
     pose(BAGAS, t, {
-      x: 0.8, z: 2.5, ry: -0.15,
+      x: 0.55, z: 2.5, ry: -0.15,
       expr: 'smile',
       arms: t > at('daerahmu') ? 'shrug' : 'down',
     });
