@@ -59,11 +59,12 @@ const LEMBAH_BOLON = build('lembah_bolon', () => {
     p.rotation.x =  p.position.z * 0.05;
   });
 
-  [-5.5, 0.5, 5.0].forEach((x, i) =>
-    G.add(at3(hill('#4A6A28', [2.8 + i * 0.3, 1.5, 2.5]), x, 0, -10)));
-  G.add(palm(-3.5, 0, -4.5));
-  G.add(palm( 4.0, 0, -5.5));
-  G.add(cloud());
+  G.add(at3(hill(14, 5, '#4A6A28'), -5.5, -1, -12));
+  G.add(at3(hill(16, 5.5, '#3E5E22'),  0.5, -1.5, -14));
+  G.add(at3(hill(12, 6,   '#5A7A32'),  5.0, -2,   -11));
+  G.add(at3(palm(3.2, 0.18), -3.5, 0, -4.5));
+  G.add(at3(palm(2.8, 0.15),  4.0, 0, -5.5));
+  [0, 1, 2].forEach(i => G.add(at3(cloud(1.5 + i * 0.3), (i - 1) * 4, 4.0, -13 + i)));
 
   return G;
 });
@@ -101,8 +102,8 @@ function bawahSet() {
   DITA.visible = true;
 }
 
-// ── Render ─────────────────────────────────────────────────────────────────
-function renderFrame(t) {
+// ── Scene ──────────────────────────────────────────────────────────────────
+function scene(t) {
   const k = beatOf(t);
 
   // ── Beat 0: HOOK — wide shot Rumah Bolon ─────────────────────────────
