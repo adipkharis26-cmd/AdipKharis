@@ -92,7 +92,7 @@ function pasakDemo() {
   // pasak (wooden dowel, slightly proud of surface)
   G.add(at3(cyl(0.07, 0.065, 0.42, '#5A3A18', { ol: 0.012 }, 10), -0.65, 0.42, 0.65, Math.PI / 2, 0, 0));
   // label
-  chip('Pasak kayu', -0.65, 300, 0, { size: 0.85 });
+  chip('Pasak kayu', 270, 300, 0, { size: 0.85 });
 
   // plank B (right): paku besi — berkarat
   G.add(at3(box(0.6, 0.35, 1.2, plankMat, { ol: 0.01 }),  0.65, 0.175, 0));
@@ -100,7 +100,7 @@ function pasakDemo() {
   // paku (nail — longer, rusted)
   G.add(at3(cyl(0.04, 0.04, 0.55, rustMat, { ol: 0.01 }, 8),  0.65, 0.42, 0.65, Math.PI / 2, 0, 0));
   G.add(at3(box(0.12, 0.05, 0.12, rustMat, {}), 0.65, 0.42, 0.37));
-  chip('Paku besi', 0.65, 300, 0, { size: 0.85 });
+  chip('Paku besi', 810, 300, 0, { size: 0.85 });
 
   return G;
 }
@@ -173,7 +173,7 @@ function scene(t) {
     } else {
       // push ke haluan + Pak Daeng
       shot(t, 5.0, CUT[1], [2.5, 1.0, 5.5], [1.0, 0.7, 0], { push: 0.1 });
-      chip('Pasak kayu mengikat semuanya', 0, 290, 5.2, { size: 0.9 });
+      chip('Pasak kayu mengikat semuanya', 540, 290, 5.2, { size: 0.9 });
     }
   }
 
@@ -236,7 +236,7 @@ function scene(t) {
       SCN.fog.near = 8; SCN.fog.far = 25;
       shot(t, tLaut, CUT[3],
         [0, 0.6, 1.8], [0, 0.2, -0.5], { push: 0.05 });
-      chip('Kayu mengembang → celah tertutup', 0, 300, tLaut + 0.2, { size: 0.88 });
+      chip('Kayu mengembang → celah tertutup', 540, 300, tLaut + 0.2, { size: 0.88 });
     }
   }
 
@@ -253,12 +253,12 @@ function scene(t) {
       // close-up pasak sisi kiri (kayu sehat)
       shot(t, CUT[3], at('berkarat', 0) - 0.2,
         [-0.65, 0.5, 1.4], [-0.65, 0.2, 0.3], { push: 0.06 });
-      card(['sepuluh persen lebih rapat', 'saat basah'], -0.65, 320, CUT[3] + 0.2);
+      card(['sepuluh persen lebih rapat', 'saat basah'], 540, 320, CUT[3] + 0.2);
     } else {
       // pivot ke sisi kanan (paku berkarat)
       shot(t, at('berkarat', 0) - 0.2, CUT[4],
         [0.65, 0.5, 1.4], [0.65, 0.2, 0.3], { push: 0.06 });
-      card(['paku besi → korosi', 'sambungan merenggang'], 0.65, 320, at('berkarat', 0) + 0.1);
+      card(['paku besi → korosi', 'sambungan merenggang'], 540, 320, at('berkarat', 0) + 0.1);
     }
   }
 
@@ -279,7 +279,7 @@ function scene(t) {
       // UNESCO card
       shot(t, at('UNESCO') - 0.3, CUT[5],
         [0, 2.2, 9], [0, 0.8, -2], { drift: 0.04 });
-      card(['UNESCO 2017', 'Warisan Budaya', 'Tak Benda Dunia'], 0, 420, at('UNESCO') + 0.1);
+      card(['UNESCO 2017', 'Warisan Budaya', 'Tak Benda Dunia'], 540, 420, at('UNESCO') + 0.1);
       bigWord('UNESCO', at('UNESCO') - 0.1, at('Warisan') - 0.1, { y: 820, col: '#FFC23C' });
     }
   }
@@ -322,6 +322,6 @@ function scene(t) {
     SCN.fog.near = 24; SCN.fog.far = 72;
 
     shot(t, CUT[6], DURATION, [0, 3.0, 12], [0, 0.8, -3], { drift: 0.06 });
-    chip('Perahu tradisionalmu?', 0, 300, CUT[6] + 0.3, { size: 0.95 });
+    chip('Perahu tradisionalmu?', 540, 300, CUT[6] + 0.3, { size: 0.95 });
   }
 }

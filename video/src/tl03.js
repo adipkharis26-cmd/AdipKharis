@@ -144,7 +144,7 @@ function scene(t) {
     } else {
       // push ke rumah + tiang + batu sandi
       shot(t, 4.5, CUT[1], [-1.8, 0.5, 2.5], [-1.2, 0.2, -3.5], { push: 0.12 });
-      chip('Tiangnya duduk di atas batu', 0, 300, 4.7, { size: 0.9 });
+      chip('Tiangnya duduk di atas batu', 540, 300, 4.7, { size: 0.9 });
     }
   }
 
@@ -174,7 +174,7 @@ function scene(t) {
       closeUp(t, REZA, at('ambruk') + 0.5, at('Intan', 0) - 0.1, { side: -0.4 });
     } else {
       closeUp(t, MAK_INTAN, at('Intan', 0) - 0.1, CUT[2], { side: 0.3 });
-      chip('Justru sebaliknya!', 0, 350, at('Intan', 0), { size: 1.0, bg: '#C8552E', stamp: true });
+      chip('Justru sebaliknya!', 540, 350, at('Intan', 0), { size: 1.0, bg: '#C8552E', stamp: true });
     }
   }
 
@@ -196,10 +196,10 @@ function scene(t) {
     } else if (t < at('duduk', 1) + 0.2) {
       shot(t, at('sandi', 0) - 0.5, at('duduk', 1) + 0.2,
         [-1.4, 0.75, 2.0], [-1.3, 0.1, -2.8], { push: 0.14 });
-      chip('Namanya sandi', 0, 320, at('sandi', 0), { size: 1.0, stamp: true });
+      chip('Namanya sandi', 540, 320, at('sandi', 0), { size: 1.0, stamp: true });
     } else {
       closeUp(t, MAK_INTAN, at('duduk', 1) + 0.2, CUT[3], { side: 0.2 });
-      chip('Tiang bergeser—lalu balik', 0, 350, at('duduk', 1) + 0.5, { size: 0.85 });
+      chip('Tiang bergeser—lalu balik', 540, 350, at('duduk', 1) + 0.5, { size: 0.85 });
     }
   }
 
@@ -219,16 +219,16 @@ function scene(t) {
 
     if (t < at('lempeng') + 0.5) {
       shot(t, CUT[3], at('lempeng') + 0.5, [0, 1.4, 4.5], [0, 0.5, -1.2], { drift: 0.06 });
-      chip('Sesar Semangko', -0.1, 280, CUT[3] + 0.4, { size: 1.0, stamp: true });
+      chip('Sesar Semangko', 540, 280, CUT[3] + 0.4, { size: 1.0, stamp: true });
     } else if (t < at('tersebar') + 0.5) {
       // close batu sandi: tampilkan bergetar
       shot(t, at('lempeng') + 0.5, at('tersebar') + 0.5,
         [-0.1, 0.6, 2.8], [-0.1, 0.2, 0], { push: 0.1 });
-      chip('Batu sandi ikut bergerak', 0, 300, at('gempa,', 1), { size: 0.88 });
+      chip('Batu sandi ikut bergerak', 540, 300, at('gempa,', 1), { size: 0.88 });
     } else {
       shot(t, at('tersebar') + 0.5, CUT[4], [0, 1.0, 3.0], [0, 0.5, -1.2], { drift: 0.05 });
-      chip('Energi tersebar', 0, 320, at('tersebar') + 0.2, { size: 0.9, stamp: true });
-      chip('Tiang tidak patah', 0, 430, at('patah') - 0.2, { size: 0.9 });
+      chip('Energi tersebar', 540, 320, at('tersebar') + 0.2, { size: 0.9, stamp: true });
+      chip('Tiang tidak patah', 540, 430, at('patah') - 0.2, { size: 0.9 });
     }
   }
 
@@ -241,13 +241,13 @@ function scene(t) {
 
     if (t < at('runtuh') + 0.5) {
       shot(t, CUT[4], at('runtuh') + 0.5, [1.0, 1.6, 6.0], [0.3, 0.6, -3], { drift: 0.06 });
-      chip('Gempa Padang 2009', 0, 280, CUT[4] + 0.5, { size: 1.0, stamp: true });
-      chip('Rumah Gadang lebih tahan', 0, 400, at('runtuh') - 0.3, { size: 0.85 });
+      chip('Gempa Padang 2009', 540, 280, CUT[4] + 0.5, { size: 1.0, stamp: true });
+      chip('Rumah Gadang lebih tahan', 540, 400, at('runtuh') - 0.3, { size: 0.85 });
     } else {
       shot(t, at('runtuh') + 0.5, CUT[5], [0.3, 1.5, 5.0], [0.3, 0.6, -2.5], { push: 0.1 });
       bigWord('ISOLASI SEISMIK', at('isolasi') - 0.1, at('dikembangkan') + 0.5,
         { y: 520, col: '#FFC23C' });
-      chip('Teknologi modern Jepang', 0, 400, at('dikembangkan') - 0.1, { size: 0.85 });
+      chip('Teknologi modern Jepang', 540, 400, at('dikembangkan') - 0.1, { size: 0.85 });
     }
   }
 
@@ -271,10 +271,10 @@ function scene(t) {
         [0.6, 0.6, 3.5], [0.1, 0.2, -1.5], { push: 0.12 });
     } else if (t < at('Intan', 2) - 0.2) {
       closeUp(t, REZA, at('isolation', 0) - 0.2, at('Intan', 2) - 0.2, { side: -0.3 });
-      chip('Base isolation', 0, 350, at('base') + 0.1, { size: 1.1, stamp: true });
+      chip('Base isolation', 540, 350, at('base') + 0.1, { size: 1.1, stamp: true });
     } else {
       closeUp(t, MAK_INTAN, at('Intan', 2) - 0.2, CUT[6], { side: 0.25 });
-      chip('Rumah yang hidup,\ntidak boleh kaku', 0, 320, at('kaku') - 0.4, { size: 0.82 });
+      chip('Rumah yang hidup,\ntidak boleh kaku', 540, 320, at('kaku') - 0.4, { size: 0.82 });
     }
   }
 
@@ -292,8 +292,8 @@ function scene(t) {
 
     shot(t, CUT[6], DURATION, [0, 1.4, 5.5], [0.0, 0.7, 0], { drift: 0.05 });
     card(['DI DAERAHMU ADA?', 'Rumah panggung/adat', 'yang masih berdiri?'],
-      0, 420, CUT[6] + 0.4);
-    chip('Tulis di komentar!', 0, 1560, CUT[6] + 0.8, { size: 1.0, stamp: true });
+      540, 420, CUT[6] + 0.4);
+    chip('Tulis di komentar!', 540, 1560, CUT[6] + 0.8, { size: 1.0, stamp: true });
   }
 }
 
