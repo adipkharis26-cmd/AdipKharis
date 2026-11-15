@@ -9,7 +9,7 @@ const path = require('path');
 
 (async () => {
   const [mode, out, ...rest] = process.argv.slice(2);
-  const browser = await chromium.launch({ args: ['--allow-file-access-from-files'] }); // lets canvases use local images (emoji, mascot) without tainting
+  const browser = await chromium.launch({ args: ['--allow-file-access-from-files', '--disable-dev-shm-usage', '--no-sandbox'] }); // allow local images; disable-dev-shm-usage prevents crash in cloud containers
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   page.on('pageerror', e => { console.error('PAGE ERROR', e.message); process.exit(1); });
   await page.goto('file://' + path.join(__dirname, (process.env.EP || 'ep01') + '.html'));
