@@ -14,6 +14,15 @@ export const DEMO_CAST: Record<LocId, Cast> = {
   kelas: [["kusaka", "A", 1, "embarrassed", "idle"], ["nadia", "B", -1, "suspicious", "hips"]],
   koridor: [["ujang", "A", 1, "laugh", "point"], ["nadia", "B", -1, "neutral", "wave"]],
   kamar: [["kusaka", "A", 1, "defeated", "facepalm"], ["dinda", "B", -1, "laugh", "phone"]],
+  kelasBelakang: [["ucok", "A", 1, "laugh", "point"], ["ujang", "B", -1, "deadpan", "crossed"]],
+  kelasJendela: [["kusaka", "A", 1, "smug", "chin"], ["sasa", "B", -1, "surprised", "phone"]],
+  mejaGuru: [["kusaka", "A", 1, "embarrassed", "idle"], ["buWati", "B", -1, "suspicious", "hips"]],
+  kantin: [["bimo", "A", 1, "smug", "thumbsup"], ["nadia", "B", -1, "laugh", "idle"]],
+  ruangBK: [["kusaka", "A", 1, "pleading", "plead"], ["pakDarto", "B", -1, "deadpan", "crossed"]],
+  perpustakaan: [["nadia", "A", 1, "suspicious", "idle"], ["kusaka", "B", -1, "defeated", "slump"]],
+  ruangTamu: [["ibu", "A", 1, "shock", "hips"], ["bapak", "B", -1, "laugh", "thumbsup"]],
+  lapanganUpacara: [["mangUdin", "A", 1, "suspicious", "point"], ["pakJoko", "B", -1, "neutral", "hips"]],
+  kos: [["tara", "A", 1, "neutral", "phone"], ["kusaka", "B", -1, "pleading", "plead"]],
 };
 
 /** One location set rendered on its own (optionally with demo cast + stage marks). */
@@ -51,7 +60,7 @@ export const LocationStill: React.FC<{ id: LocId }> = ({ id }) => {
 export const LocationSheet: React.FC = () => {
   useFonts();
   const ids = Object.keys(LOCATIONS) as LocId[];
-  const W = 3000, H = 1460, pw = 960, ph = 540;
+  const W = 4000, H = 2080, pw = 768, ph = 432, cols = 5;
   return (
     <AbsoluteFill style={{ background: "#fdf6e3" }}>
       <svg width={W} height={H}>
@@ -59,24 +68,24 @@ export const LocationSheet: React.FC = () => {
         <text x={50} y={98} fontFamily="Bangers" fontSize={92} fill="#ffd23f">LOKASI TERKUNCI</text>
         <text x={W - 50} y={88} textAnchor="end" fontFamily="Baloo2" fontSize={40} fill="#fff">locations v{LOCATION_META.version} · karakter kanon v{canon.version}</text>
         {ids.map((id, i) => {
-          const x = 30 + (i % 3) * (pw + 20), y = 160 + Math.floor(i / 3) * (ph + 110);
+          const x = 24 + (i % cols) * (pw + 27), y = 160 + Math.floor(i / cols) * (ph + 200);
           const m = LOCATION_META.locations[id];
           return (
             <g key={id} transform={`translate(${x} ${y})`}>
-              <g transform="scale(0.5)"><LocationPlate id={id} cast /></g>
+              <g transform="scale(0.4)"><LocationPlate id={id} cast /></g>
               <rect width={pw} height={ph} fill="none" stroke={OUT} strokeWidth={6} />
-              <text x={0} y={ph + 46} fontFamily="Bangers" fontSize={46} fill={OUT}>{m.name.toUpperCase()}</text>
-              <text x={pw} y={ph + 44} textAnchor="end" fontFamily="Baloo2" fontSize={26} fill="#8a6d3b">{m.time} · {m.use}</text>
+              <text x={0} y={ph + 46} fontFamily="Bangers" fontSize={40} fill={OUT}>{m.name.toUpperCase()}</text>
+              <text x={0} y={ph + 84} fontFamily="Baloo2" fontSize={24} fill="#8a6d3b">{m.time} · {m.use}</text>
             </g>
           );
         })}
         {/* rules card */}
-        <g transform={`translate(${30 + 2 * (pw + 20)} ${160 + ph + 110})`}>
+        <g transform={`translate(${24 + 4 * (pw + 27)} ${160 + 2 * (ph + 200)})`}>
           <rect width={pw} height={ph} rx={20} fill="#fff" stroke="#d8ccae" strokeWidth={5} />
-          <text x={40} y={70} fontFamily="Bangers" fontSize={50} fill="#e63946">ATURAN SET</text>
+          <text x={30} y={66} fontFamily="Bangers" fontSize={46} fill="#e63946">ATURAN SET</text>
           {LOCATION_META.rules.map((r, i) => (
-            <foreignObject key={i} x={40} y={100 + i * 104} width={pw - 80} height={100}>
-              <div style={{ fontFamily: "Baloo2", fontSize: 28, lineHeight: 1.2, color: "#2b2b2b" }}>• {r}</div>
+            <foreignObject key={i} x={30} y={90 + i * 48} width={pw - 60} height={60}>
+              <div style={{ fontFamily: "Baloo2", fontSize: 19, lineHeight: 1.2, color: "#2b2b2b" }}>• {r}</div>
             </foreignObject>
           ))}
         </g>

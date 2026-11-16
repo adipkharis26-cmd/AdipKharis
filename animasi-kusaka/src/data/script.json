@@ -1,15 +1,21 @@
 {
+  "episode": "eps01",
   "title": "Kusaka: Traktiran Gagal",
-  "fps": 30,
-  "gapSeconds": 0.35,
-  "characters": {
+  "location": "warung",
+  "cast": {
     "kusaka": {
-      "name": "Kusaka"
+      "mark": "A",
+      "facing": 1
     },
     "ujang": {
-      "name": "Ujang"
+      "mark": "B",
+      "facing": -1
     }
   },
+  "fps": 30,
+  "gapSeconds": 0.35,
+  "leadIn": 0.6,
+  "tail": 2.6,
   "lines": [
     {
       "id": "l01",
@@ -61,7 +67,13 @@
       "shot": "speaker",
       "text": "Hahaha! Ketinggalan lagi, kan? Udah gue duga!",
       "listener": "embarrassed",
-      "action": "point"
+      "action": "point",
+      "sfx": [
+        {
+          "id": "laugh_track",
+          "at": 0.6
+        }
+      ]
     },
     {
       "id": "l07",
@@ -70,7 +82,13 @@
       "shot": "speaker",
       "text": "Jang... pinjem duit dulu dong. Besok gue ganti, sumpah!",
       "listener": "deadpan",
-      "action": "plead"
+      "action": "plead",
+      "sfx": [
+        {
+          "id": "sad_violin",
+          "at": 0.2
+        }
+      ]
     },
     {
       "id": "l08",
@@ -79,8 +97,13 @@
       "shot": "two",
       "text": "Sumpah lu udah kayak cicilan, Kus. Numpuk terus!",
       "listener": "defeated",
-      "action": "crossed"
+      "action": "crossed",
+      "sfx": [
+        {
+          "id": "rimshot",
+          "at": "end"
+        }
+      ]
     }
-  ],
-  "_note": "Suara, warna & desain karakter diambil dari src/characters/canon.json (terkunci)."
+  ]
 }

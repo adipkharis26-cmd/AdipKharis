@@ -13,10 +13,13 @@ export type Action =
 export interface Line {
   id: string; speaker: CharId; emotion: Emotion; listener: Emotion; shot: "two" | "speaker" | "push" | "crash";
   text: string; audio: string; start: number; duration: number; surprise?: boolean; action?: string;
+  caption?: string; flashback?: boolean; sfx?: { id: string; at: number | "end" }[];
   visemes: { t: number; v: Viseme }[]; words: { w: string; t: number }[];
 }
 
 export const FPS: number = timeline.fps;
+export const LOCATION = timeline.location as string;
+export const CAST = timeline.cast as Record<string, { mark: "A" | "B" | "C" | "D"; facing: 1 | -1 }>;
 export const LINES = timeline.lines as Line[];
 export const TOTAL_SECONDS: number = timeline.totalSeconds;
 export const TOTAL_FRAMES = Math.ceil(TOTAL_SECONDS * FPS);

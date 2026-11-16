@@ -6,22 +6,26 @@ Gaya: kartun sekolah Indonesia, vektor flat 2D, outline hitam tegas, cel-shading
 ## Alur kerja
 ```bash
 npm install
-npm run voice          # TTS ElevenLabs eleven_v4 + timestamp per huruf -> src/data/timeline.json
-./scripts/generate-sfx.sh   # SFX: ambience jalan, whoosh, sting kaget, pop, trombone sedih
+npm run voice          # suara TERKUNCI (ElevenLabs eleven_v4) + timestamp lip-sync -> src/data/timeline.json
+npm run sfx            # lengkapi pustaka SFX terkunci (src/audio/sfx.json), dinormalisasi -1 dBFS
 npm run studio         # preview interaktif
 npm run render         # out/kusaka-warung.mp4        (1920x1080, YouTube)
 npm run render:shorts  # out/kusaka-warung-shorts.mp4 (1080x1920, Shorts/Reels, langsung masuk dialog tanpa intro)
 ```
-Kunci API dibaca dari env `ELEVENLABS_API_KEY` — **jangan pernah ditulis di kode / commit**.
+Kunci API dibaca dari env `ELEVENLABS_API_KEY`. **Jangan pernah tulis kunci di kode atau commit.** Ganti API key kapan saja:
+suara tetap sama karena voice dikunci di `canon.json` (voice library publik + seed), dan take lama disimpan di
+`public/audio/<episode>/`.
 
 ## 🔒 Karakter terkunci (character bible)
 Desain karakter punya **satu sumber kebenaran**: `src/characters/canon.json`, yang berisi palet warna, proporsi,
 ciri khas wajib, sifat, kalimat khas, dan **suara ElevenLabs** (voice_id, model, setting). Rig, model sheet, dan
 generator suara semuanya membaca dari file ini, jadi setiap episode tampil dan terdengar sama.
 
-Pemeran: **Kusaka, Ujang, Nadia, Dinda, Pak Darto** (+ Bu Ijah). Lokasi: `src/scene/locations.json` +
-`src/scene/Locations.tsx`, yaitu Warung Bu Ijah, Gerbang SMA Nusantara, Ruang Kelas XI IPS 2, Koridor & Lapangan, dan Kamar Kusaka.
-Masing-masing punya titik berdiri (marks A–D) yang tetap.
+Yang dikunci (lihat `SERIES_BIBLE.md`):
+- **16 karakter** di `src/characters/canon.json`: desain, pakaian, aksesori, sifat, dan suara (voice_id, eleven_v4, seed)
+- **14 lokasi** di `src/scene/locations.json` + `Locations*.tsx`: titik berdiri A–D, ambience, tanpa teks di latar
+- **Aturan editing** di `src/edit/editing.json`: hanya subtitle (tanpa nama), caption dari daftar resmi, flashback
+- **Pustaka SFX** di `src/audio/sfx.json` + `public/sfx/*.mp3`: satu SFX satu makna, file ikut di-hash
 
 Acuan visual ada di `model-sheets/` (dibuat ulang dengan `npm run sheets`):
 - `ModelSheet-<id>.png`: proporsi, 10 ekspresi, 16 bentuk mulut, 8 bentuk tangan berjari, palet, 16 pose, profil, suara
@@ -40,11 +44,14 @@ Mengubah desain dengan sengaja (misalnya menambah ekspresi atau karakter baru):
 3. `npm run lock:characters`
 
 ## Mengubah cerita
-Edit `src/data/script.json` (teks, pembicara, `emotion`, reaksi `listener`, `shot`, `action`) lalu
+Edit `src/data/script.json` (`episode`, `location`, `cast` + baris: teks, pembicara, `emotion`, `listener`, `shot`, `action`) lalu
 `npm run voice` dan render ulang. Semua timing (lip-sync, kamera, subtitle) ikut otomatis.
 
 | field | nilai |
 |---|---|
+| `caption` | salah satu dari daftar di `editing.json` (mis. FLASHBACK, KEESOKAN HARINYA) |
+| `flashback` | `true` → sepia + vignette + SFX flashback otomatis |
+| `sfx` | `[{ "id": "rimshot", "at": "end" }]` (id dari `sfx.json`, `at` = detik atau "end") |
 | `emotion` / `listener` | neutral, smug, suspicious, shock, laugh, pleading, deadpan, surprised, embarrassed, defeated |
 | `shot` | `two` (two-shot), `speaker` (dirty single), `push` (slow push-in dramatis), `crash` (crash zoom + shake + speed lines + flash) |
 | `action` | gesture, pocket, chin, point, plead, crossed, wave, thumbsup, peace, facepalm, hips, phone (shock/laugh/slump otomatis dari emosi) |

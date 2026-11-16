@@ -1,15 +1,14 @@
 {
-  "version": "1.1.0",
+  "version": "2.0.0",
   "lockedAt": "2026-11-16",
   "rules": [
     "Sudut pandang kanon: 3/4 menghadap kanan. Menghadap kiri = cermin horizontal (scaleX -1), bukan gambar baru.",
-    "Proporsi: tinggi ±760 unit, kepala ±35% tinggi badan (gaya chibi-remaja). Kaki di y=0, leher di y=-468.",
+    "Proporsi: kepala ±35% tinggi badan. Tinggi antar karakter hanya lewat build.height. Kaki di y=0, leher di y=-468.",
     "Outline selalu #1b1b1b, tebal 6 unit (detail 4–5). Cel-shading hanya satu tingkat bayangan.",
-    "Seragam SMA Indonesia: kemeja putih lengan pendek, celana abu-abu, sepatu hitam, lambang OSIS di saku.",
-    "Ciri khas (signature) tidak boleh dihilangkan di adegan mana pun.",
-    "Warna hanya dari palet di bawah. Ekspresi, mulut, dan pose hanya dari daftar yang tersedia di rig.",
-    "Tangan selalu berjari (4 jari + jempol). Bentuk tangan hanya dari pustaka tangan: relaxed, open, fist, point, thumbsup, peace, wave, hidden.",
-    "Seragam mengikuti jenjang: SMA putih–abu-abu, SMP putih–biru dongker, guru memakai batik."
+    "Tangan selalu berjari (4 jari + jempol), bentuk hanya dari pustaka tangan.",
+    "Seragam mengikuti jenjang: SMA putih–abu-abu, SMP putih–biru dongker, guru batik, satpam putih–navy.",
+    "Ciri khas (signature) tidak boleh dihilangkan di adegan mana pun. Warna hanya dari palet.",
+    "SUARA TERKUNCI: tiap karakter punya satu voice ElevenLabs (model eleven_v4, bahasa id, seed & setting tetap). Hanya voice library publik/premade yang boleh dipakai (bukan kloning pribadi), sehingga tetap sama walaupun API key/akun diganti. Tidak ada fallback otomatis: kalau voice tidak ditemukan, proses berhenti."
   ],
   "characters": {
     "kusaka": {
@@ -48,25 +47,36 @@
       "features": {
         "hair": "spiky",
         "glasses": false,
+        "glassesStyle": "round",
         "bandaid": true,
         "tucked": false,
         "outfit": "sma",
         "bottom": "pants",
         "sleeves": "short",
         "mustache": false,
+        "mustacheStyle": "thick",
         "lashes": false,
-        "badge": "osis"
+        "badge": "osis",
+        "pattern": "none",
+        "collar": "shirt",
+        "shoes": "shoe",
+        "accessories": []
       },
       "voice": {
         "voice_id": "W8aRyPTvOnlcvcu0uYX3",
-        "label": "DQ (id, muda)",
+        "label": "DK – Documentary (id, pria muda)",
+        "source": "elevenlabs-library",
         "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1101,
         "settings": {
           "stability": 0.5,
           "similarity_boost": 0.8,
           "style": 0.4,
           "use_speaker_boost": true
-        }
+        },
+        "name_check": "DK - Documentary",
+        "public_owner_id": "ce46a7dc70d509bfec48d137cd4e038ffee78acfd9e99c01f386c26eb12f6904"
       }
     },
     "ujang": {
@@ -104,25 +114,36 @@
       "features": {
         "hair": "buzz",
         "glasses": true,
+        "glassesStyle": "round",
         "bandaid": false,
         "tucked": true,
         "outfit": "sma",
         "bottom": "pants",
         "sleeves": "short",
         "mustache": false,
+        "mustacheStyle": "thick",
         "lashes": false,
-        "badge": "osis"
+        "badge": "osis",
+        "pattern": "none",
+        "collar": "shirt",
+        "shoes": "shoe",
+        "accessories": []
       },
       "voice": {
-        "voice_id": "TX3LPaxmHKxFdv7VOQHJ",
-        "label": "Liam (multibahasa)",
+        "voice_id": "KCiLcCPs7bkrLUKGPXsU",
+        "label": "Ujang – Soft & Gentle Javanese (id, pria muda)",
+        "source": "elevenlabs-library",
         "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1102,
         "settings": {
-          "stability": 0.5,
+          "stability": 0.55,
           "similarity_boost": 0.8,
-          "style": 0.4,
+          "style": 0.3,
           "use_speaker_boost": true
-        }
+        },
+        "name_check": "Ujang - Soft & Gentle Javanese",
+        "public_owner_id": "241467c6324650d8989b7dc42a9c2c707d6edf7742436bfc104e8e7126459259"
       }
     },
     "nadia": {
@@ -163,25 +184,36 @@
       "features": {
         "hair": "hijab",
         "glasses": false,
+        "glassesStyle": "round",
         "bandaid": false,
         "tucked": false,
         "outfit": "smaGirl",
         "bottom": "longSkirt",
         "sleeves": "long",
         "mustache": false,
+        "mustacheStyle": "thick",
         "lashes": true,
-        "badge": "none"
+        "badge": "none",
+        "pattern": "none",
+        "collar": "shirt",
+        "shoes": "shoe",
+        "accessories": []
       },
       "voice": {
-        "voice_id": "EXAVITQu4vr4xnSDxMaL",
-        "label": "Sarah (multibahasa)",
+        "voice_id": "WAotVoK2Yv2ufjocfYYs",
+        "label": "Siti – Clean, Chill, Expressive (id, wanita muda)",
+        "source": "elevenlabs-library",
         "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1103,
         "settings": {
           "stability": 0.5,
           "similarity_boost": 0.8,
           "style": 0.35,
           "use_speaker_boost": true
-        }
+        },
+        "name_check": "Siti - Clean, Chill, Expresive, Casual",
+        "public_owner_id": "46133dee5cecc4a1ea97d09a4e22dabc4014c60855311f708c50464f893f2562"
       }
     },
     "dinda": {
@@ -220,25 +252,36 @@
       "features": {
         "hair": "ponytail",
         "glasses": false,
+        "glassesStyle": "round",
         "bandaid": false,
         "tucked": false,
         "outfit": "smp",
         "bottom": "skirt",
         "sleeves": "short",
         "mustache": false,
+        "mustacheStyle": "thick",
         "lashes": true,
-        "badge": "osis"
+        "badge": "osis",
+        "pattern": "none",
+        "collar": "shirt",
+        "shoes": "shoe",
+        "accessories": []
       },
       "voice": {
-        "voice_id": "cgSgspJ2msm6clMCkdW9",
-        "label": "Jessica (multibahasa)",
+        "voice_id": "d15jrIAARvF899pDoC6T",
+        "label": "Kak Ceria – Cute (id, anak/remaja)",
+        "source": "elevenlabs-library",
         "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1104,
         "settings": {
           "stability": 0.45,
           "similarity_boost": 0.8,
           "style": 0.5,
           "use_speaker_boost": true
-        }
+        },
+        "name_check": "Kak Ceria - Cute Kids Storyteller",
+        "public_owner_id": "a0f5b941a4eb06e7b8e76f9da7dff48dca632a5d63dee3723b0864e5b2d11f5f"
       }
     },
     "pakDarto": {
@@ -278,42 +321,837 @@
       "features": {
         "hair": "parted",
         "glasses": false,
+        "glassesStyle": "round",
         "bandaid": false,
         "tucked": true,
         "outfit": "teacher",
         "bottom": "pants",
         "sleeves": "short",
         "mustache": true,
+        "mustacheStyle": "thick",
         "lashes": false,
-        "badge": "nametag"
+        "badge": "nametag",
+        "pattern": "kawung",
+        "collar": "shirt",
+        "shoes": "shoe",
+        "accessories": []
       },
       "voice": {
-        "voice_id": "qAPGpZUUXbGAN8LW8h7f",
-        "label": "papa gupron 2 (id, dewasa)",
+        "voice_id": "THv4P0RGwO160U4WGB6c",
+        "label": "Akbar – Legal Authority (id, pria dewasa)",
+        "source": "elevenlabs-library",
         "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1105,
         "settings": {
           "stability": 0.55,
           "similarity_boost": 0.8,
           "style": 0.35,
           "use_speaker_boost": true
-        }
+        },
+        "name_check": "Akbar - Legal authority",
+        "public_owner_id": "7bb54210cb7ab0cccaedad7e0e3af8823e1327e58a9fd43fec136b4dcf4c3dc9"
+      }
+    },
+    "buIjah": {
+      "name": "Bu Ijah",
+      "role": "Pemilik Warung Bu Ijah",
+      "age": 52,
+      "school": "Pedagang, tetangga sekolah",
+      "personality": [
+        "Ramah tapi teliti soal utang",
+        "Tahu semua gosip sekolah",
+        "Menganggap Kusaka anak sendiri"
+      ],
+      "catchphrase": "Utangmu udah sepanjang jalan tol, Le.",
+      "signature": [
+        "Kerudung merah muda",
+        "Daster hijau + celemek",
+        "Pensil terselip di kerudung",
+        "Buku utang"
+      ],
+      "palette": {
+        "skin": "#e8b48a",
+        "skinShade": "#cf9670",
+        "hair": "#2a1d1a",
+        "shirt": "#3fa37a",
+        "shirtShade": "#2f8a63",
+        "bottom": "#3fa37a",
+        "accent": "#e85d75",
+        "hijab": "#e85d75",
+        "hijabShade": "#c94a61",
+        "motif": "#fbfbf7",
+        "apron": "#fff4e0"
+      },
+      "build": {
+        "bodyW": 1.12,
+        "belly": 26,
+        "browThick": 7,
+        "height": 0.95
+      },
+      "features": {
+        "hair": "hijab",
+        "glasses": false,
+        "glassesStyle": "round",
+        "bandaid": false,
+        "tucked": false,
+        "outfit": "apron",
+        "bottom": "dress",
+        "sleeves": "long",
+        "mustache": false,
+        "mustacheStyle": "thick",
+        "lashes": true,
+        "badge": "none",
+        "pattern": "none",
+        "collar": "round",
+        "shoes": "sandal",
+        "accessories": [
+          "pencil"
+        ]
+      },
+      "voice": {
+        "voice_id": "72DflCufZVT1v5PLdisE",
+        "label": "Lala (id, wanita dewasa, logat Jawa)",
+        "source": "elevenlabs-library",
+        "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1106,
+        "settings": {
+          "stability": 0.5,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true
+        },
+        "name_check": "Lala",
+        "public_owner_id": "f4567affc22de6997daf24ee33503d3545de6fa2c95b1a5bc34c976c5f837ec1"
+      }
+    },
+    "ibu": {
+      "name": "Bu Ratna",
+      "role": "Ibu Kusaka & Dinda",
+      "age": 44,
+      "school": "Ibu rumah tangga, pengusaha kue online",
+      "personality": [
+        "Galak kalau rumah berantakan",
+        "Selalu bawa sapu/centong saat marah",
+        "Paling sayang anak-anaknya",
+        "Sering video call grup arisan"
+      ],
+      "catchphrase": "KUSAKA! Kamar kayak kapal pecah!",
+      "signature": [
+        "Kerudung instan marun",
+        "Daster motif bunga",
+        "Sandal jepit",
+        "Centong nasi (properti)"
+      ],
+      "palette": {
+        "skin": "#f4c99e",
+        "skinShade": "#e0ab7e",
+        "hair": "#2a1d1a",
+        "shirt": "#f6a5c0",
+        "shirtShade": "#e389a8",
+        "bottom": "#f6a5c0",
+        "accent": "#8e2b4f",
+        "hijab": "#8e2b4f",
+        "hijabShade": "#6f1f3d",
+        "motif": "#ffffff"
+      },
+      "build": {
+        "bodyW": 1.08,
+        "belly": 18,
+        "browThick": 7,
+        "height": 0.98
+      },
+      "features": {
+        "hair": "hijab",
+        "glasses": false,
+        "glassesStyle": "round",
+        "bandaid": false,
+        "tucked": false,
+        "outfit": "daster",
+        "bottom": "dress",
+        "sleeves": "short",
+        "mustache": false,
+        "mustacheStyle": "thick",
+        "lashes": true,
+        "badge": "none",
+        "pattern": "floral",
+        "collar": "round",
+        "shoes": "sandal",
+        "accessories": []
+      },
+      "voice": {
+        "voice_id": "fpsPI3vlnQ0anCTPiHk5",
+        "label": "Serena – Heartfelt (id, wanita dewasa)",
+        "source": "elevenlabs-library",
+        "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1107,
+        "settings": {
+          "stability": 0.5,
+          "similarity_boost": 0.8,
+          "style": 0.4,
+          "use_speaker_boost": true
+        },
+        "name_check": "Serena - Heartfelt Indonesian",
+        "public_owner_id": "b801b985cdc08764ca945c5a91e596e87a48f5afb26ee615659ddbdc9cdbf8dd"
+      }
+    },
+    "bapak": {
+      "name": "Pak Hendra",
+      "role": "Ayah Kusaka & Dinda",
+      "age": 47,
+      "school": "Karyawan kantor, hobi memancing",
+      "personality": [
+        "Raja dad jokes",
+        "Takut sama istri",
+        "Diam-diam membela Kusaka",
+        "Selalu baca berita di HP sambil ngopi"
+      ],
+      "catchphrase": "Bapak dulu juga gitu, Nak.",
+      "signature": [
+        "Kepala agak botak",
+        "Kacamata kotak",
+        "Kaus polo hijau",
+        "Sarung kotak-kotak (di rumah)"
+      ],
+      "palette": {
+        "skin": "#d9a171",
+        "skinShade": "#bf8656",
+        "hair": "#2b2623",
+        "shirt": "#3c8d5a",
+        "shirtShade": "#2f7047",
+        "bottom": "#5a4a8a",
+        "accent": "#2f7047"
+      },
+      "build": {
+        "bodyW": 1.12,
+        "belly": 30,
+        "browThick": 9,
+        "height": 1.08
+      },
+      "features": {
+        "hair": "balding",
+        "glasses": true,
+        "glassesStyle": "rect",
+        "bandaid": false,
+        "tucked": false,
+        "outfit": "polo",
+        "bottom": "sarung",
+        "sleeves": "short",
+        "mustache": true,
+        "mustacheStyle": "thin",
+        "lashes": false,
+        "badge": "none",
+        "pattern": "none",
+        "collar": "polo",
+        "shoes": "sandal",
+        "accessories": []
+      },
+      "voice": {
+        "voice_id": "gQQvBatMocMgEreeSqHb",
+        "label": "Baron – Calm & Mature (id, pria dewasa)",
+        "source": "elevenlabs-library",
+        "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1108,
+        "settings": {
+          "stability": 0.55,
+          "similarity_boost": 0.8,
+          "style": 0.3,
+          "use_speaker_boost": true
+        },
+        "name_check": "Baron - Calm & Mature",
+        "public_owner_id": "d39c629e8d7dbd21db7ff78d1dd2a65b349d0c891d61a7b8ad366f765c0ae555"
+      }
+    },
+    "bimo": {
+      "name": "Bimo",
+      "role": "Kakak kelas XII, kapten basket",
+      "age": 18,
+      "school": "Siswa SMA kelas XII, ketua OSIS",
+      "personality": [
+        "Populer dan kalem",
+        "Saingan cinta Kusaka (tanpa sadar)",
+        "Sebenarnya baik dan suka menolong",
+        "Takut kucing"
+      ],
+      "catchphrase": "Santai, Bro. Semua bisa diatur.",
+      "signature": [
+        "Rambut jambul (quiff)",
+        "Badan tinggi atletis",
+        "Jam tangan sport",
+        "Sepatu sneakers putih"
+      ],
+      "palette": {
+        "skin": "#e8b48a",
+        "skinShade": "#cf9670",
+        "hair": "#1e1b26",
+        "shirt": "#fbfbf7",
+        "shirtShade": "#d9dde6",
+        "bottom": "#7b818c",
+        "accent": "#f77f00"
+      },
+      "build": {
+        "bodyW": 1.05,
+        "belly": 0,
+        "browThick": 10,
+        "height": 1.08
+      },
+      "features": {
+        "hair": "quiff",
+        "glasses": false,
+        "glassesStyle": "round",
+        "bandaid": false,
+        "tucked": false,
+        "outfit": "sma",
+        "bottom": "pants",
+        "sleeves": "short",
+        "mustache": false,
+        "mustacheStyle": "thick",
+        "lashes": false,
+        "badge": "osis",
+        "pattern": "none",
+        "collar": "shirt",
+        "shoes": "sneaker",
+        "accessories": [
+          "watch"
+        ]
+      },
+      "voice": {
+        "voice_id": "HmwgE8AfbDbaZpgAi4Bn",
+        "label": "Den – Expressive, Clear, Smooth (id, pria muda)",
+        "source": "elevenlabs-library",
+        "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1109,
+        "settings": {
+          "stability": 0.5,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true
+        },
+        "name_check": "Den - Expressive, Clear, Smooth",
+        "public_owner_id": "a2dfc3acac54c9fc321cee51af34c06647ebc452ce3d21dbed0b66439713f786"
+      }
+    },
+    "sasa": {
+      "name": "Sasa",
+      "role": "Sahabat Nadia, ratu gosip",
+      "age": 17,
+      "school": "Siswi SMA kelas XI IPS 2",
+      "personality": [
+        "Tahu semua gosip lebih dulu",
+        "Selalu live TikTok",
+        "Heboh dan dramatis",
+        "Setia kawan ke Nadia"
+      ],
+      "catchphrase": "Eh, eh, kalian udah denger belum?!",
+      "signature": [
+        "Rambut panjang dengan poni",
+        "Pita pink besar",
+        "Rok abu-abu panjang",
+        "HP dengan casing pink"
+      ],
+      "palette": {
+        "skin": "#f4c99e",
+        "skinShade": "#e0ab7e",
+        "hair": "#3a2418",
+        "shirt": "#fbfbf7",
+        "shirtShade": "#d9dde6",
+        "bottom": "#7b818c",
+        "accent": "#ff6fa5"
+      },
+      "build": {
+        "bodyW": 0.9,
+        "belly": 0,
+        "browThick": 6,
+        "height": 0.95
+      },
+      "features": {
+        "hair": "long",
+        "glasses": false,
+        "glassesStyle": "round",
+        "bandaid": false,
+        "tucked": false,
+        "outfit": "sma",
+        "bottom": "longSkirt",
+        "sleeves": "short",
+        "mustache": false,
+        "mustacheStyle": "thick",
+        "lashes": true,
+        "badge": "osis",
+        "pattern": "none",
+        "collar": "shirt",
+        "shoes": "shoe",
+        "accessories": [
+          "bow"
+        ]
+      },
+      "voice": {
+        "voice_id": "qXOoUJU1h7AiwSe4ltRA",
+        "label": "Zulfa – Upbeat (id, wanita muda)",
+        "source": "elevenlabs-library",
+        "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1110,
+        "settings": {
+          "stability": 0.4,
+          "similarity_boost": 0.8,
+          "style": 0.55,
+          "use_speaker_boost": true
+        },
+        "name_check": "Zulfa - Upbeat",
+        "public_owner_id": "efd8fa74eaaae343fec5a6b51f02dbd0e311e4b3879b616e17e70a68699ab524"
+      }
+    },
+    "buWati": {
+      "name": "Bu Wati",
+      "role": "Guru Matematika",
+      "age": 50,
+      "school": "Guru SMA Nusantara",
+      "personality": [
+        "Killer, ulangan mendadak",
+        "Hafal semua nama siswa yang telat",
+        "Diam-diam penggemar drama Korea",
+        "Penggaris kayu selalu di tangan"
+      ],
+      "catchphrase": "Kerjakan halaman 45 sampai 90. Sekarang.",
+      "signature": [
+        "Rambut disanggul",
+        "Kacamata cat-eye merah",
+        "Blus batik parang ungu",
+        "Bros emas"
+      ],
+      "palette": {
+        "skin": "#f4c99e",
+        "skinShade": "#e0ab7e",
+        "hair": "#2b2623",
+        "shirt": "#6a3d8f",
+        "shirtShade": "#53306f",
+        "bottom": "#3a3340",
+        "accent": "#e63946",
+        "motif": "#e7c86b"
+      },
+      "build": {
+        "bodyW": 1.0,
+        "belly": 10,
+        "browThick": 7,
+        "height": 0.97
+      },
+      "features": {
+        "hair": "bun",
+        "glasses": true,
+        "glassesStyle": "cateye",
+        "bandaid": false,
+        "tucked": false,
+        "outfit": "blouse",
+        "bottom": "longSkirt",
+        "sleeves": "long",
+        "mustache": false,
+        "mustacheStyle": "thick",
+        "lashes": true,
+        "badge": "nametag",
+        "pattern": "parang",
+        "collar": "round",
+        "shoes": "shoe",
+        "accessories": []
+      },
+      "voice": {
+        "voice_id": "tCKeP99grYL9wZRg6sQ9",
+        "label": "Riri Rida – Documentary & News (id, wanita dewasa)",
+        "source": "elevenlabs-library",
+        "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1111,
+        "settings": {
+          "stability": 0.6,
+          "similarity_boost": 0.8,
+          "style": 0.25,
+          "use_speaker_boost": true
+        },
+        "name_check": "Riri Rida - Documentary & News",
+        "public_owner_id": "b7dec43c37d4fda19acfe062124c9ce7ed85d603fe542ecaadc956f0d32f1c7e"
+      }
+    },
+    "pakJoko": {
+      "name": "Pak Joko",
+      "role": "Guru Olahraga (PJOK)",
+      "age": 39,
+      "school": "Guru SMA Nusantara",
+      "personality": [
+        "Semangat berlebihan",
+        "Semua masalah diselesaikan dengan push-up",
+        "Peluit selalu di mulut",
+        "Mantan atlet lari tingkat kecamatan"
+      ],
+      "catchphrase": "PRIIIT! Keliling lapangan sepuluh kali!",
+      "signature": [
+        "Training biru dengan garis putih",
+        "Peluit kalung merah",
+        "Rambut cepak tentara",
+        "Handuk kecil di bahu"
+      ],
+      "palette": {
+        "skin": "#c98c5e",
+        "skinShade": "#ab7046",
+        "hair": "#1e1b26",
+        "shirt": "#1f4fa3",
+        "shirtShade": "#173d80",
+        "bottom": "#1f4fa3",
+        "accent": "#e63946",
+        "motif": "#ffffff"
+      },
+      "build": {
+        "bodyW": 1.12,
+        "belly": 0,
+        "browThick": 12,
+        "height": 1.06
+      },
+      "features": {
+        "hair": "buzz",
+        "glasses": false,
+        "glassesStyle": "round",
+        "bandaid": false,
+        "tucked": false,
+        "outfit": "tracksuit",
+        "bottom": "trackpants",
+        "sleeves": "long",
+        "mustache": false,
+        "mustacheStyle": "thick",
+        "lashes": false,
+        "badge": "none",
+        "pattern": "stripes",
+        "collar": "zip",
+        "shoes": "sneaker",
+        "accessories": [
+          "whistle"
+        ]
+      },
+      "voice": {
+        "voice_id": "j7n5yC6BN3oA2ZIWImty",
+        "label": "Bambang – Grounded & Authoritative (id, pria dewasa)",
+        "source": "elevenlabs-library",
+        "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1112,
+        "settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.45,
+          "use_speaker_boost": true
+        },
+        "name_check": "Bambang - Grounded and authoritative",
+        "public_owner_id": "64cbc624eb5aab4e95a968e1f41d75402277cca6e549036ed17e56ea33bbbc9e"
+      }
+    },
+    "mangUdin": {
+      "name": "Mang Udin",
+      "role": "Satpam SMA Nusantara",
+      "age": 45,
+      "school": "Satpam sekolah 20 tahun",
+      "personality": [
+        "Penjaga gerbang paling tegas jam 06.45",
+        "Bisa disogok gorengan",
+        "Logat Sunda kental",
+        "Hafal semua jalur kabur siswa"
+      ],
+      "catchphrase": "Telat lagi, Jang? Push-up dua puluh!",
+      "signature": [
+        "Topi satpam navy",
+        "Kemeja putih + celana navy",
+        "Kumis tipis",
+        "Pentungan & HT di pinggang"
+      ],
+      "palette": {
+        "skin": "#c98c5e",
+        "skinShade": "#ab7046",
+        "hair": "#1e1b26",
+        "shirt": "#fbfbf7",
+        "shirtShade": "#d9dde6",
+        "bottom": "#1f2f5c",
+        "accent": "#1f2f5c"
+      },
+      "build": {
+        "bodyW": 1.1,
+        "belly": 20,
+        "browThick": 10,
+        "height": 1.02
+      },
+      "features": {
+        "hair": "cap",
+        "glasses": false,
+        "glassesStyle": "round",
+        "bandaid": false,
+        "tucked": true,
+        "outfit": "security",
+        "bottom": "pants",
+        "sleeves": "short",
+        "mustache": true,
+        "mustacheStyle": "thin",
+        "lashes": false,
+        "badge": "security",
+        "pattern": "none",
+        "collar": "shirt",
+        "shoes": "shoe",
+        "accessories": []
+      },
+      "voice": {
+        "voice_id": "ycWddzph8aV8QQGQTic6",
+        "label": "Airelion – Street Talker (id, logat Sunda)",
+        "source": "elevenlabs-library",
+        "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1113,
+        "settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.45,
+          "use_speaker_boost": true
+        },
+        "name_check": "Airelion - Street Talker",
+        "public_owner_id": "971b3a8b1c6af9908b992870e4eb1d38e8d95331e18b5a6ce3c6581df4b76a85"
+      }
+    },
+    "ucok": {
+      "name": "Ucok",
+      "role": "Teman sekelas, badut kelas",
+      "age": 17,
+      "school": "Siswa SMA kelas XI IPS 2, pindahan dari Medan",
+      "personality": [
+        "Suara paling keras di kelas",
+        "Percaya diri, logat Medan",
+        "Jago nyanyi tapi fals",
+        "Penengah kalau ada ribut"
+      ],
+      "catchphrase": "Macam mana pulak ini?!",
+      "signature": [
+        "Rambut keriting mengembang",
+        "Alis tebal menyatu",
+        "Kulit sawo matang",
+        "Kemeja selalu kebesaran"
+      ],
+      "palette": {
+        "skin": "#c98c5e",
+        "skinShade": "#ab7046",
+        "hair": "#1b1715",
+        "shirt": "#fbfbf7",
+        "shirtShade": "#d9dde6",
+        "bottom": "#7b818c",
+        "accent": "#2a9d8f"
+      },
+      "build": {
+        "bodyW": 1.06,
+        "belly": 6,
+        "browThick": 13,
+        "height": 1.02
+      },
+      "features": {
+        "hair": "curly",
+        "glasses": false,
+        "glassesStyle": "round",
+        "bandaid": false,
+        "tucked": false,
+        "outfit": "sma",
+        "bottom": "pants",
+        "sleeves": "short",
+        "mustache": false,
+        "mustacheStyle": "thick",
+        "lashes": false,
+        "badge": "osis",
+        "pattern": "none",
+        "collar": "shirt",
+        "shoes": "shoe",
+        "accessories": []
+      },
+      "voice": {
+        "voice_id": "zmTMXWr9TzPTCLvo0Uqr",
+        "label": "Finn – Expressive (id, pria muda)",
+        "source": "elevenlabs-library",
+        "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1114,
+        "settings": {
+          "stability": 0.4,
+          "similarity_boost": 0.8,
+          "style": 0.55,
+          "use_speaker_boost": true
+        },
+        "name_check": "Finn - Expressive & Ads Indonesian",
+        "public_owner_id": "b505252d40e6296321d6e029fba2d2d8fdf4a0aeeb43ae84a38da5038e85fb31"
+      }
+    },
+    "raka": {
+      "name": "Raka",
+      "role": "Teman sekelas Dinda (SMP)",
+      "age": 13,
+      "school": "Siswa SMP kelas 8",
+      "personality": [
+        "Gamer, ranking tinggi di game",
+        "Sering bolos les demi push rank",
+        "Rival sekaligus partner jahil Dinda",
+        "Mengidolakan Kusaka (entah kenapa)"
+      ],
+      "catchphrase": "Bentar, satu match lagi!",
+      "signature": [
+        "Rambut berantakan",
+        "Headset gaming di leher",
+        "Seragam SMP celana biru dongker",
+        "Plester di jari (main game)"
+      ],
+      "palette": {
+        "skin": "#d9a171",
+        "skinShade": "#bf8656",
+        "hair": "#2a1d1a",
+        "shirt": "#fbfbf7",
+        "shirtShade": "#d9dde6",
+        "bottom": "#1f2f5c",
+        "accent": "#00b4d8"
+      },
+      "build": {
+        "bodyW": 0.86,
+        "belly": 0,
+        "browThick": 8,
+        "height": 0.86
+      },
+      "features": {
+        "hair": "messy",
+        "glasses": false,
+        "glassesStyle": "round",
+        "bandaid": false,
+        "tucked": false,
+        "outfit": "smp",
+        "bottom": "pants",
+        "sleeves": "short",
+        "mustache": false,
+        "mustacheStyle": "thick",
+        "lashes": false,
+        "badge": "osis",
+        "pattern": "none",
+        "collar": "shirt",
+        "shoes": "sneaker",
+        "accessories": [
+          "headset"
+        ]
+      },
+      "voice": {
+        "voice_id": "VFXc6JwNno9BE0o1QwdU",
+        "label": "Andra – Gaming Narrator (id, pria muda)",
+        "source": "elevenlabs-library",
+        "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1115,
+        "settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.5,
+          "use_speaker_boost": true
+        },
+        "name_check": "Andra - Indonesian Gaming Narrator",
+        "public_owner_id": "1b7282cdc464ec2c8908edc042964c2dd676bb4ddcb310f3a85656bbf76798b0"
+      }
+    },
+    "tara": {
+      "name": "Kak Tara",
+      "role": "Sepupu Kusaka, mahasiswi",
+      "age": 20,
+      "school": "Mahasiswi semester 3, anak kos",
+      "personality": [
+        "Kakak bijak tapi sering ikut-ikutan konyol",
+        "Sibuk organisasi & tugas",
+        "Selalu kehabisan uang akhir bulan",
+        "Jembatan ke cerita dunia kampus"
+      ],
+      "catchphrase": "Nikmatin masa SMA, Kus. Kuliah itu… beda.",
+      "signature": [
+        "Rambut bob sebahu",
+        "Kemeja flanel merah kotak-kotak",
+        "Kaus kuning",
+        "Celana jeans + sneakers"
+      ],
+      "palette": {
+        "skin": "#f4c99e",
+        "skinShade": "#e0ab7e",
+        "hair": "#3a2418",
+        "shirt": "#c0392b",
+        "shirtShade": "#962d22",
+        "bottom": "#3d5a80",
+        "accent": "#ffd23f",
+        "inner": "#ffd23f"
+      },
+      "build": {
+        "bodyW": 0.92,
+        "belly": 0,
+        "browThick": 7,
+        "height": 0.98
+      },
+      "features": {
+        "hair": "bob",
+        "glasses": false,
+        "glassesStyle": "round",
+        "bandaid": false,
+        "tucked": false,
+        "outfit": "casual",
+        "bottom": "pants",
+        "sleeves": "long",
+        "mustache": false,
+        "mustacheStyle": "thick",
+        "lashes": true,
+        "badge": "none",
+        "pattern": "plaid",
+        "collar": "open",
+        "shoes": "sneaker",
+        "accessories": []
+      },
+      "voice": {
+        "voice_id": "TrU3igk19A4aIUi2GAA2",
+        "label": "Velora – Warm, Youthful (id, wanita muda)",
+        "source": "elevenlabs-library",
+        "model_id": "eleven_v4",
+        "language_code": "id",
+        "seed": 1116,
+        "settings": {
+          "stability": 0.5,
+          "similarity_boost": 0.8,
+          "style": 0.4,
+          "use_speaker_boost": true
+        },
+        "name_check": "Velora - Warm, Youthful & Conversational",
+        "public_owner_id": "eb2b766335576810e43527fdba4b86813b069281543fdde5470f32aa737c822e"
       }
     }
   },
-  "supporting": {
-    "buIjah": {
-      "name": "Bu Ijah",
-      "role": "Pemilik warung langganan",
-      "signature": [
-        "Kerudung merah muda",
-        "Baju hijau",
-        "Selalu tersenyum, mengangguk saat menerima pesanan"
-      ],
-      "palette": {
-        "skin": "#e0a77a",
-        "hijab": "#e85d75",
-        "dress": "#3fa37a"
-      }
+  "supporting": {},
+  "relationships": {
+    "kusaka": {
+      "ujang": "sahabat sebangku",
+      "nadia": "naksir diam-diam",
+      "bimo": "saingan (sepihak)",
+      "dinda": "adik pengacau",
+      "ibu": "ibu",
+      "bapak": "ayah",
+      "tara": "sepupu, tempat curhat",
+      "pakDarto": "musuh bebuyutan (wali kelas)",
+      "mangUdin": "langganan telat",
+      "buIjah": "punya utang"
+    },
+    "nadia": {
+      "sasa": "sahabat",
+      "bimo": "rekan OSIS",
+      "buWati": "murid kesayangan"
+    },
+    "dinda": {
+      "raka": "rival & partner jahil",
+      "tara": "idola"
+    },
+    "ucok": {
+      "ujang": "teman main",
+      "kusaka": "teman sekelas"
+    },
+    "pakDarto": {
+      "buWati": "rekan guru, sering adu argumen",
+      "pakJoko": "rekan guru",
+      "mangUdin": "partner razia"
     }
   }
 }

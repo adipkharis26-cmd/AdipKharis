@@ -1,27 +1,23 @@
 import React from "react";
 import meta from "./locations.json";
 import { City, Ground, Sky, Warung } from "./Background";
+import { Kantin, KelasBelakang, KelasJendela, Kos, LapanganUpacara, LapanganUpacaraBack, MejaGuru, Perpustakaan, RuangBK, RuangTamu } from "./Locations2";
 
 /* Locked location sets. Each set = parallax layers (d: 0 far … 1 character plane) + optional foreground. */
 const OUT = "#1b1b1b";
 const SW = 6;
 export type LocId = keyof typeof meta.locations;
-export interface Layer { d: number; el: (t: number) => React.ReactNode }
+export interface Layer { d: number; el: (t: number, opts?: { ijahNod?: number }) => React.ReactNode }
 export interface LocationDef { id: LocId; bg: string; layers: Layer[]; front?: Layer[] }
 
-const Txt: React.FC<{ x: number; y: number; size: number; fill?: string; children: React.ReactNode; anchor?: "middle" | "start"; font?: string; stroke?: number }> =
-  ({ x, y, size, fill = "#fff", children, anchor = "middle", font = "Bangers", stroke = 4 }) => (
-    <text x={x} y={y} fontSize={size} fontFamily={font} fill={fill} textAnchor={anchor} stroke={OUT} strokeWidth={stroke} paintOrder="stroke" letterSpacing={2}>{children}</text>
-  );
-
-const Tree: React.FC<{ x: number; y: number; s?: number }> = ({ x, y, s = 1 }) => (
+export const Tree: React.FC<{ x: number; y: number; s?: number }> = ({ x, y, s = 1 }) => (
   <g transform={`translate(${x} ${y}) scale(${s})`} stroke={OUT} strokeWidth={5}>
     <rect x={-14} y={-10} width={28} height={140} fill="#8a5a2b" />
     <circle cx={-50} cy={-40} r={70} fill="#5cb85c" /><circle cx={50} cy={-50} r={74} fill="#4cae4c" /><circle cx={0} cy={-100} r={80} fill="#62c462" />
   </g>
 );
 
-const Flag: React.FC<{ x: number; y: number; t: number; h?: number }> = ({ x, y, t, h = 520 }) => {
+export const Flag: React.FC<{ x: number; y: number; t: number; h?: number }> = ({ x, y, t, h = 520 }) => {
   const w = (k: number) => Math.sin(t * 5 + k) * 8;
   return (
     <g>
@@ -34,7 +30,7 @@ const Flag: React.FC<{ x: number; y: number; t: number; h?: number }> = ({ x, y,
   );
 };
 
-const SchoolBuilding: React.FC<{ x: number; y: number; w: number; floors?: number }> = ({ x, y, w, floors = 2 }) => {
+export const SchoolBuilding: React.FC<{ x: number; y: number; w: number; floors?: number }> = ({ x, y, w, floors = 2 }) => {
   const fh = 170;
   return (
     <g stroke={OUT} strokeWidth={5}>
@@ -80,20 +76,25 @@ const Gerbang: React.FC<{ t: number }> = ({ t }) => (
       </g>
     ))}
     <rect x={700} y={290} width={540} height={120} rx={10} fill="#1f5c3a" stroke={OUT} strokeWidth={SW} />
-    <Txt x={970} y={358} size={66} fill="#ffd23f">SMA NUSANTARA</Txt>
-    <Txt x={970} y={396} size={28} fill="#fff" font="Baloo2" stroke={3}>Jl. Merdeka No. 17</Txt>
+    {/* school emblem (no readable text — editing rule) */}
+    <g transform="translate(970 350)" stroke={OUT} strokeWidth={4}>
+      <path d="M -40 -44 L 40 -44 L 40 6 Q 40 38 0 50 Q -40 38 -40 6 Z" fill="#ffd23f" />
+      <path d="M -22 -6 L 0 -26 L 22 -6 L 0 14 Z" fill="#1f5c3a" />
+      <path d="M -24 24 Q 0 10 24 24" fill="none" />
+    </g>
+    {[-200, -150, 150, 200].map((dx) => <rect key={dx} x={970 + dx - 18} y={336} width={36} height={10} rx={5} fill="#ffd23f" stroke={OUT} strokeWidth={3} />)}
     {/* security post */}
     <g transform="translate(1540 620)" stroke={OUT} strokeWidth={SW}>
       <rect x={0} y={0} width={200} height={260} fill="#f6f1e4" />
       <path d="M -20 0 L 100 -60 L 220 0 Z" fill="#c8553d" />
       <rect x={30} y={40} width={140} height={80} fill="#9ad0ec" />
       <rect x={20} y={-30} width={160} height={36} fill="#1f5c3a" strokeWidth={4} />
-      <Txt x={100} y={-2} size={30} fill="#fff" stroke={3}>POS SATPAM</Txt>
+      <path transform="translate(100 -12)" d="M -12 -14 L 12 -14 L 12 0 Q 12 10 0 14 Q -12 10 -12 0 Z" fill="#ffd23f" strokeWidth={3} />
     </g>
     <Flag x={1830} y={190} t={t} h={690} />
   </g>
 );
-const Paving: React.FC = () => (
+export const Paving: React.FC = () => (
   <g>
     <rect x={-1200} y={880} width={4400} height={800} fill="#c9c3b6" stroke={OUT} strokeWidth={SW} />
     {Array.from({ length: 40 }).map((_, i) => <line key={i} x1={-1200 + i * 110} y1={880} x2={-1300 + i * 110} y2={1680} stroke="#b0a998" strokeWidth={4} />)}
@@ -102,7 +103,7 @@ const Paving: React.FC = () => (
 );
 
 /* ------------------------------ KELAS ------------------------------------ */
-const Desk: React.FC<{ x: number; y: number; s?: number; bag?: string }> = ({ x, y, s = 1, bag }) => (
+export const Desk: React.FC<{ x: number; y: number; s?: number; bag?: string }> = ({ x, y, s = 1, bag }) => (
   <g transform={`translate(${x} ${y}) scale(${s})`} stroke={OUT} strokeWidth={5}>
     {/* chair back */}
     <rect x={30} y={-150} width={110} height={70} rx={6} fill="#b07a45" />
@@ -137,11 +138,17 @@ const Kelas: React.FC<{ t: number }> = ({ t }) => (
     {/* whiteboard */}
     <rect x={540} y={170} width={840} height={360} fill="#fbfdff" stroke="#8d939c" strokeWidth={14} />
     <rect x={540} y={170} width={840} height={360} fill="none" stroke={OUT} strokeWidth={SW} />
-    <Txt x={580} y={240} size={46} fill="#2f7fd8" anchor="start" stroke={0}>BAB 3: EKONOMI MIKRO</Txt>
+    {/* supply–demand graph doodle */}
+    <g fill="none" strokeLinecap="round" strokeWidth={6}>
+      <path d="M 1010 230 L 1010 470 L 1300 470" stroke="#2b2b2b" />
+      <path d="M 1040 260 Q 1150 380 1280 450" stroke="#2f7fd8" />
+      <path d="M 1040 450 Q 1150 360 1280 250" stroke="#e63946" />
+      <path d="M 590 230 L 760 230" stroke="#2f7fd8" strokeWidth={10} />
+    </g>
     {[290, 340, 390, 440].map((y, i) => (
-      <path key={y} d={`M 590 ${y} q 30 -14 60 0 t 60 0 t 60 0 t 60 0 ${i % 2 ? "t 60 0 t 60 0" : ""}`} fill="none" stroke="#3a3a3a" strokeWidth={5} strokeLinecap="round" />
+      <path key={y} d={`M 590 ${y} q 30 -14 60 0 t 60 0 t 60 0 ${i % 2 ? "t 60 0" : ""}`} fill="none" stroke="#3a3a3a" strokeWidth={5} strokeLinecap="round" />
     ))}
-    <Txt x={1180} y={470} size={40} fill="#e63946" stroke={0}>PR hal. 45!</Txt>
+    <circle cx={1150} cy={350} r={10} fill="#e63946" />
     <rect x={600} y={530} width={720} height={16} fill="#8d939c" stroke={OUT} strokeWidth={4} />
     {/* bulletin board (mading) */}
     <g transform="translate(90 200)" stroke={OUT} strokeWidth={5}>
@@ -149,8 +156,9 @@ const Kelas: React.FC<{ t: number }> = ({ t }) => (
       <rect x={20} y={20} width={140} height={120} fill="#fff" transform="rotate(-3 90 80)" />
       <rect x={180} y={30} width={130} height={100} fill="#ffe066" transform="rotate(4 245 80)" />
       <rect x={40} y={160} width={260} height={110} fill="#fff" />
-      <Txt x={170} y={200} size={30} fill="#1f5c3a" stroke={0}>JADWAL PIKET</Txt>
-      {[220, 240, 258].map((y) => <line key={y} x1={60} x2={280} y1={y} y2={y} stroke="#999" strokeWidth={3} />)}
+      {/* duty roster grid (no text) */}
+      {[185, 205, 225, 245].map((y) => <line key={y} x1={50} x2={290} y1={y} y2={y} stroke="#999" strokeWidth={3} />)}
+      {[110, 170, 230].map((x) => <line key={x} x1={x} x2={x} y1={170} y2={262} stroke="#999" strokeWidth={3} />)}
     </g>
     {/* windows */}
     <g transform="translate(1480 200)" stroke={OUT} strokeWidth={5}>
@@ -176,7 +184,7 @@ const Kelas: React.FC<{ t: number }> = ({ t }) => (
 );
 
 /* ------------------------------ KORIDOR ---------------------------------- */
-const Lapangan: React.FC = () => (
+export const Lapangan: React.FC = () => (
   <g stroke={OUT} strokeWidth={5}>
     <rect x={-1200} y={520} width={4400} height={400} fill="#7cc47a" />
     <path d="M 300 560 L 1600 560 L 1800 760 L 100 760 Z" fill="#d98c5f" />
@@ -214,7 +222,7 @@ const Koridor: React.FC<{ t: number }> = ({ t }) => (
     <g transform="translate(560 90)">
       <line x1={-40} y1={0} x2={-40} y2={40} stroke={OUT} strokeWidth={4} /><line x1={40} y1={0} x2={40} y2={40} stroke={OUT} strokeWidth={4} />
       <rect x={-90} y={40} width={180} height={56} rx={8} fill="#1f5c3a" stroke={OUT} strokeWidth={5} />
-      <Txt x={0} y={82} size={40} fill="#ffd23f" stroke={3}>XI IPS 2</Txt>
+      {[-50, -20, 10, 40].map((x, i) => <rect key={x} x={x - 8} y={56} width={18} height={26} rx={3} fill={i < 2 ? "#ffd23f" : "#fff"} />)}
     </g>
     {/* floor tiles (terracotta & cream) */}
     <rect x={-400} y={790} width={2720} height={700} fill="#efe1c6" stroke={OUT} strokeWidth={SW} />
@@ -250,7 +258,7 @@ const Kamar: React.FC<{ t: number }> = ({ t }) => (
         <rect width={200} height={260} fill="#e63946" />
         <circle cx={100} cy={110} r={60} fill="#fff" />
         <path d="M 100 50 L 120 100 L 100 170 L 80 100 Z" fill="#1b1b1b" />
-        <Txt x={100} y={235} size={40} fill="#fff" stroke={3}>GOAL!</Txt>
+        <path d="M 50 230 L 150 230" stroke="#fff" strokeWidth={10} strokeLinecap="round" />
       </g>
     </g>
     {/* bed */}
@@ -279,7 +287,7 @@ const Kamar: React.FC<{ t: number }> = ({ t }) => (
 export const LOCATIONS: Record<LocId, LocationDef> = {
   warung: {
     id: "warung", bg: "#8fd6ff",
-    layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.6, el: () => <City /> }, { d: 1, el: () => <Ground /> }, { d: 1, el: (t) => <Warung t={t} ijahNod={0} /> }],
+    layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.6, el: () => <City /> }, { d: 1, el: () => <Ground /> }, { d: 1, el: (t, o) => <Warung t={t} ijahNod={o?.ijahNod ?? 0} /> }],
   },
   gerbang: {
     id: "gerbang", bg: "#8fd6ff",
@@ -296,5 +304,17 @@ export const LOCATIONS: Record<LocId, LocationDef> = {
     layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.5, el: () => <Lapangan /> }, { d: 1, el: (t) => <Koridor t={t} /> }],
   },
   kamar: { id: "kamar", bg: "#bcd9ea", layers: [{ d: 1, el: (t) => <Kamar t={t} /> }] },
+  kelasBelakang: { id: "kelasBelakang", bg: "#f6e7c1", layers: [{ d: 1, el: (t) => <KelasBelakang t={t} /> }] },
+  kelasJendela: { id: "kelasJendela", bg: "#f6e7c1", layers: [{ d: 1, el: (t) => <KelasJendela t={t} /> }] },
+  mejaGuru: { id: "mejaGuru", bg: "#f6e7c1", layers: [{ d: 1, el: (t) => <MejaGuru t={t} /> }] },
+  kantin: { id: "kantin", bg: "#f3e3b5", layers: [{ d: 1, el: (t) => <Kantin t={t} /> }] },
+  ruangBK: { id: "ruangBK", bg: "#d7ead9", layers: [{ d: 1, el: (t) => <RuangBK t={t} /> }] },
+  perpustakaan: { id: "perpustakaan", bg: "#efe2c8", layers: [{ d: 1, el: (t) => <Perpustakaan t={t} /> }] },
+  ruangTamu: { id: "ruangTamu", bg: "#f7dcc4", layers: [{ d: 1, el: (t) => <RuangTamu t={t} /> }] },
+  lapanganUpacara: {
+    id: "lapanganUpacara", bg: "#8fd6ff",
+    layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.55, el: () => <LapanganUpacaraBack /> }, { d: 1, el: (t) => <LapanganUpacara t={t} /> }],
+  },
+  kos: { id: "kos", bg: "#e9edf2", layers: [{ d: 1, el: (t) => <Kos t={t} /> }] },
 };
 export const LOCATION_META = meta;

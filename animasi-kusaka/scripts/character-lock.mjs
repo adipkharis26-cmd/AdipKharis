@@ -16,13 +16,21 @@ const FILES = [
   "src/scene/locations.json",
   "src/scene/Locations.tsx",
   "src/scene/Background.tsx",
+  "src/scene/Locations2.tsx",
+  "src/edit/editing.json",
+  "src/audio/sfx.json",
+  "src/fx/Overlays.tsx",
+  // every SFX file is locked too (sound consistency)
+  ...fs.readdirSync(path.join(root, "public/sfx")).filter((f) => f.endsWith(".mp3")).sort().map((f) => `public/sfx/${f}`),
 ];
 const lockPath = path.join(root, "characters.lock.json");
 const sha = (f) => crypto.createHash("sha256").update(fs.readFileSync(path.join(root, f))).digest("hex");
 const canonChars = JSON.parse(fs.readFileSync(path.join(root, "src/characters/canon.json"), "utf8"));
 const canonLocs = JSON.parse(fs.readFileSync(path.join(root, "src/scene/locations.json"), "utf8"));
-// Combined version: characters + locations. Bump either one to re-lock deliberately.
-const canon = { version: `${canonChars.version}+loc${canonLocs.version}` };
+const canonEdit = JSON.parse(fs.readFileSync(path.join(root, "src/edit/editing.json"), "utf8"));
+const canonSfx = JSON.parse(fs.readFileSync(path.join(root, "src/audio/sfx.json"), "utf8"));
+// Combined version: characters + locations + editing + sfx. Bump one of them to re-lock deliberately.
+const canon = { version: `${canonChars.version}+loc${canonLocs.version}+edit${canonEdit.version}+sfx${canonSfx.version}` };
 const current = Object.fromEntries(FILES.map((f) => [f, sha(f)]));
 const lock = fs.existsSync(lockPath) ? JSON.parse(fs.readFileSync(lockPath, "utf8")) : null;
 const changed = lock ? FILES.filter((f) => lock.files[f] !== current[f]) : FILES;
@@ -31,7 +39,7 @@ const mode = process.argv[2] ?? "check";
 if (mode === "check") {
   if (!lock) { console.error("✗ characters.lock.json belum ada. Jalankan: npm run lock:characters"); process.exit(1); }
   if (changed.length) {
-    console.error(`✗ Desain karakter TERKUNCI (v${lock.version}) tapi file berikut berubah:\n  - ${changed.join("\n  - ")}`);
+    console.error(`✗ KANON TERKUNCI (v${lock.version}) tapi file berikut berubah:\n  - ${changed.join("\n  - ")}`);
     console.error("  Kalau perubahan ini disengaja: naikkan \"version\" di canon.json / locations.json, render ulang sheet\n  (npm run sheets), lalu jalankan npm run lock:characters.");
     process.exit(1);
   }
@@ -39,7 +47,7 @@ if (mode === "check") {
 } else if (mode === "lock") {
   if (lock && changed.length === 0) { console.log(`✓ Tidak ada perubahan. Tetap terkunci di v${lock.version}`); process.exit(0); }
   if (lock && lock.version === canon.version) {
-    console.error(`✗ File karakter berubah tapi versi kanon masih v${canon.version}. Naikkan "version" di canon.json (karakter) atau locations.json (lokasi) dulu.`);
+    console.error(`✗ File karakter berubah tapi versi kanon masih v${canon.version}. Naikkan "version" di canon.json / locations.json / editing.json / sfx.json dulu.`);
     process.exit(1);
   }
   fs.writeFileSync(lockPath, JSON.stringify({ version: canon.version, lockedAt: new Date().toISOString().slice(0, 10), files: current }, null, 2) + "\n");

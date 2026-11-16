@@ -18,10 +18,10 @@ export const RemotionRoot: React.FC = () => (
     {CHAR_IDS.map((id) => (
       <Composition key={id} id={`ModelSheet-${id}`} component={ModelSheet} durationInFrames={1} fps={FPS} width={3200} height={2760} defaultProps={{ id }} />
     ))}
-    <Composition id="Lineup" component={Lineup} durationInFrames={1} fps={FPS} width={3000} height={1400} />
+    <Composition id="Lineup" component={Lineup} durationInFrames={1} fps={FPS} width={4000} height={2500} />
     {(Object.keys(LOCATIONS) as (keyof typeof LOCATIONS)[]).map((id) => (
       <Composition key={id} id={`Loc-${id}`} component={LocationStill} durationInFrames={1} fps={FPS} width={1920} height={1080} defaultProps={{ id }} />
     ))}
-    <Composition id="LocationSheet" component={LocationSheet} durationInFrames={1} fps={FPS} width={3000} height={1460} />
+    <Composition id="LocationSheet" component={LocationSheet} durationInFrames={1} fps={FPS} width={4000} height={2080} />
   </>
 );

@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "rules": [
+    "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card.",
+    "Subtitle: font Baloo 2 ExtraBold, putih dengan outline hitam, kata yang sedang diucapkan berwarna kuning (karaoke), posisi bawah.",
+    "Caption: hanya teks dari daftar, huruf kapital, pojok kiri atas, kotak hitam transparan, muncul 0,3 detik dan bertahan selama baris tersebut.",
+    "Flashback: filter sepia + vignette + bintik film, SFX flashback_harp saat masuk; caption FLASHBACK atau MASA LALU wajib dipakai di baris pertama flashback.",
+    "Kamera: two-shot → single → push-in sebelum punchline → crash zoom (maks 1x per Shorts).",
+    "Shorts mulai langsung di dialog pertama (tanpa intro), dialog pertama ≤ 0,5 detik."
+  ],
+  "subtitle": { "font": "Baloo2", "color": "#ffffff", "highlight": "#ffe14d", "stroke": "#1b1b1b", "strokeWidth": 10, "sizeLandscape": 52, "sizeVertical": 58, "speakerLabel": false },
+  "captions": ["FLASHBACK", "MASA LALU", "BEBERAPA SAAT KEMUDIAN", "SEMENTARA ITU", "KEESOKAN HARINYA", "SATU JAM KEMUDIAN", "DI TEMPAT LAIN", "SEPULANG SEKOLAH", "MALAM HARINYA", "SENIN PAGI"],
+  "flashback": { "sepia": 0.85, "saturate": 0.7, "vignette": 0.55, "grain": true },
+  "maxCrashPerShort": 1
+}

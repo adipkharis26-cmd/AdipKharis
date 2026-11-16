@@ -1,10 +1,12 @@
 import React from "react";
-import { interpolate, spring } from "remotion";
-import { CharId, FPS, LINES } from "../lib/timeline";
+import editing from "../edit/editing.json";
+import { LINES } from "../lib/timeline";
 
+/* Editing rule (locked in editing.json): on-screen text = subtitles + whitelisted captions ONLY. */
 const OUT = "#1b1b1b";
+const SUB = editing.subtitle;
 
-/** Manga-style radial speed lines (screen space) */
+/** Manga-style radial speed lines (screen space, no text) */
 export const SpeedLines: React.FC<{ w: number; h: number; frame: number; opacity: number }> = ({ w, h, frame, opacity }) => {
   if (opacity <= 0) return null;
   const n = 64;
@@ -28,33 +30,21 @@ export const SpeedLines: React.FC<{ w: number; h: number; frame: number; opacity
   );
 };
 
-import canon from "../characters/canon.json";
-const NAME_COLOR = (id: CharId) => canon.characters[id].palette.accent;
-const NAME = (id: CharId) => canon.characters[id].name.toUpperCase();
-
-/** Karaoke-style subtitles synced to ElevenLabs word timestamps */
+/** Karaoke subtitles synced to ElevenLabs word timestamps. No speaker label (locked). */
 export const Subtitles: React.FC<{ t: number; vertical: boolean; w: number }> = ({ t, vertical, w }) => {
   const line = LINES.find((l) => t >= l.start - 0.05 && t < l.start + l.duration + 0.25);
   if (!line) return null;
   const local = t - line.start;
-  const fs = vertical ? 58 : 52;
+  const fs = vertical ? SUB.sizeVertical : SUB.sizeLandscape;
   return (
-    <div style={{
-      position: "absolute", left: 0, right: 0, bottom: vertical ? 360 : 60, display: "flex", flexDirection: "column", alignItems: "center",
-      fontFamily: "Baloo2", gap: 6,
-    }}>
-      <div style={{
-        background: NAME_COLOR(line.speaker), color: "#fff", fontSize: fs * 0.62, padding: "0 22px", borderRadius: 14,
-        border: `5px solid ${OUT}`, transform: "rotate(-2deg)", fontFamily: "Bangers", letterSpacing: 2,
-      }}>{NAME(line.speaker)}</div>
+    <div style={{ position: "absolute", left: 0, right: 0, bottom: vertical ? 380 : 60, display: "flex", justifyContent: "center", fontFamily: SUB.font }}>
       <div style={{ maxWidth: w * 0.86, textAlign: "center", fontSize: fs, lineHeight: 1.15, fontWeight: 800 }}>
         {line.words.map((wd, i) => {
           const on = local >= wd.t;
           return (
             <span key={i} style={{
-              color: on ? "#ffe14d" : "#ffffff", WebkitTextStroke: `10px ${OUT}`, paintOrder: "stroke fill",
-              display: "inline-block", marginRight: fs * 0.28,
-              transform: `scale(${on && local - wd.t < 0.12 ? 1.12 : 1})`,
+              color: on ? SUB.highlight : SUB.color, WebkitTextStroke: `${SUB.strokeWidth}px ${SUB.stroke}`, paintOrder: "stroke fill",
+              display: "inline-block", marginRight: fs * 0.28, transform: `scale(${on && local - wd.t < 0.12 ? 1.12 : 1})`,
             }}>{wd.w}</span>
           );
         })}
@@ -63,30 +53,33 @@ export const Subtitles: React.FC<{ t: number; vertical: boolean; w: number }> = 
   );
 };
 
-export const TitleCard: React.FC<{ frame: number; vertical: boolean }> = ({ frame, vertical }) => {
-  const s = spring({ frame: frame - 4, fps: FPS, config: { damping: 9, stiffness: 140 } });
-  const out = interpolate(frame, [FPS * 1.8, FPS * 2.2], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  if (out >= 1) return null;
-  const big = vertical ? 190 : 210;
+/** Scene caption (e.g. FLASHBACK, KEESOKAN HARINYA) — only whitelisted texts, validated at voice generation. */
+export const Caption: React.FC<{ t: number; vertical: boolean }> = ({ t, vertical }) => {
+  const line = LINES.find((l) => l.caption && t >= l.start - 0.3 && t < l.start + l.duration);
+  if (!line?.caption || !editing.captions.includes(line.caption)) return null;
+  const k = Math.min(1, (t - line.start + 0.3) / 0.3);
   return (
-    <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-      transform: `translateY(${-out * 1200}px)` }}>
-      <div style={{ fontFamily: "Bangers", fontSize: big, color: "#ffd23f", WebkitTextStroke: `16px ${OUT}`, paintOrder: "stroke fill",
-        transform: `scale(${s}) rotate(${-6 + s * 2}deg)`, letterSpacing: 8, textShadow: "12px 12px 0 #e63946" }}>KUSAKA</div>
-      <div style={{ fontFamily: "Baloo2", fontSize: big * 0.3, color: "#fff", WebkitTextStroke: `8px ${OUT}`, paintOrder: "stroke fill",
-        opacity: s, marginTop: -10 }}>Eps. Traktiran Gagal</div>
-    </div>
+    <div style={{
+      position: "absolute", top: vertical ? 120 : 50, left: vertical ? 50 : 60, padding: "8px 22px", borderRadius: 10,
+      background: "rgba(0,0,0,0.55)", color: "#fff", fontFamily: SUB.font, fontWeight: 800, fontSize: vertical ? 44 : 38,
+      letterSpacing: 3, opacity: k, transform: `translateX(${(1 - k) * -30}px)`,
+    }}>{line.caption}</div>
   );
 };
 
-export const EndCard: React.FC<{ since: number; vertical: boolean }> = ({ since, vertical }) => {
-  if (since < 0) return null;
-  const s = spring({ frame: since * FPS, fps: FPS, config: { damping: 10 } });
+/** Flashback look: sepia/desaturated world + vignette + film grain (overlay part). */
+export const FlashbackOverlay: React.FC<{ w: number; h: number; frame: number; amount: number }> = ({ w, h, frame, amount }) => {
+  if (amount <= 0) return null;
+  const fb = editing.flashback;
+  const dots = Array.from({ length: 70 }).map((_, i) => {
+    const x = ((Math.sin(i * 91.7 + frame * 13.1) + 1) / 2) * w, y = ((Math.sin(i * 47.3 + frame * 7.7) + 1) / 2) * h;
+    return <circle key={i} cx={x} cy={y} r={1 + (i % 3)} fill={i % 2 ? "#fff" : "#000"} opacity={0.35} />;
+  });
   return (
-    <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: vertical ? "flex-start" : "center", justifyContent: "center",
-      paddingTop: vertical ? 260 : 0, background: `rgba(0,0,0,${0.35 * Math.min(1, since * 2)})` }}>
-      <div style={{ fontFamily: "Bangers", fontSize: vertical ? 140 : 150, color: "#fff", WebkitTextStroke: `12px ${OUT}`, paintOrder: "stroke fill",
-        transform: `scale(${s}) rotate(-4deg)`, letterSpacing: 6, textShadow: "10px 10px 0 #2f7fd8" }}>BERSAMBUNG...</div>
-    </div>
+    <svg width={w} height={h} style={{ position: "absolute", inset: 0, opacity: amount, pointerEvents: "none" }}>
+      <defs><radialGradient id="fbvig"><stop offset="50%" stopColor="#2b1d0e" stopOpacity={0} /><stop offset="100%" stopColor="#2b1d0e" stopOpacity={fb.vignette} /></radialGradient></defs>
+      <rect width={w} height={h} fill="url(#fbvig)" />
+      {fb.grain && dots}
+    </svg>
   );
 };

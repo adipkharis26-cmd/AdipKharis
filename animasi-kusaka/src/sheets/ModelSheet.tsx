@@ -179,30 +179,38 @@ export const ModelSheet: React.FC<{ id: CharId }> = ({ id }) => {
   );
 };
 
-/** Whole cast side by side for height & style comparison (canonical facing). */
+/** Whole cast side by side for height & style comparison (canonical facing), 8 per row. */
 export const Lineup: React.FC = () => {
   useFonts();
   const ids = Object.keys(canon.characters) as CharId[];
-  const W = 3000, H = 1400, floor = 1220;
+  const W = 4000, H = 2500, perRow = 8;
+  const emos: Emotion[] = ["smug", "deadpan", "neutral", "laugh", "suspicious", "neutral", "smug", "laugh"];
+  const acts: Action[] = ["thumbsup", "crossed", "hips", "peace", "idle", "gesture", "idle", "wave"];
   return (
     <AbsoluteFill style={{ background: PAPER }}>
       <svg width={W} height={H}>
-        <rect width={W} height={140} fill={OUT} />
-        <Label x={60} y={104} size={96} anchor="start" font="Bangers" color="#ffd23f">LINEUP PEMERAN</Label>
-        <Label x={W - 60} y={96} size={44} anchor="end" color="#fff">kanon v{canon.version} · tinggi & proporsi · menghadap kiri = cermin</Label>
-        {[-860, -740, -468, -240, 0].map((y) => (
-          <line key={y} x1={40} x2={W - 40} y1={floor + y} y2={floor + y} stroke="#c9b98f" strokeWidth={3} strokeDasharray="14 10" />
-        ))}
+        <rect width={W} height={150} fill={OUT} />
+        <Label x={60} y={112} size={104} anchor="start" font="Bangers" color="#ffd23f">LINEUP PEMERAN · {ids.length} KARAKTER</Label>
+        <Label x={W - 60} y={100} size={46} anchor="end" color="#fff">kanon v{canon.version} · tinggi & proporsi · menghadap kiri = cermin</Label>
+        {[0, 1].map((row) => {
+          const floor = 1080 + row * 1170;
+          return (
+            <g key={row}>
+              {[-860, -740, -468, -240, 0].map((y) => (
+                <line key={y} x1={40} x2={W - 40} y1={floor + y} y2={floor + y} stroke="#c9b98f" strokeWidth={3} strokeDasharray="14 10" />
+              ))}
+            </g>
+          );
+        })}
         {ids.map((id, i) => {
-          const x = 330 + i * 590;
+          const row = Math.floor(i / perRow), col = i % perRow;
+          const x = 260 + col * 497, floor = 1080 + row * 1170;
           const c = canon.characters[id];
-          const emo: Emotion = (["smug", "deadpan", "neutral", "laugh", "suspicious"] as Emotion[])[i % 5];
-          const act: Action = (["thumbsup", "crossed", "hips", "peace", "idle"] as Action[])[i % 5];
           return (
             <g key={id}>
-              <Character id={id} x={x} y={floor} facing={1} frame={0} force={{ emotion: emo, action: act, noFx: true }} />
-              <Label x={x} y={floor + 70} size={56} font="Bangers" color={c.palette.accent}>{c.name.toUpperCase()}</Label>
-              <Label x={x} y={floor + 112} size={30}>{c.role}</Label>
+              <Character id={id} x={x} y={floor} facing={1} frame={0} force={{ emotion: emos[i % 8], action: acts[i % 8], noFx: true }} />
+              <Label x={x} y={floor + 64} size={54} font="Bangers" color={c.palette.accent}>{c.name.toUpperCase()}</Label>
+              <Label x={x} y={floor + 102} size={27}>{c.role}</Label>
             </g>
           );
         })}

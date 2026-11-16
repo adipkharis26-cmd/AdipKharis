@@ -120,7 +120,15 @@ export const Warung: React.FC<{ t: number; ijahNod: number }> = ({ t, ijahNod })
       {/* shop sign */}
       <g transform="translate(960 160)">
         <rect x={-300} y={-62} width={600} height={112} rx={10} fill="#e63946" stroke={OUT} strokeWidth={SW} />
-        <text x={0} y={22} textAnchor="middle" fontFamily="Bangers" fontSize={78} fill="#fff8e1" stroke={OUT} strokeWidth={4} paintOrder="stroke" letterSpacing={3}>WARUNG BU IJAH</text>
+        {/* pictogram sign (no readable text): bowl, glass of iced tea, fritter */}
+        <g stroke={OUT} strokeWidth={4}>
+          <path d="M -200 -10 L -100 -10 Q -104 34 -150 36 Q -196 34 -200 -10 Z" fill="#fff8e1" />
+          <path d="M -186 -18 q 6 -16 0 -30 M -150 -18 q 6 -16 0 -30 M -114 -18 q 6 -16 0 -30" fill="none" stroke="#fff8e1" strokeWidth={5} />
+          <path d="M -30 -40 L 30 -40 L 22 36 L -22 36 Z" fill="#e9a23b" />
+          <rect x={-24} y={-40} width={48} height={14} fill="#fff8e1" />
+          <ellipse cx={150} cy={6} rx={56} ry={28} fill="#e9a23b" />
+          <path d="M 110 0 q 20 -10 40 0 t 40 0" fill="none" />
+        </g>
       </g>
       {/* hanging sachet strips (renceng) */}
       {[380, 440, 1440, 1500].map((x, i) => (

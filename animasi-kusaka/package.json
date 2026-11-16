@@ -15,7 +15,8 @@
     "prevoice": "npm run check:characters --silent",
     "prerender": "npm run check:characters --silent",
     "prerender:shorts": "npm run check:characters --silent",
-    "voice:samples": "node scripts/voice-samples.mjs"
+    "voice:samples": "node scripts/voice-samples.mjs",
+    "sfx": "node scripts/generate-sfx.mjs && ./scripts/normalize-sfx.sh"
   },
   "dependencies": {
     "@remotion/cli": "4.0.540",
