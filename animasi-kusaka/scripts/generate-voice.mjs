@@ -43,6 +43,10 @@ for (const l of script.lines) {
   for (const s of l.sfx ?? []) if (!sfx.sfx[s.id]) fail(`${l.id}: SFX "${s.id}" tidak ada di sfx.json`);
   if (l.listenerId && !canon.characters[l.listenerId]) fail(`${l.id}: listenerId tidak dikenal`);
 }
+for (const [id, s] of Object.entries(sfx.sfx)) {
+  const max = id.startsWith("amb_") ? sfx.maxAmbience : sfx.maxVolume;
+  if (s.volume > max) fail(`SFX "${id}" volume ${s.volume} melebihi batas ${max} (SFX hanya pelengkap)`);
+}
 if (crashes > editing.maxCrashPerShort) fail(`Crash zoom dipakai ${crashes}x, maksimal ${editing.maxCrashPerShort}x`);
 
 /* ---------------- voice lock ---------------- */

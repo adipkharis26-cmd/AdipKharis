@@ -1,6 +1,7 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "rules": [
+    "SFX hanya PELENGKAP agar cerita lebih hidup: selalu di bawah suara dialog. Batas volume one-shot 0.35, ambience 0.03 (divalidasi otomatis).",
     "Semua SFX orisinal, dibuat dengan ElevenLabs Sound Effects (royalty-free, aman untuk monetisasi). Tidak memakai klip meme berhak cipta.",
     "Satu SFX = satu makna. Jangan memakai SFX untuk makna lain (contoh: vine_boom HANYA untuk momen 'sadar/kaget besar').",
     "Maksimal 1 vine_boom/crash per Shorts. SFX tidak boleh menutupi dialog (volume sudah dikunci di sini).",
@@ -9,182 +10,182 @@
   ],
   "sfx": {
     "vine_boom": {
-      "volume": 0.7,
+      "volume": 0.35,
       "use": "Momen sadar/kaget besar, punchline realisasi (otomatis di shot crash)",
       "duration": 1.5,
       "prompt": "Deep cinematic bass boom impact meme sound, single heavy thud with short reverb tail, comedic dramatic emphasis"
     },
     "whoosh": {
-      "volume": 0.55,
+      "volume": 0.28,
       "use": "Crash zoom / whip pan cepat (otomatis)",
       "duration": 1,
       "prompt": "Fast cartoon whoosh swish for a crash zoom"
     },
     "whoosh_soft": {
-      "volume": 0.4,
+      "volume": 0.2,
       "use": "Push-in pelan / transisi halus (otomatis di shot push)",
       "duration": 1.2,
       "prompt": "Soft airy swoosh transition, gentle and smooth, short"
     },
     "dun_dun_dun": {
-      "volume": 0.5,
+      "volume": 0.25,
       "use": "Reveal dramatis berlebihan",
       "duration": 2,
       "prompt": "Comedic dramatic shock sting, orchestral hit, cartoon"
     },
     "record_scratch": {
-      "volume": 0.6,
+      "volume": 0.3,
       "use": "Freeze / 'tunggu dulu…' / rencana batal",
       "duration": 1,
       "prompt": "Vinyl record scratch stop sound effect, comedic freeze moment, crisp"
     },
     "crickets": {
-      "volume": 0.5,
+      "volume": 0.25,
       "use": "Hening canggung, lelucon garing",
       "duration": 3,
       "prompt": "Crickets chirping in awkward silence, comedic, night crickets only"
     },
     "sad_trombone": {
-      "volume": 0.55,
+      "volume": 0.28,
       "use": "Gagal total / ending lesu",
       "duration": 3,
       "prompt": "Sad comedic trombone wah wah wah fail"
     },
     "sad_violin": {
-      "volume": 0.3,
+      "volume": 0.15,
       "use": "Memohon / drama sedih lebay (di bawah dialog)",
       "duration": 4,
       "prompt": "Exaggerated melodramatic sad solo violin melody, comedic tiny violin, slow"
     },
     "rimshot": {
-      "volume": 0.55,
+      "volume": 0.28,
       "use": "Setelah punchline / jokes garing",
       "duration": 1.5,
       "prompt": "Drum rimshot ba dum tss joke punchline, snare snare cymbal"
     },
     "laugh_track": {
-      "volume": 0.35,
+      "volume": 0.17,
       "use": "Tawa penonton sitkom (maks 1x per episode)",
       "duration": 3,
       "prompt": "Sitcom studio audience laughter, warm crowd laugh, short burst"
     },
     "boing": {
-      "volume": 0.5,
+      "volume": 0.25,
       "use": "Lompat kaget, gerakan kartun",
       "duration": 1,
       "prompt": "Cartoon spring boing sound, bouncy, comedic"
     },
     "bonk": {
-      "volume": 0.55,
+      "volume": 0.28,
       "use": "Kepala terbentur / dipukul pelan (komedi, bukan kekerasan)",
       "duration": 1,
       "prompt": "Cartoon bonk hit on the head, hollow wooden knock, comedic, no pain"
     },
     "slide_whistle_down": {
-      "volume": 0.5,
+      "volume": 0.25,
       "use": "Semangat turun / jatuh / mental down",
       "duration": 1.5,
       "prompt": "Slide whistle going down, comedic falling sound"
     },
     "ding_idea": {
-      "volume": 0.5,
+      "volume": 0.25,
       "use": "Dapat ide / jawaban benar",
       "duration": 1,
       "prompt": "Bright bell ding, idea lightbulb moment, single clean chime"
     },
     "sparkle_love": {
-      "volume": 0.4,
+      "volume": 0.2,
       "use": "Kusaka melihat Nadia / momen naksir",
       "duration": 2,
       "prompt": "Dreamy romantic sparkle chime with soft harp, crush moment, anime style"
     },
     "flashback_harp": {
-      "volume": 0.5,
+      "volume": 0.25,
       "use": "Masuk/keluar flashback (otomatis)",
       "duration": 2.5,
       "prompt": "Dreamy harp glissando flashback transition, wavy memory effect"
     },
     "gasp_crowd": {
-      "volume": 0.45,
+      "volume": 0.23,
       "use": "Satu kelas kaget 'oooh'",
       "duration": 2,
       "prompt": "Small group of teenagers gasping and saying oooh in surprise, classroom, short"
     },
     "kentongan": {
-      "volume": 0.5,
+      "volume": 0.25,
       "use": "Ritme lokal 'tung tung tung' untuk lelucon khas Indonesia",
       "duration": 2,
       "prompt": "Indonesian bamboo kentongan rhythmic knocking tung tung tung, comedic, three hits then pause"
     },
     "school_bell": {
-      "volume": 0.45,
+      "volume": 0.23,
       "use": "Bel sekolah masuk/istirahat/pulang",
       "duration": 3,
       "prompt": "Electric school bell ringing in an Indonesian school corridor, loud continuous ring then stop"
     },
     "run_cartoon": {
-      "volume": 0.5,
+      "volume": 0.25,
       "use": "Kabur / lari kartun",
       "duration": 1.5,
       "prompt": "Cartoon running feet scramble sound, fast comedic footsteps with zip"
     },
     "pop": {
-      "volume": 0.5,
+      "volume": 0.25,
       "use": "Benda muncul / ikon muncul",
       "duration": 0.5,
       "prompt": "Short cartoon pop sound for a title appearing"
     },
     "amb_street": {
-      "volume": 0.045,
+      "volume": 0.027,
       "loop": true,
       "use": "Ambience: warung pinggir jalan",
       "duration": 20,
       "prompt": "Indonesian roadside food stall ambience, distant motorbikes passing, light street chatter, birds, daytime"
     },
     "amb_school_outdoor": {
-      "volume": 0.045,
+      "volume": 0.027,
       "loop": true,
       "use": "Ambience: gerbang, koridor, lapangan",
       "duration": 15,
       "prompt": "Indonesian school yard ambience, distant students chatter, birds, faint basketball bounce, daytime"
     },
     "amb_classroom": {
-      "volume": 0.045,
+      "volume": 0.027,
       "loop": true,
       "use": "Ambience: kelas",
       "duration": 15,
       "prompt": "Classroom room tone, ceiling fan humming, quiet students murmuring, pencil writing"
     },
     "amb_canteen": {
-      "volume": 0.045,
+      "volume": 0.027,
       "loop": true,
       "use": "Ambience: kantin",
       "duration": 15,
       "prompt": "Busy school canteen ambience, plates and spoons clinking, students chatting, sizzling wok"
     },
     "amb_office": {
-      "volume": 0.035,
+      "volume": 0.021,
       "loop": true,
       "use": "Ambience: ruang BK",
       "duration": 15,
       "prompt": "Quiet office room tone, air conditioner hum, clock ticking softly"
     },
     "amb_library": {
-      "volume": 0.03,
+      "volume": 0.018,
       "loop": true,
       "use": "Ambience: perpustakaan",
       "duration": 15,
       "prompt": "Very quiet library ambience, pages turning, soft whispers, distant footsteps"
     },
     "amb_home": {
-      "volume": 0.045,
+      "volume": 0.027,
       "loop": true,
       "use": "Ambience: rumah sore hari",
       "duration": 15,
       "prompt": "Indonesian house in the late afternoon, distant motorbike, birds, TV murmuring in another room, fan"
     },
     "amb_night": {
-      "volume": 0.045,
+      "volume": 0.027,
       "loop": true,
       "use": "Ambience: kos malam hari",
       "duration": 15,
@@ -205,5 +206,7 @@
     "endDefeated": [
       "sad_trombone@0.5"
     ]
-  }
+  },
+  "maxVolume": 0.35,
+  "maxAmbience": 0.03
 }

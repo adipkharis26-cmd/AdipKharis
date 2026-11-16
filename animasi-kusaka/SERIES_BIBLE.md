@@ -5,7 +5,7 @@
 > SMP, SMA, sampai mahasiswa.
 >
 > Semua kanon dikunci oleh kode. `npm run voice` / `render` **menolak jalan** kalau kanon berubah tanpa disengaja.
-> Versi saat ini: karakter **2.0.0**, lokasi **2.0.0**, editing **1.0.0**, SFX **1.0.0**.
+> Versi saat ini: karakter **2.0.0**, lokasi **2.0.0**, editing **1.0.0**, SFX **1.1.0**.
 
 ---
 
@@ -160,7 +160,7 @@ khas Indonesia wajib ada. Ambience tiap set juga dikunci.
 
 ## 6. Pustaka SFX terkunci (`src/audio/sfx.json`)
 
-Semua SFX **orisinal**, dibuat dengan ElevenLabs Sound Effects, bergaya meme viral tapi bukan klip berhak cipta,
+SFX hanya **pelengkap** agar cerita lebih hidup: volumenya selalu di bawah dialog (one-shot maks 0.35, ambience maks 0.03, divalidasi otomatis). Semua SFX **orisinal**, dibuat dengan ElevenLabs Sound Effects, bergaya meme viral tapi bukan klip berhak cipta,
 sehingga aman untuk monetisasi. Satu SFX untuk satu makna:
 
 | SFX | Makna (selalu sama) |

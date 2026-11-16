@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0+loc2.0.0+edit1.0.0+sfx1.0.0",
+  "version": "2.0.0+loc2.0.0+edit1.0.0+sfx1.1.0",
   "lockedAt": "2026-11-16",
   "files": {
     "src/characters/canon.json": "aac450b9cae2230d6e9b69eff947003d32b6b99822999c3a0ad4413646f10496",
@@ -12,7 +12,7 @@
     "src/scene/Background.tsx": "0f3efa718c88136c9184170a7c46caffe7b631b2ae39954766bd208085d8538a",
     "src/scene/Locations2.tsx": "73ff59fee1c518451ebfabb2d9196d12e98a273a39ceecae383c43d31f6d6fda",
     "src/edit/editing.json": "db73ab6592bd2ec78a9028fadc0c17307478b730c30239f66f7a4e298cc0f7e5",
-    "src/audio/sfx.json": "7890991ec626e132d3789b439733d0b2686a4ae338ad6f0f235cf5d4194b5a79",
+    "src/audio/sfx.json": "677e9db8f3482c31a3d67814e7da101ec0d5d560daa82137d6119315e97bc740",
     "src/fx/Overlays.tsx": "839a9e60cb05e28c8d59172755705b14fd77cc5a5bf61521665a820ffdc67cbe",
     "public/sfx/amb_canteen.mp3": "694f8e083331edc4de17f7409b62249026f5fc88d3da37e92d042bce9d948e35",
     "public/sfx/amb_classroom.mp3": "e9060daa4c0af6bd9bc0cdeb53e31a357eacdb9341a40c60cb8a7e390a0c53df",
