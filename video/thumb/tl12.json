@@ -1,0 +1,59 @@
+{
+  "ep": "tl12",
+  "judul": "Kenapa Sawah Ini Dibuat Bertingkat-Tingkat di Lereng Curam?",
+  "thumbPilihan": "B",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Wajah Gita besar dengan ekspresi protes; teks memakai usul Gita yang dijawab di video, beda dari judul. Catatan: mata Gita kurang terlihat di frame ini, jadi hanya cadangan.",
+      "latar": {
+        "frame": 12.6,
+        "zoom": 1.0,
+        "fokus": [
+          540,
+          960
+        ]
+      },
+      "posisi": "atas",
+      "y": 330,
+      "ukuran": 140,
+      "teks": [
+        {
+          "t": "RATAKAN SAJA?",
+          "warna": "putih"
+        },
+        {
+          "t": "JANGAN DULU!",
+          "kotak": "merah",
+          "besar": 1.1
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Teras bertingkat dari samping sebagai objek tunggal dengan hujan; teks memakai hook (curiosity gap) yang dijawab di beat sains.",
+      "latar": {
+        "frame": 0.8,
+        "zoom": 1.0,
+        "fokus": [
+          540,
+          960
+        ]
+      },
+      "posisi": "atas",
+      "y": 330,
+      "ukuran": 140,
+      "teks": [
+        {
+          "t": "HUJAN DERAS",
+          "warna": "putih"
+        },
+        {
+          "t": "KOK TAK LONGSOR?",
+          "kotak": "merah",
+          "besar": 1.0
+        }
+      ]
+    }
+  ]
+}
