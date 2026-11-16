@@ -16,6 +16,9 @@ Aturan dari pemilik proyek, WAJIB diikuti di setiap sesi:
    Tidak boleh mengganti, menebak, atau memakai suara cadangan. Jangan menulis API key di repo.
 5. **Teks di video hanya subtitle** (tanpa nama pembicara), plus caption resmi dari `editing.json`.
 6. **SFX hanya pelengkap**: volume rendah di bawah dialog (batas di `sfx.json`), satu SFX untuk satu makna.
-7. Selalu commit dan push ke branch kerja setelah perubahan.
+7. **Push ke GitHub hanya setelah pemilik bilang "cocok".** Hasil baru (thumbnail, branding, episode, dll.) dibuat
+   dulu sebagai draft di `animasi-kusaka/drafts/` (tidak ikut git) dan dikirim sebagai gambar pratinjau. Setelah
+   pemilik bilang "cocok", pindahkan ke lokasi final, commit, lalu push ke branch kerja.
+8. Video final yang sudah disetujui disimpan di `animasi-kusaka/releases/` (dikompres < 100 MB agar muat di GitHub).
 
 Panduan cerita dan strategi: `animasi-kusaka/SERIES_BIBLE.md`.

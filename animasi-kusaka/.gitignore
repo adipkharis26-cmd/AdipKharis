@@ -4,3 +4,5 @@ out/
 !model-sheets/*.png
 !model-sheets/**/*.png
 !storyboards/*.png
+drafts/
+!releases/*.mp4
