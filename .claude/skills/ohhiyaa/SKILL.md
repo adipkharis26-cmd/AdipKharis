@@ -8,7 +8,7 @@ description: Gaya terkunci channel "Ohhiyaa!": YouTube Shorts "ukur dunia pakai 
 > **STATUS: TERKUNCI** (versi 10 Nov 2026, disetujui owner; visual v3 "wow" 10 Nov 2026 atas perintah owner). Gaya, alur, durasi, suara, dan mesin di skill ini hanya boleh diubah atas perintah langsung owner. Sesi otomatis (ide harian/produksi) **dilarang mengubah file skill ini**.
 
 Jangan dicampur dengan stikmen Mas Kharis, diorama Ternyata Leluhur, atau Kinetic Pop Dari 1 mnt.
-Patokan: mesin `video/src/ohhiyaa3d.js` (visual v3), contoh episode lengkap `video/src/oh01.js` (Rp1 triliun), contoh pola singkat `video/src/oh00.js`.
+Patokan: mesin `video/src/ohhiyaa3d.js` (visual v3), contoh episode lengkap `video/src/oh01.js` (Rp1 triliun), contoh pola singkat `video/src/oh00.js`, contoh episode kedua (seri "Kalau Semua Orang…", cincin Bumi) `video/src/oh02.js`.
 
 ## 1. Identitas & riset pasar
 - **Channel:** Ohhiyaa!. Fokus **YouTube Shorts** dulu (video panjang dibahas nanti). 9:16, 1080×1920, H.264, 30 fps.
@@ -104,7 +104,7 @@ Yang **wajib dipakai penulis episode** supaya "wow":
 - Setiap bagian minimal **satu gerakan besar** (jatuh/naik/pop/kamera meluncur); tidak boleh ada bagian dengan layar diam.
 
 ## 6. Audio
-- **VO:** ElevenLabs **Papa Gufron** (`CZ1zU0S6elSZD4eYUY6c`), Eleven v4, Stabilitas 0.5, Kesamaan 0.75, Bahasa Auto.
+- **VO:** ElevenLabs **Papa Gufron** (voice ID akun 2: `qAPGpZUUXbGAN8LW8h7f`; ID lama `CZ1zU0S6elSZD4eYUY6c` milik akun 1 dan tidak berlaku), **wajib Eleven v4**, Stabilitas 0.5, Kesamaan 0.75, Bahasa Auto.
   - Mode **satu tarikan** (seluruh naskah sekali baca, jeda di-crossfade) + reverb ruang tipis. Semua diatur di `config.channels.ohhiyaa.elevenlabs`.
   - Efek UI ElevenLabs (kebisingan, ruang) tidak dipakai.
   - Preview suara ke owner cukup 10 detik, dan pakai rekaman yang ada bila bisa (hemat kredit).
