@@ -1,0 +1,71 @@
+{
+  "ep": "oh07",
+  "catatan": "Thumbnail oh07 (urutkan: 1 juta nasi / uang 100rb / galon). Jangan tampilkan urutan benar (2-1-3) atau tinggi akhir (100 m / 50 km / 500 km).",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Tiga barang berjejer (acak) + OHI mikir + perintah 'urutkan' yang mengajak langsung ketik di komentar; tanpa angka dan tanpa urutan benar.",
+      "latar": {
+        "frame": 6.5,
+        "zoom": 1.05,
+        "fokus": [
+          540,
+          880
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "1 JUTA DITUMPUK",
+          "warna": "putih"
+        },
+        {
+          "t": "URUTKAN TERTINGGI!",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "2753",
+          "x": 905,
+          "y": 1330,
+          "s": 200,
+          "rot": 0.15
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Menara uang di samping Monas memancing penasaran 'uang sejuta lembar setinggi apa?'; jawaban (lebih pendek) tidak dipertegas.",
+      "latar": {
+        "frame": 18.0,
+        "zoom": 1.0,
+        "fokus": [
+          540,
+          900
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "1 JUTA UANG 100 RB",
+          "warna": "putih"
+        },
+        {
+          "t": "SETINGGI MONAS?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1F4B0",
+          "x": 900,
+          "y": 1270,
+          "s": 200,
+          "rot": 0.15
+        }
+      ]
+    }
+  ],
+  "thumbPilihan": "A"
+}
