@@ -1,0 +1,193 @@
+{
+  "format": "shorts",
+  "episode": "shorts01",
+  "title": "Kerja Kelompok",
+  "fps": 30,
+  "gapSeconds": 0.3,
+  "sceneLead": 0.3,
+  "sceneGap": 0,
+  "tail": 0.6,
+  "scenes": [
+    {
+      "id": "s01",
+      "location": "perpustakaan",
+      "cast": {
+        "ujang": {
+          "mark": "A",
+          "facing": 1
+        },
+        "kusaka": {
+          "mark": "D",
+          "facing": 1
+        },
+        "nadia": {
+          "mark": "C",
+          "facing": -1
+        },
+        "ucok": {
+          "mark": "B",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "nadia",
+          "emotion": "neutral",
+          "listener": "neutral",
+          "shot": "speaker",
+          "text": "Oke! Pembagian tugas kelompok. Kusaka, kamu cari bahan.",
+          "action": "gesture",
+          "id": "l001"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "smug",
+          "listener": "suspicious",
+          "shot": "speaker",
+          "text": "Siap! Gue cari di... grup WA kelas.",
+          "action": "thumbsup",
+          "id": "l002"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "suspicious",
+          "listener": "neutral",
+          "shot": "speaker",
+          "text": "Ujang, kamu bikin slide presentasi.",
+          "action": "point",
+          "id": "l003"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "suspicious",
+          "shot": "speaker",
+          "text": "Bisa. Tapi laptop gue lagi dipakai adik gue main game.",
+          "action": "crossed",
+          "id": "l004"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "suspicious",
+          "listener": "neutral",
+          "shot": "speaker",
+          "text": "Ucok, kamu yang presentasi.",
+          "action": "hips",
+          "id": "l005"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "laugh",
+          "listener": "suspicious",
+          "shot": "speaker",
+          "text": "Macam mana pulak! Suaraku cuma kuat buat nyanyi, Nad!",
+          "action": "gesture",
+          "id": "l006"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "deadpan",
+          "listener": "embarrassed",
+          "shot": "speaker",
+          "text": "Terus... kalian ngerjain apa?",
+          "action": "crossed",
+          "id": "l007"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "smug",
+          "listener": "deadpan",
+          "shot": "speaker",
+          "text": "Kita... support sistem.",
+          "action": "gesture",
+          "id": "l008"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "deadpan",
+          "shot": "speaker",
+          "text": "Doa bersama.",
+          "action": "crossed",
+          "id": "l009"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "laugh",
+          "listener": "deadpan",
+          "shot": "speaker",
+          "text": "Dan konsumsi! Gorengan aman!",
+          "action": "peace",
+          "sfx": [
+            {
+              "id": "rimshot",
+              "at": "end"
+            }
+          ],
+          "id": "l010"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "defeated",
+          "listener": "embarrassed",
+          "shot": "speaker",
+          "text": "Oke... aku kerjain semua sendiri.",
+          "action": "facepalm",
+          "sfx": [
+            {
+              "id": "sad_violin",
+              "at": 0.1
+            }
+          ],
+          "id": "l011"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "neutral",
+          "listener": "surprised",
+          "shot": "two",
+          "text": "Nilai kelompok kalian sembilan puluh. Semua anggota dapat nilai yang sama.",
+          "offscreen": true,
+          "caption": "KEESOKAN HARINYA",
+          "id": "l012"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "laugh",
+          "listener": "shock",
+          "shot": "speaker",
+          "text": "Kerja tim yang solid!",
+          "action": "peace",
+          "id": "l013"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "shock",
+          "listener": "laugh",
+          "shot": "crash",
+          "text": "KERJA TIM APANYA?!",
+          "surprise": true,
+          "id": "l014"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "smug",
+          "listener": "shock",
+          "shot": "speaker",
+          "text": "Tenang, Nad. Minggu depan ada tugas kelompok lagi.",
+          "action": "thumbsup",
+          "id": "l015"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "defeated",
+          "listener": "smug",
+          "shot": "speaker",
+          "text": "Oke... pembagian tugas kelompok.",
+          "action": "slump",
+          "id": "l016"
+        }
+      ]
+    }
+  ]
+}
