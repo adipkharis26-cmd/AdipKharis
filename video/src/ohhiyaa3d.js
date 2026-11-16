@@ -1000,6 +1000,29 @@ function tebak(t0, t1, o = {}) {
     g.restore();
   });
 }
+// "DUEL!" two camps face to face (format 'duel' in workflow/oh-format.json): o.kiri / o.kanan = label text, optional o.txt, o.y
+// A "VS" badge pops between two coloured pills + 3-2-1 ring; the viewer types the emoji/name of the camp in the comments.
+function duel(t0, t1, o = {}) {
+  cue(t0, 'pop'); [0, 1, 2].forEach(i => { cue(t0 + (t1 - t0) * i / 3 + 0.05, 'tick', 0.8); punch(t0 + (t1 - t0) * i / 3, 2.5); });
+  ui(t => {
+    if (t < t0 || t > t1) return;
+    const k = back(seg(t, t0, t0 + 0.25)), left = 3 - Math.floor((t - t0) / ((t1 - t0) / 3)), frac = ((t - t0) / ((t1 - t0) / 3)) % 1, y = o.y || 300;
+    g.save(); g.translate(540, y); g.scale(k, k);
+    rr(-300, -70, 600, 140, 70); g.fillStyle = OL; g.fill(); g.fillStyle = '#FFC93C'; g.font = `900 72px ${FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(o.txt || 'DUEL!', 0, 4);
+    [[o.kiri || 'TIM KIRI', -1, '#FF6FAE'], [o.kanan || 'TIM KANAN', 1, '#7EE8CF']].forEach(([txt, sd, col], i) => {
+      const ti = t0 + 0.25 + i * 0.3; if (t < ti) return; const kk = back(seg(t, ti, ti + 0.25)), size = fitSize(txt, 56, 290);
+      g.save(); g.translate(sd * 250, 230); g.scale(kk, kk); g.rotate(sd * 0.04); g.font = `900 ${size}px ${FONT}`; const w = 360, h = 110;
+      rr(-w / 2 + 6, -h / 2 + 8, w, h, 55); g.fillStyle = OL; g.fill(); rr(-w / 2, -h / 2, w, h, 55); g.fillStyle = col; g.fill(); g.lineWidth = 7; g.strokeStyle = OL; g.stroke();
+      g.fillStyle = OL; g.fillText(txt, 0, 3); g.restore(); });
+    g.translate(0, 230); g.beginPath(); g.arc(0, 0, 54, 0, 7); g.fillStyle = '#FFFFFF'; g.fill(); g.lineWidth = 8; g.strokeStyle = OL; g.stroke();
+    g.beginPath(); g.arc(0, 0, 54, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * (1 - frac)); g.lineWidth = 11; g.strokeStyle = '#FF6FAE'; g.stroke();
+    g.fillStyle = OL; g.font = `900 52px ${FONT}`; g.fillText(t < t0 + 0.9 ? 'VS' : String(Math.max(1, left)), 0, 4);
+    g.restore();
+  });
+}
+// jawab: generic answer stamp that replaces the fixed 'Jawaban: C' chip (format-agnostic): jawab(t0, 'BOHONG!', {col, y})
+function jawab(t0, txt, o = {}) { chip(txt, 540, o.y || 1640, t0, { size: o.size || 70, bg: o.col || '#7EE8CF' }); }
+
 // the signature moment: starburst + "OHHIYAA!"
 function ohhiyaa(t0, o = {}) {
   cue(t0, 'boom', 0.8); cue(t0, 'stamp'); punch(t0, 8);

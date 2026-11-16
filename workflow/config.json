@@ -164,7 +164,8 @@
         "maskot": false,
         "label_bg": "#FFC93C",
         "label_fg": "#24204A"
-      }
+      },
+      "format_acak": "workflow/oh-format.json (dipilih oleh video/src/oh_format.py)"
     }
   },
   "elevenlabs": {

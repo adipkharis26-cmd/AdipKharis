@@ -1,0 +1,175 @@
+{
+  "_catatan": "Daftar FORMAT INTERAKSI dan KERANGKA ALUR Ohhiyaa! (ditetapkan owner 16 Nov 2026, menggantikan 'selalu A/B/C'). Dipilih ACAK per episode oleh video/src/oh_format.py. Jangan memilih manual kecuali owner minta.",
+  "format": {
+    "abc": {
+      "nama": "Pilih A/B/C",
+      "komentar": "Ketik A, B, atau C",
+      "slot_jawaban": [
+        "A",
+        "B",
+        "C"
+      ],
+      "overlay": "tebak(opsi:3)",
+      "aturan": "Tiga pilihan berbeda jenis (bukan selalu kecil/sedang/raksasa). Jawaban benar ditentukan pemilih acak, BUKAN penulis. Pilihan yang salah boleh lebih besar dari jawaban benar.",
+      "alur": [
+        "tangga",
+        "duel",
+        "hasil-dulu"
+      ]
+    },
+    "benar-bohong": {
+      "nama": "Benar atau Bohong?",
+      "komentar": "Ketik BENAR atau BOHONG",
+      "slot_jawaban": [
+        "BENAR",
+        "BOHONG"
+      ],
+      "overlay": "tebak(txt:'BENAR / BOHONG?', opsi:2)",
+      "aturan": "Hook berupa KLAIM mengejutkan ('Katanya… sama dengan…'). Kalau slot BOHONG, klaim memang salah dan koreksinya yang jadi OHHIYAA! (angka sebenarnya). Klaim salah harus masuk akal, bukan jebakan murahan.",
+      "alur": [
+        "salah-kaprah",
+        "tangga"
+      ]
+    },
+    "tebak-angka": {
+      "nama": "Tebak Angka Bebas",
+      "komentar": "Tulis angka tebakanmu",
+      "slot_jawaban": [
+        "angka"
+      ],
+      "overlay": "tebak(txt:'TEBAK ANGKANYA!', opsi:['Tulis angkamu di komentar'])",
+      "aturan": "Tanpa pilihan. Penonton menulis angka sendiri. Di bagian 6 ajak: 'yang tebakannya paling dekat, ketik 🎯'. Angka tebakan wajar dikasih rentang petunjuk di layar (bukan jawaban).",
+      "alur": [
+        "tangga",
+        "hasil-dulu"
+      ]
+    },
+    "duel": {
+      "nama": "Duel Dua Kubu",
+      "komentar": "Ketik emoji tim kamu",
+      "slot_jawaban": [
+        "KIRI",
+        "KANAN"
+      ],
+      "overlay": "duel(kiri, kanan)",
+      "aturan": "Dua barang/tumpukan bertanding (mis. 'semua motor' vs 'semua mobil': mana lebih panjang?). Layar terbelah dua. Pemenang ditentukan hitungan; posisi kiri/kanan diacak pemilih.",
+      "alur": [
+        "duel"
+      ]
+    },
+    "urutkan": {
+      "nama": "Urutkan dari Kecil ke Besar",
+      "komentar": "Ketik urutanmu, mis. 2-1-3",
+      "slot_jawaban": [
+        "123",
+        "132",
+        "213",
+        "231",
+        "312",
+        "321"
+      ],
+      "overlay": "tebak(txt:'URUTKAN!', opsi:['1. …','2. …','3. …'])",
+      "aturan": "Tiga barang/tumpukan ditampilkan DALAM URUTAN ACAK; slot_jawaban adalah urutan benar (kecil→besar) terhadap urutan tampil. Tiga hitungan, tiap hitungan diungkap satu-satu di bagian 3–4.",
+      "alur": [
+        "urut"
+      ]
+    },
+    "kurang-lebih": {
+      "nama": "Kurang atau Lebih?",
+      "komentar": "Ketik KURANG atau LEBIH",
+      "slot_jawaban": [
+        "KURANG",
+        "LEBIH"
+      ],
+      "overlay": "tebak(txt:'KURANG / LEBIH?', opsi:2)",
+      "aturan": "Satu patokan jelas di hook ('Lebih atau kurang dari tinggi Monas?'). Angka jawaban boleh dekat patokan supaya tegang.",
+      "alur": [
+        "tangga",
+        "duel",
+        "salah-kaprah"
+      ]
+    }
+  },
+  "alur": {
+    "tangga": {
+      "nama": "Tangga Landmark",
+      "urutan": [
+        "hook",
+        "interaksi",
+        "satuan",
+        "tangga-landmark",
+        "OHHIYAA!",
+        "personal+loop"
+      ],
+      "ciri": "Alur klasik v2: tumpukan naik melewati 4–6 landmark, OHHIYAA! di 28–34 dtk."
+    },
+    "hasil-dulu": {
+      "nama": "Hasil Dulu, Lalu 'Kok Bisa?'",
+      "urutan": [
+        "hook+HASIL mengejutkan (OHHIYAA! di 4–9 dtk)",
+        "interaksi ('tapi kok bisa? tebak dulu…' untuk tebakan LANJUTAN seperti angka/sebab)",
+        "satuan",
+        "bongkar hitungan (tumpukan naik cepat, tangga ringkas)",
+        "twist kedua (angka baru, tanpa OHHIYAA! kedua)",
+        "personal+loop"
+      ],
+      "ciri": "Spoiler disengaja. Interaksi ditebak SETELAH hasil: mis. 'berapa kali lipat?'. OHHIYAA! tetap sekali per video."
+    },
+    "duel": {
+      "nama": "Duel Dua Tumpukan",
+      "urutan": [
+        "hook (dua barang berhadapan)",
+        "interaksi duel/ABC",
+        "ukur kubu kiri",
+        "ukur kubu kanan",
+        "OHHIYAA! (pemenang naik/menimpa lawan)",
+        "personal+loop"
+      ],
+      "ciri": "Layar/panggung terbelah; dua tumpukan tumbuh berlomba. Tidak memakai tangga landmark."
+    },
+    "salah-kaprah": {
+      "nama": "Salah Kaprah",
+      "urutan": [
+        "hook (klaim yang beredar)",
+        "interaksi benar/bohong atau kurang/lebih",
+        "uji klaim dengan satuan",
+        "bandingkan klaim vs fakta berdampingan",
+        "OHHIYAA! (fakta sebenarnya)",
+        "personal+loop"
+      ],
+      "ciri": "Mengoreksi anggapan umum; tangga landmark dipersingkat (maks 3 titik)."
+    },
+    "urut": {
+      "nama": "Tiga Peringkat",
+      "urutan": [
+        "hook (tiga barang acak)",
+        "interaksi urutkan",
+        "hitung barang #1",
+        "hitung barang #2 dan #3",
+        "OHHIYAA! (susunan benar)",
+        "personal+loop"
+      ],
+      "ciri": "Tiga mini-hitungan bergantian; podium 1-2-3 di OHHIYAA!."
+    }
+  },
+  "riwayat": [
+    {
+      "ep": "oh01",
+      "format": "abc",
+      "alur": "tangga",
+      "jawaban": "C"
+    },
+    {
+      "ep": "oh02",
+      "format": "abc",
+      "alur": "tangga",
+      "jawaban": "B"
+    },
+    {
+      "ep": "oh03",
+      "format": "abc",
+      "alur": "tangga",
+      "jawaban": "C"
+    }
+  ]
+}
