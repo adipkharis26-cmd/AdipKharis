@@ -176,6 +176,12 @@
       "format": "duel",
       "alur": "duel",
       "jawaban": "KIRI"
+    },
+    {
+      "ep": "oh05",
+      "format": "tebak-angka",
+      "alur": "hasil-dulu",
+      "jawaban": "angka"
     }
   ]
 }
