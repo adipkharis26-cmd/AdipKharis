@@ -1,0 +1,71 @@
+{
+  "ep": "oh06",
+  "catatan": "Thumbnail oh06 (benar/bohong: gandengan tangan = keliling Bumi 1×?). Jangan tampilkan jawaban (BOHONG / 10,7× / 427.000 km / lewat Bulan).",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Bumi besar sebagai satu objek dengan satu cincin + klaim 'cuma keliling Bumi 1×?'; terbaca jelas di ukuran feed. Hasil (10,7× / Bulan) tidak diperlihatkan.",
+      "latar": {
+        "frame": 27.05,
+        "zoom": 1.0,
+        "fokus": [
+          540,
+          900
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "GANDENGAN TANGAN",
+          "warna": "putih"
+        },
+        {
+          "t": "CUMA KELILING BUMI 1×?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "2753",
+          "x": 900,
+          "y": 1270,
+          "s": 200,
+          "rot": 0.15
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "OHI mikir besar + sudut personal 'semua orang RI' dan ajakan jawab benar/bohong; cadangan bila varian Bumi kurang diklik.",
+      "latar": {
+        "frame": 2.4,
+        "zoom": 1.6,
+        "fokus": [
+          540,
+          1180
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "SEMUA ORANG RI",
+          "warna": "putih"
+        },
+        {
+          "t": "BENAR ATAU BOHONG?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1F91D",
+          "x": 900,
+          "y": 1270,
+          "s": 200,
+          "rot": 0.15
+        }
+      ]
+    }
+  ],
+  "thumbPilihan": "A"
+}
