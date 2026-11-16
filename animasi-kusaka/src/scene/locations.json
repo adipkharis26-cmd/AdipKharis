@@ -1,0 +1,77 @@
+{
+  "version": "1.0.0",
+  "rules": [
+    "Semua set berukuran panggung 1920x1080, lantai karakter di y=960 (kecuali disebut lain).",
+    "Karakter berdiri di titik 'marks' (x) agar blocking antar-episode konsisten.",
+    "Gaya: flat vector, outline #1b1b1b tebal 5–6, warna cerah hangat, tanpa gradien rumit.",
+    "Detail khas Indonesia wajib ada (bendera merah putih, renceng, papan nama sekolah, keramik, kipas angin).",
+    "Elemen identitas set (papan nama sekolah, papan tulis) tidak boleh tertutup karakter pada two-shot: gunakan mark A & B."
+  ],
+  "locations": {
+    "warung": {
+      "name": "Warung Bu Ijah",
+      "time": "siang",
+      "floor": 960,
+      "marks": {
+        "A": 720,
+        "B": 1200,
+        "C": 400,
+        "D": 1520
+      },
+      "use": "Nongkrong pulang sekolah, transaksi, utang-piutang",
+      "ambience": "Indonesian roadside food stall ambience, motorbikes, street chatter, daytime"
+    },
+    "gerbang": {
+      "name": "Gerbang SMA Nusantara",
+      "time": "pagi",
+      "floor": 960,
+      "marks": {
+        "A": 540,
+        "B": 1400,
+        "C": 970,
+        "D": 240
+      },
+      "use": "Telat masuk, razia, janjian pulang",
+      "ambience": "Indonesian school gate in the morning, students chatter, motorbikes, school bell far"
+    },
+    "kelas": {
+      "name": "Ruang Kelas XI IPS 2",
+      "time": "siang",
+      "floor": 960,
+      "marks": {
+        "A": 380,
+        "B": 1540,
+        "C": 960,
+        "D": 180
+      },
+      "use": "Pelajaran, ulangan, piket, drama kelas",
+      "ambience": "Indonesian classroom ambience, ceiling fan humming, students murmuring"
+    },
+    "koridor": {
+      "name": "Koridor & Lapangan",
+      "time": "siang",
+      "floor": 960,
+      "marks": {
+        "A": 620,
+        "B": 1040,
+        "C": 1400,
+        "D": 300
+      },
+      "use": "Istirahat, gosip, papasan dengan guru",
+      "ambience": "School corridor during break time, distant basketball, kids shouting, birds"
+    },
+    "kamar": {
+      "name": "Kamar Kusaka",
+      "time": "sore",
+      "floor": 960,
+      "marks": {
+        "A": 760,
+        "B": 1120,
+        "C": 460,
+        "D": 1420
+      },
+      "use": "Adegan rumah, Dinda menjahili Kusaka, begadang tugas",
+      "ambience": "Quiet bedroom in the evening, distant call to prayer, crickets, fan"
+    }
+  }
+}

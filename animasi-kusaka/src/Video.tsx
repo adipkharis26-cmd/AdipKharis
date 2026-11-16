@@ -19,8 +19,9 @@ const mixCam = (a: Cam, b: Cam, k: number): Cam => ({ x: a.x + (b.x - a.x) * k, 
 function shotFor(line: Line | null, since: number, vertical: boolean): Cam {
   const v = vertical ? 1.05 : 1;
   if (!line) return { x: 960, y: 560, z: (0.94 + since * 0.03) * v }; // establishing
-  const sp = POS[line.speaker], other = POS[line.speaker === "kusaka" ? "ujang" : "kusaka"];
-  const face = faceOf(line.speaker);
+  const who = line.speaker as keyof typeof POS; // episode 1 cast
+  const sp = POS[who], other = POS[who === "kusaka" ? "ujang" : "kusaka"];
+  const face = faceOf(who);
   switch (line.shot) {
     case "two": return { x: 960, y: 560, z: (1.02 + since * 0.012) * v };
     case "speaker": {
@@ -99,7 +100,7 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
       </svg>
       <SpeedLines w={w} h={h} frame={frame} opacity={speedOpacity} />
       {flash > 0 && <AbsoluteFill style={{ background: "#fff", opacity: flash }} />}
-      <TitleCard frame={frame} vertical={vertical} />
+      {!vertical && <TitleCard frame={frame} vertical={vertical} />}
       <Subtitles t={t} vertical={vertical} w={w} />
       <EndCard since={t - END_OF_DIALOG - 1.2} vertical={vertical} />
 
@@ -114,6 +115,24 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
       ))}
       <Sequence from={Math.round(crash.start * FPS)}><Audio src={staticFile("sfx/sting.mp3")} volume={0.5} /></Sequence>
       <Sequence from={Math.round((END_OF_DIALOG + 0.5) * FPS)}><Audio src={staticFile("sfx/sad.mp3")} volume={0.55} /></Sequence>
+    </AbsoluteFill>
+  );
+};
+
+/* -------------------------------- Shorts cut ---------------------------------
+ * Shorts start right at the first line (hook within the first second), no title card.
+ * A small series badge keeps the branding visible instead. */
+export const SHORTS_SKIP = Math.round((LINES[0].start - 0.3) * FPS);
+export const KusakaWarungShorts: React.FC = () => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill>
+      <Sequence from={-SHORTS_SKIP}><KusakaWarung vertical /></Sequence>
+      <div style={{
+        position: "absolute", top: 70, left: 50, fontFamily: "Bangers", fontSize: 64, color: "#ffd23f", letterSpacing: 4,
+        WebkitTextStroke: "10px #1b1b1b", paintOrder: "stroke fill", transform: `rotate(-4deg) scale(${Math.min(1, 0.6 + frame / 20)})`,
+        textShadow: "6px 6px 0 #e63946",
+      }}>KUSAKA <span style={{ fontSize: 40, color: "#fff" }}>Eps. 1</span></div>
     </AbsoluteFill>
   );
 };

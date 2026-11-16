@@ -2,3 +2,4 @@ scripts/.cache/
 node_modules/
 out/
 !model-sheets/*.png
+!model-sheets/**/*.png

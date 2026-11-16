@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "lockedAt": "2026-11-16",
   "rules": [
     "Sudut pandang kanon: 3/4 menghadap kanan. Menghadap kiri = cermin horizontal (scaleX -1), bukan gambar baru.",
@@ -7,7 +7,9 @@
     "Outline selalu #1b1b1b, tebal 6 unit (detail 4–5). Cel-shading hanya satu tingkat bayangan.",
     "Seragam SMA Indonesia: kemeja putih lengan pendek, celana abu-abu, sepatu hitam, lambang OSIS di saku.",
     "Ciri khas (signature) tidak boleh dihilangkan di adegan mana pun.",
-    "Warna hanya dari palet di bawah. Ekspresi, mulut, dan pose hanya dari daftar yang tersedia di rig."
+    "Warna hanya dari palet di bawah. Ekspresi, mulut, dan pose hanya dari daftar yang tersedia di rig.",
+    "Tangan selalu berjari (4 jari + jempol). Bentuk tangan hanya dari pustaka tangan: relaxed, open, fist, point, thumbsup, peace, wave, hidden.",
+    "Seragam mengikuti jenjang: SMA putih–abu-abu, SMP putih–biru dongker, guru memakai batik."
   ],
   "characters": {
     "kusaka": {
@@ -15,36 +17,303 @@
       "role": "Tokoh utama",
       "age": 17,
       "school": "Siswa SMA kelas XI",
-      "personality": ["Percaya diri berlebihan", "Pelupa — dompet sering ketinggalan", "Setia kawan", "Gampang panik"],
+      "personality": [
+        "Percaya diri berlebihan",
+        "Pelupa — dompet sering ketinggalan",
+        "Setia kawan",
+        "Gampang panik"
+      ],
       "catchphrase": "Tenang aja, gue yang traktir!",
-      "signature": ["Rambut hitam jabrik dengan 7 duri tajam", "Plester (band-aid) di pipi belakang", "Alis tebal", "Kemeja tidak dimasukkan"],
-      "palette": { "skin": "#f4c99e", "skinShade": "#e0ab7e", "hair": "#1e1b26", "shirt": "#fbfbf7", "shirtShade": "#d9dde6", "pants": "#7b818c", "accent": "#e63946" },
-      "build": { "bodyW": 1, "belly": 0, "browThick": 11 },
-      "features": { "hair": "spiky", "glasses": false, "bandaid": true, "tucked": false },
-      "voice": { "voice_id": "W8aRyPTvOnlcvcu0uYX3", "label": "DQ (id, muda)", "model_id": "eleven_v4",
-                 "settings": { "stability": 0.5, "similarity_boost": 0.8, "style": 0.4, "use_speaker_boost": true } }
+      "signature": [
+        "Rambut hitam jabrik dengan 7 duri tajam",
+        "Plester (band-aid) di pipi belakang",
+        "Alis tebal",
+        "Kemeja tidak dimasukkan"
+      ],
+      "palette": {
+        "skin": "#f4c99e",
+        "skinShade": "#e0ab7e",
+        "hair": "#1e1b26",
+        "shirt": "#fbfbf7",
+        "shirtShade": "#d9dde6",
+        "accent": "#e63946",
+        "bottom": "#7b818c"
+      },
+      "build": {
+        "bodyW": 1,
+        "belly": 0,
+        "browThick": 11,
+        "height": 1
+      },
+      "features": {
+        "hair": "spiky",
+        "glasses": false,
+        "bandaid": true,
+        "tucked": false,
+        "outfit": "sma",
+        "bottom": "pants",
+        "sleeves": "short",
+        "mustache": false,
+        "lashes": false,
+        "badge": "osis"
+      },
+      "voice": {
+        "voice_id": "W8aRyPTvOnlcvcu0uYX3",
+        "label": "DQ (id, muda)",
+        "model_id": "eleven_v4",
+        "settings": {
+          "stability": 0.5,
+          "similarity_boost": 0.8,
+          "style": 0.4,
+          "use_speaker_boost": true
+        }
+      }
     },
     "ujang": {
       "name": "Ujang",
       "role": "Sahabat Kusaka",
       "age": 17,
       "school": "Siswa SMA kelas XI, sebangku dengan Kusaka",
-      "personality": ["Kalem dan sarkas", "Perhitungan soal uang", "Suka menertawakan Kusaka, tapi selalu menolong"],
+      "personality": [
+        "Kalem dan sarkas",
+        "Perhitungan soal uang",
+        "Suka menertawakan Kusaka, tapi selalu menolong"
+      ],
       "catchphrase": "Udah gue duga.",
-      "signature": ["Kacamata bulat", "Rambut cepak cokelat tua", "Badan agak gempal", "Kemeja dimasukkan + ikat pinggang"],
-      "palette": { "skin": "#d9a171", "skinShade": "#bf8656", "hair": "#2a2018", "shirt": "#fbfbf7", "shirtShade": "#d9dde6", "pants": "#7b818c", "accent": "#2f7fd8" },
-      "build": { "bodyW": 1.2, "belly": 22, "browThick": 8 },
-      "features": { "hair": "buzz", "glasses": true, "bandaid": false, "tucked": true },
-      "voice": { "voice_id": "TX3LPaxmHKxFdv7VOQHJ", "label": "Liam (multibahasa)", "model_id": "eleven_v4",
-                 "settings": { "stability": 0.5, "similarity_boost": 0.8, "style": 0.4, "use_speaker_boost": true } }
+      "signature": [
+        "Kacamata bulat",
+        "Rambut cepak cokelat tua",
+        "Badan agak gempal",
+        "Kemeja dimasukkan + ikat pinggang"
+      ],
+      "palette": {
+        "skin": "#d9a171",
+        "skinShade": "#bf8656",
+        "hair": "#2a2018",
+        "shirt": "#fbfbf7",
+        "shirtShade": "#d9dde6",
+        "accent": "#2f7fd8",
+        "bottom": "#7b818c"
+      },
+      "build": {
+        "bodyW": 1.2,
+        "belly": 22,
+        "browThick": 8,
+        "height": 1
+      },
+      "features": {
+        "hair": "buzz",
+        "glasses": true,
+        "bandaid": false,
+        "tucked": true,
+        "outfit": "sma",
+        "bottom": "pants",
+        "sleeves": "short",
+        "mustache": false,
+        "lashes": false,
+        "badge": "osis"
+      },
+      "voice": {
+        "voice_id": "TX3LPaxmHKxFdv7VOQHJ",
+        "label": "Liam (multibahasa)",
+        "model_id": "eleven_v4",
+        "settings": {
+          "stability": 0.5,
+          "similarity_boost": 0.8,
+          "style": 0.4,
+          "use_speaker_boost": true
+        }
+      }
+    },
+    "nadia": {
+      "name": "Nadia",
+      "role": "Ketua kelas XI IPS 2",
+      "age": 17,
+      "school": "Siswi SMA kelas XI, sekelas dengan Kusaka & Ujang",
+      "personality": [
+        "Tegas dan disiplin",
+        "Juara kelas, perfeksionis",
+        "Diam-diam receh & gampang ketawa",
+        "Tidak sadar Kusaka naksir dia"
+      ],
+      "catchphrase": "Kusaka, tugasnya MANA?",
+      "signature": [
+        "Kerudung putih dengan bros ungu",
+        "Kemeja lengan panjang",
+        "Rok abu-abu panjang",
+        "Bulu mata lentik"
+      ],
+      "palette": {
+        "skin": "#f1c6a0",
+        "skinShade": "#dca981",
+        "hair": "#2a1d1a",
+        "shirt": "#fbfbf7",
+        "shirtShade": "#d9dde6",
+        "bottom": "#7b818c",
+        "accent": "#8e44ad",
+        "hijab": "#ffffff",
+        "hijabShade": "#dfe3ea"
+      },
+      "build": {
+        "bodyW": 0.92,
+        "belly": 0,
+        "browThick": 7,
+        "height": 0.97
+      },
+      "features": {
+        "hair": "hijab",
+        "glasses": false,
+        "bandaid": false,
+        "tucked": false,
+        "outfit": "smaGirl",
+        "bottom": "longSkirt",
+        "sleeves": "long",
+        "mustache": false,
+        "lashes": true,
+        "badge": "none"
+      },
+      "voice": {
+        "voice_id": "EXAVITQu4vr4xnSDxMaL",
+        "label": "Sarah (multibahasa)",
+        "model_id": "eleven_v4",
+        "settings": {
+          "stability": 0.5,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true
+        }
+      }
+    },
+    "dinda": {
+      "name": "Dinda",
+      "role": "Adik Kusaka",
+      "age": 13,
+      "school": "Siswi SMP kelas 8",
+      "personality": [
+        "Jahil dan cerdik",
+        "Tukang ngadu ke Ibu",
+        "Calon selebgram — HP selalu merekam",
+        "Diam-diam sayang kakaknya"
+      ],
+      "catchphrase": "Aku aduin Ibu, ya!",
+      "signature": [
+        "Kuncir kuda dengan ikat rambut kuning",
+        "Jepit rambut bintang",
+        "Seragam SMP: rok biru dongker selutut",
+        "Kaus kaki putih panjang"
+      ],
+      "palette": {
+        "skin": "#f4c99e",
+        "skinShade": "#e0ab7e",
+        "hair": "#1e1b26",
+        "shirt": "#fbfbf7",
+        "shirtShade": "#d9dde6",
+        "bottom": "#1f2f5c",
+        "accent": "#ffd23f"
+      },
+      "build": {
+        "bodyW": 0.85,
+        "belly": 0,
+        "browThick": 7,
+        "height": 0.84
+      },
+      "features": {
+        "hair": "ponytail",
+        "glasses": false,
+        "bandaid": false,
+        "tucked": false,
+        "outfit": "smp",
+        "bottom": "skirt",
+        "sleeves": "short",
+        "mustache": false,
+        "lashes": true,
+        "badge": "osis"
+      },
+      "voice": {
+        "voice_id": "cgSgspJ2msm6clMCkdW9",
+        "label": "Jessica (multibahasa)",
+        "model_id": "eleven_v4",
+        "settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.5,
+          "use_speaker_boost": true
+        }
+      }
+    },
+    "pakDarto": {
+      "name": "Pak Darto",
+      "role": "Wali kelas XI IPS 2 & guru BK",
+      "age": 48,
+      "school": "Guru SMA Nusantara",
+      "personality": [
+        "Galak di luar, baik hati di dalam",
+        "Hobi razia HP dan rambut gondrong",
+        "Suka peribahasa jadul",
+        "Selalu muncul di saat paling tidak tepat"
+      ],
+      "catchphrase": "KUSAKA! Ke ruangan Bapak!",
+      "signature": [
+        "Kumis tebal",
+        "Batik cokelat motif kawung",
+        "Rambut belah samping beruban",
+        "Perut buncit + ikat pinggang"
+      ],
+      "palette": {
+        "skin": "#d9a171",
+        "skinShade": "#bf8656",
+        "hair": "#3b3633",
+        "shirt": "#8a4b26",
+        "shirtShade": "#6e3a1c",
+        "bottom": "#2b2b33",
+        "accent": "#c0392b",
+        "motif": "#f3c66b"
+      },
+      "build": {
+        "bodyW": 1.15,
+        "belly": 34,
+        "browThick": 12,
+        "height": 1.1
+      },
+      "features": {
+        "hair": "parted",
+        "glasses": false,
+        "bandaid": false,
+        "tucked": true,
+        "outfit": "teacher",
+        "bottom": "pants",
+        "sleeves": "short",
+        "mustache": true,
+        "lashes": false,
+        "badge": "nametag"
+      },
+      "voice": {
+        "voice_id": "qAPGpZUUXbGAN8LW8h7f",
+        "label": "papa gupron 2 (id, dewasa)",
+        "model_id": "eleven_v4",
+        "settings": {
+          "stability": 0.55,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true
+        }
+      }
     }
   },
   "supporting": {
     "buIjah": {
       "name": "Bu Ijah",
       "role": "Pemilik warung langganan",
-      "signature": ["Kerudung merah muda", "Baju hijau", "Selalu tersenyum, mengangguk saat menerima pesanan"],
-      "palette": { "skin": "#e0a77a", "hijab": "#e85d75", "dress": "#3fa37a" }
+      "signature": [
+        "Kerudung merah muda",
+        "Baju hijau",
+        "Selalu tersenyum, mengangguk saat menerima pesanan"
+      ],
+      "palette": {
+        "skin": "#e0a77a",
+        "hijab": "#e85d75",
+        "dress": "#3fa37a"
+      }
     }
   }
 }

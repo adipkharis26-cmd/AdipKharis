@@ -11,10 +11,11 @@
     "still": "remotion still src/index.ts KusakaWarung out/still.png",
     "check:characters": "node scripts/character-lock.mjs check",
     "lock:characters": "node scripts/character-lock.mjs lock",
-    "sheets": "remotion still src/index.ts ModelSheet-kusaka model-sheets/ModelSheet-kusaka.png && remotion still src/index.ts ModelSheet-ujang model-sheets/ModelSheet-ujang.png && remotion still src/index.ts Lineup model-sheets/Lineup.png",
+    "sheets": "node scripts/render-sheets.mjs",
     "prevoice": "npm run check:characters --silent",
     "prerender": "npm run check:characters --silent",
-    "prerender:shorts": "npm run check:characters --silent"
+    "prerender:shorts": "npm run check:characters --silent",
+    "voice:samples": "node scripts/voice-samples.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.540",

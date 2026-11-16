@@ -3,6 +3,7 @@ import { AbsoluteFill } from "remotion";
 import canon from "../characters/canon.json";
 import { Character, LOOKS, Portrait } from "../characters/Character";
 import { Mouth, MouthShape } from "../characters/Mouth";
+import { Hand, HandShape } from "../characters/Hands";
 import { useFonts } from "../lib/fonts";
 import type { Action, CharId, Emotion, Viseme } from "../lib/timeline";
 
@@ -23,7 +24,13 @@ export const POSES: [Action, Emotion, string, Viseme | null][] = [
   ["idle", "neutral", "Diam", null], ["gesture", "neutral", "Bicara", "A"], ["pocket", "smug", "Rogoh saku", null],
   ["chin", "suspicious", "Pegang dagu", null], ["point", "laugh", "Menunjuk", "A"], ["plead", "pleading", "Memohon", null],
   ["crossed", "deadpan", "Lipat tangan", null], ["shock", "shock", "Kaget", "O"], ["laugh", "laugh", "Tertawa", "A"],
-  ["slump", "defeated", "Lemas", null],
+  ["slump", "defeated", "Lemas", null], ["wave", "neutral", "Melambai", "E"], ["thumbsup", "smug", "Jempol", null],
+  ["peace", "laugh", "Peace", null], ["facepalm", "defeated", "Tepuk jidat", null], ["hips", "suspicious", "Kacak pinggang", null],
+  ["phone", "neutral", "Main HP", null],
+];
+export const HANDS: [HandShape, string][] = [
+  ["relaxed", "santai"], ["open", "terbuka"], ["fist", "kepal"], ["point", "tunjuk"], ["thumbsup", "jempol"],
+  ["peace", "peace"], ["wave", "lambai"], ["phone", "pegang HP"],
 ];
 
 const Label: React.FC<{ x: number; y: number; size?: number; children: React.ReactNode; anchor?: "start" | "middle" | "end"; color?: string; font?: string }> =
@@ -43,7 +50,7 @@ export const ModelSheet: React.FC<{ id: CharId }> = ({ id }) => {
   const c = canon.characters[id];
   const look = LOOKS[id];
   const accent = c.palette.accent;
-  const W = 3200, H = 2300;
+  const W = 3200, H = 2760;
   const heroScale = 1.5, floor = 1660, heroX = 420;
   const marks: [number, string][] = [[0, "kaki"], [-240, "pinggul"], [-462, "bahu / leher"], [-735, "puncak kepala"],
     ...(look.hairStyle === "spiky" ? [[-794, "puncak rambut"] as [number, string]] : [])];
@@ -77,8 +84,8 @@ export const ModelSheet: React.FC<{ id: CharId }> = ({ id }) => {
         <SectionTitle x={40} y={260} color={accent}>KANON 3/4 · PROPORSI</SectionTitle>
         {marks.map(([y, name]) => (
           <g key={name}>
-            <line x1={60} x2={800} y1={floor + y * heroScale} y2={floor + y * heroScale} stroke={accent} strokeWidth={3} strokeDasharray="14 10" opacity={0.7} />
-            <Label x={60} y={floor + y * heroScale - 10} size={26} anchor="start" color={accent}>{name}</Label>
+            <line x1={60} x2={800} y1={floor + y * heroScale * look.height} y2={floor + y * heroScale * look.height} stroke={accent} strokeWidth={3} strokeDasharray="14 10" opacity={0.7} />
+            <Label x={60} y={floor + y * heroScale * look.height - 10} size={26} anchor="start" color={accent}>{name}</Label>
           </g>
         ))}
         <Character id={id} x={heroX} y={floor} facing={1} frame={0} scale={heroScale} force={{ emotion: "neutral", action: "idle", noFx: true }} />
@@ -137,15 +144,33 @@ export const ModelSheet: React.FC<{ id: CharId }> = ({ id }) => {
           );
         })}
 
-        {/* ---------- pose library ---------- */}
+        {/* ---------- hand library ---------- */}
         <rect x={0} y={1790} width={W} height={H - 1790} fill="#f4ead0" />
-        <SectionTitle x={40} y={1860} color={accent}>PUSTAKA POSE (10)</SectionTitle>
+        <SectionTitle x={40} y={1860} color={accent}>TANGAN · 4 JARI + JEMPOL (8)</SectionTitle>
+        {HANDS.map(([shape, name], i) => {
+          const cx = 250 + i * 390, cy = 1990;
+          return (
+            <g key={shape}>
+              <rect x={cx - 150} y={cy - 100} width={300} height={190} rx={18} fill="#fff" stroke="#d8ccae" strokeWidth={4} />
+              {/* wrist + hand, pointing up */}
+              <g transform={shape === "thumbsup" ? `translate(${cx - 70} ${cy + 30}) scale(2.1)` : `translate(${cx - 20} ${cy + 20}) rotate(-90) scale(2.1)`}>
+                <path d="M -40 0 L 0 0" stroke={OUT} strokeWidth={40 / 2.1} strokeLinecap="round" />
+                <path d="M -40 0 L 0 0" stroke={look.skin} strokeWidth={28 / 2.1} strokeLinecap="round" />
+                <Hand shape={shape} skin={look.skin} scale={1} />
+              </g>
+              <Label x={cx + 90} y={cy + 76} size={28} anchor="middle">{name}</Label>
+            </g>
+          );
+        })}
+
+        {/* ---------- pose library ---------- */}
+        <SectionTitle x={40} y={2160} color={accent}>PUSTAKA POSE ({POSES.length})</SectionTitle>
         {POSES.map(([action, emo, name, vis], i) => {
-          const cx = 170 + i * 318, fy = 2230;
+          const cx = 100 + i * 194, fy = 2660;
           return (
             <g key={action}>
-              <Character id={id} x={cx} y={fy} facing={1} frame={0} scale={0.42} force={{ action, emotion: emo, viseme: vis }} />
-              <Label x={cx} y={fy + 50} size={30}>{name}</Label>
+              <Character id={id} x={cx} y={fy} facing={1} frame={0} scale={0.5 / look.height} force={{ action, emotion: emo, viseme: vis }} />
+              <Label x={cx} y={fy + 50} size={26}>{name}</Label>
             </g>
           );
         })}
@@ -154,28 +179,33 @@ export const ModelSheet: React.FC<{ id: CharId }> = ({ id }) => {
   );
 };
 
-/** Both main characters side by side: canonical (right) and mirrored (left) facing. */
+/** Whole cast side by side for height & style comparison (canonical facing). */
 export const Lineup: React.FC = () => {
   useFonts();
-  const W = 2400, H = 1300, floor = 1150;
+  const ids = Object.keys(canon.characters) as CharId[];
+  const W = 3000, H = 1400, floor = 1220;
   return (
     <AbsoluteFill style={{ background: PAPER }}>
       <svg width={W} height={H}>
         <rect width={W} height={140} fill={OUT} />
         <Label x={60} y={104} size={96} anchor="start" font="Bangers" color="#ffd23f">LINEUP PEMERAN</Label>
-        <Label x={W - 60} y={96} size={44} anchor="end" color="#fff">kanon v{canon.version} · tinggi & proporsi</Label>
-        {[-740, -468, -240, 0].map((y) => (
+        <Label x={W - 60} y={96} size={44} anchor="end" color="#fff">kanon v{canon.version} · tinggi & proporsi · menghadap kiri = cermin</Label>
+        {[-860, -740, -468, -240, 0].map((y) => (
           <line key={y} x1={40} x2={W - 40} y1={floor + y} y2={floor + y} stroke="#c9b98f" strokeWidth={3} strokeDasharray="14 10" />
         ))}
-        {([["kusaka", 1, 330], ["ujang", 1, 830], ["kusaka", -1, 1570], ["ujang", -1, 2070]] as [CharId, 1 | -1, number][]).map(([id, f, x], i) => (
-          <g key={i}>
-            <Character id={id} x={x} y={floor} facing={f} frame={0} force={{ emotion: i % 2 ? "deadpan" : "smug", action: "idle", noFx: true }} />
-            <Label x={x} y={floor + 70} size={44} font="Bangers" color={canon.characters[id].palette.accent}>
-              {canon.characters[id].name.toUpperCase()} · {f === 1 ? "KANON (kanan)" : "CERMIN (kiri)"}
-            </Label>
-          </g>
-        ))}
-        <line x1={1200} x2={1200} y1={170} y2={H - 20} stroke="#c9b98f" strokeWidth={4} />
+        {ids.map((id, i) => {
+          const x = 330 + i * 590;
+          const c = canon.characters[id];
+          const emo: Emotion = (["smug", "deadpan", "neutral", "laugh", "suspicious"] as Emotion[])[i % 5];
+          const act: Action = (["thumbsup", "crossed", "hips", "peace", "idle"] as Action[])[i % 5];
+          return (
+            <g key={id}>
+              <Character id={id} x={x} y={floor} facing={1} frame={0} force={{ emotion: emo, action: act, noFx: true }} />
+              <Label x={x} y={floor + 70} size={56} font="Bangers" color={c.palette.accent}>{c.name.toUpperCase()}</Label>
+              <Label x={x} y={floor + 112} size={30}>{c.role}</Label>
+            </g>
+          );
+        })}
       </svg>
     </AbsoluteFill>
   );

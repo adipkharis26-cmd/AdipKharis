@@ -1,11 +1,14 @@
 import timeline from "../data/timeline.json";
+import canon from "../characters/canon.json";
 
-export type CharId = "kusaka" | "ujang";
+export type CharId = keyof typeof canon.characters;
 export type Viseme = "rest" | "A" | "I" | "U" | "E" | "O" | "M" | "F" | "consonant";
 export type Emotion =
   | "neutral" | "smug" | "suspicious" | "shock" | "laugh" | "pleading" | "deadpan"
   | "surprised" | "embarrassed" | "defeated";
-export type Action = "idle" | "gesture" | "pocket" | "chin" | "point" | "plead" | "crossed" | "shock" | "laugh" | "slump";
+export type Action =
+  | "idle" | "gesture" | "pocket" | "chin" | "point" | "plead" | "crossed" | "shock" | "laugh" | "slump"
+  | "wave" | "thumbsup" | "peace" | "facepalm" | "hips" | "phone";
 
 export interface Line {
   id: string; speaker: CharId; emotion: Emotion; listener: Emotion; shot: "two" | "speaker" | "push" | "crash";

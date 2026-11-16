@@ -28,7 +28,9 @@ export const SpeedLines: React.FC<{ w: number; h: number; frame: number; opacity
   );
 };
 
-const NAME_COLOR: Record<CharId, string> = { kusaka: "#e63946", ujang: "#2f7fd8" };
+import canon from "../characters/canon.json";
+const NAME_COLOR = (id: CharId) => canon.characters[id].palette.accent;
+const NAME = (id: CharId) => canon.characters[id].name.toUpperCase();
 
 /** Karaoke-style subtitles synced to ElevenLabs word timestamps */
 export const Subtitles: React.FC<{ t: number; vertical: boolean; w: number }> = ({ t, vertical, w }) => {
@@ -42,9 +44,9 @@ export const Subtitles: React.FC<{ t: number; vertical: boolean; w: number }> = 
       fontFamily: "Baloo2", gap: 6,
     }}>
       <div style={{
-        background: NAME_COLOR[line.speaker], color: "#fff", fontSize: fs * 0.62, padding: "0 22px", borderRadius: 14,
+        background: NAME_COLOR(line.speaker), color: "#fff", fontSize: fs * 0.62, padding: "0 22px", borderRadius: 14,
         border: `5px solid ${OUT}`, transform: "rotate(-2deg)", fontFamily: "Bangers", letterSpacing: 2,
-      }}>{line.speaker.toUpperCase()}</div>
+      }}>{NAME(line.speaker)}</div>
       <div style={{ maxWidth: w * 0.86, textAlign: "center", fontSize: fs, lineHeight: 1.15, fontWeight: 800 }}>
         {line.words.map((wd, i) => {
           const on = local >= wd.t;

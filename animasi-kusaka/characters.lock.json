@@ -1,10 +1,14 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0+loc1.0.0",
   "lockedAt": "2026-11-16",
   "files": {
-    "src/characters/canon.json": "ed98f6cbf1fc6f01386a3760956cfe061b7fea2a30a3e3eb8a5c6a7cfcd93b4b",
-    "src/characters/Character.tsx": "54305747ab02d3a88b7fab45bad03bcf5732ea41b8c36f65ebd5ff20c2bce487",
+    "src/characters/canon.json": "7408f036fd1d2f809fc3d477f888ae9316606a997538506183bb64e8a042b0fe",
+    "src/characters/Character.tsx": "36cc7ddf381e5f25906e999cffd22464178fc753a792adcb1009337237207871",
     "src/characters/Mouth.tsx": "9a59147e0acfce56ef7119100b9b2e75c3f7b120d70022163a13a32697cf1ba2",
-    "src/characters/Eyes.tsx": "85a88f877e9eb08b61c177981288a7bece02d99d36005cfb70e345f1f5dd620a"
+    "src/characters/Eyes.tsx": "85a88f877e9eb08b61c177981288a7bece02d99d36005cfb70e345f1f5dd620a",
+    "src/characters/Hands.tsx": "55c1d493bf3bedb44122aa1241b410231d5965c23ea4c1972913ce9700e88b0b",
+    "src/scene/locations.json": "e13a864e163958e9dadd5095b4f3b220a0021acacc0882ec780aa38e865fadf0",
+    "src/scene/Locations.tsx": "d632ada1fa948f47a8f87d8aad4a3efd37d885d05f181765316b36f7bf8c9dc5",
+    "src/scene/Background.tsx": "b61d46b9b0493e1018b10f9ea00232b63613144686bc5542300e3727e70e6fb2"
   }
 }
