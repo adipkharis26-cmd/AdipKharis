@@ -989,7 +989,7 @@ function tebak(t0, t1, o = {}) {
     if (t < t0 || t > t1) return;
     const k = back(seg(t, t0, t0 + 0.25)), left = 3 - Math.floor((t - t0) / ((t1 - t0) / 3)), frac = ((t - t0) / ((t1 - t0) / 3)) % 1;
     g.save(); g.translate(540, o.y || 360); g.scale(k, k);
-    rr(-300, -70, 600, 140, 70); g.fillStyle = OL; g.fill(); g.fillStyle = '#FFC93C'; g.font = `900 72px ${FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(o.txt || 'TEBAK DULU!', 0, 4);
+    { const lab = o.txt || 'TEBAK DULU!', ls = fitSize(lab, 72, 860); g.font = `900 ${ls}px ${FONT}`; const lw = Math.max(600, g.measureText(lab).width + 110); rr(-lw / 2, -70, lw, 140, 70); g.fillStyle = OL; g.fill(); g.fillStyle = '#FFC93C'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(lab, 0, 4); }
     g.translate(0, 190); g.beginPath(); g.arc(0, 0, 90, 0, 7); g.fillStyle = '#FFFFFF'; g.fill(); g.lineWidth = 10; g.strokeStyle = OL; g.stroke();
     g.beginPath(); g.arc(0, 0, 90, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * (1 - frac)); g.lineWidth = 16; g.strokeStyle = '#FF6FAE'; g.stroke();
     g.fillStyle = OL; g.font = `900 110px ${FONT}`; g.fillText(String(Math.max(1, left)), 0, 6);
@@ -1008,7 +1008,7 @@ function duel(t0, t1, o = {}) {
     if (t < t0 || t > t1) return;
     const k = back(seg(t, t0, t0 + 0.25)), left = 3 - Math.floor((t - t0) / ((t1 - t0) / 3)), frac = ((t - t0) / ((t1 - t0) / 3)) % 1, y = o.y || 300;
     g.save(); g.translate(540, y); g.scale(k, k);
-    rr(-300, -70, 600, 140, 70); g.fillStyle = OL; g.fill(); g.fillStyle = '#FFC93C'; g.font = `900 72px ${FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(o.txt || 'DUEL!', 0, 4);
+    { const lab = o.txt || 'DUEL!', ls = fitSize(lab, 72, 860); g.font = `900 ${ls}px ${FONT}`; const lw = Math.max(600, g.measureText(lab).width + 110); rr(-lw / 2, -70, lw, 140, 70); g.fillStyle = OL; g.fill(); g.fillStyle = '#FFC93C'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(lab, 0, 4); }
     [[o.kiri || 'TIM KIRI', -1, '#FF6FAE'], [o.kanan || 'TIM KANAN', 1, '#7EE8CF']].forEach(([txt, sd, col], i) => {
       const ti = t0 + 0.25 + i * 0.3; if (t < ti) return; const kk = back(seg(t, ti, ti + 0.25)), size = fitSize(txt, 56, 290);
       g.save(); g.translate(sd * 250, 230); g.scale(kk, kk); g.rotate(sd * 0.04); g.font = `900 ${size}px ${FONT}`; const w = 360, h = 110;
