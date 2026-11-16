@@ -41,49 +41,49 @@ const ALDO = makeChar({
 const PESISIR_FLORES = build('pesisir_flores', () => {
   const G = grp(ground('pasir', 28));
 
-  // laut di belakang
-  G.add(at3(sea(14, 8), 0, 0, -10));
+  // laut di kejauhan (kecil, hanya aksen biru)
+  G.add(at3(sea(20, 10), 0, -0.2, -14));
 
-  // bukit hijau di kejauhan
-  G.add(at3(hill(18, 4.5, '#4A7230'), -6, -1, -13));
-  G.add(at3(hill(10, 3.0, '#5A8440'), 7,  -1, -11));
+  // bukit muted — lebih kecil dan warna tanah, bukan hijau cerah
+  G.add(at3(hill(9, 3.0, '#7A6830'), -7, -1, -16));
+  G.add(at3(hill(7, 2.5, '#8A7840'),  8, -1, -14));
 
   // pohon kelapa
-  G.add(at3(palm(3.5, 0.18), -5.5, 0, -5));
-  G.add(at3(palm(2.8, 0.25),  6.0, 0, -4));
+  G.add(at3(palm(3.2, 0.20), -5.0, 0, -5));
+  G.add(at3(palm(2.6, 0.22),  5.5, 0, -4));
 
   // semak
-  G.add(at3(bush(0.9, '#3D6B25'), -3.5, 0, -3));
-  G.add(at3(bush(0.7, '#4D7B30'),  4.5, 0, -2.5));
+  G.add(at3(bush(0.8, '#5A6E30'), -3.0, 0, -2.5));
+  G.add(at3(bush(0.6, '#4E6228'),  4.0, 0, -2.0));
 
   // awan
-  G.add(at3(cloud(1.5), -3, 7, -12));
-  G.add(at3(cloud(1.2),  4, 9, -15));
+  G.add(at3(cloud(1.4), -4, 8, -14));
+  G.add(at3(cloud(1.1),  5, 10, -18));
 
-  // tungku bara — kotak bata merah + tumpukan abu
-  const tungku = box(1.0, 0.45, 0.8, '#5A2510');
-  at3(tungku, 0, 0.22, 0.3);
+  // tungku bara — lebih kecil dan compact
+  const tungku = box(0.75, 0.38, 0.65, '#5A2510');
+  at3(tungku, 0.2, 0.19, 0.5);
   G.add(tungku);
 
-  const alas = box(1.3, 0.08, 1.0, '#3A1A08');
-  at3(alas, 0, 0.04, 0.3);
+  const alas = box(1.0, 0.07, 0.85, '#3A1A08');
+  at3(alas, 0.2, 0.035, 0.5);
   G.add(alas);
 
-  // bambu (ruas panjang di samping tungku)
-  const bambu1 = box(0.14, 0.14, 1.6, '#6A8A30');
-  at3(bambu1, -0.9, 0.5, 0.0);
+  // bambu (ruas di dekat tungku)
+  const bambu1 = box(0.12, 0.12, 1.4, '#6A8A30');
+  at3(bambu1, -1.2, 0.4, 0.3, 0, 0, 0.15);
   G.add(bambu1);
 
-  const bambu2 = box(0.14, 0.14, 1.6, '#5A7820');
-  at3(bambu2, -0.7, 0.5, 0.2);
+  const bambu2 = box(0.12, 0.12, 1.4, '#5A7820');
+  at3(bambu2, -1.0, 0.4, 0.5, 0, 0, -0.1);
   G.add(bambu2);
 
   // ember air laut
-  G.add(at3(PROP.ember(), 1.5, 0, 0.3));
+  G.add(at3(PROP.ember(), 1.5, 0, 0.6));
 
   // batu-batu kecil di pantai
-  G.add(at3(stone(0.35, '#8A7A60'),  2.5, 0, 1.5));
-  G.add(at3(stone(0.25, '#7A6A50'), -2.0, 0, 2.0));
+  G.add(at3(stone(0.3, '#8A7A60'),  2.5, 0, 1.5));
+  G.add(at3(stone(0.22, '#7A6A50'), -2.0, 0, 2.0));
 
   return G;
 });
@@ -112,22 +112,16 @@ function scene(t) {
   // ══ Beat 0 — Hook (0 – 8.262) ════════════════════════════════════════════
   if (k === 0) {
     floresSet('siang');
-    PAK_BETO.visible = false;
-    ALDO.visible     = false;
+    ALDO.visible = false;
+    posBeto(t, { x: -0.8, z: 1.0, ry: 0.05, expr: 'flat', arms: 'hips' });
 
-    // establishing: shot lebar ke tungku + pantai
-    shot(t, CUT[0], CUT[0] + 4.0,
-      [0, 2.5, 7],
-      [0, 0.5, -2],
-      { push: 0.04 });
+    if (t < CUT[0] + 4.0) {
+      shot(t, CUT[0], CUT[0] + 4.0, [0, 3.5, 9], [0, 1.0, -1], { push: 0.03 });
+    } else {
+      shot(t, CUT[0] + 4.0, CUT[1], [1.8, 1.8, 3.5], [0.2, 0.3, 0.5], { push: 0.04 });
+    }
 
-    // close: detail tungku/abu
-    shot(t, CUT[0] + 4.0, CUT[1],
-      [0.4, 1.4, 2.5],
-      [0, 0.3, 0.3],
-      { push: 0.03 });
-
-    chip('Garam bakar — Flores', 0, 220, CUT[0] + 1.5, { size: 54 });
+    chip('Garam bakar — Flores', 540, 220, CUT[0] + 1.5, { size: 54 });
     bigWord('Disengaja!', at('Disengaja') - 0.05, at('Disengaja') + 1.4);
   }
 
@@ -135,62 +129,57 @@ function scene(t) {
   if (k === 1) {
     floresSet('siang');
 
-    // Aldo datang ke tungku, Pak Beto sudah di sana
-    posBeto(t, { expr: 'flat', arms: 'hips' });
-    posAldo(t, { expr: 'talk', arms: 'point', talk: true });
+    if (t < CUT[1] + 2.5) {
+      posBeto(t, { expr: 'flat', arms: 'hips' });
+      posAldo(t, { expr: 'flat', arms: 'down' });
+      shot(t, CUT[1], CUT[1] + 2.5, [0, 2.0, 6], [0, 1.0, 0]);
+    } else if (t < CUT[1] + 4.5) {
+      posBeto(t, { expr: 'flat', arms: 'hips' });
+      posAldo(t, { expr: 'talk', arms: 'point', talk: true });
+      closeUp(t, ALDO, CUT[1] + 2.5, CUT[1] + 4.5, { side: 1, dist: 1.6, up: 0.1 });
+    } else if (t < CUT[1] + 6.5) {
+      posBeto(t, { expr: 'talk', arms: 'hold', talk: true });
+      posAldo(t, { expr: 'flat', arms: 'down' });
+      closeUp(t, PAK_BETO, CUT[1] + 4.5, CUT[1] + 6.5, { side: -1, dist: 1.6, up: 0.1 });
+    } else if (t < CUT[1] + 8.0) {
+      posBeto(t, { expr: 'flat', arms: 'hips' });
+      posAldo(t, { expr: 'shock', arms: 'shrug' });
+      closeUp(t, ALDO, CUT[1] + 6.5, CUT[1] + 8.0, { side: 1, dist: 1.6, up: 0.1 });
+    } else {
+      posBeto(t, { expr: 'flat', arms: 'point' });
+      posAldo(t, { expr: 'flat', arms: 'down' });
+      closeUp(t, PAK_BETO, CUT[1] + 8.0, CUT[2], { side: -1, dist: 1.6, up: 0.1 });
+    }
 
-    // lebar dulu: keduanya terlihat
-    shot(t, CUT[1], CUT[1] + 2.5,
-      [0, 2.0, 6],
-      [0, 1.0, 0]);
-
-    // close Aldo (yang mulai bicara)
-    closeUp(t, ALDO, CUT[1] + 2.5, CUT[1] + 4.5, { side: 1, dist: 1.6, up: 0.1 });
-
-    // Pak Beto jawab
-    posBeto(t, { x: -1.2, expr: 'talk', arms: 'hold', talk: true });
-    closeUp(t, PAK_BETO, CUT[1] + 4.5, CUT[1] + 6.5, { side: -1, dist: 1.6, up: 0.1 });
-
-    // Aldo protes
-    posAldo(t, { expr: 'shock', arms: 'shrug' });
-    closeUp(t, ALDO, CUT[1] + 6.5, CUT[1] + 8.0, { side: 1, dist: 1.6, up: 0.1 });
-
-    // Pak Beto tegas
-    posBeto(t, { expr: 'flat', arms: 'point' });
-    closeUp(t, PAK_BETO, CUT[1] + 8.0, CUT[2], { side: -1, dist: 1.6, up: 0.1 });
-
-    card(['"Ini harus dibakar dulu."'], -60, 1550, at('Ini') - 0.1);
-    card(['"Pak, kan ada yang instan."'], 60, 1550, at('instan') - 0.3);
-    card(['"Yang instan itu berbeda."'], -60, 1550, at('berbeda') - 0.3);
+    card(['"Ini harus dibakar dulu."'], 540, 1560, at('Ini') - 0.1);
+    card(['"Kan ada yang instan."'], 540, 1560, at('instan') - 0.3);
+    card(['"Yang instan itu berbeda."'], 540, 1560, at('berbeda') - 0.3);
   }
 
   // ══ Beat 2 — Rahasia leluhur (18.686 – 31.686) ═══════════════════════════
   if (k === 2) {
     floresSet('siang');
-    ALDO.visible = true;
 
-    posBeto(t, { expr: 'talk', arms: 'hold', talk: true });
-    posAldo(t, { expr: 'flat', arms: 'down', x: 1.6 });
+    if (t < CUT[2] + 3.0) {
+      posBeto(t, { expr: 'talk', arms: 'hold', talk: true });
+      posAldo(t, { expr: 'flat', arms: 'down', x: 1.6 });
+      shot(t, CUT[2], CUT[2] + 3.0, [-1.5, 2.2, 6.5], [0, 0.9, 0]);
+    } else if (t < CUT[2] + 7.0) {
+      posBeto(t, { expr: 'talk', arms: 'hold', talk: true });
+      posAldo(t, { expr: 'flat', arms: 'down', x: 1.6 });
+      closeUp(t, PAK_BETO, CUT[2] + 3.0, CUT[2] + 7.0, { side: -1, dist: 1.6, up: 0.1 });
+    } else if (t < CUT[2] + 10.0) {
+      posBeto(t, { expr: 'flat', arms: 'hold' });
+      posAldo(t, { expr: 'flat', arms: 'down', x: 1.6 });
+      shot(t, CUT[2] + 7.0, CUT[2] + 10.0, [1.2, 1.5, 3.5], [0.2, 0.3, 0.5], { push: 0.02 });
+    } else {
+      posBeto(t, { expr: 'talk', arms: 'hold', talk: true });
+      posAldo(t, { expr: 'flat', arms: 'down', x: 1.6 });
+      closeUp(t, PAK_BETO, CUT[2] + 10.0, CUT[3], { side: -1, dist: 1.6, up: 0.1 });
+    }
 
-    // lebar: Pak Beto tunjukkan bambu
-    shot(t, CUT[2], CUT[2] + 3.0,
-      [-2, 2.0, 6],
-      [0, 0.8, 0]);
-
-    // close Pak Beto menjelaskan
-    closeUp(t, PAK_BETO, CUT[2] + 3.0, CUT[2] + 7.0, { side: -1, dist: 1.6, up: 0.1 });
-
-    // close tungku/bambu (sains visual)
-    shot(t, CUT[2] + 7.0, CUT[2] + 10.0,
-      [1.0, 1.5, 3.5],
-      [0, 0.4, 0.3],
-      { push: 0.02 });
-
-    // Pak Beto lanjut
-    closeUp(t, PAK_BETO, CUT[2] + 10.0, CUT[3], { side: -1, dist: 1.6, up: 0.1 });
-
-    chip('Bambu + air laut → dibakar', 0, 240, at('Bambu') + 0.2, { size: 50 });
-    chip('Abu = garam!', 0, 350, at('Abu') + 0.2, { size: 54, stamp: true });
+    chip('Bambu diisi air laut → dibakar', 540, 240, at('Bambu') + 0.2, { size: 44 });
+    chip('Abu = garamnya!', 540, 350, at('Abu') + 0.2, { size: 52, stamp: true });
   }
 
   // ══ Beat 3 — Sains (31.686 – 43.036) ══════════════════════════════════════
@@ -199,25 +188,17 @@ function scene(t) {
     PAK_BETO.visible = false;
     ALDO.visible     = false;
 
-    // close tungku, detail sains
-    shot(t, CUT[3], CUT[3] + 4.0,
-      [0.5, 1.6, 3.0],
-      [0, 0.4, 0.3],
-      { push: 0.02 });
+    if (t < CUT[3] + 4.0) {
+      shot(t, CUT[3], CUT[3] + 4.0, [0.5, 1.6, 3.0], [0, 0.4, 0.3], { push: 0.02 });
+    } else if (t < CUT[3] + 7.5) {
+      shot(t, CUT[3] + 4.0, CUT[3] + 7.5, [0, 2.5, 7.5], [0, 0.5, -0.5]);
+    } else {
+      shot(t, CUT[3] + 7.5, CUT[4], [-0.4, 1.4, 2.8], [0, 0.4, 0.2]);
+    }
 
-    // wide lagi
-    shot(t, CUT[3] + 4.0, CUT[3] + 7.5,
-      [0, 2.2, 7],
-      [0, 0.5, -1]);
-
-    // back to close tungku
-    shot(t, CUT[3] + 7.5, CUT[4],
-      [-0.4, 1.4, 2.8],
-      [0, 0.4, 0.2]);
-
-    chip('Silika · Kalium · Magnesium', 0, 250, at('silika') - 0.1, { size: 48 });
-    chip('Larut ke dalam garam', 0, 380, at('larut') - 0.1, { size: 48 });
-    chip('Garam biasa tidak punya ini', 0, 400, at('Garam', 3) - 0.1, { size: 46 });
+    chip('Silika · Kalium · Magnesium', 540, 250, at('silika') - 0.1, { size: 46 });
+    chip('larut ke dalam garam', 540, 370, at('larut') - 0.1, { size: 46 });
+    chip('Garam biasa tidak punya ini', 540, 400, at('Garam', 3) - 0.1, { size: 44 });
   }
 
   // ══ Beat 4 — Lapisan kedua (43.036 – 54.246) ══════════════════════════════
@@ -226,69 +207,56 @@ function scene(t) {
     PAK_BETO.visible = false;
     ALDO.visible     = false;
 
-    shot(t, CUT[4], CUT[4] + 4.5,
-      [2.0, 2.5, 6],
-      [0, 0.6, -1],
-      { drift: 0.015 });
+    if (t < CUT[4] + 4.5) {
+      shot(t, CUT[4], CUT[4] + 4.5, [2.0, 2.5, 6], [0, 0.6, -1], { drift: 0.015 });
+    } else if (t < CUT[4] + 7.5) {
+      shot(t, CUT[4] + 4.5, CUT[4] + 7.5, [-1.5, 1.8, 4.5], [0, 0.5, 0.3]);
+    } else {
+      shot(t, CUT[4] + 7.5, CUT[5], [0, 2.0, 5.5], [0, 0.5, -0.5], { push: 0.025 });
+    }
 
-    shot(t, CUT[4] + 4.5, CUT[4] + 7.5,
-      [-1.5, 1.8, 4.5],
-      [0, 0.5, 0.3]);
-
-    shot(t, CUT[4] + 7.5, CUT[5],
-      [0, 2.0, 5.5],
-      [0, 0.5, -0.5],
-      { push: 0.025 });
-
-    chip('Mineral mikro 3× lebih tinggi', 0, 250, at('Peneliti') + 0.5, { size: 50, stamp: true });
-    chip('dari garam industri', 0, 370, at('garam', 7) - 0.1, { size: 50 });
-    chip('Ratusan tahun dipakai', 0, 300, at('Ratusan') + 0.1, { size: 48 });
-    chip('Baru sekarang ilmunya ketemu', 0, 420, at('ketemu') - 0.5, { size: 44 });
+    chip('Mineral mikro 3× lebih tinggi', 540, 240, at('Peneliti') + 0.5, { size: 48, stamp: true });
+    chip('dari garam industri', 540, 360, at('industri') - 0.5, { size: 48 });
+    chip('Ratusan tahun dipakai', 540, 300, at('Ratusan') + 0.1, { size: 46 });
+    chip('Baru sekarang ilmunya ketemu', 540, 420, at('ketemu') - 0.5, { size: 42 });
   }
 
   // ══ Beat 5 — Perubahan (54.246 – 66.897) ══════════════════════════════════
   if (k === 5) {
     floresSet('sore');
 
-    // Aldo ikut bakar — tangan di tungku area
-    posAldo(t, { x: 0.6, z: 0.4, ry: -0.5, expr: 'flat', arms: 'stir' });
-    posBeto(t, { x: -1.5, z: 0.0, ry: 0.2, expr: 'smile', arms: 'hips' });
+    if (t < CUT[5] + 2.5) {
+      posAldo(t, { x: 0.6, z: 0.4, ry: -0.5, expr: 'flat', arms: 'stir' });
+      posBeto(t, { x: -1.5, z: 0.0, ry: 0.2, expr: 'smile', arms: 'hips' });
+      shot(t, CUT[5], CUT[5] + 2.5, [0, 2.0, 6], [0, 0.8, 0]);
+    } else if (t < CUT[5] + 4.5) {
+      posAldo(t, { x: 0.6, z: 0.4, ry: -0.5, expr: 'flat', arms: 'stir' });
+      posBeto(t, { x: -1.5, z: 0.0, ry: 0.2, expr: 'smile', arms: 'hips' });
+      closeUp(t, ALDO, CUT[5] + 2.5, CUT[5] + 4.5, { side: 1, dist: 1.7, up: 0.1 });
+    } else if (t < CUT[5] + 7.5) {
+      posAldo(t, { x: 0.6, z: 0.4, ry: -0.5, expr: 'flat', arms: 'chin' });
+      posBeto(t, { x: -1.5, z: 0.0, ry: 0.2, expr: 'smile', arms: 'hips' });
+      closeUp(t, ALDO, CUT[5] + 4.5, CUT[5] + 7.5, { side: 1, dist: 1.6, up: 0.15 });
+    } else if (t < CUT[5] + 9.5) {
+      posAldo(t, { x: 0.6, z: 0.4, ry: -0.5, expr: 'shock', arms: 'down' });
+      posBeto(t, { x: -1.5, z: 0.0, ry: 0.2, expr: 'smile', arms: 'hips' });
+      closeUp(t, ALDO, CUT[5] + 7.5, CUT[5] + 9.5, { side: 1, dist: 1.6, up: 0.15 });
+    } else {
+      posAldo(t, { x: 0.6, z: 0.4, ry: -0.5, expr: 'happy', arms: 'down' });
+      posBeto(t, { x: -1.5, z: 0.0, ry: 0.2, expr: 'laugh', arms: 'hips' });
+      closeUp(t, PAK_BETO, CUT[5] + 9.5, CUT[6], { side: -1, dist: 1.6, up: 0.1 });
+    }
 
-    // wide: Aldo di dekat tungku
-    shot(t, CUT[5], CUT[5] + 2.5,
-      [0, 2.0, 6],
-      [0, 0.8, 0]);
-
-    // close Aldo bekerja
-    closeUp(t, ALDO, CUT[5] + 2.5, CUT[5] + 4.5, { side: 1, dist: 1.7, up: 0.1 });
-
-    // Aldo cicipi: ekspresi berubah
-    posAldo(t, { expr: 'flat', arms: 'chin' });
-    closeUp(t, ALDO, CUT[5] + 4.5, CUT[5] + 7.5, { side: 1, dist: 1.6, up: 0.15 });
-
-    posAldo(t, { expr: 'shock', arms: 'down' });
-    closeUp(t, ALDO, CUT[5] + 7.5, CUT[5] + 9.5, { side: 1, dist: 1.6, up: 0.15 });
-
-    // Pak Beto senyum
-    closeUp(t, PAK_BETO, CUT[5] + 9.5, CUT[6], { side: -1, dist: 1.6, up: 0.1 });
-    posBeto(t, { expr: 'laugh', arms: 'hips' });
-
-    card(['"Ini beda, Pak."'], 80, 1560, at('beda') - 0.2);
-    card(['"Makanya kami tidak beli', 'yang di minimarket."'], -80, 1560, at('minimarket') - 0.6);
+    card(['"Ini beda, Pak."'], 540, 1560, at('beda') - 0.2);
+    card(['"Makanya kami tidak beli', 'yang di minimarket."'], 540, 1560, at('minimarket') - 0.6);
   }
 
   // ══ Beat 6 — CTA (66.897 – 75.807) ═══════════════════════════════════════
   if (k === 6) {
     floresSet('sore');
-
     posBeto(t, { x: -1.3, z: 0.0, ry: 0.1, expr: 'happy', arms: 'cheer' });
     posAldo(t, { x:  1.3, z: 0.1, ry: -0.1, expr: 'happy', arms: 'wave' });
-
-    shot(t, CUT[6], CUT[7],
-      [0, 2.6, 7.5],
-      [0, 0.8, -1.5],
-      { drift: 0.012 });
-
+    shot(t, CUT[6], CUT[7], [0, 2.6, 7.5], [0, 0.8, -1.5], { drift: 0.012 });
     card([
       'Di daerahmu ada cara buat garam',
       'atau bumbu yang aneh? Tulis di komentar!'
