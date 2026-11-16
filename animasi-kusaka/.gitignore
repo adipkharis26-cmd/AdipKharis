@@ -3,3 +3,4 @@ node_modules/
 out/
 !model-sheets/*.png
 !model-sheets/**/*.png
+!storyboards/*.png

@@ -1,5 +1,5 @@
 // Voice-over generator with LOCKED voices.
-//   node scripts/generate-voice.mjs [--force]
+//   node scripts/generate-voice.mjs [src/data/episodes/eps01.json] [--force]
 // - Every character's voice comes ONLY from src/characters/canon.json (voice_id, model eleven_v4, language id, seed, settings).
 // - Voices are verified before use (account or public ElevenLabs library, matched by voice_id). No automatic fallback.
 // - Each line is stored as public/audio/<episode>/<line>.mp3 + .json (alignment + hash). Existing takes are reused as long
@@ -12,7 +12,11 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (f) => JSON.parse(fs.readFileSync(path.join(root, f), "utf8"));
-const script = read("src/data/script.json");
+const scriptPath = process.argv.slice(2).find((a) => a.endsWith(".json")) ?? "src/data/script.json";
+const script = read(scriptPath);
+// Single-location scripts are treated as one scene.
+if (!script.scenes) script.scenes = [{ id: "s01", location: script.location, cast: script.cast, lines: script.lines }];
+script.lines = script.scenes.flatMap((sc) => sc.lines.map((l) => ({ ...l, scene: sc.id })));
 const canon = read("src/characters/canon.json");
 const editing = read("src/edit/editing.json");
 const sfx = read("src/audio/sfx.json");
@@ -27,27 +31,39 @@ const fail = (msg) => { console.error(`✗ ${msg}`); process.exit(1); };
 const EMOTIONS = ["neutral", "smug", "suspicious", "shock", "laugh", "pleading", "deadpan", "surprised", "embarrassed", "defeated"];
 const SHOTS = ["two", "speaker", "push", "crash"];
 if (!script.episode) fail("script.json butuh field \"episode\" (mis. \"eps01\")");
-if (!locations.locations[script.location]) fail(`Lokasi "${script.location}" tidak ada di locations.json`);
-for (const [id, c] of Object.entries(script.cast ?? {})) {
-  if (!canon.characters[id]) fail(`cast: karakter "${id}" tidak ada di canon.json`);
-  if (!locations.locations[script.location].marks[c.mark]) fail(`cast: mark "${c.mark}" tidak ada di lokasi ${script.location}`);
-}
-let crashes = 0;
-for (const l of script.lines) {
-  if (!canon.characters[l.speaker]) fail(`${l.id}: karakter "${l.speaker}" tidak ada di canon.json`);
-  if (!script.cast?.[l.speaker]) fail(`${l.id}: "${l.speaker}" belum ditempatkan di "cast"`);
-  if (!EMOTIONS.includes(l.emotion) || !EMOTIONS.includes(l.listener)) fail(`${l.id}: emosi tidak valid`);
-  if (!SHOTS.includes(l.shot)) fail(`${l.id}: shot "${l.shot}" tidak valid`);
-  if (l.shot === "crash") crashes++;
-  if (l.caption && !editing.captions.includes(l.caption)) fail(`${l.id}: caption "${l.caption}" tidak diizinkan. Pilihan: ${editing.captions.join(", ")}`);
-  for (const s of l.sfx ?? []) if (!sfx.sfx[s.id]) fail(`${l.id}: SFX "${s.id}" tidak ada di sfx.json`);
-  if (l.listenerId && !canon.characters[l.listenerId]) fail(`${l.id}: listenerId tidak dikenal`);
+const ACTIONS = ["idle","gesture","pocket","chin","point","plead","crossed","shock","laugh","slump","wave","thumbsup","peace","facepalm","hips","phone"];
+for (const sc of script.scenes) {
+  const loc = locations.locations[sc.location];
+  if (!loc) fail(`${sc.id}: lokasi "${sc.location}" tidak ada di locations.json`);
+  const marks = new Set();
+  for (const [id, c] of Object.entries(sc.cast ?? {})) {
+    if (!canon.characters[id]) fail(`${sc.id}: karakter "${id}" tidak ada di canon.json`);
+    if (!loc.marks[c.mark]) fail(`${sc.id}: mark "${c.mark}" tidak ada di lokasi ${sc.location}`);
+    if (marks.has(c.mark)) fail(`${sc.id}: dua karakter di mark ${c.mark}`);
+    marks.add(c.mark);
+  }
+  let crashes = 0;
+  for (const l of sc.lines) {
+    if (!canon.characters[l.speaker]) fail(`${l.id}: karakter "${l.speaker}" tidak ada di canon.json`);
+    if (!sc.cast?.[l.speaker] && !l.offscreen) fail(`${l.id}: "${l.speaker}" tidak ada di cast ${sc.id} (pakai "offscreen": true untuk suara dari luar layar)`);
+    if (!EMOTIONS.includes(l.emotion) || !EMOTIONS.includes(l.listener)) fail(`${l.id}: emosi tidak valid`);
+    if (!SHOTS.includes(l.shot)) fail(`${l.id}: shot "${l.shot}" tidak valid`);
+    if (l.offscreen && l.shot !== "two") fail(`${l.id}: suara offscreen harus memakai shot "two"`);
+    if (l.action && !ACTIONS.includes(l.action)) fail(`${l.id}: action "${l.action}" tidak valid`);
+    for (const [c, r] of Object.entries(l.reactions ?? {})) {
+      if (!sc.cast?.[c]) fail(`${l.id}: reaksi untuk "${c}" yang tidak ada di cast`);
+      if (!EMOTIONS.includes(r[0]) || (r[1] && !ACTIONS.includes(r[1]))) fail(`${l.id}: reaksi ${c} tidak valid`);
+    }
+    if (l.shot === "crash") crashes++;
+    if (l.caption && !editing.captions.includes(l.caption)) fail(`${l.id}: caption "${l.caption}" tidak diizinkan. Pilihan: ${editing.captions.join(", ")}`);
+    for (const s of l.sfx ?? []) if (!sfx.sfx[s.id]) fail(`${l.id}: SFX "${s.id}" tidak ada di sfx.json`);
+  }
+  if (crashes > editing.maxCrashPerShort) fail(`${sc.id}: crash zoom ${crashes}x, maksimal ${editing.maxCrashPerShort}x per adegan`);
 }
 for (const [id, s] of Object.entries(sfx.sfx)) {
   const max = id.startsWith("amb_") ? sfx.maxAmbience : sfx.maxVolume;
   if (s.volume > max) fail(`SFX "${id}" volume ${s.volume} melebihi batas ${max} (SFX hanya pelengkap)`);
 }
-if (crashes > editing.maxCrashPerShort) fail(`Crash zoom dipakai ${crashes}x, maksimal ${editing.maxCrashPerShort}x`);
 
 /* ---------------- voice lock ---------------- */
 function curlJson(url) {
@@ -129,29 +145,37 @@ const probe = (f) => parseFloat(execFileSync("ffprobe", ["-v", "error", "-show_e
 
 /* ---------------- run ---------------- */
 // Only verify voices that actually need a new take.
-const timeline = { episode: script.episode, location: script.location, cast: script.cast, fps: script.fps, lines: [], totalSeconds: 0 };
-let cursor = script.leadIn ?? 0.6;
+const timeline = { episode: script.episode, title: script.title, fps: script.fps, scenes: [], lines: [], totalSeconds: 0 };
+let cursor = 0;
 const verified = new Set();
-for (const line of script.lines) {
-  const ch = canon.characters[line.speaker];
-  const metaPath = path.join(audioDir, `${line.id}.json`);
-  const needsNew = force || !fs.existsSync(metaPath) ||
-    JSON.parse(fs.readFileSync(metaPath, "utf8")).hash !== crypto.createHash("sha256").update(line.text + "|" + voiceHash(line.speaker)).digest("hex").slice(0, 16);
-  if (needsNew && !verified.has(line.speaker)) {
-    const where = verifyVoice(line.speaker);
-    console.log(`🔒 Suara ${ch.name} terverifikasi (${ch.voice.name_check}, ${where})`);
-    verified.add(line.speaker);
+const lineHash = (l) => crypto.createHash("sha256").update(l.text + "|" + voiceHash(l.speaker)).digest("hex").slice(0, 16);
+for (const sc of script.scenes) {
+  const scStart = cursor;
+  cursor += script.sceneLead ?? script.leadIn ?? 0.6;
+  for (const raw of sc.lines) {
+    const line = { ...raw, scene: sc.id };
+    const ch = canon.characters[line.speaker];
+    const metaPath = path.join(audioDir, `${line.id}.json`);
+    const needsNew = force || !fs.existsSync(metaPath) || JSON.parse(fs.readFileSync(metaPath, "utf8")).hash !== lineHash(line);
+    if (needsNew && !verified.has(line.speaker)) {
+      const where = verifyVoice(line.speaker);
+      console.log(`🔒 Suara ${ch.name} terverifikasi (${ch.voice.name_check}, ${where})`);
+      verified.add(line.speaker);
+    }
+    const m = tts(line);
+    const duration = probe(path.join(audioDir, `${line.id}.mp3`));
+    console.log(`${m.reused ? "♻ " : "🎙 "} ${line.id} ${ch.name}: ${line.text}`);
+    timeline.lines.push({
+      ...line, audio: `audio/${script.episode}/${line.id}.mp3`, start: +cursor.toFixed(3), duration: +duration.toFixed(3),
+      visemes: buildVisemes(m.alignment), words: buildWords(m.alignment),
+    });
+    cursor += duration + (line.surprise ? 0.15 : line.gapAfter ?? script.gapSeconds);
   }
-  const m = tts(line);
-  const file = path.join(audioDir, `${line.id}.mp3`);
-  const duration = probe(file);
-  console.log(`${m.reused ? "♻ " : "🎙 "} ${line.id} ${ch.name}: ${line.text}`);
-  timeline.lines.push({
-    ...line, audio: `audio/${script.episode}/${line.id}.mp3`, start: +cursor.toFixed(3), duration: +duration.toFixed(3),
-    visemes: buildVisemes(m.alignment), words: buildWords(m.alignment),
-  });
-  cursor += duration + (line.surprise ? 0.15 : line.gapAfter ?? script.gapSeconds);
+  cursor += script.sceneGap ?? 0;
+  timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
 }
-timeline.totalSeconds = +(cursor + (script.tail ?? 2.5)).toFixed(3);
+timeline.scenes[timeline.scenes.length - 1].end = +(cursor + (script.tail ?? 2.5)).toFixed(3);
+timeline.totalSeconds = timeline.scenes[timeline.scenes.length - 1].end;
 fs.writeFileSync(path.join(root, "src/data/timeline.json"), JSON.stringify(timeline));
-console.log(`✅ timeline.json — ${timeline.lines.length} baris, ${timeline.totalSeconds}s, suara terkunci ✓`);
+const mm = Math.floor(timeline.totalSeconds / 60), ss = Math.round(timeline.totalSeconds % 60);
+console.log(`✅ timeline.json — ${script.episode}: ${timeline.scenes.length} adegan, ${timeline.lines.length} baris, ${mm}:${String(ss).padStart(2, "0")} menit, suara terkunci ✓`);

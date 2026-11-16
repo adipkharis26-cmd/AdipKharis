@@ -6,9 +6,9 @@
   "scripts": {
     "voice": "node scripts/generate-voice.mjs",
     "studio": "remotion studio src/index.ts",
-    "render": "remotion render src/index.ts KusakaWarung out/kusaka-warung.mp4",
-    "render:shorts": "remotion render src/index.ts KusakaWarungShorts out/kusaka-warung-shorts.mp4",
-    "still": "remotion still src/index.ts KusakaWarung out/still.png",
+    "render": "remotion render src/index.ts KusakaEpisode out/episode-16x9.mp4",
+    "render:shorts": "remotion render src/index.ts KusakaEpisodeShorts out/episode-shorts.mp4",
+    "still": "remotion still src/index.ts KusakaEpisode out/still.png",
     "check:characters": "node scripts/character-lock.mjs check",
     "lock:characters": "node scripts/character-lock.mjs lock",
     "sheets": "node scripts/render-sheets.mjs",

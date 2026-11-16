@@ -39,14 +39,15 @@ export const Subtitles: React.FC<{ t: number; vertical: boolean; w: number }> = 
   return (
     <div style={{ position: "absolute", left: 0, right: 0, bottom: vertical ? 380 : 60, display: "flex", justifyContent: "center", fontFamily: SUB.font }}>
       <div style={{ maxWidth: w * 0.86, textAlign: "center", fontSize: fs, lineHeight: 1.15, fontWeight: 800 }}>
-        {line.words.map((wd, i) => {
+        {line.words.flatMap((wd, i) => {
           const on = local >= wd.t;
-          return (
+          const word = (
             <span key={i} style={{
               color: on ? SUB.highlight : SUB.color, WebkitTextStroke: `${SUB.strokeWidth}px ${SUB.stroke}`, paintOrder: "stroke fill",
-              display: "inline-block", marginRight: fs * 0.28, transform: `scale(${on && local - wd.t < 0.12 ? 1.12 : 1})`,
+              display: "inline-block", transform: `scale(${on && local - wd.t < 0.12 ? 1.08 : 1})`, margin: `0 ${fs * 0.06}px`,
             }}>{wd.w}</span>
           );
+          return i > 0 ? [" ", word] : [word]; // real space between words (never merges)
         })}
       </div>
     </div>

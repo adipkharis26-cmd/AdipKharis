@@ -219,8 +219,8 @@ lebih aman memakai pustaka orisinal di atas. Kalau Anda punya file yang lisensin
 ### Musim 1: "Operasi Traktir Nadia" (12 episode)
 | Ep | Judul | Lokasi | Pemeran utama | Hook |
 |---|---|---|---|---|
-| 1 | Traktiran Gagal ✅ | Warung | Kusaka, Ujang | "Kus, buruan pesen!" |
-| 2 | Dompet Sandera | Kamar | Kusaka, Dinda | Dinda mengacungkan dompet: "Cari ini?" |
+| 1 | Operasi Traktir Nadia ✅ (7:39, 10 adegan) | Kamar → Ruang Tamu → Gerbang → Koridor → Kelas → Kantin → BK → Warung → Kamar | Hampir semua pemeran | Dinda live: "Kakakku baru bangun, guys" |
+| 2 | Dompet Sandera | Kamar → Koridor | Kusaka, Dinda, Raka | Lanjutan cliffhanger Eps. 1: Kusaka jadi "bintang konten" Dinda |
 | 3 | Telat Upacara | Gerbang → Lapangan Upacara | Kusaka, Mang Udin, Pak Joko | Gerbang menutup di depan hidung Kusaka |
 | 4 | PR Halaman 45 | Kelas–meja guru | Kusaka, Bu Wati, Nadia | "Kerjakan halaman 45 sampai 90." |
 | 5 | Satu Kelompok | Perpustakaan | Kusaka, Nadia, Ujang | Undian kelompok: Kusaka + Nadia |

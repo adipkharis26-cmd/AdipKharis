@@ -9,10 +9,10 @@ import { LOCATIONS } from "./scene/Locations";
 export const RemotionRoot: React.FC = () => (
   <>
     {/* YouTube 16:9 */}
-    <Composition id="KusakaWarung" component={KusakaWarung} durationInFrames={TOTAL_FRAMES}
+    <Composition id="KusakaEpisode" component={KusakaWarung} durationInFrames={TOTAL_FRAMES}
       fps={FPS} width={1920} height={1080} defaultProps={{ vertical: false }} />
     {/* YouTube Shorts / Reels 9:16 — same scene, camera re-framed */}
-    <Composition id="KusakaWarungShorts" component={KusakaWarungShorts} durationInFrames={TOTAL_FRAMES - SHORTS_SKIP}
+    <Composition id="KusakaEpisodeShorts" component={KusakaWarungShorts} durationInFrames={TOTAL_FRAMES - SHORTS_SKIP}
       fps={FPS} width={1080} height={1920} />
     {/* Character bible — locked reference sheets (render as stills) */}
     {CHAR_IDS.map((id) => (
