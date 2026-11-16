@@ -14,6 +14,23 @@ npm run render:shorts  # out/kusaka-warung-shorts.mp4 (1080x1920, Shorts/Reels)
 ```
 Kunci API dibaca dari env `ELEVENLABS_API_KEY` — **jangan pernah ditulis di kode / commit**.
 
+## 🔒 Karakter terkunci (character bible)
+Desain karakter punya **satu sumber kebenaran**: `src/characters/canon.json`, yang berisi palet warna, proporsi,
+ciri khas wajib, sifat, kalimat khas, dan **suara ElevenLabs** (voice_id, model, setting). Rig, model sheet, dan
+generator suara semuanya membaca dari file ini, jadi setiap episode tampil dan terdengar sama.
+
+Acuan visual ada di `model-sheets/`:
+- `ModelSheet-kusaka.png`, `ModelSheet-ujang.png`: proporsi, 10 ekspresi, 16 bentuk mulut, palet, 10 pose
+- `Lineup.png`: perbandingan tinggi, versi kanon (menghadap kanan) dan versi cermin (menghadap kiri)
+
+`characters.lock.json` menyimpan hash dari kanon dan file rig. `npm run voice`, `render`, dan `render:shorts`
+otomatis menjalankan `npm run check:characters` dan **menolak jalan** kalau desain berubah tanpa disengaja.
+
+Mengubah desain dengan sengaja (misalnya menambah ekspresi atau karakter baru):
+1. edit `canon.json` atau file rig, lalu naikkan `"version"` (misalnya 1.0.0 → 1.1.0)
+2. `npm run sheets`, lalu cek model sheet yang baru
+3. `npm run lock:characters`
+
 ## Mengubah cerita
 Edit `src/data/script.json` (teks, pembicara, `emotion`, reaksi `listener`, `shot`, `action`) lalu
 `npm run voice` dan render ulang. Semua timing (lip-sync, kamera, subtitle) ikut otomatis.

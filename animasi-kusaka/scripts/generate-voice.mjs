@@ -10,6 +10,12 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const script = JSON.parse(fs.readFileSync(path.join(root, "src/data/script.json"), "utf8"));
+// Voices are locked in the character canon so every episode sounds the same.
+const canon = JSON.parse(fs.readFileSync(path.join(root, "src/characters/canon.json"), "utf8"));
+for (const id of Object.keys(script.characters)) {
+  if (!canon.characters[id]) throw new Error(`Karakter "${id}" tidak ada di canon.json`);
+  script.characters[id] = { name: canon.characters[id].name, ...canon.characters[id].voice };
+}
 const audioDir = path.join(root, "public/audio");
 const cacheDir = path.join(root, "scripts/.cache");
 fs.mkdirSync(audioDir, { recursive: true });
@@ -54,16 +60,16 @@ function buildVisemes(alignment, offset = 0) {
 
 async function tts(line) {
   const ch = script.characters[line.speaker];
-  const key = `${line.id}-${ch.voice_id}-${script.model_id}-${Buffer.from(line.text).toString("base64url").slice(0, 40)}`;
+  const key = `${line.id}-${ch.voice_id}-${ch.model_id}-${Buffer.from(line.text).toString("base64url").slice(0, 40)}`;
   const cacheFile = path.join(cacheDir, `${key}.json`);
   if (!force && fs.existsSync(cacheFile)) return JSON.parse(fs.readFileSync(cacheFile, "utf8"));
 
   // curl is used (not fetch) so system HTTPS proxy settings are always honoured.
   const body = JSON.stringify({
     text: line.text,
-    model_id: script.model_id,
+    model_id: ch.model_id,
     language_code: "id",
-    voice_settings: { stability: 0.5, similarity_boost: 0.8, style: 0.4, use_speaker_boost: true },
+    voice_settings: ch.settings,
   });
   const args = [
     "-sS", "-X", "POST", "-w", "\n%{http_code}",

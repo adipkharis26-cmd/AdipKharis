@@ -1,16 +1,13 @@
 {
   "title": "Kusaka: Traktiran Gagal",
-  "model_id": "eleven_v4",
   "fps": 30,
   "gapSeconds": 0.35,
   "characters": {
     "kusaka": {
-      "name": "Kusaka",
-      "voice_id": "W8aRyPTvOnlcvcu0uYX3"
+      "name": "Kusaka"
     },
     "ujang": {
-      "name": "Ujang",
-      "voice_id": "TX3LPaxmHKxFdv7VOQHJ"
+      "name": "Ujang"
     }
   },
   "lines": [
@@ -84,5 +81,6 @@
       "listener": "defeated",
       "action": "crossed"
     }
-  ]
+  ],
+  "_note": "Suara, warna & desain karakter diambil dari src/characters/canon.json (terkunci)."
 }

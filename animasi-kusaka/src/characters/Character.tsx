@@ -1,6 +1,6 @@
 import React from "react";
 import { random } from "remotion";
-import { Action, CharId, Emotion, FPS, TOTAL_SECONDS, stateAt, visemeAt } from "../lib/timeline";
+import { Action, CharId, Emotion, FPS, TOTAL_SECONDS, Viseme, stateAt, visemeAt } from "../lib/timeline";
 import { Mouth, pickMouth } from "./Mouth";
 import { Brow, Eye, eyesFor } from "./Eyes";
 
@@ -14,14 +14,20 @@ import { Brow, Eye, eyesFor } from "./Eyes";
 const OUT = "#1b1b1b";
 const SW = 6;
 
-interface Look {
-  skin: string; skinShade: string; hair: string; shirt: string; shirtShade: string; pants: string;
-  bodyW: number; glasses: boolean;
+import canon from "./canon.json";
+
+/** Locked character design — single source of truth is canon.json (see `npm run check:characters`). */
+export interface Look {
+  skin: string; skinShade: string; hair: string; shirt: string; shirtShade: string; pants: string; accent: string;
+  bodyW: number; belly: number; browThick: number;
+  hairStyle: "spiky" | "buzz"; glasses: boolean; bandaid: boolean; tucked: boolean;
 }
-const LOOKS: Record<CharId, Look> = {
-  kusaka: { skin: "#f4c99e", skinShade: "#e0ab7e", hair: "#1e1b26", shirt: "#fbfbf7", shirtShade: "#d9dde6", pants: "#7b818c", bodyW: 1, glasses: false },
-  ujang:  { skin: "#d9a171", skinShade: "#bf8656", hair: "#2a2018", shirt: "#fbfbf7", shirtShade: "#d9dde6", pants: "#7b818c", bodyW: 1.2, glasses: true },
-};
+type CanonChar = (typeof canon.characters)[CharId];
+const toLook = (c: CanonChar): Look => Object.freeze({
+  ...c.palette, ...c.build,
+  hairStyle: c.features.hair as Look["hairStyle"], glasses: c.features.glasses, bandaid: c.features.bandaid, tucked: c.features.tucked,
+});
+export const LOOKS: Record<CharId, Look> = Object.freeze({ kusaka: toLook(canon.characters.kusaka), ujang: toLook(canon.characters.ujang) });
 
 // Arm pose: [shoulder, elbow] in degrees, measured "forward" (toward facing) from pointing down.
 type ArmPose = [number, number];
@@ -125,7 +131,7 @@ const Legs: React.FC<{ look: Look; crouch: number }> = ({ look, crouch }) => {
 const Torso: React.FC<{ look: Look; id: CharId; crouch: number }> = ({ look, id, crouch }) => {
   const w = look.bodyW;
   const top = -462 + crouch, bot = -220 + crouch;
-  const belly = id === "ujang" ? 22 : 0;
+  const belly = look.belly;
   const d = `M ${-70 * w} ${top + 10} Q 0 ${top - 14} ${76 * w} ${top + 10} L ${70 * w + belly} ${top + 150}
              Q ${74 * w + belly} ${bot - 30} ${66 * w} ${bot} L ${-64 * w} ${bot} Q ${-72 * w} ${top + 120} ${-70 * w} ${top + 10} Z`;
   return (
@@ -146,8 +152,8 @@ const Torso: React.FC<{ look: Look; id: CharId; crouch: number }> = ({ look, id,
       <path d={`M ${-30} ${top - 2} L ${-6} ${top + 34} L ${12} ${top + 4} Z`} fill={look.shirt} stroke={OUT} strokeWidth={5} strokeLinejoin="round" />
       <path d={`M ${46} ${top - 2} L ${26} ${top + 36} L ${12} ${top + 4} Z`} fill={look.shirt} stroke={OUT} strokeWidth={5} strokeLinejoin="round" />
       {/* belt (Ujang tucks his shirt in, Kusaka doesn't) */}
-      {id === "ujang" && <rect x={-64 * w} y={bot - 22} width={130 * w} height={20} fill="#2b2b2b" stroke={OUT} strokeWidth={4} />}
-      {id === "ujang" && <rect x={12 * w} y={bot - 24} width={22} height={24} fill="#c7c7c7" stroke={OUT} strokeWidth={4} />}
+      {look.tucked && <rect x={-64 * w} y={bot - 22} width={130 * w} height={20} fill="#2b2b2b" stroke={OUT} strokeWidth={4} />}
+      {look.tucked && <rect x={12 * w} y={bot - 24} width={22} height={24} fill="#c7c7c7" stroke={OUT} strokeWidth={4} />}
     </g>
   );
 };
@@ -213,16 +219,16 @@ const Head: React.FC<{ id: CharId; look: Look; t: number; emotion: Emotion; vise
             <path d="M 52 -168 L 64 -176" stroke="#fff" strokeWidth={5} strokeLinecap="round" />
           </g>
         )}
-        <Brow cx={2} cy={-190 - (look.glasses ? 6 : 0)} w={40} state={brow} side={-1} thick={id === "kusaka" ? 11 : 8} />
-        <Brow cx={74} cy={-192 - (look.glasses ? 6 : 0)} w={48} state={brow} side={1} thick={id === "kusaka" ? 11 : 8} />
+        <Brow cx={2} cy={-190 - (look.glasses ? 6 : 0)} w={40} state={brow} side={-1} thick={look.browThick} />
+        <Brow cx={74} cy={-192 - (look.glasses ? 6 : 0)} w={48} state={brow} side={1} thick={look.browThick} />
       </g>
       {/* nose */}
       <path d="M 104 -126 Q 118 -108 100 -104" fill="none" stroke={OUT} strokeWidth={5} strokeLinecap="round" />
       {/* mouth (lip-sync sprite) */}
       <g transform="translate(76 -64)"><Mouth shape={shape} intensity={intensity} /></g>
       {/* hair & accessories */}
-      {id === "kusaka" ? <KusakaHair color={look.hair} t={t} /> : <UjangHair color={look.hair} />}
-      {id === "kusaka" && (
+      {look.hairStyle === "spiky" ? <KusakaHair color={look.hair} t={t} /> : <UjangHair color={look.hair} />}
+      {look.bandaid && (
         // band-aid on cheek — Kusaka's trademark
         <g transform="translate(-30 -88) rotate(-18)">
           <rect x={-22} y={-9} width={44} height={18} rx={8} fill="#f3d2a8" stroke={OUT} strokeWidth={4} />
@@ -251,16 +257,37 @@ const Gloom: React.FC = () => (
   </g>
 );
 
+const HeadFx: React.FC<{ emotion: Emotion; t: number; since: number }> = ({ emotion, t, since }) => (
+  <>
+    {emotion === "embarrassed" && <SweatDrop t={t} />}
+    {emotion === "shock" && since < 1.6 && <ShockMarks />}
+    {emotion === "defeated" && <Gloom />}
+  </>
+);
+
+/** Head-only portrait (expression / mouth charts). Origin = neck pivot. */
+export const Portrait: React.FC<{ id: CharId; emotion: Emotion; viseme?: Viseme | null; eyesClosed?: boolean }> = ({ id, emotion, viseme = null, eyesClosed }) => (
+  <g>
+    <Head id={id} look={LOOKS[id]} t={0} emotion={emotion} viseme={viseme} blink={!!eyesClosed} lookDir={emotion === "shock" ? [0.1, 0] : [0.6, 0]} since={0} />
+    <HeadFx emotion={emotion} t={0.4} since={0} />
+  </g>
+);
+
 /* ------------------------------ Character ------------------------------- */
-export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 | -1; frame: number; scale?: number }> = ({ id, x, y, facing, frame, scale = 1 }) => {
+/** Fixed pose for model sheets (bypasses the timeline). */
+export interface Force { emotion?: Emotion; action?: Action; viseme?: Viseme | null; noFx?: boolean }
+
+export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 | -1; frame: number; scale?: number; force?: Force }> = ({ id, x, y, facing, frame, scale = 1, force }) => {
   const t = frame / FPS;
   const look = LOOKS[id];
-  const st = stateAt(id, t);
-  const prev = stateAt(id, Math.max(0, t - st.since - 1 / FPS));
+  const st = force
+    ? { emotion: force.emotion ?? "neutral", action: force.action ?? "idle", since: 2, line: null }
+    : stateAt(id, t);
+  const prev = force ? st : stateAt(id, Math.max(0, t - st.since - 1 / FPS));
   const k = ease(st.since / 0.28);
   let pose = mixPose(POSES[prev.action], POSES[st.action], st.since > 0 && prev.action !== st.action ? k : 1);
 
-  const viseme = visemeAt(id, t);
+  const viseme = force ? force.viseme ?? null : visemeAt(id, t);
   const open = viseme ? OPEN[viseme] ?? 0 : 0;
   const speaking = viseme !== null;
   const phase = id === "kusaka" ? 0 : 1.7;
@@ -281,7 +308,7 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
   // listener nods along (light idle nod)
   if (!speaking && st.emotion === "neutral") extraTilt += Math.max(0, Math.sin(t * 3.2 + phase)) * 3;
 
-  const blink = isBlinking(id, t) && st.emotion !== "shock";
+  const blink = !force && isBlinking(id, t) && st.emotion !== "shock";
   const crouch = pose.crouch;
 
   const frontShoulder: [number, number] = [52 * look.bodyW, -438 + crouch];
@@ -303,9 +330,7 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
         {/* head pivots at the neck */}
         <g transform={`translate(4 ${-468 + crouch}) rotate(${pose.head + nod + extraTilt})`}>
           <Head id={id} look={look} t={t} emotion={st.emotion} viseme={viseme} blink={blink} lookDir={pose.look} since={st.since} />
-          {st.emotion === "embarrassed" && <SweatDrop t={t} />}
-          {st.emotion === "shock" && st.since < 1.6 && <ShockMarks />}
-          {st.emotion === "defeated" && <Gloom />}
+          {!force?.noFx && <HeadFx emotion={st.emotion} t={t} since={force ? 0 : st.since} />}
         </g>
         {/* front arm */}
         <Arm sx={frontShoulder[0]} sy={frontShoulder[1]} pose={pose.front} look={look} point={st.action === "point"} />

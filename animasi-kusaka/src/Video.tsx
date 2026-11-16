@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { AbsoluteFill, Audio, Sequence, continueRender, delayRender, staticFile, useCurrentFrame, useVideoConfig, Loop } from "remotion";
+import React from "react";
+import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig, Loop } from "remotion";
+import { useFonts } from "./lib/fonts";
 import { Character } from "./characters/Character";
 import { City, Ground, Sky, Warung } from "./scene/Background";
 import { EndCard, SpeedLines, Subtitles, TitleCard } from "./fx/Overlays";
@@ -9,19 +10,6 @@ import { END_OF_DIALOG, FPS, LINES, Line, beatAt } from "./lib/timeline";
 const POS = { kusaka: { x: 720, facing: 1 as const }, ujang: { x: 1200, facing: -1 as const } };
 const FLOOR = 960;
 const faceOf = (c: "kusaka" | "ujang") => ({ x: POS[c].x + 70 * POS[c].facing, y: FLOOR - 468 - 130 });
-
-/* -------------------------------- fonts -------------------------------------- */
-let fontsLoaded = false;
-function useFonts() {
-  const [handle] = useState(() => (fontsLoaded ? null : delayRender("fonts")));
-  useEffect(() => {
-    if (!handle) return;
-    Promise.all([
-      new FontFace("Bangers", `url(${staticFile("fonts/Bangers.woff2")})`).load(),
-      new FontFace("Baloo2", `url(${staticFile("fonts/Baloo2-800.woff2")})`).load(),
-    ]).then((fonts) => { fonts.forEach((f) => document.fonts.add(f)); fontsLoaded = true; continueRender(handle); });
-  }, [handle]);
-}
 
 /* -------------------------------- camera ------------------------------------- */
 interface Cam { x: number; y: number; z: number }

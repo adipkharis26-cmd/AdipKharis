@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "lockedAt": "2026-11-16",
+  "rules": [
+    "Sudut pandang kanon: 3/4 menghadap kanan. Menghadap kiri = cermin horizontal (scaleX -1), bukan gambar baru.",
+    "Proporsi: tinggi ±760 unit, kepala ±35% tinggi badan (gaya chibi-remaja). Kaki di y=0, leher di y=-468.",
+    "Outline selalu #1b1b1b, tebal 6 unit (detail 4–5). Cel-shading hanya satu tingkat bayangan.",
+    "Seragam SMA Indonesia: kemeja putih lengan pendek, celana abu-abu, sepatu hitam, lambang OSIS di saku.",
+    "Ciri khas (signature) tidak boleh dihilangkan di adegan mana pun.",
+    "Warna hanya dari palet di bawah. Ekspresi, mulut, dan pose hanya dari daftar yang tersedia di rig."
+  ],
+  "characters": {
+    "kusaka": {
+      "name": "Kusaka",
+      "role": "Tokoh utama",
+      "age": 17,
+      "school": "Siswa SMA kelas XI",
+      "personality": ["Percaya diri berlebihan", "Pelupa — dompet sering ketinggalan", "Setia kawan", "Gampang panik"],
+      "catchphrase": "Tenang aja, gue yang traktir!",
+      "signature": ["Rambut hitam jabrik dengan 7 duri tajam", "Plester (band-aid) di pipi belakang", "Alis tebal", "Kemeja tidak dimasukkan"],
+      "palette": { "skin": "#f4c99e", "skinShade": "#e0ab7e", "hair": "#1e1b26", "shirt": "#fbfbf7", "shirtShade": "#d9dde6", "pants": "#7b818c", "accent": "#e63946" },
+      "build": { "bodyW": 1, "belly": 0, "browThick": 11 },
+      "features": { "hair": "spiky", "glasses": false, "bandaid": true, "tucked": false },
+      "voice": { "voice_id": "W8aRyPTvOnlcvcu0uYX3", "label": "DQ (id, muda)", "model_id": "eleven_v4",
+                 "settings": { "stability": 0.5, "similarity_boost": 0.8, "style": 0.4, "use_speaker_boost": true } }
+    },
+    "ujang": {
+      "name": "Ujang",
+      "role": "Sahabat Kusaka",
+      "age": 17,
+      "school": "Siswa SMA kelas XI, sebangku dengan Kusaka",
+      "personality": ["Kalem dan sarkas", "Perhitungan soal uang", "Suka menertawakan Kusaka, tapi selalu menolong"],
+      "catchphrase": "Udah gue duga.",
+      "signature": ["Kacamata bulat", "Rambut cepak cokelat tua", "Badan agak gempal", "Kemeja dimasukkan + ikat pinggang"],
+      "palette": { "skin": "#d9a171", "skinShade": "#bf8656", "hair": "#2a2018", "shirt": "#fbfbf7", "shirtShade": "#d9dde6", "pants": "#7b818c", "accent": "#2f7fd8" },
+      "build": { "bodyW": 1.2, "belly": 22, "browThick": 8 },
+      "features": { "hair": "buzz", "glasses": true, "bandaid": false, "tucked": true },
+      "voice": { "voice_id": "TX3LPaxmHKxFdv7VOQHJ", "label": "Liam (multibahasa)", "model_id": "eleven_v4",
+                 "settings": { "stability": 0.5, "similarity_boost": 0.8, "style": 0.4, "use_speaker_boost": true } }
+    }
+  },
+  "supporting": {
+    "buIjah": {
+      "name": "Bu Ijah",
+      "role": "Pemilik warung langganan",
+      "signature": ["Kerudung merah muda", "Baju hijau", "Selalu tersenyum, mengangguk saat menerima pesanan"],
+      "palette": { "skin": "#e0a77a", "hijab": "#e85d75", "dress": "#3fa37a" }
+    }
+  }
+}
