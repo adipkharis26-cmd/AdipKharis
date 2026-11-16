@@ -1,0 +1,25 @@
+{
+  "name": "animasi-kusaka",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "voice": "node scripts/generate-voice.mjs",
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts KusakaWarung out/kusaka-warung.mp4",
+    "render:shorts": "remotion render src/index.ts KusakaWarungShorts out/kusaka-warung-shorts.mp4",
+    "still": "remotion still src/index.ts KusakaWarung out/still.png"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.540",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.540"
+  },
+  "devDependencies": {
+    "@fontsource/baloo-2": "^5.1.0",
+    "@fontsource/bangers": "^5.1.0",
+    "@types/react": "18.3.12",
+    "typescript": "5.6.3"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "title": "Kusaka: Traktiran Gagal",
+  "model_id": "eleven_v4",
+  "fps": 30,
+  "gapSeconds": 0.35,
+  "characters": {
+    "kusaka": {
+      "name": "Kusaka",
+      "voice_id": "W8aRyPTvOnlcvcu0uYX3"
+    },
+    "ujang": {
+      "name": "Ujang",
+      "voice_id": "TX3LPaxmHKxFdv7VOQHJ"
+    }
+  },
+  "lines": [
+    {
+      "id": "l01",
+      "speaker": "ujang",
+      "emotion": "neutral",
+      "shot": "two",
+      "text": "Kus, buruan pesen! Bel masuk tinggal sepuluh menit lagi.",
+      "listener": "neutral"
+    },
+    {
+      "id": "l02",
+      "speaker": "kusaka",
+      "emotion": "smug",
+      "shot": "speaker",
+      "text": "Santai, Jang. Bu, gorengan lima sama es teh satu, ya!",
+      "listener": "neutral"
+    },
+    {
+      "id": "l03",
+      "speaker": "ujang",
+      "emotion": "suspicious",
+      "shot": "speaker",
+      "text": "Lima? Banyak amat. Lu yang bayar, kan?",
+      "listener": "smug",
+      "action": "chin"
+    },
+    {
+      "id": "l04",
+      "speaker": "kusaka",
+      "emotion": "smug",
+      "shot": "push",
+      "text": "Tenang aja. Hari ini, gue yang traktir.",
+      "action": "pocket",
+      "listener": "suspicious"
+    },
+    {
+      "id": "l05",
+      "speaker": "kusaka",
+      "emotion": "shock",
+      "shot": "crash",
+      "text": "Lho?! Dompet gue mana?!",
+      "surprise": true,
+      "listener": "surprised"
+    },
+    {
+      "id": "l06",
+      "speaker": "ujang",
+      "emotion": "laugh",
+      "shot": "speaker",
+      "text": "Hahaha! Ketinggalan lagi, kan? Udah gue duga!",
+      "listener": "embarrassed",
+      "action": "point"
+    },
+    {
+      "id": "l07",
+      "speaker": "kusaka",
+      "emotion": "pleading",
+      "shot": "speaker",
+      "text": "Jang... pinjem duit dulu dong. Besok gue ganti, sumpah!",
+      "listener": "deadpan",
+      "action": "plead"
+    },
+    {
+      "id": "l08",
+      "speaker": "ujang",
+      "emotion": "deadpan",
+      "shot": "two",
+      "text": "Sumpah lu udah kayak cicilan, Kus. Numpuk terus!",
+      "listener": "defeated",
+      "action": "crossed"
+    }
+  ]
+}
