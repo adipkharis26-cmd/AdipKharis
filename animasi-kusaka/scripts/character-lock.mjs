@@ -23,6 +23,7 @@ const FILES = [
   "src/branding/brand.json",
   "src/branding/Brand.tsx",
   "src/branding/Thumbnail.tsx",
+  "src/branding/Watermark.tsx",
   // every SFX file is locked too (sound consistency)
   ...fs.readdirSync(path.join(root, "public/sfx")).filter((f) => f.endsWith(".mp3")).sort().map((f) => `public/sfx/${f}`),
 ];

@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "lockedAt": "2026-11-16",
   "channel": "Kusaka Design",
   "handle": "@kusakadesign",
@@ -24,6 +24,15 @@
     "Logo resmi = Logo 2 (lencana Kusaka + KUSAKA DESIGN). Banner resmi = Banner 3 (Panel Komik). Tidak diubah tanpa perintah pemilik.",
     "Thumbnail 1280x720: bingkai kuning, teks HANYA judul (maks 4 kata), tanpa nomor episode/lencana EPS.",
     "Thumbnail DILARANG memakai uang / mata uang (Rp). Properti hanya benda cerita (mis. dompet).",
-    "Wajah karakter besar dengan ekspresi ekstrem, pojok kanan bawah kosong (label durasi), 3 varian untuk Test & Compare."
-  ]
+    "Wajah karakter besar dengan ekspresi ekstrem, pojok kanan bawah kosong (label durasi), 3 varian untuk Test & Compare.",
+    "Watermark Shorts resmi = Contoh 5 (pil gelap transparan, Logo 2, KUSAKA/DESIGN) di pojok kiri atas. HANYA di Shorts 9:16, tidak di video panjang."
+  ],
+  "watermark": {
+    "chosen": 5,
+    "format": "shorts",
+    "position": "kiri atas",
+    "top": 90,
+    "left": 44,
+    "style": "pil gelap transparan + Logo 2 + KUSAKA / DESIGN"
+  }
 }

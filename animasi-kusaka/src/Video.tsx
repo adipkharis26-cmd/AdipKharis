@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Audio, Loop, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { useFonts } from "./lib/fonts";
+import { ShortsWatermark } from "./branding/Watermark";
 import { Character } from "./characters/Character";
 import { LOCATIONS, LOCATION_META, LocId } from "./scene/Locations";
 import { Caption, FlashbackOverlay, SpeedLines, Subtitles } from "./fx/Overlays";
@@ -181,5 +182,8 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
  * Shorts start right at the first line (hook within 0.5 s). No text besides subtitles. */
 export const SHORTS_SKIP = Math.round((LINES[0].start - 0.3) * FPS);
 export const KusakaWarungShorts: React.FC = () => (
-  <AbsoluteFill><Sequence from={-SHORTS_SKIP}><KusakaWarung vertical /></Sequence></AbsoluteFill>
+  <AbsoluteFill>
+    <Sequence from={-SHORTS_SKIP}><KusakaWarung vertical /></Sequence>
+    <ShortsWatermark />
+  </AbsoluteFill>
 );

@@ -27,5 +27,7 @@ Aturan dari pemilik proyek, WAJIB diikuti di setiap sesi:
 10. **Brand terkunci** (`src/branding/brand.json`): nama channel **Kusaka Design**, logo resmi **Logo 2 (lencana)**,
     banner resmi **Banner 3 (Panel Komik)**. Thumbnail: teks hanya judul (tanpa nomor episode/lencana EPS),
     **dilarang memakai uang / mata uang (Rp)**. Aset di `animasi-kusaka/brand/` (`npm run brand`).
+    **Watermark Shorts resmi = Contoh 5** (pil gelap transparan + Logo 2 + KUSAKA/DESIGN, kiri atas), hanya di Shorts.
+11. **Pratinjau hanya gambar** (storyboard/still). Video MP4 hanya dikirim kalau pemilik memintanya.
 
 Panduan cerita dan strategi: `animasi-kusaka/SERIES_BIBLE.md`.

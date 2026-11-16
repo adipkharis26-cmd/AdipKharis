@@ -1,7 +1,7 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "rules": [
-    "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card.",
+    "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card. Pengecualian: watermark channel resmi (brand.json) di pojok kiri atas, khusus Shorts.",
     "Subtitle: font Baloo 2 ExtraBold, putih dengan outline hitam, kata yang sedang diucapkan berwarna kuning (karaoke), posisi bawah.",
     "Caption: hanya teks dari daftar, huruf kapital, pojok kiri atas, kotak hitam transparan, muncul 0,3 detik dan bertahan selama baris tersebut.",
     "Flashback: filter sepia + vignette + bintik film, SFX flashback_harp saat masuk; caption FLASHBACK atau MASA LALU wajib dipakai di baris pertama flashback.",
