@@ -260,7 +260,7 @@ function scene(t) {
     card([
       'Di daerahmu ada cara buat garam',
       'atau bumbu yang aneh? Tulis di komentar!'
-    ], 0, 320, CUT[6] + 1.0);
+    ], 540, 320, CUT[6] + 1.0);
   }
 }
 
