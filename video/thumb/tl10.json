@@ -1,0 +1,59 @@
+{
+  "ep": "tl10",
+  "judul": "Kenapa Lantai Rumah Ini Sengaja Dibuat Bercelah?",
+  "thumbPilihan": "B",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Wajah Dimas kaget/protes dekat lantai bolong; teks memakai pertanyaan Dimas yang baru terjawab di video (beda dari judul).",
+      "latar": {
+        "frame": 13.0,
+        "zoom": 1.0,
+        "fokus": [
+          540,
+          960
+        ]
+      },
+      "posisi": "atas",
+      "y": 330,
+      "ukuran": 140,
+      "teks": [
+        {
+          "t": "LANTAI BOLONG",
+          "warna": "putih"
+        },
+        {
+          "t": "GANTI KERAMIK?",
+          "kotak": "merah",
+          "besar": 1.05
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Nenek menatap lurus dengan celah lantai dan sinar di bawahnya; teks memakai pesan leluhur yang belum dijelaskan.",
+      "latar": {
+        "frame": 22.0,
+        "zoom": 1.0,
+        "fokus": [
+          540,
+          960
+        ]
+      },
+      "posisi": "atas",
+      "y": 330,
+      "ukuran": 150,
+      "teks": [
+        {
+          "t": "JANGAN",
+          "warna": "putih"
+        },
+        {
+          "t": "DIRAPATKAN!",
+          "kotak": "merah",
+          "besar": 1.1
+        }
+      ]
+    }
+  ]
+}
