@@ -1,0 +1,71 @@
+{
+  "ep": "oh05",
+  "catatan": "Thumbnail oh05 (air seumur hidup → galon). Jangan tampilkan angka jawaban (±2.850 galon / ±54.000 L / 1,4 km).",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "OHI si galon besar di tengah, tersenyum penasaran, satu fokus; pertanyaan personal 'air seumur hidupmu jadi berapa galon?' dengan angka dibiarkan terbuka. Memancing komentar tebakan angka. Terbaca jelas di ukuran feed.",
+      "latar": {
+        "frame": 12.4,
+        "zoom": 1.9,
+        "fokus": [
+          540,
+          1010
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "AIR SEUMUR HIDUPMU",
+          "warna": "putih"
+        },
+        {
+          "t": "JADI BERAPA GALON?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1F4A7",
+          "x": 905,
+          "y": 1290,
+          "s": 190,
+          "rot": 0.15
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Menara galon setinggi pencakar langit berdampingan dengan Burj Khalifa memicu penasaran siapa yang menang; hasil akhir (±2.850 galon / 1,4 km) tidak ditampilkan.",
+      "latar": {
+        "frame": 5.3,
+        "zoom": 1.0,
+        "fokus": [
+          540,
+          900
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "TUMPUKAN GALON",
+          "warna": "putih"
+        },
+        {
+          "t": "VS BURJ KHALIFA",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "2753",
+          "x": 850,
+          "y": 1000,
+          "s": 200,
+          "rot": 0.15
+        }
+      ]
+    }
+  ],
+  "thumbPilihan": "A"
+}
