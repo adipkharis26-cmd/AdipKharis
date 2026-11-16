@@ -36,7 +36,11 @@ function shotFor(sc: Scene, line: Line | null, since: number, vertical: boolean)
       return { x, y: vertical ? 520 : 470, z: (vertical ? 1.5 : 1.7) + since * 0.015 };
     }
     case "push": return { x: face.x, y: face.y + 40, z: 1.7 + Math.min(since / line.duration, 1) * 0.75 };
-    case "crash": return { x: face.x - 20 * sp.facing, y: face.y - 30, z: since < 1.1 ? 3.1 : 3.1 - (since - 1.1) * 0.25 };
+    case "crash": {
+      // vertical frames are narrow: centre on the real face centre (face +24, minus the shock lean ≈ 63)
+      const x = vertical ? sp.x - 40 * sp.facing : face.x - 20 * sp.facing; // shock pose leans back ~6°
+      return { x, y: face.y - 30, z: since < 1.1 ? 3.1 : 3.1 - (since - 1.1) * 0.25 };
+    }
   }
 }
 
