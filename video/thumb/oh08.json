@@ -1,0 +1,71 @@
+{
+  "ep": "oh08",
+  "catatan": "Thumbnail oh08 (kurang/lebih: motor Jakarta vs Sabang–Merauke). Jangan tampilkan jawaban (LEBIH / 17.600 km / 3,4×).",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Motor + OHI mikir + bendera: klaim 'semua motor Jakarta' dengan pertanyaan terbuka kurang/lebih; sudut lokal (Jakarta) memicu komentar.",
+      "latar": {
+        "frame": 2.0,
+        "zoom": 1.15,
+        "fokus": [
+          540,
+          1100
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "SEMUA MOTOR JAKARTA",
+          "warna": "putih"
+        },
+        {
+          "t": "KURANG ATAU LEBIH?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "2753",
+          "x": 905,
+          "y": 1290,
+          "s": 200,
+          "rot": 0.15
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Dua barisan baru mulai berlomba (motor Jakarta vs jalur Sabang–Merauke) memicu penasaran siapa lebih panjang; hasil akhir tidak diperlihatkan.",
+      "latar": {
+        "frame": 23.95,
+        "zoom": 1.0,
+        "fokus": [
+          540,
+          900
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "SABANG–MERAUKE",
+          "warna": "putih"
+        },
+        {
+          "t": "VS MOTOR JAKARTA",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "2753",
+          "x": 200,
+          "y": 1180,
+          "s": 200,
+          "rot": -0.15
+        }
+      ]
+    }
+  ],
+  "thumbPilihan": "A"
+}
