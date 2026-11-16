@@ -182,6 +182,12 @@
       "format": "tebak-angka",
       "alur": "hasil-dulu",
       "jawaban": "angka"
+    },
+    {
+      "ep": "oh06",
+      "format": "benar-bohong",
+      "alur": "tangga",
+      "jawaban": "BOHONG"
     }
   ]
 }

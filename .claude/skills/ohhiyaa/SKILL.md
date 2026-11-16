@@ -156,6 +156,17 @@ Yang **wajib dipakai penulis episode** supaya "wow":
 4. Mix: `python3 video/src/leluhur_mix.py ohNN`.
 5. Render: `cd video/src && EP=ohNN node render.js video ../out/ohhiyaa-ohNN.mp4 30 ../vo/ohNN-mix.m4a`.
 6. Thumbnail (skill `thumbnail-high-cta`): frame dengan OHI + tumpukan + teks pertanyaan, **tanpa membocorkan angka jawaban**.
+7. **Kemas output siap (wajib, bagian 9):** `python3 video/src/siap.py ohNN`.
+
+## 9. OUTPUT SIAP (TERKUNCI, owner 16 Nov 2026)
+Satu episode dianggap SELESAI hanya kalau paketnya persis ini, tidak kurang dan tidak lebih:
+1. **1 MP4** `ohNN.mp4` (1080×1920, H.264 + AAC, 40–55 dtk, sudah berisi VO + musik + SFX).
+2. **2 thumbnail** `ohNN-thumb-A.png` (varian utama) dan `ohNN-thumb-B.png` (cadangan), 1080×1920, tanpa membocorkan jawaban.
+3. **1 judul** `judul.txt` (maks 70 karakter, satu baris).
+4. **1 deskripsi** `deskripsi.txt` (satu paragraf berisi hitungan dan sumber + ajakan komentar, lalu 5–8 hashtag di baris terpisah).
+- Judul dan deskripsi diambil dari bagian **Paket posting** naskah (`**Judul:**`, `**Deskripsi:**`, `**Hashtag:**`): masing-masing **tepat satu baris**. Bukan beberapa pilihan.
+- Perintah pengemas dan pemeriksa: `python3 video/src/siap.py ohNN`. Hasil di `video/out/siap/ohNN/`. Kalau perintah itu gagal, episode belum siap dan tidak boleh dilaporkan selesai.
+- Berkas lain (naskah, VO, mix, spesifikasi thumbnail) tetap disimpan di repo sebagai bahan, tetapi yang diserahkan ke owner hanya lima berkas di atas.
 
 ## 8. Larangan
 - Angka karangan atau hitungan yang tidak bisa dicek.
@@ -163,5 +174,6 @@ Yang **wajib dipakai penulis episode** supaya "wow":
 - Meniru judul atau gaya peta Geser Dikit.
 - Durasi di luar 40–55 detik.
 - Momen OHHIYAA! lebih dari sekali.
+- Menyerahkan paket yang tidak lolos `siap.py` (mis. 2 judul, 3 thumbnail, tanpa deskripsi).
 - Memakai format A/B/C terus-menerus, atau jawaban benar yang sama berurutan, atau menukar hasil `oh_format.py` secara manual.
 - Alur yang sama persis dengan episode sebelumnya (hook → tebak → tangga → jawaban) tanpa mengikuti hasil acak.
