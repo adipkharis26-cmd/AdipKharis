@@ -1,0 +1,31 @@
+{
+  "ep": "tl11",
+  "judul": "Kenapa Air Minum Ini Disimpan di Gentong Tanah Liat?",
+  "thumbPilihan": "B",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Wajah Raka kaget/protes besar dengan topi merah kontras; teks memakai ejekan Raka yang dijawab di video, beda dari judul.",
+      "latar": { "frame": 12.0, "zoom": 1.0, "fokus": [540, 960] },
+      "posisi": "atas",
+      "y": 330,
+      "ukuran": 140,
+      "teks": [
+        { "t": "GENTONG KUNO?", "warna": "putih" },
+        { "t": "COBA PEGANG!", "kotak": "merah", "besar": 1.1 }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Gentong besar dengan tetesan di dinding sebagai objek tunggal; teks memakai perintah Bu Tinah yang belum dijelaskan sampai beat sains.",
+      "latar": { "frame": 34.0, "zoom": 1.0, "fokus": [540, 960] },
+      "posisi": "atas",
+      "y": 300,
+      "ukuran": 150,
+      "teks": [
+        { "t": "PEGANG DULU", "warna": "putih" },
+        { "t": "DINDINGNYA!", "kotak": "merah", "besar": 1.1 }
+      ]
+    }
+  ]
+}
