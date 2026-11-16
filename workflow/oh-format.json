@@ -170,6 +170,12 @@
       "format": "abc",
       "alur": "tangga",
       "jawaban": "C"
+    },
+    {
+      "ep": "oh04",
+      "format": "duel",
+      "alur": "duel",
+      "jawaban": "KIRI"
     }
   ]
 }
