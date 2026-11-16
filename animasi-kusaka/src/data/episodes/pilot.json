@@ -1,4 +1,7 @@
 {
+  "format": "shorts",
+  "note": "Arsip video pendek awal (35 detik, dibuat sebelum aturan durasi).",
+  "minSeconds": 30,
   "episode": "pilot",
   "title": "Kusaka: Traktiran Gagal",
   "fps": 30,

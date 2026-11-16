@@ -1,12 +1,13 @@
 {
-  "version": "1.0.1",
+  "version": "1.1.0",
   "rules": [
     "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card.",
     "Subtitle: font Baloo 2 ExtraBold, putih dengan outline hitam, kata yang sedang diucapkan berwarna kuning (karaoke), posisi bawah.",
     "Caption: hanya teks dari daftar, huruf kapital, pojok kiri atas, kotak hitam transparan, muncul 0,3 detik dan bertahan selama baris tersebut.",
     "Flashback: filter sepia + vignette + bintik film, SFX flashback_harp saat masuk; caption FLASHBACK atau MASA LALU wajib dipakai di baris pertama flashback.",
     "Kamera: two-shot → single → push-in sebelum punchline → crash zoom (maks 1x per Shorts).",
-    "Shorts mulai langsung di dialog pertama (tanpa intro), dialog pertama ≤ 0,5 detik."
+    "Shorts mulai langsung di dialog pertama (tanpa intro), dialog pertama ≤ 0,5 detik.",
+    "Durasi: Long 16:9 minimal 6 menit (bisa diatur pemilik per episode lewat 'minSeconds'); Shorts 9:16 minimal 40 detik, maksimal 3 menit (ideal 40–60 detik)."
   ],
   "subtitle": {
     "font": "Baloo2",
@@ -36,5 +37,26 @@
     "vignette": 0.55,
     "grain": true
   },
-  "maxCrashPerShort": 1
+  "maxCrashPerShort": 1,
+  "formats": {
+    "long": {
+      "aspect": "16:9",
+      "width": 1920,
+      "height": 1080,
+      "minSeconds": 360,
+      "note": "Minimal 6 menit; pemilik boleh mengatur minSeconds per episode."
+    },
+    "shorts": {
+      "aspect": "9:16",
+      "width": 1080,
+      "height": 1920,
+      "minSeconds": 40,
+      "maxSeconds": 180,
+      "idealSeconds": [
+        40,
+        60
+      ],
+      "note": "Naskah Shorts sendiri: hook ≤1 detik, punchline sebelum akhir, ending loop."
+    }
+  }
 }

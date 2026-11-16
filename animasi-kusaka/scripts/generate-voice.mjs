@@ -176,6 +176,13 @@ for (const sc of script.scenes) {
 }
 timeline.scenes[timeline.scenes.length - 1].end = +(cursor + (script.tail ?? 2.5)).toFixed(3);
 timeline.totalSeconds = timeline.scenes[timeline.scenes.length - 1].end;
+// Duration rules (editing.json → formats). Owner may override the minimum per episode with "minSeconds".
+const fmt = editing.formats?.[script.format ?? "long"];
+if (!fmt) fail(`format "${script.format}" tidak dikenal (pakai "long" atau "shorts")`);
+const minS = script.minSeconds ?? fmt.minSeconds;
+if (timeline.totalSeconds < minS) fail(`Durasi ${timeline.totalSeconds.toFixed(1)} dtk < minimum ${minS} dtk untuk ${script.format ?? "long"} (${fmt.aspect}). Tambah adegan/dialog.`);
+if (fmt.maxSeconds && timeline.totalSeconds > fmt.maxSeconds) fail(`Durasi ${timeline.totalSeconds.toFixed(1)} dtk > maksimum ${fmt.maxSeconds} dtk untuk Shorts.`);
+timeline.format = script.format ?? "long";
 fs.writeFileSync(path.join(root, "src/data/timeline.json"), JSON.stringify(timeline));
 const mm = Math.floor(timeline.totalSeconds / 60), ss = Math.round(timeline.totalSeconds % 60);
 console.log(`✅ timeline.json — ${script.episode}: ${timeline.scenes.length} adegan, ${timeline.lines.length} baris, ${mm}:${String(ss).padStart(2, "0")} menit, suara terkunci ✓`);

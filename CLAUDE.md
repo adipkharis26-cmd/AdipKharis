@@ -20,5 +20,12 @@ Aturan dari pemilik proyek, WAJIB diikuti di setiap sesi:
    dulu sebagai draft di `animasi-kusaka/drafts/` (tidak ikut git) dan dikirim sebagai gambar pratinjau. Setelah
    pemilik bilang "cocok", pindahkan ke lokasi final, commit, lalu push ke branch kerja.
 8. Video final yang sudah disetujui disimpan di `animasi-kusaka/releases/` (dikompres < 100 MB agar muat di GitHub).
+9. **Durasi (dikunci di `editing.json` → `formats`, divalidasi saat `npm run voice`):**
+   - **Long 16:9:** minimal **6 menit**. Pemilik boleh mengatur minimum lain per episode lewat `"minSeconds"`.
+   - **Shorts 9:16:** minimal **40 detik**, maksimal 3 menit, ideal 40–60 detik. Naskah Shorts dibuat sendiri
+     (`"format": "shorts"`), bukan potongan acak dari episode panjang.
+10. **Brand terkunci** (`src/branding/brand.json`): nama channel **Kusaka Design**, logo resmi **Logo 2 (lencana)**,
+    banner resmi **Banner 3 (Panel Komik)**. Thumbnail: teks hanya judul (tanpa nomor episode/lencana EPS),
+    **dilarang memakai uang / mata uang (Rp)**. Aset di `animasi-kusaka/brand/` (`npm run brand`).
 
 Panduan cerita dan strategi: `animasi-kusaka/SERIES_BIBLE.md`.

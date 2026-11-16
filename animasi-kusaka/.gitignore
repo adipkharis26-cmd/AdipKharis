@@ -6,3 +6,5 @@ out/
 !storyboards/*.png
 drafts/
 !releases/*.mp4
+!brand/*.png
+!brand/**/*.png

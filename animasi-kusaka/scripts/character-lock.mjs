@@ -20,6 +20,9 @@ const FILES = [
   "src/edit/editing.json",
   "src/audio/sfx.json",
   "src/fx/Overlays.tsx",
+  "src/branding/brand.json",
+  "src/branding/Brand.tsx",
+  "src/branding/Thumbnail.tsx",
   // every SFX file is locked too (sound consistency)
   ...fs.readdirSync(path.join(root, "public/sfx")).filter((f) => f.endsWith(".mp3")).sort().map((f) => `public/sfx/${f}`),
 ];
@@ -29,8 +32,9 @@ const canonChars = JSON.parse(fs.readFileSync(path.join(root, "src/characters/ca
 const canonLocs = JSON.parse(fs.readFileSync(path.join(root, "src/scene/locations.json"), "utf8"));
 const canonEdit = JSON.parse(fs.readFileSync(path.join(root, "src/edit/editing.json"), "utf8"));
 const canonSfx = JSON.parse(fs.readFileSync(path.join(root, "src/audio/sfx.json"), "utf8"));
+const canonBrand = JSON.parse(fs.readFileSync(path.join(root, "src/branding/brand.json"), "utf8"));
 // Combined version: characters + locations + editing + sfx. Bump one of them to re-lock deliberately.
-const canon = { version: `${canonChars.version}+loc${canonLocs.version}+edit${canonEdit.version}+sfx${canonSfx.version}` };
+const canon = { version: `${canonChars.version}+loc${canonLocs.version}+edit${canonEdit.version}+sfx${canonSfx.version}+brand${canonBrand.version}` };
 const current = Object.fromEntries(FILES.map((f) => [f, sha(f)]));
 const lock = fs.existsSync(lockPath) ? JSON.parse(fs.readFileSync(lockPath, "utf8")) : null;
 const changed = lock ? FILES.filter((f) => lock.files[f] !== current[f]) : FILES;
@@ -47,7 +51,7 @@ if (mode === "check") {
 } else if (mode === "lock") {
   if (lock && changed.length === 0) { console.log(`✓ Tidak ada perubahan. Tetap terkunci di v${lock.version}`); process.exit(0); }
   if (lock && lock.version === canon.version) {
-    console.error(`✗ File karakter berubah tapi versi kanon masih v${canon.version}. Naikkan "version" di canon.json / locations.json / editing.json / sfx.json dulu.`);
+    console.error(`✗ File karakter berubah tapi versi kanon masih v${canon.version}. Naikkan "version" di canon.json / locations.json / editing.json / sfx.json / brand.json dulu.`);
     process.exit(1);
   }
   fs.writeFileSync(lockPath, JSON.stringify({ version: canon.version, lockedAt: new Date().toISOString().slice(0, 10), files: current }, null, 2) + "\n");

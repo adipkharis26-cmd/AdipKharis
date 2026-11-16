@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0+loc2.0.0+edit1.0.1+sfx1.1.0",
+  "version": "2.0.0+loc2.0.0+edit1.1.0+sfx1.1.0+brand1.0.0",
   "lockedAt": "2026-11-16",
   "files": {
     "src/characters/canon.json": "aac450b9cae2230d6e9b69eff947003d32b6b99822999c3a0ad4413646f10496",
@@ -11,9 +11,12 @@
     "src/scene/Locations.tsx": "a2a492a330d1ddbbd53aaf3eaf55dba5a8e5e6ed14a4bd2c64deb59f279b9f38",
     "src/scene/Background.tsx": "0f3efa718c88136c9184170a7c46caffe7b631b2ae39954766bd208085d8538a",
     "src/scene/Locations2.tsx": "73ff59fee1c518451ebfabb2d9196d12e98a273a39ceecae383c43d31f6d6fda",
-    "src/edit/editing.json": "1be336e0a940b505bc274d5901536d76420562c012a01bb383b2ff0822ef61f3",
+    "src/edit/editing.json": "c699de904572106695788a3bdd6880af0c25d5f8a9f24a3bfc973456f445ce86",
     "src/audio/sfx.json": "677e9db8f3482c31a3d67814e7da101ec0d5d560daa82137d6119315e97bc740",
     "src/fx/Overlays.tsx": "3d2baee4bdca95b5c2e43c20d45aad3ae8f2f89f7ca05b47adbfd2fa6e7c705b",
+    "src/branding/brand.json": "98b4076a2e0be6d5a6ce5282725ef521a143c3d8f8b41b317d8df28e3202eadc",
+    "src/branding/Brand.tsx": "a57f76b5a742822a20e4e35e94a515c7bf1e34bfeefb86e939bc616de1cdb2ed",
+    "src/branding/Thumbnail.tsx": "8b9d6739e6745c930586122b547b9869d04aa882a3c51fe28233966b12116f90",
     "public/sfx/amb_canteen.mp3": "694f8e083331edc4de17f7409b62249026f5fc88d3da37e92d042bce9d948e35",
     "public/sfx/amb_classroom.mp3": "e9060daa4c0af6bd9bc0cdeb53e31a357eacdb9341a40c60cb8a7e390a0c53df",
     "public/sfx/amb_home.mp3": "eab8053350d8b136660758ccf2139c12fd4ca38952f4ec8a54075ba017922857",

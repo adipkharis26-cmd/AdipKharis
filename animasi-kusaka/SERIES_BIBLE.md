@@ -18,7 +18,7 @@
 | **Genre** | Komedi situasi sekolah & keluarga (school/family sitcom), slice of life |
 | **Target** | Utama 13–22 tahun (SMP, SMA, mahasiswa). Penonton dewasa ikut tertawa karena nostalgia dan karakter orang tua. |
 | **Nada** | Ringan, relate, receh tapi cerdas. Tanpa kekerasan realistis, tanpa konten dewasa. |
-| **Format** | Shorts 30–50 detik (mesin penemuan) + episode panjang 4–8 menit (watch time & monetisasi) |
+| **Format** | Long 16:9 **minimal 6 menit** (watch time & monetisasi) + Shorts 9:16 **minimal 40 detik** (ideal 40–60 detik, mesin penemuan) |
 
 ---
 
@@ -198,7 +198,7 @@ lebih aman memakai pustaka orisinal di atas. Kalau Anda punya file yang lisensin
 
 ## 7. Cerita yang mengalir
 
-### Struktur Shorts (30–50 detik)
+### Struktur Shorts (minimal 40 detik, ideal 40–60 detik)
 | Waktu | Beat | Catatan |
 |---|---|---|
 | 0–2 dtk | **HOOK**: masuk di tengah konflik | Kalimat pertama = masalah |
@@ -247,7 +247,7 @@ sinyal terpentingnya adalah **berapa banyak yang tidak menggeser video (swipe aw
 
 ### Shorts
 - **Detik pertama = segalanya.** Mulai dari konflik, ekspresi besar, subtitle langsung muncul.
-- **30–50 detik**, punchline sebelum detik ke-40, tanpa jeda mati lebih dari 0,5 detik.
+- **Minimal 40 detik** (ideal 40–60 detik), punchline di detik 30–45, tanpa jeda mati lebih dari 0,5 detik.
 - **Loop**: akhir menyambung ke awal.
 - **Branding lewat konsistensi**, bukan teks: desain karakter, suara, dan SFX yang sama membuat penonton
   langsung mengenali "ini Kusaka".

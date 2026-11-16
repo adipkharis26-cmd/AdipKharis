@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "lockedAt": "2026-11-16",
+  "channel": "Kusaka Design",
+  "handle": "@kusakadesign",
+  "logo": {
+    "chosen": 2,
+    "file": "brand/logo-kusaka-design.png",
+    "use": "Foto profil YouTube, TikTok, Instagram"
+  },
+  "banner": {
+    "chosen": 3,
+    "file": "brand/banner-youtube-2560x1440.png",
+    "safeArea": "1546x423 (tengah)"
+  },
+  "palette": {
+    "yellow": "#ffd23f",
+    "red": "#e63946",
+    "ink": "#1b1b1b",
+    "blue": "#2f7fd8",
+    "paper": "#fdf6e3"
+  },
+  "rules": [
+    "Logo resmi = Logo 2 (lencana Kusaka + KUSAKA DESIGN). Banner resmi = Banner 3 (Panel Komik). Tidak diubah tanpa perintah pemilik.",
+    "Thumbnail 1280x720: bingkai kuning, teks HANYA judul (maks 4 kata), tanpa nomor episode/lencana EPS.",
+    "Thumbnail DILARANG memakai uang / mata uang (Rp). Properti hanya benda cerita (mis. dompet).",
+    "Wajah karakter besar dengan ekspresi ekstrem, pojok kanan bawah kosong (label durasi), 3 varian untuk Test & Compare."
+  ]
+}
