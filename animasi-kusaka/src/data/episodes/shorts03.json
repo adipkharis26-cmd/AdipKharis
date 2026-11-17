@@ -37,7 +37,7 @@
           "shot": "speaker",
           "text": "Gerbang tutup. Jam tujuh lewat.",
           "action": "crossed",
-          "sfx": [{ "id": "school_bell", "volume": 0.2 }],
+          "sfx": [{ "id": "school_bell", "at": 0, "volume": 0.2 }],
           "id": "l001"
         },
         {
@@ -158,7 +158,7 @@
           "shot": "speaker",
           "text": "Hah, beneran?!",
           "action": "shock",
-          "sfx": [{ "id": "vine_boom", "volume": 0.25 }],
+          "sfx": [{ "id": "vine_boom", "at": 0, "volume": 0.25 }],
           "id": "l014"
         },
         {
@@ -181,7 +181,7 @@
             "ujang": ["defeated", "slump"],
             "kusaka": ["defeated", "slump"]
           },
-          "sfx": [{ "id": "sad_trombone", "volume": 0.2 }],
+          "sfx": [{ "id": "sad_trombone", "at": "end", "volume": 0.2 }],
           "id": "l016"
         }
       ]
