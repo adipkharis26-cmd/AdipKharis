@@ -290,10 +290,18 @@ sinyal terpentingnya adalah **berapa banyak yang tidak menggeser video (swipe aw
 2. `npm run voice`: verifikasi suara terkunci, buat take baru atau pakai ulang take lama, dan validasi aturan.
 3. `npm run studio`: cek timing, kamera, dan ekspresi.
 4. `npm run render` (16:9) dan `npm run render:shorts` (9:16).
-5. Checklist sebelum upload:
+5. Buat paket upload `src/data/episodes/<id>-upload.md` (wajib setiap MP4 release):
+   - 3 pilihan judul A/B test (hook + situasi konkret + emosi)
+   - Deskripsi singkat: hook 1–2 kalimat + CTA komentar + hashtag
+   - Hashtag optimal (3 untuk tampil di atas judul Shorts)
+   - Konsep cover frame / thumbnail
+   - Komentar sematan (pin)
+   - Strategi algoritma: hook timing, CTA, jadwal, A/B test
+6. Checklist sebelum upload:
    - [ ] Hook ≤ 2 detik
    - [ ] Ciri khas semua karakter terlihat
    - [ ] Tidak ada teks selain subtitle / caption resmi
    - [ ] SFX sesuai makna di tabel
    - [ ] Satu crash zoom saja
    - [ ] Ending loop atau cliffhanger
+   - [ ] File `-upload.md` sudah ada dan lengkap

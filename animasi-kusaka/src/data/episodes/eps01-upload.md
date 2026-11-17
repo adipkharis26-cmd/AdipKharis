@@ -48,7 +48,27 @@ traktir gebetan, ulangan mendadak, guru bk, animasi 2d, sitkom animasi
 4. Ruang BK: "Kemacetan… di kasur, Pak" (adegan 7)
 5. Dompet ketinggalan + Bimo bayarin (adegan 8–9)
 
+## Hashtag optimal (copy ke kolom hashtag, maks 3 ditampilkan di atas judul)
+
+`#animasiindonesia` `#kusaka` `#anaksekolah`
+
+---
+
 ## Pengaturan upload
-- Audience: sesuaikan dengan target 13+ (jawab "Made for Kids" dengan jujur).
+
+- Audience: 13+ (bukan Made for Kids).
 - Playlist: "KUSAKA Musim 1". End screen 10–20 detik terakhir → playlist / video berikutnya.
-- Jadwal tayang: 16.00–19.00 WIB.
+- Jadwal tayang: **16.00–19.00 WIB** (prime time long-form Indonesia, Kamis–Sabtu paling optimal).
+- Comments: aktifkan. Pinned comment sudah disiapkan di atas.
+
+---
+
+## Strategi algoritma
+
+- **Judul 1** paling kuat untuk discovery (emosi + situasi konkret). Gunakan untuk upload pertama.
+- **Chapters** mendorong watch time karena penonton bisa lanjut dari titik terakhir.
+- **Hook 0–30 detik** (adegan Dinda live) harus langsung menarik — tidak ada intro panjang.
+- **CTA organik** ("Tim Kusaka atau Tim Bimo?") dorong komentar → meningkatkan engagement sinyal ke algoritma.
+- **Shorts turunan** diunggah H+2 dan H+5 untuk tarik traffic balik ke video panjang ini.
+- **End screen** di menit 7:19–7:39: tautkan ke video berikutnya / playlist KUSAKA Musim 1.
+- Thumbnail A/B test: jalankan Judul 1 selama 48 jam, lalu coba Judul 2 jika CTR di bawah 6%.
