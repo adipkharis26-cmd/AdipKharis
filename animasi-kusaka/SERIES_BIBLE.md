@@ -310,6 +310,7 @@ sinyal terpentingnya adalah **berapa banyak yang tidak menggeser video (swipe aw
 
 Mengikuti referensi pemilik: karakter KUSAKA tetap, yang diubah adalah bahasa kamera, gerak, cahaya, dan detail.
 
+- **Pindah adegan = potong keras** (tanpa wipe/whoosh; editing v2.1.0).
 - **Kamera statis, potong keras.** Tiap shot satu ukuran. Sutradara otomatis (`src/edit/director.ts`) memilih
   wide → two → close/medium sesuai ritme adegan. Close-up di sepertiga frame dengan latar blur.
 - **Jalan** dengan langkah, ayunan tangan, dan naik-turun badan (`move`, `camAt`, benda depan `fg`).

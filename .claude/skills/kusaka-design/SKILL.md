@@ -28,6 +28,7 @@ Branch kerja: `ccr-5483b159-l8zee8`.
 - **Karakter tetap 16 karakter kanon** (jangan diganti desainnya). Detail: mata anime (iris 2 lapis + 2 kilau), kilau rambut
   terputus, lipatan baju/lengan/celana, bayangan kerah & poni, kilau sepatu, shading sisi gelap + rim light dari cahaya lokasi.
 - **Kamera statis**: tiap shot SATU ukuran, tanpa zoom/geser di dalam shot, **potong keras** tiap baris.
+  Pindah adegan juga **potong keras** (tanpa wipe/whoosh, `editing.json → transition: "cut"`).
   Sutradara otomatis (`src/edit/director.ts`) memilih ukuran: awal adegan `wide` → `two` → tanya-jawab `close` bergantian,
   pembicara baru `medium`, emosi kuat `close`, orang jalan `wide`, tiap ±5 baris `two`, akhir adegan `two`.
 - **Close-up**: subjek di sepertiga frame, ada ruang ke arah pandangan, latar + orang lain **blur**.

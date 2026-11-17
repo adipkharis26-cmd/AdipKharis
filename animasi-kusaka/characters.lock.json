@@ -1,9 +1,9 @@
 {
-  "version": "3.0.0+loc3.0.0+edit2.0.0+sfx1.1.0+brand1.1.0",
+  "version": "3.0.0+loc3.0.0+edit2.1.0+sfx1.1.0+brand1.1.0",
   "lockedAt": "2026-11-17",
   "files": {
     "src/characters/canon.json": "8a4dddeb01601f20844a778fce0be9c4245e33dad48ff980be859cd8a56d87f9",
-    "src/characters/Character.tsx": "77cc69f21991dd79e22ef413322d164972c778d90dc0f6744833579e555b4dd6",
+    "src/characters/Character.tsx": "23df69da7d135566b70ae2d6aeb62138abd9a4a05036c82c4f272c756e557b5c",
     "src/characters/Mouth.tsx": "9a59147e0acfce56ef7119100b9b2e75c3f7b120d70022163a13a32697cf1ba2",
     "src/characters/Eyes.tsx": "910d22db5612d9b80f3404d898a28ef0993d9f10ae9e66ec4b512035c4d81bbf",
     "src/characters/Hands.tsx": "55c1d493bf3bedb44122aa1241b410231d5965c23ea4c1972913ce9700e88b0b",
@@ -15,7 +15,7 @@
     "src/scene/Details2.tsx": "9f16aeaf4ef1e2d6048029eabb2aa3e2bee82730a33174e3947cca40a5ac83fb",
     "src/fx/Lighting.tsx": "d16bf6f01d0a9c21cc91e1b98df4f628937fb0084a1aed3b3edcb8d724dafb8a",
     "src/edit/director.ts": "d9e2b3fcdd33837017374c55dbd0bc2b64b4d1ad2c7d39661406b39e3347a7ee",
-    "src/edit/editing.json": "541870f1ff439b8cd67bbae8b1e3972a61175812048e1e44e608eaea40b56fa9",
+    "src/edit/editing.json": "0331741489212601a907e0a27991eacbba243625fb83e7441873b08566bcc4f5",
     "src/audio/sfx.json": "677e9db8f3482c31a3d67814e7da101ec0d5d560daa82137d6119315e97bc740",
     "src/fx/Overlays.tsx": "033ff7d3f26bc5cd5ebf5fff3db0f3e08f67ca204ad34aee6e3bf94d4afc6516",
     "src/branding/brand.json": "d1c1fd3665ab6b14d94371b2f31d002bdf3df763758444e3b90e497a7e572c1e",

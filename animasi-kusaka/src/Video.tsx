@@ -158,7 +158,7 @@ function buildCues(): Cue[] {
       cues.push({ id: s.id as SfxId, frame: Math.round(at * FPS) });
     }
   });
-  SCENES.slice(1).forEach((sc) => cues.push({ id: "whoosh_soft", frame: Math.max(0, Math.round((sc.start - 0.15) * FPS)) }));
+  if (editing.transition !== "cut") SCENES.slice(1).forEach((sc) => cues.push({ id: "whoosh_soft", frame: Math.max(0, Math.round((sc.start - 0.15) * FPS)) }));
   const last = LINES[LINES.length - 1];
   if (last && (last.listener === "defeated" || last.emotion === "defeated")) sfxLib.auto.endDefeated.forEach((s) => cues.push(parseAuto(s, END_OF_DIALOG)));
   return cues;
@@ -264,7 +264,7 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
       {flash > 0 && <AbsoluteFill style={{ background: "#fff", opacity: flash }} />}
       <Caption t={t} vertical={vertical} />
       <Subtitles t={t} vertical={vertical} w={w} />
-      <Wipe t={t} w={w} h={h} />
+      {editing.transition !== "cut" && <Wipe t={t} w={w} h={h} />}
 
       {/* ---------------- audio ---------------- */}
       {SCENES.map((sc) => {

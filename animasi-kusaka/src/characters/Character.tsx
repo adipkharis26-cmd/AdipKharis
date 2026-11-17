@@ -1,7 +1,7 @@
 import React from "react";
 import { random } from "remotion";
 import canon from "./canon.json";
-import { Action, CharId, Emotion, FPS, TOTAL_SECONDS, Viseme, stateAt, visemeAt } from "../lib/timeline";
+import { Action, CharId, Emotion, FPS, TOTAL_SECONDS, Viseme, stateAt, visemeAt, sceneAt } from "../lib/timeline";
 import { Mouth, pickMouth } from "./Mouth";
 import { Brow, Eye, eyesFor } from "./Eyes";
 import { Hand, HandShape } from "./Hands";
@@ -666,7 +666,8 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
     : stateAt(id, t);
   const prev = force ? st : stateAt(id, Math.max(0, t - st.since - 1 / FPS));
   const k = ease(st.since / 0.28);
-  let pose = mixPose(POSES[prev.action], POSES[st.action], st.since > 0 && prev.action !== st.action ? k : 1);
+  const sameScene = !!force || sceneAt(t).id === sceneAt(Math.max(0, t - st.since - 1 / FPS)).id; // hard cut: no pose blend across scenes
+  let pose = mixPose(POSES[prev.action], POSES[st.action], sameScene && st.since > 0 && prev.action !== st.action ? k : 1);
 
   const viseme = force ? force.viseme ?? null : visemeAt(id, t);
   const open = viseme ? OPEN[viseme] ?? 0 : 0;

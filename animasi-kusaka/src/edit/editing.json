@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "2.1.0",
   "rules": [
     "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card. Pengecualian: watermark channel resmi (brand.json) di pojok kiri atas, khusus Shorts.",
     "Subtitle: font Baloo 2 ExtraBold, putih dengan outline hitam, kata yang sedang diucapkan berwarna kuning (karaoke), posisi bawah.",
@@ -85,5 +85,7 @@
     "director": "auto",
     "static": true,
     "punch": false
-  }
+  },
+  "transition": "cut",
+  "transitionNote": "Pindah adegan = potong keras (tanpa wipe & whoosh), seperti referensi. Caption waktu tetap muncul di adegan baru."
 }
