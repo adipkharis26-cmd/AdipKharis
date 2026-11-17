@@ -1,0 +1,215 @@
+{
+  "format": "shorts",
+  "episode": "shorts02",
+  "title": "Nitip Absen",
+  "fps": 30,
+  "gapSeconds": 0.3,
+  "sceneLead": 0.3,
+  "sceneGap": 0,
+  "tail": 0.6,
+  "scenes": [
+    {
+      "id": "s01",
+      "location": "mejaGuru",
+      "cast": {
+        "buWati": {
+          "mark": "A",
+          "facing": 1
+        },
+        "ujang": {
+          "mark": "C",
+          "facing": -1
+        },
+        "ucok": {
+          "mark": "B",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "buWati",
+          "emotion": "neutral",
+          "listener": "neutral",
+          "shot": "speaker",
+          "text": "Oke, absen dulu. Kusaka?",
+          "action": "gesture",
+          "id": "l001"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "embarrassed",
+          "listener": "surprised",
+          "shot": "speaker",
+          "text": "H-hadir, Bu!",
+          "action": "gesture",
+          "reactions": {
+            "ucok": [
+              "surprised",
+              "idle"
+            ]
+          },
+          "id": "l002"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "suspicious",
+          "listener": "embarrassed",
+          "shot": "speaker",
+          "text": "Kusaka, kok suaramu mirip Ujang?",
+          "action": "chin",
+          "id": "l003"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "embarrassed",
+          "listener": "suspicious",
+          "shot": "speaker",
+          "text": "Saya... lagi flu, Bu. Suaranya ketuker.",
+          "action": "gesture",
+          "id": "l004"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "laugh",
+          "listener": "embarrassed",
+          "shot": "speaker",
+          "text": "Macam mana pulak suara bisa ketuker?!",
+          "action": "point",
+          "reactions": {
+            "buWati": [
+              "suspicious",
+              "chin"
+            ]
+          },
+          "id": "l005"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "suspicious",
+          "listener": "embarrassed",
+          "shot": "speaker",
+          "text": "Hmm. Ujang?",
+          "action": "hips",
+          "id": "l006"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "neutral",
+          "listener": "suspicious",
+          "shot": "speaker",
+          "text": "Hadir, Bu!",
+          "action": "idle",
+          "id": "l007"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "suspicious",
+          "listener": "embarrassed",
+          "shot": "speaker",
+          "text": "Lho. Terus Kusaka di mana? Tadi katanya hadir.",
+          "action": "point",
+          "id": "l008"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "embarrassed",
+          "listener": "suspicious",
+          "shot": "speaker",
+          "text": "Dia... ke toilet, Bu. Barusan.",
+          "action": "gesture",
+          "id": "l009"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "deadpan",
+          "listener": "embarrassed",
+          "shot": "speaker",
+          "text": "Toiletnya jauh, ya? Sampai ke parkiran motor?",
+          "action": "crossed",
+          "id": "l010"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "laugh",
+          "listener": "embarrassed",
+          "shot": "speaker",
+          "text": "Ketahuan kali kau, Jang!",
+          "action": "point",
+          "sfx": [
+            {
+              "id": "rimshot",
+              "at": "end"
+            }
+          ],
+          "id": "l011"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "neutral",
+          "listener": "surprised",
+          "shot": "two",
+          "text": "Assalamualaikum! Maaf, Bu, saya telat!",
+          "offscreen": true,
+          "sfx": [
+            {
+              "id": "run_cartoon",
+              "at": 0
+            }
+          ],
+          "id": "l012"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "shock",
+          "listener": "surprised",
+          "shot": "crash",
+          "text": "KUSAKA?!",
+          "surprise": true,
+          "id": "l013"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "neutral",
+          "listener": "shock",
+          "shot": "two",
+          "text": "Lho, Jang? Lu udah absenin gue, kan?",
+          "offscreen": true,
+          "id": "l014"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "deadpan",
+          "listener": "defeated",
+          "shot": "speaker",
+          "text": "Kalian berdua. Ke ruang BK. Sekarang.",
+          "action": "crossed",
+          "sfx": [
+            {
+              "id": "dun_dun_dun",
+              "at": "end"
+            }
+          ],
+          "id": "l015"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "defeated",
+          "listener": "deadpan",
+          "shot": "speaker",
+          "text": "Udah gue duga.",
+          "action": "slump",
+          "id": "l016"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "neutral",
+          "listener": "defeated",
+          "shot": "speaker",
+          "text": "Oke... kita absen ulang. Kusaka?",
+          "action": "gesture",
+          "id": "l017"
+        }
+      ]
+    }
+  ]
+}
