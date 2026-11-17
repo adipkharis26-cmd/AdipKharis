@@ -16,17 +16,24 @@ Durasi: **~48 detik** · 9:16 · 1 adegan · meja guru
 
 ## Deskripsi
 
-Kusaka nggak masuk kelas, tapi minta Ujang jawab absennya. 😭
+Kusaka minta Ujang jawab absennya di kelas — ide paling logis yang pernah ada. 😭
 
-Masalahnya... Bu Wati udah hapal suara semua muridnya. 💀
+Sayangnya Bu Wati hapal suara semua muridnya satu per satu. 💀
 
-Siapa yang pernah nitip absen? Jujur di kolom komentar! 👇
+Siapa yang pernah nitip absen? Jujur di bawah! 👇
 
-#shorts #animasiindonesia #kusaka #nitipabsen #anaksekolah #komedilucu #animasisingkat
+#shorts #animasiindonesia #kusaka #anaksekolah #komedilucu #animasisingkat
 
 ---
 
-## Hashtag optimal (copy ke kolom hashtag, maks 3 ditampilkan di atas judul)
+## Tag
+
+animasi indonesia, animasi lucu, shorts, animasi shorts, kusaka, kusaka design,
+kartun sekolah, komedi sekolah, nitip absen, bolos sekolah, ketahuan guru
+
+---
+
+## Hashtag kolom (maks 3 tampil di atas judul — urutan ini wajib)
 
 `#shorts` `#animasiindonesia` `#anaksekolah`
 

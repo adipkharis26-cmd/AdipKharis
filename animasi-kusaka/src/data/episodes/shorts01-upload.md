@@ -16,17 +16,24 @@ Durasi: **~54 detik** · 9:16 · 1 adegan · perpustakaan
 
 ## Deskripsi
 
-Kerja kelompok tapi yang kerja satu orang. 😭
+Kerja kelompok tapi yang kerja cuma satu orang. 😭
 
-Nadia udah bagi tugas dengan rapi, tapi Kusaka, Ujang, sama Ucok punya alasan masing-masing. 💀
+Nadia udah bagi tugas rapi, tapi Kusaka cs punya alasan masing-masing — ujungnya jadi "support sistem". 💀
 
-Kalian pernah jadi Nadia di kelompok kalian? Komen di bawah! 👇
+Kalian pernah jadi Nadia di kelompok? Cerita di bawah! 👇
 
-#shorts #animasiindonesia #kusaka #kerjakelompok #anaksekolah #komedilucu #animasisingkat
+#shorts #animasiindonesia #kusaka #anaksekolah #komedilucu #animasisingkat
 
 ---
 
-## Hashtag optimal (copy ke kolom hashtag, maks 3 ditampilkan di atas judul)
+## Tag
+
+animasi indonesia, animasi lucu, shorts, animasi shorts, kusaka, kusaka design,
+kartun sekolah, komedi sekolah, kerja kelompok, tugas sekolah, belajar bareng
+
+---
+
+## Hashtag kolom (maks 3 tampil di atas judul — urutan ini wajib)
 
 `#shorts` `#animasiindonesia` `#anaksekolah`
 

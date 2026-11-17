@@ -29,8 +29,9 @@ Chapters:
 #animasiindonesia #kusaka #anaksekolah #komedi #animasilucu
 
 ## Tag
-animasi indonesia, animasi lucu, kartun sekolah, anak sma, anak smp, komedi sekolah, kusaka, cerita sekolah,
-traktir gebetan, ulangan mendadak, guru bk, animasi 2d, sitkom animasi
+
+animasi indonesia, animasi lucu, kartun sekolah, anak sma, anak smp, komedi sekolah, kusaka,
+kusaka design, animasi 2d, sitkom animasi, cerita sekolah, traktir gebetan, ulangan mendadak, guru bk
 
 ## Konsep thumbnail (di luar video, boleh teks maksimal 3 kata)
 - Kiri: wajah Kusaka crash zoom kaget (frame adegan dompet), mata melotot, garis speed lines.
