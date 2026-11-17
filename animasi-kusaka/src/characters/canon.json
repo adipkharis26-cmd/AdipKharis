@@ -1,6 +1,15 @@
 {
-  "version": "2.0.0",
+  "version": "3.0.0",
   "lockedAt": "2026-11-16",
+  "style": {
+    "name": "anime-drama",
+    "note": "Gaya v3: proporsi normal, mata anime (iris berwarna, dua kilau, kelopak tebal).",
+    "headScale": 1.0,
+    "eyeScale": 1.05,
+    "iris": "#5a3420",
+    "irisDeep": "#2a160c",
+    "lidWidth": 8
+  },
   "rules": [
     "Sudut pandang kanon: 3/4 menghadap kanan. Menghadap kiri = cermin horizontal (scaleX -1), bukan gambar baru.",
     "Proporsi: kepala ±35% tinggi badan. Tinggi antar karakter hanya lewat build.height. Kaki di y=0, leher di y=-468.",

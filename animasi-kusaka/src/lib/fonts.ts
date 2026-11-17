@@ -9,6 +9,7 @@ export function useFonts() {
     Promise.all([
       new FontFace("Bangers", `url(${staticFile("fonts/Bangers.woff2")})`).load(),
       new FontFace("Baloo2", `url(${staticFile("fonts/Baloo2-800.woff2")})`).load(),
+      new FontFace("Oswald", `url(${staticFile("fonts/Oswald-600.woff2")})`, { weight: "600" }).load(),
     ]).then((fonts) => { fonts.forEach((f) => document.fonts.add(f)); fontsLoaded = true; continueRender(handle); });
   }, [handle]);
 }

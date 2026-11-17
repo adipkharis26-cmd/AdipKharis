@@ -1,3 +1,6 @@
+import { DETAILS } from "../scene/Details";
+import { DETAILS2 } from "../scene/Details2";
+import { LightDef, SetLight } from "../fx/Lighting";
 import React from "react";
 import { AbsoluteFill } from "remotion";
 import { Character } from "../characters/Character";
@@ -30,12 +33,15 @@ export const LocationPlate: React.FC<{ id: LocId; cast?: boolean; marks?: boolea
   const loc = LOCATIONS[id];
   const m = LOCATION_META.locations[id];
   const t = frame / 30;
+  const Detail = DETAILS[id] ?? DETAILS2[id];
   return (
     <g>
       <defs><clipPath id={`plate-${id}`}><rect width={1920} height={1080} /></clipPath></defs>
       <g clipPath={`url(#plate-${id})`}>
         <rect width={1920} height={1080} fill={loc.bg} />
         {loc.layers.map((l, i) => <g key={i}>{l.el(t)}</g>)}
+        {Detail && <Detail t={t} />}
+        <SetLight light={(m as { light?: LightDef }).light ?? { kind: "sun", from: -1 }} t={t} floor={m.floor} />
         {marks && Object.entries(m.marks).map(([k, x]) => (
           <g key={k} transform={`translate(${x} ${m.floor + 40})`}>
             <path d="M -40 0 L 40 0 M 0 -14 L 0 14" stroke="#e63946" strokeWidth={6} />

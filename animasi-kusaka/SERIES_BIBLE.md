@@ -305,3 +305,15 @@ sinyal terpentingnya adalah **berapa banyak yang tidak menggeser video (swipe aw
    - [ ] Satu crash zoom saja
    - [ ] Ending loop atau cliffhanger
    - [ ] File `-upload.md` sudah ada dan lengkap
+
+## 10. Gaya v3 "anime-drama" (terkunci: kanon v3.0.0 · lokasi v3.0.0 · editing v2.0.0)
+
+Mengikuti referensi pemilik: karakter KUSAKA tetap, yang diubah adalah bahasa kamera, gerak, cahaya, dan detail.
+
+- **Kamera statis, potong keras.** Tiap shot satu ukuran. Sutradara otomatis (`src/edit/director.ts`) memilih
+  wide → two → close/medium sesuai ritme adegan. Close-up di sepertiga frame dengan latar blur.
+- **Jalan** dengan langkah, ayunan tangan, dan naik-turun badan (`move`, `camAt`, benda depan `fg`).
+- **Cahaya per lokasi** (sun/window/sunset/night), bayangan daun, shading karakter, grain, dan vignette (`src/fx/Lighting.tsx`).
+- **Detail set** untuk 14 lokasi (`src/scene/Details.tsx`, `Details2.tsx`). **Detail karakter**: mata anime, kilau rambut, lipatan baju.
+- **Subtitle** Oswald 600 putih kecil, tanpa highlight karaoke.
+- Panduan lengkap untuk sesi baru: skill `.claude/skills/kusaka-design/SKILL.md`.

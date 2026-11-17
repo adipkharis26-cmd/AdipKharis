@@ -37,14 +37,14 @@ export const Subtitles: React.FC<{ t: number; vertical: boolean; w: number }> = 
   const local = t - line.start;
   const fs = vertical ? SUB.sizeVertical : SUB.sizeLandscape;
   return (
-    <div style={{ position: "absolute", left: 0, right: 0, bottom: vertical ? 380 : 60, display: "flex", justifyContent: "center", fontFamily: SUB.font }}>
-      <div style={{ maxWidth: w * 0.86, textAlign: "center", fontSize: fs, lineHeight: 1.15, fontWeight: 800 }}>
+    <div style={{ position: "absolute", left: 0, right: 0, bottom: vertical ? SUB.bottomVertical : SUB.bottomLandscape, display: "flex", justifyContent: "center", fontFamily: SUB.font }}>
+      <div style={{ maxWidth: w * 0.8, textAlign: "center", fontSize: fs, lineHeight: 1.2, fontWeight: SUB.weight }}>
         {line.words.flatMap((wd, i) => {
-          const on = local >= wd.t;
+          const on = SUB.karaoke && local >= wd.t;
           const word = (
             <span key={i} style={{
               color: on ? SUB.highlight : SUB.color, WebkitTextStroke: `${SUB.strokeWidth}px ${SUB.stroke}`, paintOrder: "stroke fill",
-              display: "inline-block", transform: `scale(${on && local - wd.t < 0.12 ? 1.08 : 1})`, margin: `0 ${fs * 0.06}px`,
+              display: "inline-block", transform: `scale(${on && local - wd.t < 0.12 ? 1.08 : 1})`, margin: SUB.karaoke ? `0 ${fs * 0.06}px` : 0,
             }}>{wd.w}</span>
           );
           return i > 0 ? [" ", word] : [word]; // real space between words (never merges)
@@ -61,7 +61,7 @@ export const Caption: React.FC<{ t: number; vertical: boolean }> = ({ t, vertica
   const k = Math.min(1, (t - line.start + 0.3) / 0.3);
   return (
     <div style={{
-      position: "absolute", top: vertical ? 120 : 50, left: vertical ? 50 : 60, padding: "8px 22px", borderRadius: 10,
+      position: "absolute", top: vertical ? 230 : 50, left: vertical ? 44 : 60, padding: "8px 22px", borderRadius: 10,
       background: "rgba(0,0,0,0.55)", color: "#fff", fontFamily: SUB.font, fontWeight: 800, fontSize: vertical ? 44 : 38,
       letterSpacing: 3, opacity: k, transform: `translateX(${(1 - k) * -30}px)`,
     }}>{line.caption}</div>

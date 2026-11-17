@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "3.0.0",
   "rules": [
     "Semua set berukuran panggung 1920x1080, lantai karakter di y=960.",
     "Karakter berdiri di titik 'marks' (x) agar blocking antar-episode konsisten.",
@@ -7,7 +7,8 @@
     "TANPA TEKS yang bisa dibaca di latar: papan nama, poster, papan tulis memakai piktogram/coretan.",
     "Detail khas Indonesia wajib ada (bendera merah putih, renceng, keramik, kipas angin, toples kue, galon).",
     "Elemen identitas set tidak boleh tertutup karakter pada two-shot: gunakan mark A & B.",
-    "Ambience tiap set terkunci di field 'ambience' (lihat sfx.json)."
+    "Ambience tiap set terkunci di field 'ambience' (lihat sfx.json).",
+    "Cahaya per lokasi terkunci (light)."
   ],
   "locations": {
     "warung": {
@@ -21,7 +22,12 @@
         "D": 1520
       },
       "use": "Nongkrong pulang sekolah, transaksi, utang-piutang",
-      "ambience": "amb_street"
+      "ambience": "amb_street",
+      "light": {
+        "kind": "sun",
+        "from": 1,
+        "leaves": true
+      }
     },
     "gerbang": {
       "name": "Gerbang SMA Nusantara",
@@ -34,7 +40,12 @@
         "D": 240
       },
       "use": "Telat masuk, razia, janjian pulang",
-      "ambience": "amb_school_outdoor"
+      "ambience": "amb_school_outdoor",
+      "light": {
+        "kind": "sun",
+        "from": -1,
+        "leaves": true
+      }
     },
     "kelas": {
       "name": "Ruang Kelas XI IPS 2 – depan (papan tulis)",
@@ -47,7 +58,11 @@
         "D": 180
       },
       "use": "Pelajaran, ulangan, piket, drama kelas",
-      "ambience": "amb_classroom"
+      "ambience": "amb_classroom",
+      "light": {
+        "kind": "window",
+        "from": 1
+      }
     },
     "koridor": {
       "name": "Koridor & Lapangan",
@@ -60,7 +75,12 @@
         "D": 300
       },
       "use": "Istirahat, gosip, papasan dengan guru",
-      "ambience": "amb_school_outdoor"
+      "ambience": "amb_school_outdoor",
+      "light": {
+        "kind": "sun",
+        "from": -1,
+        "leaves": true
+      }
     },
     "kamar": {
       "name": "Kamar Kusaka",
@@ -73,7 +93,11 @@
         "D": 1420
       },
       "use": "Adegan rumah, Dinda menjahili Kusaka, begadang tugas",
-      "ambience": "amb_home"
+      "ambience": "amb_home",
+      "light": {
+        "kind": "sunset",
+        "from": -1
+      }
     },
     "kelasBelakang": {
       "name": "Ruang Kelas XI IPS 2 – belakang",
@@ -86,7 +110,11 @@
         "D": 360
       },
       "use": "Siswa ngobrol di belakang, piket, sembunyi dari guru",
-      "ambience": "amb_classroom"
+      "ambience": "amb_classroom",
+      "light": {
+        "kind": "window",
+        "from": 1
+      }
     },
     "kelasJendela": {
       "name": "Ruang Kelas XI IPS 2 – sisi jendela",
@@ -99,7 +127,11 @@
         "D": 300
       },
       "use": "Bangku Kusaka, melamun, lempar kertas",
-      "ambience": "amb_classroom"
+      "ambience": "amb_classroom",
+      "light": {
+        "kind": "window",
+        "from": 1
+      }
     },
     "mejaGuru": {
       "name": "Ruang Kelas XI IPS 2 – meja guru",
@@ -112,7 +144,11 @@
         "D": 180
       },
       "use": "Dipanggil ke depan, setor tugas, guru mengomel",
-      "ambience": "amb_classroom"
+      "ambience": "amb_classroom",
+      "light": {
+        "kind": "window",
+        "from": -1
+      }
     },
     "kantin": {
       "name": "Kantin Sekolah",
@@ -125,7 +161,11 @@
         "D": 240
       },
       "use": "Jajan, rebutan bakso, traktiran",
-      "ambience": "amb_canteen"
+      "ambience": "amb_canteen",
+      "light": {
+        "kind": "window",
+        "from": -1
+      }
     },
     "ruangBK": {
       "name": "Ruang BK",
@@ -138,7 +178,11 @@
         "D": 200
       },
       "use": "Dipanggil Pak Darto, sidang masalah",
-      "ambience": "amb_office"
+      "ambience": "amb_office",
+      "light": {
+        "kind": "window",
+        "from": -1
+      }
     },
     "perpustakaan": {
       "name": "Perpustakaan",
@@ -151,7 +195,11 @@
         "D": 560
       },
       "use": "Belajar kelompok, bisik-bisik, ketahuan tidur",
-      "ambience": "amb_library"
+      "ambience": "amb_library",
+      "light": {
+        "kind": "window",
+        "from": -1
+      }
     },
     "ruangTamu": {
       "name": "Ruang Tamu Rumah Kusaka",
@@ -164,7 +212,11 @@
         "D": 200
       },
       "use": "Keluarga: Ibu marah, Bapak dad jokes, Dinda ngadu",
-      "ambience": "amb_home"
+      "ambience": "amb_home",
+      "light": {
+        "kind": "sunset",
+        "from": 1
+      }
     },
     "lapanganUpacara": {
       "name": "Lapangan Upacara",
@@ -177,7 +229,12 @@
         "D": 240
       },
       "use": "Upacara Senin, hukuman berdiri, pensi",
-      "ambience": "amb_school_outdoor"
+      "ambience": "amb_school_outdoor",
+      "light": {
+        "kind": "sun",
+        "from": -1,
+        "leaves": false
+      }
     },
     "kos": {
       "name": "Kamar Kos Kak Tara",
@@ -190,7 +247,11 @@
         "D": 360
       },
       "use": "Dunia mahasiswa: tugas, akhir bulan, curhat",
-      "ambience": "amb_night"
+      "ambience": "amb_night",
+      "light": {
+        "kind": "night",
+        "from": 1
+      }
     }
   }
 }

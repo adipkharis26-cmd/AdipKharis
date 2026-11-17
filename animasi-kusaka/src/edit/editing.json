@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "2.0.0",
   "rules": [
     "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card. Pengecualian: watermark channel resmi (brand.json) di pojok kiri atas, khusus Shorts.",
     "Subtitle: font Baloo 2 ExtraBold, putih dengan outline hitam, kata yang sedang diucapkan berwarna kuning (karaoke), posisi bawah.",
@@ -10,13 +10,17 @@
     "Durasi: Long 16:9 minimal 6 menit (bisa diatur pemilik per episode lewat 'minSeconds'); Shorts 9:16 minimal 40 detik, maksimal 3 menit (ideal 40–60 detik)."
   ],
   "subtitle": {
-    "font": "Baloo2",
+    "font": "Oswald",
+    "weight": 600,
     "color": "#ffffff",
-    "highlight": "#ffe14d",
-    "stroke": "#1b1b1b",
-    "strokeWidth": 10,
-    "sizeLandscape": 52,
-    "sizeVertical": 58,
+    "highlight": "#ffffff",
+    "karaoke": false,
+    "stroke": "#111111",
+    "strokeWidth": 5,
+    "sizeLandscape": 38,
+    "sizeVertical": 46,
+    "bottomLandscape": 34,
+    "bottomVertical": 360,
     "speakerLabel": false
   },
   "captions": [
@@ -58,5 +62,28 @@
       ],
       "note": "Naskah Shorts sendiri: hook ≤1 detik, punchline sebelum akhir, ending loop."
     }
+  },
+  "camera": {
+    "shots": [
+      "two",
+      "speaker",
+      "medium",
+      "close",
+      "wide",
+      "push",
+      "crash"
+    ],
+    "dofBlur": 7,
+    "walkSpeed": 380,
+    "note": "Gaya referensi: tiap shot SATU ukuran statis (tanpa zoom/geser di dalam shot), potong keras. Sutradara otomatis memilih wide/two/medium/close sesuai ritme adegan (src/edit/director.ts); wide/medium/close/crash yang ditulis di naskah selalu dipakai.",
+    "cut": "hard",
+    "foregrounds": [
+      "tree",
+      "pillar",
+      "plant"
+    ],
+    "director": "auto",
+    "static": true,
+    "punch": false
   }
 }

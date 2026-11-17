@@ -15,6 +15,7 @@ import { Hand, HandShape } from "./Hands";
 
 const OUT = "#1b1b1b";
 const SW = 6;
+const ST = canon.style;
 
 type Hair = "spiky" | "buzz" | "hijab" | "ponytail" | "parted" | "bun" | "long" | "quiff" | "cap" | "balding" | "bob" | "curly" | "messy";
 type Outfit = "sma" | "smaGirl" | "smp" | "teacher" | "daster" | "polo" | "tracksuit" | "security" | "casual" | "blouse" | "apron";
@@ -127,6 +128,9 @@ const Arm: React.FC<{ sx: number; sy: number; pose: ArmPose; look: Look; shade?:
       {(look.pattern === "floral" || look.pattern === "parang") && <path d={sleevePath} stroke={look.motif} strokeWidth={7} strokeDasharray="3 16" fill="none" strokeLinecap="round" opacity={0.85} />}
       {look.pattern === "plaid" && <path d={sleevePath} stroke={look.shirtShade} strokeWidth={8} strokeDasharray="6 10" fill="none" opacity={0.9} />}
       {look.pattern === "stripes" && <path d={sleevePath} stroke={look.motif} strokeWidth={6} fill="none" strokeLinecap="round" transform="translate(9 0)" />}
+      {look.sleeves === "long"
+        ? <path d={`M ${ex - 12} ${ey - 4} q 10 8 22 2 M ${ex - 8} ${ey + 8} q 8 5 16 1`} stroke={shade ? OUT : look.shirtShade} strokeWidth={3.5} fill="none" strokeLinecap="round" opacity={shade ? 0.35 : 0.9} />
+        : <path d={`M ${sx + (ex - sx) * 0.48 - 12} ${sy + (ey - sy) * 0.48} q 12 6 24 0`} stroke={shade ? OUT : look.shirtShade} strokeWidth={3.5} fill="none" strokeLinecap="round" opacity={shade ? 0.35 : 0.9} />}
       {front && look.accessories.includes("watch") && (
         <circle cx={ex + (hx - ex) * 0.82} cy={ey + (hy - ey) * 0.82} r={13} fill="#222" stroke={OUT} strokeWidth={3} />
       )}
@@ -151,6 +155,7 @@ const Shoe: React.FC<{ x: number; look: Look }> = ({ x, look }) => {
       <path d={`M ${x - 30} -34 Q ${x - 30} -2 ${x - 10} 0 L ${x + 52} 0 Q ${x + 60} -22 ${x + 28} -34 Z`} fill={body} stroke={OUT} strokeWidth={SW} strokeLinejoin="round" />
       <path d={`M ${x - 26} -6 L ${x + 54} -6`} stroke={look.shoes === "sneaker" ? look.accent : "#eee"} strokeWidth={6} />
       {look.shoes === "sneaker" && <path d={`M ${x + 2} -28 l 18 0 M ${x + 6} -20 l 18 0`} stroke={OUT} strokeWidth={3} />}
+      <ellipse cx={x + 36} cy={-22} rx={10} ry={4} fill="#fff" opacity={look.shoes === "sneaker" ? 0.5 : 0.35} transform={`rotate(-20 ${x + 36} -22)`} />
     </g>
   );
 };
@@ -191,8 +196,9 @@ const PatternFill: React.FC<{ look: Look; pattern: Pattern; x: number; y: number
   return <g>{cells}</g>;
 };
 
-const Lower: React.FC<{ look: Look; crouch: number }> = ({ look, crouch }) => {
+const Lower: React.FC<{ look: Look; crouch: number; walk?: number }> = ({ look, crouch, walk }) => {
   const w = look.bodyW;
+  const swing = walk === undefined ? 0 : Math.sin(walk) * 20;
   const hipY = -240 + crouch;
   const shade = (c: string) => `color-mix(in srgb, ${c} 82%, black)`;
   if (look.bottomStyle === "pants" || look.bottomStyle === "trackpants") {
@@ -201,10 +207,17 @@ const Lower: React.FC<{ look: Look; crouch: number }> = ({ look, crouch }) => {
         <path d={`M ${x - 26 * w} ${hipY} L ${x - 24} -28 L ${x + 26} -28 L ${x + 26 * w} ${hipY} Z`}
           fill={back ? shade(look.bottom) : look.bottom} stroke={OUT} strokeWidth={SW} strokeLinejoin="round" />
         {look.bottomStyle === "trackpants" && <path d={`M ${x + 14 * w} ${hipY + 6} L ${x + 16} -32`} stroke={look.motif ?? "#fff"} strokeWidth={7} />}
+        <path d={`M ${x - 14} ${hipY + 128} q 10 7 22 1 M ${x - 10} ${hipY + 146} q 8 5 16 0`} stroke={shade(look.bottom)} strokeWidth={4} fill="none" strokeLinecap="round" />
+        <path d={`M ${x - 22 * w} ${hipY + 8} q 6 26 22 30`} stroke={shade(look.bottom)} strokeWidth={4} fill="none" strokeLinecap="round" />
         <Shoe x={x} look={look} />
       </g>
     );
-    return <g>{leg(-36 * w, true)}{leg(30 * w, false)}</g>;
+    return (
+      <g>
+        <g transform={`rotate(${-swing} ${-36 * w} ${hipY})`}>{leg(-36 * w, true)}</g>
+        <g transform={`rotate(${swing} ${30 * w} ${hipY})`}>{leg(30 * w, false)}</g>
+      </g>
+    );
   }
   const long = look.bottomStyle !== "skirt";
   const hem = long ? -26 : -150;
@@ -222,8 +235,8 @@ const Lower: React.FC<{ look: Look; crouch: number }> = ({ look, crouch }) => {
           <rect x={x - 18} y={-110} width={36} height={84} fill="#fbfbf7" stroke={OUT} strokeWidth={5} />
         </g>
       ))}
-      <Shoe x={-34 * w} look={look} />
-      <Shoe x={28 * w} look={look} />
+      <g transform={`translate(${-swing * 1.6} ${-Math.max(0, -swing) * 0.6})`}><Shoe x={-34 * w} look={look} /></g>
+      <g transform={`translate(${swing * 1.6} ${-Math.max(0, swing) * 0.6})`}><Shoe x={28 * w} look={look} /></g>
       <clipPath id={clip}><path d={d} /></clipPath>
       <path d={d} fill={fill} />
       <g clipPath={`url(#${clip})`}><PatternFill look={sarungLook} pattern={pat} x={-120 * w} y={hipY} w={260 * w} h={-hipY} /></g>
@@ -254,6 +267,14 @@ const Torso: React.FC<{ look: Look; crouch: number }> = ({ look, crouch }) => {
           ? <g><PatternFill look={look} pattern="plaid" x={-100 * w} y={top - 20} w={80 * w} h={300} /><PatternFill look={look} pattern="plaid" x={30 * w} y={top - 20} w={90 * w} h={300} /></g>
           : <PatternFill look={look} pattern={look.pattern} x={-100 * w} y={top - 10} w={220 * w + belly} h={280} />}
         <path d={`M ${-80 * w} ${top} L ${-40 * w} ${top} Q ${-48 * w} ${top + 110} ${-38 * w} ${bot + 4} L ${-80 * w} ${bot + 4} Z`} fill={look.shirtShade} opacity={look.pattern !== "none" ? 0.55 : 1} />
+        <ellipse cx={6} cy={top + 4} rx={46 * w} ry={16} fill={OUT} opacity={0.14} />
+        <g stroke={look.shirtShade} strokeWidth={4} fill="none" strokeLinecap="round" opacity={look.pattern !== "none" ? 0.6 : 0.95}>
+          <path d={`M ${54 * w} ${top + 34} Q ${40 * w} ${top + 70} ${50 * w + belly * 0.5} ${top + 116}`} />
+          <path d={`M ${-30 * w} ${top + 40} Q ${-18 * w} ${top + 64} ${-26 * w} ${top + 96}`} />
+          <path d={`M ${-34 * w} ${bot - 26} Q ${-6 * w} ${bot - 38} ${22 * w} ${bot - 24}`} />
+          <path d={`M ${12 * w} ${bot - 46} Q ${34 * w} ${bot - 56} ${52 * w + belly * 0.6} ${bot - 40}`} />
+          <path d={`M ${24 * w} ${top + 74} q ${10 * w} 14 ${4 * w} 30`} />
+        </g>
         {look.outfit === "apron" && (
           <g>
             <path d={`M ${-30 * w} ${top + 70} L ${60 * w} ${top + 70} L ${70 * w + belly * 0.6} ${bot + 10} L ${-40 * w} ${bot + 10} Z`} fill={look.apron} stroke={OUT} strokeWidth={4} />
@@ -508,6 +529,8 @@ export const Head: React.FC<{ id: CharId; look: Look; t: number; emotion: Emotio
       )}
       <path d={face} fill={look.skin} stroke={OUT} strokeWidth={SW} strokeLinejoin="round" />
       <path d="M -60 -36 C -20 -6 50 -6 100 -40 C 80 -6 30 4 -8 -2 C -36 -8 -52 -20 -60 -36 Z" fill={look.skinShade} opacity={0.7} />
+      {look.hairStyle !== "balding" && <ellipse cx={24} cy={hijab ? -226 : -218} rx={104} ry={20} fill={look.skinShade} opacity={0.6} />}
+      <path d="M 96 -110 Q 104 -100 96 -96" fill="none" stroke={look.skinShade} strokeWidth={7} strokeLinecap="round" />
       {look.age >= 40 && (
         <g stroke={look.skinShade} strokeWidth={4} strokeLinecap="round" fill="none">
           <path d="M 20 -232 Q 60 -240 96 -226" /><path d="M 30 -218 Q 62 -224 90 -214" />
@@ -517,8 +540,8 @@ export const Head: React.FC<{ id: CharId; look: Look; t: number; emotion: Emotio
       <ellipse cx={106} cy={-94} rx={16} ry={9} fill="#ff7f7f" opacity={blushHi ? 0.65 : look.lashes ? 0.4 : 0.28} />
       <ellipse cx={-18} cy={-96} rx={14} ry={8} fill="#ff7f7f" opacity={blushHi ? 0.6 : look.lashes ? 0.35 : 0.25} />
       <g transform={`translate(${jitter} 0)`}>
-        <Eye id={`${id}-eb`} cx={4} cy={-146} rx={18} ry={25} state={eyeState} look={lookDir} lid={look.skin} />
-        <Eye id={`${id}-ef`} cx={72} cy={-146} rx={21} ry={27} state={eyeState} look={lookDir} lid={look.skin} />
+        <Eye id={`${id}-eb`} cx={4} cy={-146} rx={18 * ST.eyeScale} ry={25 * ST.eyeScale} state={eyeState} look={lookDir} lid={look.skin} />
+        <Eye id={`${id}-ef`} cx={72} cy={-146} rx={21 * ST.eyeScale} ry={27 * ST.eyeScale} state={eyeState} look={lookDir} lid={look.skin} />
         {look.lashes && eyeState !== "happy" && (
           <g stroke={OUT} strokeWidth={4.5} strokeLinecap="round">
             <path d={`M 92 ${eyeState === "closed" ? -142 : -164} l 12 -8`} /><path d={`M 94 ${eyeState === "closed" ? -138 : -154} l 13 -2`} />
@@ -559,6 +582,12 @@ export const Head: React.FC<{ id: CharId; look: Look; t: number; emotion: Emotio
       {look.mustache && look.mustacheStyle === "thin" && (
         <path d="M 48 -84 Q 80 -96 112 -84" fill="none" stroke={look.hair} strokeWidth={7} strokeLinecap="round" />
       )}
+      <defs>
+        <filter id="sheenblur" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation={2.2} /></filter>
+        <filter id="towhite"><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0" /></filter>
+        <mask id={`hairm-${id}`} maskUnits="userSpaceOnUse" x={-300} y={-500} width={600} height={700}><g filter="url(#towhite)"><use href={`#hairg-${id}`} /></g></mask>
+      </defs>
+      <g id={`hairg-${id}`}>
       {look.hairStyle === "spiky" && <SpikyHair color={look.hair} t={t} />}
       {look.hairStyle === "buzz" && <BuzzHair color={look.hair} />}
       {look.hairStyle === "parted" && <PartedHair color={look.hair} />}
@@ -572,6 +601,12 @@ export const Head: React.FC<{ id: CharId; look: Look; t: number; emotion: Emotio
       {look.hairStyle === "curly" && <CurlyHair color={look.hair} />}
       {look.hairStyle === "messy" && <MessyHair color={look.hair} t={t} />}
       {hijab && <HijabFront look={look} />}
+      </g>
+      <g mask={`url(#hairm-${id})`} fill="none" strokeLinecap="round">
+        <path d={hijab ? "M -70 -250 Q 10 -300 110 -262" : "M -58 -238 Q 18 -270 110 -242"} stroke="#fff" strokeWidth={hijab ? 14 : 8} strokeDasharray={hijab ? undefined : "22 10 8 12"} opacity={hijab ? 0.2 : 0.5} filter="url(#sheenblur)" />
+        {!hijab && look.hairStyle !== "cap" && [-60, -26, 10, 46, 84].map((x) => <path key={x} d={`M ${x} -280 Q ${x + 12} -246 ${x - 2} -206`} stroke="#000" strokeWidth={3} opacity={0.22} />)}
+        {hijab && [-40, 20, 80].map((x) => <path key={x} d={`M ${x} -300 Q ${x - 30} -200 ${x - 20} -110`} stroke="#000" strokeWidth={4} opacity={0.12} />)}
+      </g>
       {look.accessories.includes("pencil") && (
         <g transform="translate(-70 -214) rotate(-60)">
           <rect x={-6} y={-40} width={12} height={70} fill="#ffd23f" stroke={OUT} strokeWidth={4} />
@@ -623,7 +658,7 @@ export const Portrait: React.FC<{ id: CharId; emotion: Emotion; viseme?: Viseme 
 export interface Force { emotion?: Emotion; action?: Action; viseme?: Viseme | null; noFx?: boolean }
 
 /* ------------------------------ Character ------------------------------- */
-export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 | -1; frame: number; scale?: number; force?: Force }> = ({ id, x, y, facing, frame, scale = 1, force }) => {
+export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 | -1; frame: number; scale?: number; force?: Force; walk?: number }> = ({ id, x, y, facing, frame, scale = 1, force, walk }) => {
   const t = frame / FPS;
   const look = LOOKS[id];
   const st = force
@@ -641,6 +676,7 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
   if (st.action === "gesture" && speaking) {
     pose = { ...pose, front: [pose.front[0] + Math.sin(t * 5 + phase) * 10, pose.front[1] + Math.sin(t * 7) * 12] };
   }
+  if (walk !== undefined) pose = { ...pose, front: [pose.front[0] - Math.sin(walk) * 22, pose.front[1]], back: [pose.back[0] + Math.sin(walk) * 22, pose.back[1]] };
   if (st.action === "wave") pose = { ...pose, front: [pose.front[0] + Math.sin(t * 10) * 8, pose.front[1]] };
 
   const breathe = 1 + Math.sin(t * 2.3 + phase) * 0.012;
@@ -650,6 +686,7 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
   if (st.emotion === "shock" && st.since < 0.5) bodyY = -Math.sin((st.since / 0.5) * Math.PI) * 50;
   if (st.emotion === "shock") bodyX = Math.sin(t * 60) * (st.since < 1.2 ? 3 : 0.8);
   if (st.emotion === "surprised" && st.since < 0.4) bodyY = -Math.sin((st.since / 0.4) * Math.PI) * 18;
+  if (walk !== undefined) bodyY -= Math.abs(Math.sin(walk)) * 9;
   if (!speaking && st.emotion === "neutral") extraTilt += Math.max(0, Math.sin(t * 3.2 + phase)) * 3;
 
   const blink = !force && isBlinking(id, t) && st.emotion !== "shock";
@@ -663,7 +700,7 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
       <ellipse cx={0} cy={2} rx={120 * look.bodyW} ry={16} fill="#000" opacity={0.18} transform={`scale(${1 + bodyY / 400} 1)`} />
       <g transform={`rotate(${pose.lean} 0 0)`}>
         <Arm sx={backShoulder[0]} sy={backShoulder[1]} pose={pose.back} look={look} shade hand={pose.hands[1]} t={t} />
-        <Lower look={look} crouch={crouch} />
+        <Lower look={look} crouch={crouch} walk={walk} />
         <g transform={`translate(0 ${-240 + crouch}) scale(1 ${breathe}) translate(0 ${240 - crouch})`}>
           <Torso look={look} crouch={crouch} />
         </g>
@@ -675,7 +712,7 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
             <ellipse cx={60} cy={-466 + crouch} rx={20} ry={26} fill={look.accent} stroke={OUT} strokeWidth={5} />
           </g>
         )}
-        <g transform={`translate(4 ${-468 + crouch}) rotate(${pose.head + nod + extraTilt})`}>
+        <g transform={`translate(4 ${-468 + crouch}) rotate(${pose.head + nod + extraTilt}) scale(${ST.headScale})`}>
           <Head id={id} look={look} t={t} emotion={st.emotion} viseme={viseme} blink={blink} lookDir={pose.look} since={st.since} />
           {!force?.noFx && <HeadFx emotion={st.emotion} t={t} since={force ? 0 : st.since} />}
         </g>

@@ -5,6 +5,9 @@ import { ShortsWatermark } from "./branding/Watermark";
 import { Character } from "./characters/Character";
 import { LOCATIONS, LOCATION_META, LocId } from "./scene/Locations";
 import { Caption, FlashbackOverlay, SpeedLines, Subtitles } from "./fx/Overlays";
+import { CharLightDefs, LightDef, ScreenLight, SetLight } from "./fx/Lighting";
+import { DETAILS } from "./scene/Details";
+import { DETAILS2 } from "./scene/Details2";
 import sfxLib from "./audio/sfx.json";
 import editing from "./edit/editing.json";
 import { CharId, END_OF_DIALOG, FPS, LINES, Line, SCENES, Scene, beatAt } from "./lib/timeline";
@@ -12,52 +15,119 @@ import { CharId, END_OF_DIALOG, FPS, LINES, Line, SCENES, Scene, beatAt } from "
 /* -------------------------------- stage layout (per scene, from locked location marks) ---- */
 const metaOf = (sc: Scene) => LOCATION_META.locations[sc.location as LocId];
 const castOf = (sc: Scene) => Object.keys(sc.cast) as CharId[];
-const posOf = (sc: Scene, c: CharId) => ({ x: metaOf(sc).marks[sc.cast[c].mark], facing: sc.cast[c].facing });
+type Move = { who: CharId; to: string; from?: string; at?: number; face?: 1 | -1 };
+const OFF: Record<string, number> = { offL: -260, offR: 2180 };
+const WALK_SPEED: number = editing.camera.walkSpeed;
+const markX = (sc: Scene, m: string) => OFF[m] ?? metaOf(sc).marks[m as keyof ReturnType<typeof metaOf>["marks"]];
+let NOW = 0;
+/** Position of a character at time NOW: start mark, then every `move` of this scene in order. */
+const posOf = (sc: Scene, c: CharId): { x: number; facing: 1 | -1; walk?: number } => {
+  let x = markX(sc, sc.cast[c].mark), facing = sc.cast[c].facing;
+  const first = LINES.find((l) => l.scene === sc.id && (l as Line & { move?: Move }).move?.who === c) as (Line & { move?: Move }) | undefined;
+  if (first?.move?.from) x = markX(sc, first.move.from);
+  for (const l of LINES) {
+    const mv = (l as Line & { move?: Move }).move;
+    if (l.scene !== sc.id || !mv || mv.who !== c) continue;
+    const from = mv.from ? markX(sc, mv.from) : x, to = markX(sc, mv.to);
+    const start = l.start + (mv.at ?? 0), dur = Math.max(0.3, Math.abs(to - from) / WALK_SPEED);
+    const dir: 1 | -1 = to >= from ? 1 : -1;
+    if (NOW < start) break;
+    if (NOW < start + dur) return { x: from + (to - from) * ((NOW - start) / dur), facing: dir, walk: ((NOW - start) * WALK_SPEED) / 42 };
+    x = to; facing = mv.face ?? dir;
+  }
+  return { x, facing };
+};
 const faceOf = (sc: Scene, c: CharId) => ({ x: posOf(sc, c).x + 70 * posOf(sc, c).facing, y: metaOf(sc).floor - 468 - 130 });
 const otherOf = (sc: Scene, c: CharId) => castOf(sc).find((x) => x !== c) ?? c;
-const centerOf = (sc: Scene) => { const xs = castOf(sc).map((c) => posOf(sc, c).x); return (Math.min(...xs) + Math.max(...xs)) / 2; };
+const centerOf = (sc: Scene) => {
+  const all = castOf(sc).map((c) => posOf(sc, c).x), on = all.filter((x) => x > 0 && x < 1920);
+  const xs = on.length ? on : all;
+  return (Math.min(...xs) + Math.max(...xs)) / 2;
+};
 
 /* -------------------------------- camera ------------------------------------- */
 interface Cam { x: number; y: number; z: number }
 const smooth = (x: number) => { const k = Math.min(Math.max(x, 0), 1); return k * k * (3 - 2 * k); };
 const mixCam = (a: Cam, b: Cam, k: number): Cam => ({ x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k, z: a.z + (b.z - a.z) * k });
 
+const STATIC: boolean = editing.camera.static;
+type CamLine = Line & { camAt?: string; fg?: string };
+/** Position at an earlier moment (used to lock a static camera at the start of a shot). */
+const posAtTime = (sc: Scene, c: CharId, t: number) => { const keep = NOW; NOW = t; const p = posOf(sc, c); NOW = keep; return p; };
+/** Rule of thirds: subject on one third, empty space in front of the face (reference framing). */
+const thirds = (faceX: number, facing: number, z: number, vertical: boolean) => (vertical ? faceX : faceX + facing * (1920 / z) * 0.16);
+
 function shotFor(sc: Scene, line: Line | null, since: number, vertical: boolean): Cam {
+  if (line?.shot === "wide") {
+    const mv = (line as Line & { move?: Move }).move;
+    const keep = NOW; NOW = line.start;
+    const x = !vertical ? 960 : mv && !OFF[mv.to] ? markX(sc, mv.to) : centerOf(sc);
+    NOW = keep;
+    return { x, y: 540, z: 1.0 };
+  }
+  const cl = line as CamLine | null;
+  if (cl && (cl.shot === "medium" || cl.shot === "close") && (cl.camAt || cl.offscreen || !sc.cast[cl.speaker])) {
+    // static camera locked on a spot; whoever walks through passes the lens (reference walk-by shots)
+    const ax = cl.camAt ? markX(sc, cl.camAt) : centerOf(sc);
+    const z = cl.shot === "close" ? (vertical ? 2.2 : 2.35) : vertical ? 1.6 : 1.85;
+    return { x: ax, y: cl.shot === "close" ? metaOf(sc).floor - 528 : metaOf(sc).floor - 420, z };
+  }
   const v = vertical ? 1.05 : 1;
   const cx = centerOf(sc);
-  if (!line) return { x: cx, y: 560, z: (0.94 + since * 0.03) * v };
+  if (!line) return { x: cx, y: 560, z: (STATIC ? 1 : 0.94 + since * 0.03) * v };
   const who = line.speaker;
-  if (line.offscreen || !sc.cast[who]) return { x: cx, y: 560, z: (1.02 + since * 0.012) * v };
+  if (line.offscreen || !sc.cast[who]) return { x: cx, y: 560, z: 1.08 * v };
   const sp = posOf(sc, who), other = posOf(sc, otherOf(sc, who));
   const face = faceOf(sc, who);
   switch (line.shot) {
-    case "two": return { x: cx, y: 560, z: (1.02 + since * 0.012) * v };
+    case "two": {
+      // 9:16 is narrow: when the group is wider than the frame, keep the speaker in shot
+      if (!vertical) return { x: cx, y: 560, z: 1.08 };
+      const half = 1080 / 2 / (1.08 * v) - 160;
+      return { x: Math.min(Math.max(cx, sp.x - half), sp.x + half), y: 560, z: 1.08 * v };
+    }
+    case "medium": {
+      const p0 = posAtTime(sc, who, line.start);
+      const fx = p0.x + 70 * p0.facing, z = vertical ? 1.6 : 1.85;
+      return { x: thirds(fx, p0.facing, z, vertical), y: metaOf(sc).floor - 420, z };
+    }
     case "speaker": {
       const x = vertical ? face.x : sp.x + (other.x - sp.x) * 0.28;
-      return { x, y: vertical ? 520 : 470, z: (vertical ? 1.5 : 1.7) + since * 0.015 };
+      return { x, y: vertical ? 520 : 470, z: vertical ? 1.5 : 1.7 };
     }
-    case "push": return { x: face.x, y: face.y + 40, z: 1.7 + Math.min(since / line.duration, 1) * 0.75 };
+    case "close": {
+      const p0 = posAtTime(sc, who, line.start), z = vertical ? 2.2 : 2.35;
+      return { x: thirds(p0.x + 70 * p0.facing, p0.facing, z, vertical), y: face.y + 70, z };
+    }
+    case "push": return { x: face.x, y: face.y + 40, z: STATIC ? 2.1 : 1.7 + Math.min(since / line.duration, 1) * 0.75 };
     case "crash": {
       // vertical frames are narrow: centre on the real face centre (face +24, minus the shock lean ≈ 63)
       const x = vertical ? sp.x - 40 * sp.facing : face.x - 20 * sp.facing; // shock pose leans back ~6°
-      return { x, y: face.y - 30, z: since < 1.1 ? 3.1 : 3.1 - (since - 1.1) * 0.25 };
+      return { x, y: face.y - 30, z: STATIC || since < 1.1 ? 3.1 : 3.1 - (since - 1.1) * 0.25 };
     }
   }
 }
 
 function camera(t: number, vertical: boolean): { cam: Cam; shake: [number, number]; scene: Scene } {
+  NOW = t;
   const { line, index, since, scene } = beatAt(t);
   const target = shotFor(scene, line, since, vertical);
   const lastSceneEnd = SCENES[SCENES.length - 1] === scene && t > END_OF_DIALOG + 0.4;
   if (lastSceneEnd) {
-    const k = smooth((t - END_OF_DIALOG - 0.4) / 0.8);
+    const k = STATIC ? 1 : smooth((t - END_OF_DIALOG - 0.4) / 0.8);
     return { cam: mixCam(target, { x: centerOf(scene), y: 520, z: vertical ? 1.15 : 1.08 }, k), shake: [0, 0], scene };
   }
   const prevLine = index > 0 && LINES[index - 1].scene === scene.id ? LINES[index - 1] : null;
   const prev = shotFor(scene, prevLine, line ? line.start - (prevLine?.start ?? scene.start) : 0, vertical);
-  const dur = line?.shot === "crash" ? 0.12 : 0.38;
+  const dur = line?.shot === "crash" ? 0.12 : editing.camera.cut === "hard" ? 1e-3 : 0.38;
   const cam = line ? mixCam(prev, target, smooth(since / dur)) : target;
   let amp = 0;
+  const punch = editing.camera.punch && line && line.shot !== "crash" && !line.offscreen && (line.emotion === "surprised" || line.emotion === "shock") && since < 0.45;
+  if (punch) {
+    const k = since < 0.08 ? since / 0.08 : Math.max(0, 1 - (since - 0.08) / 0.37);
+    cam.z *= 1 + 0.12 * k;
+    amp = 8 * k;
+  }
   if (line?.shot === "crash") amp = 22 * Math.max(0, 1 - since / 0.9);
   if (line?.emotion === "laugh" && !line.offscreen) amp = 3;
   const n = (s: number) => Math.sin(t * 91.7 + s) * 0.6 + Math.sin(t * 53.3 + s * 2) * 0.4;
@@ -112,12 +182,33 @@ const Wipe: React.FC<{ t: number; w: number; h: number }> = ({ t, w, h }) => {
   );
 };
 
+/* Foreground framing element (blurred, close to the lens) — tree trunk / pillar / plant, as in the reference. */
+const Foreground: React.FC<{ kind: string; w: number; h: number; side: number }> = ({ kind, w, h, side }) => {
+  const W = kind === "plant" ? w * 0.26 : w * 0.17;
+  const x = side < 0 ? 0 : w - W;
+  return (
+    <svg width={w} height={h} style={{ position: "absolute", inset: 0, filter: "blur(5px)" }}>
+      {kind === "tree" && (
+        <g>
+          <path d={`M ${x + W * 0.1} -20 C ${x + W * 0.25} ${h * 0.4} ${x - W * 0.05} ${h * 0.7} ${x + W * 0.05} ${h + 20} L ${x + W * 0.95} ${h + 20} C ${x + W * 0.8} ${h * 0.6} ${x + W * 1.05} ${h * 0.3} ${x + W * 0.85} -20 Z`} fill="#5a3b22" />
+          {[0.25, 0.45, 0.62, 0.8].map((k) => <path key={k} d={`M ${x + W * k} 0 Q ${x + W * (k + 0.06)} ${h / 2} ${x + W * k} ${h}`} stroke="#3b2414" strokeWidth={10} fill="none" opacity={0.7} />)}
+        </g>
+      )}
+      {kind === "pillar" && <rect x={x} y={-20} width={W} height={h + 40} fill="#efe6d2" stroke="#1b1b1b" strokeWidth={8} />}
+      {kind === "plant" && [0, 1, 2, 3, 4].map((i) => (
+        <ellipse key={i} cx={x + W * (0.2 + i * 0.16)} cy={h - 60 - (i % 2) * 120} rx={W * 0.22} ry={h * 0.22} fill={i % 2 ? "#3f8a3a" : "#2f6f2c"} transform={`rotate(${-30 + i * 15} ${x + W * (0.2 + i * 0.16)} ${h})`} />
+      ))}
+    </svg>
+  );
+};
+
 /* -------------------------------- main video --------------------------------- */
 export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
   useFonts();
   const frame = useCurrentFrame();
   const { width: w, height: h } = useVideoConfig();
   const t = frame / FPS;
+  NOW = t;
   const { cam, shake, scene } = camera(t, vertical);
   const loc = LOCATIONS[scene.location as LocId];
   const meta = metaOf(scene);
@@ -133,22 +224,41 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
 
   // Bu Ijah (behind the counter) nods while she talks or right after an order
   const ijahTalk = LINES.some((l) => l.speaker === "buIjah" && t >= l.start && t < l.start + l.duration);
+  const cur = beatAt(t);
+  const dof = cur.line?.shot === "close" && !cur.line.offscreen ? Math.min(1, cur.since / 0.25 + 0.6) * editing.camera.dofBlur : 0;
+  const bgImage = (meta as { image?: string }).image;
+  const Detail = DETAILS[scene.location] ?? DETAILS2[scene.location];
+  const light: LightDef = (meta as { light?: LightDef }).light ?? { kind: "sun", from: -1 };
   const ijahNod = scene.location === "warung" && ijahTalk ? Math.sin(t * 9) * 5 : 0;
 
   return (
     <AbsoluteFill style={{ background: loc.bg }}>
       <svg width={w} height={h} style={{
         position: "absolute", inset: 0,
-        filter: fbAmount > 0 ? `sepia(${fb.sepia * fbAmount}) saturate(${1 - (1 - fb.saturate) * fbAmount})` : undefined,
+        filter: fbAmount > 0 ? `sepia(${fb.sepia * fbAmount}) saturate(${1 - (1 - fb.saturate) * fbAmount})` : "saturate(1.12) contrast(1.06)",
       }}>
         <g transform={`translate(${shake[0]} ${shake[1]})`}>
-          {loc.layers.map((l, i) => <Layer key={`${scene.id}-${i}`} cam={cam} d={l.d} w={w} h={h}>{l.el(t, { ijahNod })}</Layer>)}
+          <defs><filter id="dof" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation={dof} /></filter></defs>
+          <CharLightDefs light={light} />
+          <g filter={dof > 0 ? "url(#dof)" : undefined}>
+            {bgImage
+              ? <Layer cam={cam} d={1} w={w} h={h}><image href={staticFile(bgImage)} x={0} y={0} width={1920} height={1080} preserveAspectRatio="xMidYMid slice" /></Layer>
+              : loc.layers.map((l, i) => <Layer key={`${scene.id}-${i}`} cam={cam} d={l.d} w={w} h={h}>{l.el(t, { ijahNod })}</Layer>)}
+            {Detail && !bgImage && <Layer cam={cam} d={1} w={w} h={h}><Detail t={t} /></Layer>}
+            <Layer cam={cam} d={1} w={w} h={h}><SetLight light={light} t={t} floor={meta.floor} /></Layer>
+          </g>
           <Layer cam={cam} d={1} w={w} h={h}>
-            {castOf(scene).map((c) => <Character key={`${scene.id}-${c}`} id={c} x={posOf(scene, c).x} y={meta.floor} facing={posOf(scene, c).facing} frame={frame} />)}
+            {castOf(scene).map((c) => {
+              const p = posOf(scene, c);
+              const blur = dof > 0 && c !== cur.line?.speaker;
+              return <g key={`${scene.id}-${c}`} filter={blur ? "url(#dof)" : undefined}><g filter="url(#charlight)"><Character id={c} x={p.x} y={meta.floor} facing={p.facing} frame={frame} walk={p.walk} /></g></g>;
+            })}
           </Layer>
           {loc.front?.map((l, i) => <Layer key={`f${i}`} cam={cam} d={l.d} w={w} h={h}>{l.el(t)}</Layer>)}
         </g>
       </svg>
+      <ScreenLight light={light} w={w} h={h} frame={frame} />
+      {(cur.line as CamLine | null)?.fg && <Foreground kind={(cur.line as CamLine).fg!} w={w} h={h} side={scene.cast[cur.line!.speaker] ? posOf(scene, cur.line!.speaker).facing : -1} />}
       <FlashbackOverlay w={w} h={h} frame={frame} amount={fbAmount} />
       <SpeedLines w={w} h={h} frame={frame} opacity={speedOpacity} />
       {flash > 0 && <AbsoluteFill style={{ background: "#fff", opacity: flash }} />}

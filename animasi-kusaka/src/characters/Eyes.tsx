@@ -1,11 +1,13 @@
 import React from "react";
 import type { Emotion } from "../lib/timeline";
+import canon from "./canon.json";
 
 /** Eye states: open, closed (blink), wide (shock), happy (^ ^), half (lidded), puppy (pleading). */
 export type EyeState = "open" | "closed" | "wide" | "happy" | "half" | "puppy";
 export type BrowState = "neutral" | "raised" | "angry" | "worried" | "smug" | "skeptic";
 
 const OUT = "#1b1b1b";
+const ST = canon.style;
 
 export const Eye: React.FC<{
   cx: number; cy: number; rx: number; ry: number; state: EyeState; look: [number, number]; lid?: string; id: string;
@@ -19,18 +21,22 @@ export const Eye: React.FC<{
   const pr = state === "wide" ? rx * 0.28 : state === "puppy" ? rx * 0.68 : rx * 0.5;
   const px = cx + look[0] * (erx - pr) * 0.7;
   const py = cy + look[1] * (ery - pr) * 0.6 + (state === "puppy" ? 3 : 0);
+  const ir = pr * 1.45;
   return (
     <g>
       <clipPath id={id}><ellipse cx={cx} cy={cy} rx={erx} ry={ery} /></clipPath>
       <ellipse cx={cx} cy={cy} rx={erx} ry={ery} fill="#fff" />
       <g clipPath={`url(#${id})`}>
-        <ellipse cx={px} cy={py} rx={pr} ry={pr * 1.18} fill="#1d1712" />
-        <circle cx={px + pr * 0.35} cy={py - pr * 0.4} r={pr * (state === "puppy" ? 0.38 : 0.3)} fill="#fff" />
-        {state === "puppy" && <circle cx={px - pr * 0.35} cy={py + pr * 0.35} r={pr * 0.16} fill="#fff" />}
+        <ellipse cx={px} cy={py} rx={ir} ry={ir * 1.22} fill={ST.iris} />
+        <ellipse cx={px} cy={py - ir * 0.45} rx={ir} ry={ir * 0.8} fill={ST.irisDeep} opacity={0.75} />
+        <ellipse cx={px} cy={py + ir * 0.1} rx={pr * 0.55} ry={pr * 0.7} fill="#0d0805" />
+        <circle cx={px + ir * 0.38} cy={py - ir * 0.42} r={ir * (state === "puppy" ? 0.4 : 0.32)} fill="#fff" />
+        <circle cx={px - ir * 0.36} cy={py + ir * 0.48} r={ir * (state === "puppy" ? 0.2 : 0.14)} fill="#fff" />
         {state === "half" && <rect x={cx - erx - 2} y={cy - ery - 2} width={erx * 2 + 4} height={ery * 0.95} fill={lid} />}
       </g>
-      {state === "half" && <line x1={cx - erx} y1={cy - ery * 0.05} x2={cx + erx} y2={cy - ery * 0.05} stroke={OUT} strokeWidth={6} strokeLinecap="round" />}
-      <ellipse cx={cx} cy={cy} rx={erx} ry={ery} fill="none" stroke={OUT} strokeWidth={5} />
+      {state === "half" && <line x1={cx - erx} y1={cy - ery * 0.05} x2={cx + erx} y2={cy - ery * 0.05} stroke={OUT} strokeWidth={ST.lidWidth} strokeLinecap="round" />}
+      <ellipse cx={cx} cy={cy} rx={erx} ry={ery} fill="none" stroke={OUT} strokeWidth={4} />
+      {state !== "half" && <path d={`M ${cx - erx - 3} ${cy - ery * 0.25} Q ${cx - erx * 0.2} ${cy - ery * 1.18} ${cx + erx + 4} ${cy - ery * 0.5}`} fill="none" stroke={OUT} strokeWidth={ST.lidWidth} strokeLinecap="round" />}
     </g>
   );
 };

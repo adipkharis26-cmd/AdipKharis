@@ -29,7 +29,7 @@ const fail = (msg) => { console.error(`✗ ${msg}`); process.exit(1); };
 
 /* ---------------- validation (consistency rules) ---------------- */
 const EMOTIONS = ["neutral", "smug", "suspicious", "shock", "laugh", "pleading", "deadpan", "surprised", "embarrassed", "defeated"];
-const SHOTS = ["two", "speaker", "push", "crash"];
+const SHOTS = editing.camera.shots;
 if (!script.episode) fail("script.json butuh field \"episode\" (mis. \"eps01\")");
 const ACTIONS = ["idle","gesture","pocket","chin","point","plead","crossed","shock","laugh","slump","wave","thumbsup","peace","facepalm","hips","phone"];
 for (const sc of script.scenes) {
@@ -48,6 +48,13 @@ for (const sc of script.scenes) {
     if (!sc.cast?.[l.speaker] && !l.offscreen) fail(`${l.id}: "${l.speaker}" tidak ada di cast ${sc.id} (pakai "offscreen": true untuk suara dari luar layar)`);
     if (!EMOTIONS.includes(l.emotion) || !EMOTIONS.includes(l.listener)) fail(`${l.id}: emosi tidak valid`);
     if (!SHOTS.includes(l.shot)) fail(`${l.id}: shot "${l.shot}" tidak valid`);
+    if (l.camAt && !(l.camAt === "offL" || l.camAt === "offR" || loc.marks[l.camAt] !== undefined)) fail(`${l.id}: camAt tidak valid`);
+    if (l.fg && !editing.camera.foregrounds.includes(l.fg)) fail(`${l.id}: fg "${l.fg}" tidak valid. Pilihan: ${editing.camera.foregrounds.join(", ")}`);
+    if (l.move) {
+      const okMark = (m) => m === "offL" || m === "offR" || loc.marks[m] !== undefined;
+      if (!sc.cast?.[l.move.who]) fail(`${l.id}: move untuk "${l.move.who}" yang tidak ada di cast`);
+      if (!okMark(l.move.to) || (l.move.from && !okMark(l.move.from))) fail(`${l.id}: move mark tidak valid (A–D, offL, offR)`);
+    }
     if (l.offscreen && l.shot !== "two") fail(`${l.id}: suara offscreen harus memakai shot "two"`);
     if (l.action && !ACTIONS.includes(l.action)) fail(`${l.id}: action "${l.action}" tidak valid`);
     for (const [c, r] of Object.entries(l.reactions ?? {})) {

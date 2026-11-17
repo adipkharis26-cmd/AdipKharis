@@ -1,5 +1,6 @@
 import timeline from "../data/timeline.json";
 import canon from "../characters/canon.json";
+import { direct } from "../edit/director";
 
 export type CharId = keyof typeof canon.characters;
 export type Viseme = "rest" | "A" | "I" | "U" | "E" | "O" | "M" | "F" | "consonant";
@@ -11,7 +12,7 @@ export type Action =
   | "wave" | "thumbsup" | "peace" | "facepalm" | "hips" | "phone";
 
 export interface Line {
-  id: string; speaker: CharId; emotion: Emotion; listener: Emotion; shot: "two" | "speaker" | "push" | "crash";
+  id: string; speaker: CharId; emotion: Emotion; listener: Emotion; shot: "two" | "speaker" | "medium" | "close" | "wide" | "push" | "crash";
   text: string; audio: string; start: number; duration: number; surprise?: boolean; action?: string;
   caption?: string; flashback?: boolean; sfx?: { id: string; at: number | "end" }[];
   scene: string; offscreen?: boolean; reactions?: Record<string, string[]>;
@@ -22,7 +23,7 @@ export type Mark = "A" | "B" | "C" | "D";
 export interface Scene { id: string; location: string; cast: Record<string, { mark: Mark; facing: 1 | -1 }>; start: number; end: number }
 
 export const FPS: number = timeline.fps;
-export const LINES = timeline.lines as unknown as Line[];
+export const LINES = direct(timeline.lines as unknown as Line[]);
 export const SCENES = (timeline as unknown as { scenes: Scene[] }).scenes;
 export const TOTAL_SECONDS: number = timeline.totalSeconds;
 export const TOTAL_FRAMES = Math.ceil(TOTAL_SECONDS * FPS);
