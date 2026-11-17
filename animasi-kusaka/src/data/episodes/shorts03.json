@@ -1,0 +1,190 @@
+{
+  "format": "shorts",
+  "episode": "shorts03",
+  "title": "Razia Mang Udin",
+  "fps": 30,
+  "gapSeconds": 0.3,
+  "sceneLead": 0.3,
+  "sceneGap": 0,
+  "tail": 0.6,
+  "scenes": [
+    {
+      "id": "s01",
+      "location": "gerbang",
+      "cast": {
+        "mangUdin": {
+          "mark": "A",
+          "facing": 1
+        },
+        "kusaka": {
+          "mark": "B",
+          "facing": -1
+        },
+        "ujang": {
+          "mark": "C",
+          "facing": -1
+        },
+        "ucok": {
+          "mark": "D",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "mangUdin",
+          "emotion": "neutral",
+          "listener": "neutral",
+          "shot": "speaker",
+          "text": "Gerbang tutup. Jam tujuh lewat.",
+          "action": "crossed",
+          "sfx": [{ "id": "school_bell", "volume": 0.2 }],
+          "id": "l001"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "pleading",
+          "listener": "suspicious",
+          "shot": "speaker",
+          "text": "Mang, sekali ini aja. Macet, Mang, beneran.",
+          "action": "plead",
+          "id": "l002"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "deadpan",
+          "listener": "deadpan",
+          "shot": "speaker",
+          "text": "Di sini semua yang telat namanya Ujang.",
+          "action": "hips",
+          "id": "l003"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "surprised",
+          "listener": "deadpan",
+          "shot": "speaker",
+          "text": "Lho, nama saya memang Ujang, Mang.",
+          "action": "gesture",
+          "reactions": {
+            "mangUdin": ["suspicious", "chin"]
+          },
+          "id": "l004"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "suspicious",
+          "listener": "deadpan",
+          "shot": "speaker",
+          "text": "Iya. Makanya masuk buku.",
+          "action": "point",
+          "id": "l005"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "smug",
+          "listener": "neutral",
+          "shot": "speaker",
+          "text": "Mang Udin, saya ada surat dari orang tua!",
+          "action": "gesture",
+          "id": "l006"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "neutral",
+          "listener": "deadpan",
+          "shot": "speaker",
+          "text": "Suratnya dari kapan?",
+          "action": "chin",
+          "id": "l007"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "embarrassed",
+          "listener": "suspicious",
+          "shot": "speaker",
+          "text": "Dari... minggu lalu.",
+          "action": "idle",
+          "id": "l008"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "deadpan",
+          "listener": "deadpan",
+          "shot": "speaker",
+          "text": "Orang tua kamu udah tahu kamu bakal telat minggu lalu?",
+          "action": "crossed",
+          "id": "l009"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "smug",
+          "listener": "neutral",
+          "shot": "speaker",
+          "text": "Mang, bagaimana kalau kita anggap saya masuk jam tujuh kurang?",
+          "action": "gesture",
+          "id": "l010"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "deadpan",
+          "listener": "deadpan",
+          "shot": "speaker",
+          "text": "Bagaimana kalau tidak?",
+          "action": "hips",
+          "id": "l011"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "neutral",
+          "shot": "speaker",
+          "text": "Mang, intinya kita mau masuk.",
+          "action": "crossed",
+          "id": "l012"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "neutral",
+          "listener": "neutral",
+          "shot": "speaker",
+          "text": "Boleh.",
+          "action": "idle",
+          "id": "l013"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "surprised",
+          "listener": "neutral",
+          "shot": "speaker",
+          "text": "Hah, beneran?!",
+          "action": "shock",
+          "sfx": [{ "id": "vine_boom", "volume": 0.25 }],
+          "id": "l014"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "deadpan",
+          "listener": "deadpan",
+          "shot": "speaker",
+          "text": "Lewat pintu satpam. Tanda tangan dulu. Satu-satu.",
+          "action": "point",
+          "id": "l015"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "defeated",
+          "listener": "deadpan",
+          "shot": "two",
+          "text": "Macam mana pulak...",
+          "action": "slump",
+          "reactions": {
+            "ujang": ["defeated", "slump"],
+            "kusaka": ["defeated", "slump"]
+          },
+          "sfx": [{ "id": "sad_trombone", "volume": 0.2 }],
+          "id": "l016"
+        }
+      ]
+    }
+  ]
+}
