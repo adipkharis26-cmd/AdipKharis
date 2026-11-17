@@ -52,3 +52,7 @@ thumbnails/*
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Research notes (temporary, not production assets)
+research_notes/
+reports/
