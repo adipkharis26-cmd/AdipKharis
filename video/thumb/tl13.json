@@ -1,0 +1,59 @@
+{
+  "ep": "tl13",
+  "judul": "Kenapa Perahu Ini Punya Sayap Kayu di Kanan Kirinya?",
+  "thumbPilihan": "B",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Wajah Ardi bingung dengan ikat kepala teal yang kontras; teks memakai usul Ardi yang dijawab di video, beda dari judul.",
+      "latar": {
+        "frame": 9.6,
+        "zoom": 1.0,
+        "fokus": [
+          540,
+          960
+        ]
+      },
+      "posisi": "atas",
+      "y": 330,
+      "ukuran": 140,
+      "teks": [
+        {
+          "t": "KAYU DI SAMPING",
+          "warna": "putih"
+        },
+        {
+          "t": "TAK PERLU?",
+          "kotak": "merah",
+          "besar": 1.1
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Perahu terakota sempit dengan cadik krem di laut biru sebagai objek tunggal; teks memakai hook (curiosity gap) yang dijawab di beat sains.",
+      "latar": {
+        "frame": 0.5,
+        "zoom": 1.5,
+        "fokus": [
+          520,
+          1000
+        ]
+      },
+      "posisi": "atas",
+      "y": 330,
+      "ukuran": 140,
+      "teks": [
+        {
+          "t": "SEMPIT SEKALI",
+          "warna": "putih"
+        },
+        {
+          "t": "KOK TAK TERBALIK?",
+          "kotak": "merah",
+          "besar": 1.0
+        }
+      ]
+    }
+  ]
+}
