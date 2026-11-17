@@ -49,6 +49,7 @@ for (const sc of script.scenes) {
     if (!EMOTIONS.includes(l.emotion) || !EMOTIONS.includes(l.listener)) fail(`${l.id}: emosi tidak valid`);
     if (!SHOTS.includes(l.shot)) fail(`${l.id}: shot "${l.shot}" tidak valid`);
     if (l.camAt && !(l.camAt === "offL" || l.camAt === "offR" || loc.marks[l.camAt] !== undefined)) fail(`${l.id}: camAt tidak valid`);
+    if (l.closeStyle && !editing.camera.closeStyles.includes(l.closeStyle)) fail(`${l.id}: closeStyle "${l.closeStyle}" tidak valid. Pilihan: ${editing.camera.closeStyles.join(", ")}`);
     if (l.fg && !editing.camera.foregrounds.includes(l.fg)) fail(`${l.id}: fg "${l.fg}" tidak valid. Pilihan: ${editing.camera.foregrounds.join(", ")}`);
     if (l.move) {
       const okMark = (m) => m === "offL" || m === "offR" || loc.marks[m] !== undefined;

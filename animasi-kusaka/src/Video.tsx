@@ -225,7 +225,16 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
   // Bu Ijah (behind the counter) nods while she talks or right after an order
   const ijahTalk = LINES.some((l) => l.speaker === "buIjah" && t >= l.start && t < l.start + l.duration);
   const cur = beatAt(t);
-  const dof = cur.line?.shot === "close" && !cur.line.offscreen ? Math.min(1, cur.since / 0.25 + 0.6) * editing.camera.dofBlur : 0;
+  const closeLine = cur.line?.shot === "close" && !cur.line.offscreen && !!scene.cast[cur.line.speaker] ? (cur.line as CamLine & { closeStyle?: string }) : null;
+  const dof = closeLine ? editing.camera.dofBlur : 0; // background only — characters are never blurred
+  const spX = closeLine ? posOf(scene, closeLine.speaker).x : 0;
+  // over-the-shoulder partner = the person being answered (previous speaker in this scene), else the nearest cast member
+  const prevSpeaker = closeLine ? LINES.slice(0, cur.index).reverse().find((l) => l.scene === scene.id && l.speaker !== closeLine.speaker)?.speaker : undefined;
+  const otsWho = closeLine?.closeStyle === "ots"
+    ? (prevSpeaker && scene.cast[prevSpeaker] ? prevSpeaker
+      : castOf(scene).filter((c) => c !== closeLine.speaker).sort((a, b) => Math.abs(posOf(scene, a).x - spX) - Math.abs(posOf(scene, b).x - spX))[0])
+    : undefined;
+  const otsSide = otsWho ? (posOf(scene, otsWho).x >= spX ? 1 : -1) : 1;
   const bgImage = (meta as { image?: string }).image;
   const Detail = DETAILS[scene.location] ?? DETAILS2[scene.location];
   const light: LightDef = (meta as { light?: LightDef }).light ?? { kind: "sun", from: -1 };
@@ -250,9 +259,15 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
           <Layer cam={cam} d={1} w={w} h={h}>
             {castOf(scene).map((c) => {
               const p = posOf(scene, c);
-              const blur = dof > 0 && c !== cur.line?.speaker;
-              return <g key={`${scene.id}-${c}`} filter={blur ? "url(#dof)" : undefined}><g filter="url(#charlight)"><Character id={c} x={p.x} y={meta.floor} facing={p.facing} frame={frame} walk={p.walk} /></g></g>;
+              if (closeLine && c !== closeLine.speaker) return null; // single = only the speaker; ots partner is drawn in front below
+              return <g key={`${scene.id}-${c}`}><g filter="url(#charlight)"><Character id={c} x={p.x} y={meta.floor} facing={p.facing} frame={frame} walk={p.walk} /></g></g>;
             })}
+            {otsWho && (
+              // over-the-shoulder: partner cheated to the frame edge in front of the lens, sharp but dark (foreground silhouette)
+              <g style={{ filter: "brightness(0.38) saturate(0.7)" }}>
+                <Character id={otsWho} x={cam.x + otsSide * (w / cam.z / 2 + 20)} y={meta.floor + 70} facing={otsSide > 0 ? -1 : 1} frame={frame} scale={1.2} />
+              </g>
+            )}
           </Layer>
           {loc.front?.map((l, i) => <Layer key={`f${i}`} cam={cam} d={l.d} w={w} h={h}>{l.el(t)}</Layer>)}
         </g>

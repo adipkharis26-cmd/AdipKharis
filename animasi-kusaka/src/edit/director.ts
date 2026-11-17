@@ -13,7 +13,7 @@ export function direct(lines: Line[]): Line[] {
   const scenes = [...new Set(out.map((l) => l.scene))];
   for (const sc of scenes) {
     const ls = out.filter((l) => l.scene === sc);
-    let sinceGroup = 0;
+    let sinceGroup = 0, closeCount = 0;
     ls.forEach((l, i) => {
       const prev = ls[i - 1], prev2 = ls[i - 2];
       const moving = !!(l as Line & { move?: unknown }).move;
@@ -31,6 +31,12 @@ export function direct(lines: Line[]): Line[] {
       else if (prev2 && prev2.speaker === l.speaker) shot = "close"; // back-and-forth exchange
       else shot = "medium";
       l.shot = shot;
+      if (shot === "close" && !(l as Line & { closeStyle?: string }).closeStyle) {
+        // clean single for emotional peaks; otherwise alternate over-the-shoulder / single through an exchange
+        closeCount++;
+        (l as Line & { closeStyle?: string }).closeStyle =
+          INTENSE.includes(l.emotion) || l.emotion === "laugh" ? "single" : closeCount % 2 === 1 ? "ots" : "single";
+      }
       sinceGroup = shot === "two" || shot === "wide" ? 0 : sinceGroup + 1;
     });
   }

@@ -1,5 +1,5 @@
 {
-  "version": "2.1.0",
+  "version": "2.2.0",
   "rules": [
     "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card. Pengecualian: watermark channel resmi (brand.json) di pojok kiri atas, khusus Shorts.",
     "Subtitle: font Baloo 2 ExtraBold, putih dengan outline hitam, kata yang sedang diucapkan berwarna kuning (karaoke), posisi bawah.",
@@ -73,7 +73,7 @@
       "push",
       "crash"
     ],
-    "dofBlur": 7,
+    "dofBlur": 2.5,
     "walkSpeed": 380,
     "note": "Gaya referensi: tiap shot SATU ukuran statis (tanpa zoom/geser di dalam shot), potong keras. Sutradara otomatis memilih wide/two/medium/close sesuai ritme adegan (src/edit/director.ts); wide/medium/close/crash yang ditulis di naskah selalu dipakai.",
     "cut": "hard",
@@ -84,7 +84,12 @@
     ],
     "director": "auto",
     "static": true,
-    "punch": false
+    "punch": false,
+    "closeStyles": [
+      "single",
+      "ots"
+    ],
+    "closeNote": "Close-up TIDAK pernah memburamkan karakter. 'single' = hanya pembicara di frame; 'ots' = lawan bicara di tepi depan frame, tajam tapi digelapkan. Latar hanya sedikit lembut (dofBlur 2.5). Naskah boleh memaksa dengan \"closeStyle\"."
   },
   "transition": "cut",
   "transitionNote": "Pindah adegan = potong keras (tanpa wipe & whoosh), seperti referensi. Caption waktu tetap muncul di adegan baru."

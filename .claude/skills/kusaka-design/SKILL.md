@@ -31,7 +31,9 @@ Branch kerja: `ccr-5483b159-l8zee8`.
   Pindah adegan juga **potong keras** (tanpa wipe/whoosh, `editing.json → transition: "cut"`).
   Sutradara otomatis (`src/edit/director.ts`) memilih ukuran: awal adegan `wide` → `two` → tanya-jawab `close` bergantian,
   pembicara baru `medium`, emosi kuat `close`, orang jalan `wide`, tiap ±5 baris `two`, akhir adegan `two`.
-- **Close-up**: subjek di sepertiga frame, ada ruang ke arah pandangan, latar + orang lain **blur**.
+- **Close-up**: subjek di sepertiga frame, ada ruang ke arah pandangan, latar hanya sedikit lembut.
+  **Karakter tidak pernah diblur.** Gaya close: `single` (hanya pembicara) atau `ots` (lawan bicara di tepi depan,
+  tajam tapi gelap). Otomatis bergantian; momen emosional = single. Paksa per baris: `"closeStyle": "single" | "ots"`.
 - **Jalan**: siklus langkah + ayunan tangan + naik-turun badan, 380 px/dtk. Masuk/keluar layar lewat `offL`/`offR`.
 - **Pencahayaan per lokasi** (`locations.json → light`): sun / window / sunset / night + bayangan daun, sinar, grain, vignette.
 - **Detail set**: `src/scene/Details.tsx` + `Details2.tsx` (14 lokasi).

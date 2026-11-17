@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0+loc3.0.0+edit2.1.0+sfx1.1.0+brand1.1.0",
+  "version": "3.0.0+loc3.0.0+edit2.2.0+sfx1.1.0+brand1.1.0",
   "lockedAt": "2026-11-17",
   "files": {
     "src/characters/canon.json": "8a4dddeb01601f20844a778fce0be9c4245e33dad48ff980be859cd8a56d87f9",
@@ -14,8 +14,8 @@
     "src/scene/Details.tsx": "4c1343dee1e8e488821cd862479b02e7929dbbb3a19d25407e4fd89c2425fc13",
     "src/scene/Details2.tsx": "9f16aeaf4ef1e2d6048029eabb2aa3e2bee82730a33174e3947cca40a5ac83fb",
     "src/fx/Lighting.tsx": "d16bf6f01d0a9c21cc91e1b98df4f628937fb0084a1aed3b3edcb8d724dafb8a",
-    "src/edit/director.ts": "d9e2b3fcdd33837017374c55dbd0bc2b64b4d1ad2c7d39661406b39e3347a7ee",
-    "src/edit/editing.json": "0331741489212601a907e0a27991eacbba243625fb83e7441873b08566bcc4f5",
+    "src/edit/director.ts": "a1674544ae0601e878ae7b34c6ce2634da4e2bd72392a71af77862168a41d507",
+    "src/edit/editing.json": "796c2a2563906cb2af5f4998da86c344567e2abb442ecb44eca479c8723222f5",
     "src/audio/sfx.json": "677e9db8f3482c31a3d67814e7da101ec0d5d560daa82137d6119315e97bc740",
     "src/fx/Overlays.tsx": "033ff7d3f26bc5cd5ebf5fff3db0f3e08f67ca204ad34aee6e3bf94d4afc6516",
     "src/branding/brand.json": "d1c1fd3665ab6b14d94371b2f31d002bdf3df763758444e3b90e497a7e572c1e",

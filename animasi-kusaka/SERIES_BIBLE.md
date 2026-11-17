@@ -220,7 +220,7 @@ lebih aman memakai pustaka orisinal di atas. Kalau Anda punya file yang lisensin
 | Ep | Judul | Lokasi | Pemeran utama | Hook |
 |---|---|---|---|---|
 | 1 | Operasi Traktir Nadia ✅ (7:39, 10 adegan) | Kamar → Ruang Tamu → Gerbang → Koridor → Kelas → Kantin → BK → Warung → Kamar | Hampir semua pemeran | Dinda live: "Kakakku baru bangun, guys" |
-| 2 | Dompet Sandera | Kamar → Koridor | Kusaka, Dinda, Raka | Lanjutan cliffhanger Eps. 1: Kusaka jadi "bintang konten" Dinda |
+| 2 | Dompet Sandera ✅ (15:12, 14 adegan) | Kamar → Koridor | Kusaka, Dinda, Raka | Lanjutan cliffhanger Eps. 1: Kusaka jadi "bintang konten" Dinda |
 | 3 | Telat Upacara | Gerbang → Lapangan Upacara | Kusaka, Mang Udin, Pak Joko | Gerbang menutup di depan hidung Kusaka |
 | 4 | PR Halaman 45 | Kelas–meja guru | Kusaka, Bu Wati, Nadia | "Kerjakan halaman 45 sampai 90." |
 | 5 | Satu Kelompok | Perpustakaan | Kusaka, Nadia, Ujang | Undian kelompok: Kusaka + Nadia |
@@ -311,6 +311,7 @@ sinyal terpentingnya adalah **berapa banyak yang tidak menggeser video (swipe aw
 Mengikuti referensi pemilik: karakter KUSAKA tetap, yang diubah adalah bahasa kamera, gerak, cahaya, dan detail.
 
 - **Pindah adegan = potong keras** (tanpa wipe/whoosh; editing v2.1.0).
+- **Close-up tanpa blur karakter** (editing v2.2.0): gaya `single` / `ots` bergantian.
 - **Kamera statis, potong keras.** Tiap shot satu ukuran. Sutradara otomatis (`src/edit/director.ts`) memilih
   wide → two → close/medium sesuai ritme adegan. Close-up di sepertiga frame dengan latar blur.
 - **Jalan** dengan langkah, ayunan tangan, dan naik-turun badan (`move`, `camAt`, benda depan `fg`).
