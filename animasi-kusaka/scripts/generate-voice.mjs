@@ -191,6 +191,8 @@ const minS = script.minSeconds ?? fmt.minSeconds;
 if (timeline.totalSeconds < minS) fail(`Durasi ${timeline.totalSeconds.toFixed(1)} dtk < minimum ${minS} dtk untuk ${script.format ?? "long"} (${fmt.aspect}). Tambah adegan/dialog.`);
 if (fmt.maxSeconds && timeline.totalSeconds > fmt.maxSeconds) fail(`Durasi ${timeline.totalSeconds.toFixed(1)} dtk > maksimum ${fmt.maxSeconds} dtk untuk Shorts.`);
 timeline.format = script.format ?? "long";
+// Subtitle bisa dimatikan per naskah (mis. Shorts tanpa teks): "subtitles": false
+if (script.subtitles === false) timeline.subtitles = false;
 fs.writeFileSync(path.join(root, "src/data/timeline.json"), JSON.stringify(timeline));
 const mm = Math.floor(timeline.totalSeconds / 60), ss = Math.round(timeline.totalSeconds % 60);
 console.log(`✅ timeline.json — ${script.episode}: ${timeline.scenes.length} adegan, ${timeline.lines.length} baris, ${mm}:${String(ss).padStart(2, "0")} menit, suara terkunci ✓`);

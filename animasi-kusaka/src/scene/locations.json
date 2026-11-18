@@ -1,6 +1,7 @@
 {
-  "version": "3.1.0",
+  "version": "3.2.0",
   "rules": [
+    "v3.2.0: ruangTamu punya NPC latar — warga lewat di jalan depan rumah, hanya terlihat dari jendela (di balik semak & kusen). Tidak ada orang asing di dalam rumah.",
     "Semua set berukuran panggung 1920x1080, lantai karakter di y=960.",
     "Karakter berdiri di titik 'marks' (x) agar blocking antar-episode konsisten.",
     "Gaya: flat vector, outline #1b1b1b tebal 5–6, warna cerah hangat, tanpa gradien rumit.",

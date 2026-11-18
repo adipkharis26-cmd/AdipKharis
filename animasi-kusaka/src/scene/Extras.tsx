@@ -9,7 +9,9 @@ const pick = <T,>(a: T[], i: number, s: number) => a[Math.floor(rnd(i, s) * a.le
 
 type Kind = "stand" | "sit" | "walk" | "talk" | "play";
 type Outfit = "sma" | "smaGirl" | "hijab" | "guru" | "warga" | "olahraga";
-interface Spec { x: number; y: number; s: number; kind: Kind; outfit: Outfit; seed: number; dir?: 1 | -1 }
+interface Spec { x: number; y: number; s: number; kind: Kind; outfit: Outfit; seed: number; dir?: 1 | -1;
+  /** Pejalan lewat: [px/dtk (tanda = arah), panjang siklus px, offset px]. x = titik masuk; lewat berulang tiap siklus. */
+  pass?: [number, number, number] }
 
 const SKIN = ["#f4c99e", "#e0ab7e", "#c98f62", "#a8714a", "#8a5a3a", "#f7d6b5"];
 const HAIR = ["#1e1b26", "#2b1d14", "#3b2a1f", "#1b1b1b", "#4a3326"];
@@ -118,6 +120,25 @@ const PRESETS: Record<string, Omit<Spec, "seed">[]> = {
     { x: 1500, y: 790, s: 0.6, kind: "stand", outfit: "olahraga", dir: -1 }, { x: 120, y: 740, s: 0.58, kind: "sit", outfit: "sma" }, { x: 330, y: 740, s: 0.58, kind: "sit", outfit: "smaGirl" },
     { x: 1750, y: 740, s: 0.58, kind: "sit", outfit: "hijab" },
   ],
+  // Rumah: tidak ada orang asing di dalam. Warga lewat di jalan depan rumah, terlihat dari jendela (di balik semak & kusen).
+  ruangTamu: [
+    { x: 1380, y: 560, s: 0.5, kind: "walk", outfit: "warga", dir: 1, pass: [70, 980, 622] },
+    { x: 1760, y: 560, s: 0.5, kind: "walk", outfit: "hijab", dir: -1, pass: [-62, 1050, 695] },
+  ],
+};
+
+/* Lokasi yang NPC-nya hanya terlihat lewat jendela: clip ke kaca + kusen & semak digambar ulang di depan NPC. */
+const WINDOW_VIEW: Record<string, { clip: React.ReactNode; front: React.ReactNode }> = {
+  ruangTamu: {
+    // kaca di antara dua gorden (Window x1340 y180 460×360), dikurangi kepala kipas (1720, 480, r 72)
+    clip: <><rect x={1442} y={186} width={256} height={349} fill="#fff" /><circle cx={1720} cy={480} r={74} fill="#000" /></>,
+    front: (
+      <g stroke={OUT} strokeWidth={5}>
+        <circle cx={1671} cy={468} r={90} fill="#5cb85c" /><circle cx={1478} cy={504} r={72} fill="#4cae4c" />
+        <line x1={1570} y1={180} x2={1570} y2={540} strokeWidth={8} /><line x1={1340} y1={360} x2={1800} y2={360} strokeWidth={8} />
+      </g>
+    ),
+  },
 };
 
 const DENSITY: Record<string, number> = { off: 0, low: 0.5, normal: 1, high: 1 };
@@ -126,11 +147,17 @@ export const Extras: React.FC<{ location: string; t: number; density?: string }>
   const list = PRESETS[location];
   const d = DENSITY[density] ?? 1;
   if (!list || d === 0) return null;
-  const specs = mk(list, location.length * 17);
+  const specs = mk(list, location.length * 17).map((sp) => {
+    if (!sp.pass) return sp;
+    const [v, cycle, off] = sp.pass;
+    const d = (((Math.abs(v) * t + off) % cycle) + cycle) % cycle;
+    return { ...sp, x: sp.x + Math.sign(v) * d };
+  });
   const chosen = d >= 1 ? specs : specs.filter((_, i) => i % 2 === 0);
   const desk = location === "kelas" || location === "kelasBelakang" || location === "kelasJendela" || location === "ruangGuru" || location === "kantin" || location === "perpustakaan";
   const bench = location === "lapanganBasket";
-  return (
+  const view = WINDOW_VIEW[location];
+  const people = (
     <g>
       {[...chosen].sort((a, b) => a.y - b.y).map((sp, i) => (
         <g key={i}>
@@ -141,6 +168,14 @@ export const Extras: React.FC<{ location: string; t: number; density?: string }>
           {sp.kind === "sit" && bench && <rect x={sp.x - 60} y={sp.y - 8} width={120} height={14} fill="#8d939c" stroke={OUT} strokeWidth={4} />}
         </g>
       ))}
+    </g>
+  );
+  if (!view) return people;
+  const id = `extras-window-${location}`;
+  return (
+    <g>
+      <defs><mask id={id} maskUnits="userSpaceOnUse" x={0} y={0} width={1920} height={1080}>{view.clip}</mask></defs>
+      <g mask={`url(#${id})`}><g style={{ filter: "brightness(0.92)" }}>{people}</g>{view.front}</g>
     </g>
   );
 };

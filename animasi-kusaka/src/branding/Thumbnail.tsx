@@ -21,7 +21,10 @@ export interface ThumbProps {
   split?: { bg: LocId; angle?: number };          // layar terbelah diagonal: kiri = bg, kanan = split.bg
   callout?: { x: number; y: number; rx: number; ry: number; arrow?: { x: number; y: number } }; // lingkaran + panah merah
   textRot?: number; textAlign?: "middle" | "start";
+  // Shorts: sampul vertikal 1080x1920 (9:16). bgX = titik tengah lokasi (koordinat set 1920) yang tampil di sampul.
+  size?: "16x9" | "9x16"; bgX?: number;
 }
+export const thumbSize = (p: Pick<ThumbProps, "size">) => (p.size === "9x16" ? { w: 1080, h: 1920 } : { w: 1280, h: 720 });
 
 const Burst: React.FC<{ cx: number; cy: number; color: string }> = ({ cx, cy, color }) => {
   const rays = Array.from({ length: 28 }).map((_, i) => {
@@ -91,21 +94,27 @@ const Callout: React.FC<{ c: NonNullable<ThumbProps["callout"]> }> = ({ c }) => 
 export const Thumbnail: React.FC<ThumbProps> = (p) => {
   useFonts();
   const size = p.textSize ?? 128;
+  const { w: W, h: H } = thumbSize(p);
+  const vert = p.size === "9x16";
+  // 16:9 tetap persis seperti sebelumnya; 9:16 = set lokasi setinggi sampul, dipusatkan di bgX
+  const plateT = vert ? `translate(${540 - (p.bgX ?? 960) * (1920 / 1080)} 0) scale(${1920 / 1080})` : "translate(-160 -90) scale(0.83)";
   return (
     <AbsoluteFill style={{ background: p.burst }}>
-      <svg width={1280} height={720}>
+      <svg width={W} height={H}>
         <defs>
-          <clipPath id="frame"><rect width={1280} height={720} /></clipPath>
+          <clipPath id="frame"><rect width={W} height={H} /></clipPath>
           <linearGradient id="fade" x1="0" x2="1"><stop offset="0" stopColor={p.burst} stopOpacity={0.15} /><stop offset="1" stopColor={p.burst} stopOpacity={0.85} /></linearGradient>
         </defs>
         <g clipPath="url(#frame)">
           {/* background: locked location, pushed back, + colour burst for contrast */}
-          <g transform="translate(-160 -90) scale(0.83)"><LocationPlate id={p.bg} /></g>
-          {p.split && (() => { const ang = p.split.angle ?? 14, dx = Math.tan((ang * Math.PI) / 180) * 360; const poly = `${640 + dx},0 1280,0 1280,720 ${640 - dx},720`;
+          <g transform={plateT}><LocationPlate id={p.bg} /></g>
+          {!vert && p.split && (() => { const ang = p.split.angle ?? 14, dx = Math.tan((ang * Math.PI) / 180) * 360; const poly = `${640 + dx},0 1280,0 1280,720 ${640 - dx},720`;
             return <g><clipPath id="splitR"><polygon points={poly} /></clipPath><g clipPath="url(#splitR)"><g transform="translate(-160 -90) scale(0.83)"><LocationPlate id={p.split.bg} /></g></g>
               <polygon points={`${640 + dx - 9},0 ${640 + dx + 9},0 ${640 - dx + 9},720 ${640 - dx - 9},720`} fill="#fff" stroke={OUT} strokeWidth={6} /></g>; })()}
-          <rect width={1280} height={720} fill="url(#fade)" />
-          <Pattern kind={p.pattern ?? "rays"} />
+          <rect width={W} height={H} fill="url(#fade)" />
+          {vert
+            ? [0, 960].map((y) => <g key={y} transform={`translate(0 ${y}) scale(1.34)`}><Pattern kind={p.pattern ?? "rays"} /></g>)
+            : <Pattern kind={p.pattern ?? "rays"} />}
           {p.actors.map((a, i) => (
             <Character key={i} id={a.id} x={a.x} y={a.y} facing={a.facing} frame={0} scale={a.scale}
               force={{ emotion: a.emotion, action: a.action, viseme: a.viseme ?? (a.emotion === "shock" ? "O" : null), noFx: true }} />
@@ -124,8 +133,8 @@ export const Thumbnail: React.FC<ThumbProps> = (p) => {
             ))}
           </g>
           {/* series frame: yellow border + black/yellow hazard corner (bottom-left, never bottom-right) */}
-          <rect x={7} y={7} width={1266} height={706} fill="none" stroke={BRAND.yellow} strokeWidth={14} />
-          <rect x={0} y={0} width={1280} height={720} fill="none" stroke={OUT} strokeWidth={6} />
+          <rect x={7} y={7} width={W - 14} height={H - 14} fill="none" stroke={BRAND.yellow} strokeWidth={14} />
+          <rect x={0} y={0} width={W} height={H} fill="none" stroke={OUT} strokeWidth={6} />
         </g>
       </svg>
     </AbsoluteFill>

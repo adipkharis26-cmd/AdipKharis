@@ -26,6 +26,8 @@ export const FPS: number = timeline.fps;
 export const LINES = direct(timeline.lines as unknown as Line[]);
 export const SCENES = (timeline as unknown as { scenes: Scene[] }).scenes;
 export const TOTAL_SECONDS: number = timeline.totalSeconds;
+/** false bila naskah memakai "subtitles": false (subtitle tidak dirender). */
+export const SUBTITLES: boolean = (timeline as unknown as { subtitles?: boolean }).subtitles !== false;
 export const TOTAL_FRAMES = Math.ceil(TOTAL_SECONDS * FPS);
 export const END_OF_DIALOG = LINES[LINES.length - 1].start + LINES[LINES.length - 1].duration;
 

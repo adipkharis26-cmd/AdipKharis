@@ -1,0 +1,201 @@
+{
+  "format": "shorts",
+  "episode": "shorts04",
+  "title": "X Itu Mantan",
+  "fps": 30,
+  "gapSeconds": 0.2,
+  "sceneLead": 0.3,
+  "sceneGap": 0,
+  "tail": 0.2,
+  "scenes": [
+    {
+      "id": "s01",
+      "location": "ruangTamu",
+      "extras": "normal",
+      "cast": {
+        "dinda": {
+          "mark": "D",
+          "facing": 1
+        },
+        "kusaka": {
+          "mark": "A",
+          "facing": 1
+        },
+        "bapak": {
+          "mark": "C",
+          "facing": -1
+        },
+        "ibu": {
+          "mark": "B",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "bapak",
+          "emotion": "smug",
+          "listener": "neutral",
+          "shot": "medium",
+          "action": "chin",
+          "text": "X itu mantan, Nak. Nggak usah dicari lagi.",
+          "id": "l001"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "deadpan",
+          "listener": "smug",
+          "shot": "two",
+          "action": "facepalm",
+          "text": "Pak. Ini PR. Bukan curhat.",
+          "id": "l002"
+        },
+        {
+          "speaker": "dinda",
+          "emotion": "smug",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "phone",
+          "text": "Aku rekam, ya. Lumayan buat konten.",
+          "id": "l003"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "neutral",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Soal nomor satu, Pak. Dua x tambah tiga sama dengan sebelas.",
+          "id": "l005"
+        },
+        {
+          "speaker": "bapak",
+          "emotion": "smug",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Gampang. Tiganya pindahin. Kayak Bapak mindahin perasaan.",
+          "id": "l006"
+        },
+        {
+          "speaker": "ibu",
+          "emotion": "suspicious",
+          "listener": "shock",
+          "shot": "two",
+          "action": "hips",
+          "text": "Perasaan ke siapa, Pak?",
+          "move": {
+            "who": "ibu",
+            "from": "offR",
+            "to": "B",
+            "at": 0
+          },
+          "id": "l007"
+        },
+        {
+          "speaker": "bapak",
+          "emotion": "shock",
+          "listener": "suspicious",
+          "shot": "crash",
+          "action": "shock",
+          "text": "KE ANGKA SEBELAS, BU!",
+          "id": "l008"
+        },
+        {
+          "speaker": "ibu",
+          "emotion": "deadpan",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Sebelas kurang tiga?",
+          "id": "l010"
+        },
+        {
+          "speaker": "bapak",
+          "emotion": "embarrassed",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "idle",
+          "text": "Delapan, Bu.",
+          "id": "l011"
+        },
+        {
+          "speaker": "ibu",
+          "emotion": "deadpan",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Bagi dua?",
+          "id": "l012"
+        },
+        {
+          "speaker": "bapak",
+          "emotion": "embarrassed",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "idle",
+          "text": "Empat, Bu.",
+          "id": "l013"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "surprised",
+          "listener": "smug",
+          "shot": "two",
+          "action": "shock",
+          "text": "Lho, Ibu bisa?!",
+          "id": "l014"
+        },
+        {
+          "speaker": "ibu",
+          "emotion": "smug",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "hips",
+          "text": "Dulu yang ngerjain PR Bapak, siapa?",
+          "id": "l015"
+        },
+        {
+          "speaker": "dinda",
+          "emotion": "deadpan",
+          "listener": "defeated",
+          "shot": "two",
+          "action": "phone",
+          "text": "Pantes Bapak remedial terus.",
+          "reactions": {
+            "bapak": [
+              "defeated",
+              "slump"
+            ]
+          },
+          "id": "l016"
+        },
+        {
+          "speaker": "bapak",
+          "emotion": "defeated",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "slump",
+          "text": "Din... hapus videonya.",
+          "sfx": [
+            {
+              "id": "sad_trombone",
+              "at": "end",
+              "volume": 0.2
+            }
+          ],
+          "id": "l017"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "neutral",
+          "listener": "smug",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Oke. Soal nomor dua, Pak. Cari nilai X.",
+          "id": "l018"
+        }
+      ]
+    }
+  ],
+  "subtitles": false
+}

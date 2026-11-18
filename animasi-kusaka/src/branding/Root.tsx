@@ -1,6 +1,6 @@
 import React from "react";
 import { Composition } from "remotion";
-import { Thumbnail, ThumbProps } from "./Thumbnail";
+import { Thumbnail, ThumbProps, thumbSize } from "./Thumbnail";
 import { BannerPro, Logo } from "./Brand";
 import thumbs from "./thumbnails.json";
 import brand from "./brand.json";
@@ -12,7 +12,7 @@ export const BrandingRoot: React.FC = () => (
     <Composition id="Banner" component={BannerPro} durationInFrames={1} fps={30} width={2560} height={1440} defaultProps={{ variant: brand.banner.chosen as 3 }} />
     <Composition id="BannerGuide" component={BannerPro} durationInFrames={1} fps={30} width={2560} height={1440} defaultProps={{ variant: brand.banner.chosen as 3, guide: true }} />
     {Object.entries(thumbs as Record<string, ThumbProps>).map(([id, p]) => (
-      <Composition key={id} id={`Thumb-${id}`} component={Thumbnail as unknown as React.FC<Record<string, unknown>>} durationInFrames={1} fps={30} width={1280} height={720} defaultProps={p as unknown as Record<string, unknown>} />
+      <Composition key={id} id={`Thumb-${id}`} component={Thumbnail as unknown as React.FC<Record<string, unknown>>} durationInFrames={1} fps={30} width={thumbSize(p).w} height={thumbSize(p).h} defaultProps={p as unknown as Record<string, unknown>} />
     ))}
   </>
 );

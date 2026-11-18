@@ -468,5 +468,52 @@
       }
     ],
     "prop": null
+  },
+  "shorts04-A": {
+    "episode": 4,
+    "size": "9x16",
+    "bg": "ruangTamu",
+    "bgX": 1150,
+    "burst": "#3c8d5a",
+    "pattern": "halftone",
+    "text": [
+      "X ITU",
+      "MANTAN?!"
+    ],
+    "textX": 540,
+    "textY": 230,
+    "textSize": 200,
+    "textRot": -5,
+    "callout": {
+      "x": 740,
+      "y": 830,
+      "rx": 300,
+      "ry": 320,
+      "arrow": {
+        "x": 1040,
+        "y": 440
+      }
+    },
+    "actors": [
+      {
+        "id": "bapak",
+        "emotion": "smug",
+        "action": "chin",
+        "x": 740,
+        "y": 2560,
+        "scale": 2.6,
+        "facing": -1
+      },
+      {
+        "id": "kusaka",
+        "emotion": "shock",
+        "action": "shock",
+        "x": 330,
+        "y": 2880,
+        "scale": 2.5,
+        "facing": 1
+      }
+    ],
+    "prop": null
   }
 }

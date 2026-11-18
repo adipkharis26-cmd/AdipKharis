@@ -11,7 +11,7 @@ import { DETAILS2 } from "./scene/Details2";
 import { Extras } from "./scene/Extras";
 import sfxLib from "./audio/sfx.json";
 import editing from "./edit/editing.json";
-import { CharId, END_OF_DIALOG, FPS, LINES, Line, SCENES, Scene, beatAt } from "./lib/timeline";
+import { CharId, END_OF_DIALOG, FPS, LINES, Line, SCENES, Scene, beatAt, SUBTITLES } from "./lib/timeline";
 
 /* -------------------------------- stage layout (per scene, from locked location marks) ---- */
 const metaOf = (sc: Scene) => LOCATION_META.locations[sc.location as LocId];
@@ -280,7 +280,7 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
       <SpeedLines w={w} h={h} frame={frame} opacity={speedOpacity} />
       {flash > 0 && <AbsoluteFill style={{ background: "#fff", opacity: flash }} />}
       <Caption t={t} vertical={vertical} />
-      <Subtitles t={t} vertical={vertical} w={w} />
+      {SUBTITLES && <Subtitles t={t} vertical={vertical} w={w} />}
       {editing.transition !== "cut" && <Wipe t={t} w={w} h={h} />}
 
       {/* ---------------- audio ---------------- */}
