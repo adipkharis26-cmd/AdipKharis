@@ -1,4 +1,6 @@
-# Paket Upload YouTube Shorts: KUSAKA "X Itu Mantan"
+# Paket Upload: KUSAKA Shorts 1 - Mantan Matematika
+
+(id internal `shorts04`, judul kerja "X Itu Mantan" · file `releases/Kusaka-Shorts1-Mantan-Matematika.mp4`)
 
 Durasi: **~51 detik** · **full 9:16** (video 1080×1920 + sampul 1080×1920) · subtitle Poppins · CTA cerita (like) · 1 adegan · ruang tamu (sore)
 Spin-off Eps. 4 "PR Halaman 45" — naskah Shorts sendiri, bukan potongan episode.
@@ -25,6 +27,17 @@ Dinda ngadu ke Ibu, dan ketahuan siapa yang dulu ngerjain PR Bapak. 💀
 Kalian tim Bapak atau tim Ibu? Tulis di kolom komentar! 👇
 
 #shorts #animasiindonesia #kusaka #anaksekolah #komedilucu #animasisingkat
+
+---
+
+## Caption Instagram Reels
+
+Minta Bapak bantu PR matematika, jawabannya malah "X itu mantan, nggak usah dicari lagi." 😭
+Dinda ngadu ke Ibu, dan ketahuan siapa yang dulu ngerjain PR Bapak. 💀
+
+Kirim ke temen yang bapaknya juga gini 👇
+
+#kusaka #animasiindonesia #anaksekolah #komedilucu #dadjokes #reelsindonesia
 
 ---
 
