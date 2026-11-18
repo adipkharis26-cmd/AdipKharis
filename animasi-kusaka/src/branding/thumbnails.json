@@ -552,5 +552,42 @@
       }
     ],
     "prop": null
+  },
+  "shorts06-A": {
+    "episode": 6,
+    "size": "9x16",
+    "bg": "kos",
+    "bgX": 1000,
+    "burst": "#1b2240",
+    "pattern": "rays",
+    "text": [
+      "MALAM",
+      "JUMAT?!"
+    ],
+    "textX": 540,
+    "textY": 230,
+    "textSize": 200,
+    "textRot": -4,
+    "actors": [
+      {
+        "id": "buWati",
+        "emotion": "smug",
+        "action": "phone",
+        "x": 820,
+        "y": 1500,
+        "scale": 1.6,
+        "facing": -1
+      },
+      {
+        "id": "kusaka",
+        "emotion": "shock",
+        "action": "shock",
+        "x": 360,
+        "y": 2860,
+        "scale": 2.5,
+        "facing": 1
+      }
+    ],
+    "prop": null
   }
 }

@@ -1,0 +1,232 @@
+{
+  "format": "shorts",
+  "episode": "shorts06",
+  "title": "Malam Jumat",
+  "fps": 30,
+  "gapSeconds": 0.2,
+  "sceneLead": 0.3,
+  "sceneGap": 0,
+  "tail": 0.2,
+  "scenes": [
+    {
+      "id": "s01",
+      "location": "kos",
+      "cast": {
+        "ujang": {
+          "mark": "D",
+          "facing": 1
+        },
+        "kusaka": {
+          "mark": "A",
+          "facing": 1
+        },
+        "tara": {
+          "mark": "C",
+          "facing": -1
+        },
+        "buWati": {
+          "mark": "B",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "ujang",
+          "emotion": "suspicious",
+          "listener": "suspicious",
+          "shot": "medium",
+          "action": "chin",
+          "text": "Kus. Lo denger itu?",
+          "to": "kusaka",
+          "id": "l001"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "laugh",
+          "listener": "shock",
+          "shot": "two",
+          "action": "idle",
+          "text": "Hihihi... hihihi...",
+          "offscreen": true,
+          "sfx": [
+            {
+              "id": "dun_dun_dun",
+              "at": "end",
+              "volume": 0.18
+            }
+          ],
+          "id": "l002"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "shock",
+          "shot": "two",
+          "action": "shock",
+          "text": "Malam Jumat, Jang. Itu pasti... kunti.",
+          "id": "l003"
+        },
+        {
+          "speaker": "tara",
+          "emotion": "smug",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Santai. Kos ini aman. Paling cuma angin.",
+          "id": "l004"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "pleading",
+          "listener": "shock",
+          "shot": "two",
+          "action": "idle",
+          "text": "Huhuhu... kenapa kamu pergi...",
+          "offscreen": true,
+          "id": "l005"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Angin bisa patah hati, Kak?",
+          "to": "tara",
+          "id": "l006"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "pleading",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "plead",
+          "text": "Kak Tara, kita pulang aja. Sekarang.",
+          "id": "l007"
+        },
+        {
+          "speaker": "tara",
+          "emotion": "embarrassed",
+          "listener": "shock",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Gue juga takut, Kus. Gue baru dua minggu di sini.",
+          "id": "l008"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "smug",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Oke. Gue cek. Gue anak paling berani se-kompleks.",
+          "id": "l009"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "neutral",
+          "listener": "shock",
+          "shot": "two",
+          "action": "phone",
+          "text": "Kusaka?",
+          "move": {
+            "who": "buWati",
+            "from": "offR",
+            "to": "B",
+            "at": 0
+          },
+          "id": "l010"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "surprised",
+          "shot": "crash",
+          "action": "shock",
+          "text": "BU WATI?!",
+          "id": "l011"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "embarrassed",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "phone",
+          "text": "Ibu cuma nonton drakor. Jangan bilang siapa-siapa.",
+          "id": "l012"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Ternyata hantunya guru matematika.",
+          "id": "l013"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "smug",
+          "listener": "shock",
+          "shot": "two",
+          "action": "point",
+          "text": "Dan besok ulangan. Halaman empat lima sampai sembilan puluh.",
+          "to": "kusaka",
+          "id": "l014"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "defeated",
+          "listener": "smug",
+          "shot": "two",
+          "action": "slump",
+          "text": "Itu... lebih serem, Bu.",
+          "reactions": {},
+          "id": "l015"
+        },
+        {
+          "speaker": "tara",
+          "emotion": "smug",
+          "listener": "defeated",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Ikuti biar nggak ketinggalan part dua!",
+          "cta": {
+            "kind": "ikuti",
+            "text": "IKUTI biar nggak ketinggalan PART 2!",
+            "keywords": [
+              "IKUTI",
+              "PART",
+              "2!"
+            ],
+            "reveal": "buWati",
+            "revealEmotion": "smug"
+          },
+          "id": "l016",
+          "move": {
+            "who": "buWati",
+            "to": "offR",
+            "at": 0.2
+          }
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "laugh",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "idle",
+          "text": "Hihihi...",
+          "offscreen": true,
+          "sfx": [
+            {
+              "id": "dun_dun_dun",
+              "at": "end",
+              "volume": 0.15
+            }
+          ],
+          "id": "l017"
+        }
+      ]
+    }
+  ]
+}
