@@ -19,6 +19,8 @@ const FILES = [
   "src/scene/Locations2.tsx",
   "src/scene/Details.tsx",
   "src/scene/Details2.tsx",
+  "src/scene/Locations3.tsx",
+  "src/scene/Extras.tsx",
   "src/fx/Lighting.tsx",
   "src/edit/director.ts",
   "src/edit/editing.json",

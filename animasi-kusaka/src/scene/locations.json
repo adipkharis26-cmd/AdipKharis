@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.1.0",
   "rules": [
     "Semua set berukuran panggung 1920x1080, lantai karakter di y=960.",
     "Karakter berdiri di titik 'marks' (x) agar blocking antar-episode konsisten.",
@@ -251,6 +251,76 @@
       "light": {
         "kind": "night",
         "from": 1
+      }
+    },
+    "ruangGuru": {
+      "name": "Ruang Guru",
+      "time": "siang",
+      "floor": 960,
+      "marks": {
+        "A": 560,
+        "B": 1360,
+        "C": 960,
+        "D": 240
+      },
+      "use": "Obrolan guru tanpa murid, rapat kecil, gosip ruang guru",
+      "ambience": "amb_office",
+      "light": {
+        "kind": "window",
+        "from": -1
+      }
+    },
+    "pasar": {
+      "name": "Pasar Tradisional",
+      "time": "pagi",
+      "floor": 960,
+      "marks": {
+        "A": 560,
+        "B": 1360,
+        "C": 960,
+        "D": 240
+      },
+      "use": "Belanja Bu Ratna, gosip ibu-ibu, tawar-menawar",
+      "ambience": "amb_street",
+      "light": {
+        "kind": "sun",
+        "from": -1,
+        "leaves": false
+      }
+    },
+    "halte": {
+      "name": "Halte & Jalan Raya",
+      "time": "sore",
+      "floor": 960,
+      "marks": {
+        "A": 520,
+        "B": 1300,
+        "C": 900,
+        "D": 200
+      },
+      "use": "Pulang sekolah naik angkot, nunggu bus, ngobrol di jalan",
+      "ambience": "amb_street",
+      "light": {
+        "kind": "sunset",
+        "from": 1
+      }
+    },
+    "lapanganBasket": {
+      "name": "Lapangan Basket",
+      "time": "siang",
+      "floor": 960,
+      "marks": {
+        "A": 560,
+        "B": 1360,
+        "C": 960,
+        "D": 240
+      },
+      "use": "Latihan basket Bimo, nongkrong, pertandingan",
+      "ambience": "amb_school_outdoor",
+      "light": {
+        "kind": "sun",
+        "from": 1,
+        "leaves": true
       }
     }
   }

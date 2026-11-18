@@ -57,8 +57,10 @@ Branch kerja: `ccr-5483b159-l8zee8`.
   `"reactions": { "ucok": ["surprised", "idle"] }`, `"sfx": [{ "id": "rimshot", "at": "end" }]` (`at` WAJIB: detik atau "end").
 - Emosi: neutral, smug, suspicious, shock, laugh, pleading, deadpan, surprised, embarrassed, defeated.
 - Aksi: idle, gesture, pocket, chin, point, plead, crossed, shock, laugh, slump, wave, thumbsup, peace, facepalm, hips, phone.
-- Lokasi: warung, gerbang, kelas, koridor, kamar, kelasBelakang, kelasJendela, mejaGuru, kantin, ruangBK, perpustakaan,
-  ruangTamu, lapanganUpacara, kos.
+- Lokasi (18): warung, gerbang, kelas, koridor, kamar, kelasBelakang, kelasJendela, mejaGuru, kantin, ruangBK, perpustakaan,
+  ruangTamu, lapanganUpacara, kos, ruangGuru, pasar, halte, lapanganBasket.
+- **Extras (NPC latar)** muncul otomatis per lokasi (`src/scene/Extras.tsx`); per adegan `"extras": "off" | "low" | "normal"`.
+- **Setiap episode panjang**: sertakan adegan TANPA Kusaka dan lokasi di luar rumah/sekolah (pasar, halte, lapangan, dll.).
 
 ## Alur kerja
 1. Tulis naskah (hook ≤ 2 dtk, ending loop/cliffhanger, catchphrase karakter).

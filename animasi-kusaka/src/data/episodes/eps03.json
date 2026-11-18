@@ -1,0 +1,2249 @@
+{
+  "format": "long",
+  "minSeconds": 600,
+  "episode": "eps03",
+  "title": "Telat Upacara",
+  "fps": 30,
+  "gapSeconds": 0.4,
+  "sceneLead": 1.0,
+  "sceneGap": 0.6,
+  "tail": 3.0,
+  "scenes": [
+    {
+      "id": "s01",
+      "location": "gerbang",
+      "cast": {
+        "mangUdin": {
+          "mark": "A",
+          "facing": 1
+        },
+        "kusaka": {
+          "mark": "B",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "plead",
+          "text": "TUNGGU, MANG! JANGAN DITUTUP!",
+          "caption": "SENIN PAGI",
+          "move": {
+            "who": "kusaka",
+            "from": "offR",
+            "to": "B",
+            "at": 0
+          },
+          "id": "l001"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "deadpan",
+          "listener": "shock",
+          "shot": "two",
+          "action": "point",
+          "text": "Jam tujuh kurang satu, Jang. Peraturan. Gerbang ditutup.",
+          "id": "l002"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "pleading",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "plead",
+          "text": "Ini masih enam lima puluh sembilan, Mang! Masih ada waktu!",
+          "id": "l003"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "smug",
+          "listener": "pleading",
+          "shot": "two",
+          "action": "chin",
+          "text": "Enam lima puluh sembilan lewat lima puluh detik. Itu lebih dekat ke tujuh.",
+          "id": "l004"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "smug",
+          "shot": "two",
+          "action": "shock",
+          "text": "Itu hitungan dari mana, Mang?!",
+          "id": "l005"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "laugh",
+          "listener": "shock",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Hitungan satpam. Tidak bisa diganggu gugat.",
+          "id": "l006"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "neutral",
+          "listener": "shock",
+          "shot": "two",
+          "action": "hips",
+          "text": "Nah. Gerbang ditutup. Satu... dua... tiga.",
+          "id": "l007"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "neutral",
+          "shot": "crash",
+          "action": "shock",
+          "text": "...Gerbangnya nutup. Di depan hidung gue.",
+          "id": "l008"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "deadpan",
+          "listener": "shock",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Hidungmu yang kemajuan, Jang.",
+          "id": "l009"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "pleading",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "plead",
+          "text": "Mang, buka sedikit aja. Saya anak teladan.",
+          "id": "l010"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "suspicious",
+          "listener": "pleading",
+          "shot": "two",
+          "action": "chin",
+          "text": "Teladan dari mana? Kemarin tiga kali telat.",
+          "id": "l011"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "embarrassed",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Itu... teladan cara ngadepin hidup, Mang.",
+          "id": "l012"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "deadpan",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "point",
+          "text": "Hidup juga ada jam bukanya, Jang. Tunggu di sini.",
+          "sfx": [
+            {
+              "id": "crickets",
+              "at": "end"
+            }
+          ],
+          "id": "l013"
+        }
+      ]
+    },
+    {
+      "id": "s02",
+      "location": "kamar",
+      "cast": {
+        "kusaka": {
+          "mark": "A",
+          "facing": 1
+        },
+        "dinda": {
+          "mark": "B",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "dinda",
+          "emotion": "deadpan",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Kak. Jam dua lewat. Kakak ngapain?",
+          "caption": "FLASHBACK",
+          "flashback": true,
+          "id": "l014"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "laugh",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Din, dengerin. 'Kakakmu keren juga.' Keren, Din! Dia bilang keren!",
+          "flashback": true,
+          "id": "l015"
+        },
+        {
+          "speaker": "dinda",
+          "emotion": "deadpan",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Kakak udah baca itu empat puluh tujuh kali.",
+          "flashback": true,
+          "id": "l016"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "embarrassed",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Empat puluh delapan. Satu lagi, terus tidur. Janji.",
+          "flashback": true,
+          "id": "l017"
+        },
+        {
+          "speaker": "dinda",
+          "emotion": "suspicious",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "chin",
+          "text": "Jam berapa Kakak mau bangun besok?",
+          "flashback": true,
+          "id": "l018"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "smug",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Tenang. Kusaka versi baru nggak butuh alarm.",
+          "flashback": true,
+          "id": "l019"
+        },
+        {
+          "speaker": "dinda",
+          "emotion": "smug",
+          "listener": "smug",
+          "shot": "two",
+          "action": "peace",
+          "text": "Oke. Aku nggak bakal bangunin. Aku bukan alarm.",
+          "flashback": true,
+          "id": "l020"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "neutral",
+          "listener": "smug",
+          "shot": "two",
+          "action": "idle",
+          "text": "Siapa yang minta dibangunin? Udah, Din, tidur sana.",
+          "flashback": true,
+          "id": "l021"
+        },
+        {
+          "speaker": "dinda",
+          "emotion": "deadpan",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Aku udah mau tidur dari tadi. Kakak yang ketawa sendirian.",
+          "flashback": true,
+          "id": "l022"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "laugh",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Hehehe. Keren. Dia bilang keren.",
+          "flashback": true,
+          "id": "l023"
+        },
+        {
+          "speaker": "dinda",
+          "emotion": "deadpan",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "facepalm",
+          "text": "Ya ampun. Ini kakakku.",
+          "flashback": true,
+          "sfx": [
+            {
+              "id": "sad_violin",
+              "at": "end"
+            }
+          ],
+          "id": "l024"
+        }
+      ]
+    },
+    {
+      "id": "s03",
+      "location": "gerbang",
+      "cast": {
+        "mangUdin": {
+          "mark": "A",
+          "facing": 1
+        },
+        "kusaka": {
+          "mark": "B",
+          "facing": -1
+        },
+        "ujang": {
+          "mark": "C",
+          "facing": -1
+        },
+        "pakJoko": {
+          "mark": "D",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "ujang",
+          "emotion": "neutral",
+          "listener": "defeated",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Kus. Nadia nyariin lo. Kertas ulangan buat ditandatangani.",
+          "caption": "SENIN PAGI",
+          "move": {
+            "who": "ujang",
+            "from": "offL",
+            "to": "C",
+            "at": 0
+          },
+          "id": "l025"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "smug",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Aman, Jang. Udah ditandatangani Ibu. Tinggal gue lewat gerbang ini.",
+          "id": "l026"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "smug",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Tinggal. Gerbangnya yang nggak mau.",
+          "id": "l027"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "pleading",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "plead",
+          "text": "Mang Udin, saya bayar pakai gorengan, deh. Dua. Tiga!",
+          "id": "l028"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "suspicious",
+          "listener": "pleading",
+          "shot": "two",
+          "action": "chin",
+          "text": "Gorengan dari mana? Dompetmu kan disandera.",
+          "id": "l029"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "shock",
+          "text": "Mang tahu dari mana?!",
+          "id": "l030"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "laugh",
+          "listener": "shock",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Satu sekolah tahu, Jang. Adikmu kan terkenal.",
+          "id": "l031"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "shock",
+          "shot": "two",
+          "action": "phone",
+          "text": "Seratus lima puluh ribu penonton sekarang. Mang Udin juga nonton.",
+          "id": "l032"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "embarrassed",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Mang cuma lihat sekali. Atau dua kali. Mungkin sepuluh.",
+          "id": "l033"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "defeated",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "slump",
+          "text": "Satpam sekolah ini juga penonton adik gue...",
+          "id": "l034"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "neutral",
+          "listener": "defeated",
+          "shot": "two",
+          "action": "point",
+          "text": "Tapi peraturan tetap peraturan. Telat itu lapor Pak Joko.",
+          "id": "l035"
+        },
+        {
+          "speaker": "pakJoko",
+          "emotion": "neutral",
+          "listener": "shock",
+          "shot": "two",
+          "action": "idle",
+          "text": "PRIIIT! SIAPA YANG TELAT?!",
+          "offscreen": true,
+          "id": "l036"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "shock",
+          "text": "Pak Joko...",
+          "id": "l037"
+        },
+        {
+          "speaker": "pakJoko",
+          "emotion": "smug",
+          "listener": "shock",
+          "shot": "two",
+          "action": "hips",
+          "text": "Oh, Kusaka. Pas sekali. Bapak lagi butuh orang.",
+          "move": {
+            "who": "pakJoko",
+            "from": "offR",
+            "to": "D",
+            "at": 0.2
+          },
+          "id": "l038"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "suspicious",
+          "listener": "smug",
+          "shot": "two",
+          "action": "chin",
+          "text": "Butuh orang buat apa, Pak?",
+          "id": "l039"
+        },
+        {
+          "speaker": "pakJoko",
+          "emotion": "smug",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "point",
+          "text": "Pengerek bendera hari ini sakit perut. Kamu pengganti.",
+          "id": "l040"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "smug",
+          "shot": "two",
+          "action": "shock",
+          "text": "Saya, Pak?! Dua menit lagi upacara!",
+          "id": "l041"
+        },
+        {
+          "speaker": "pakJoko",
+          "emotion": "neutral",
+          "listener": "shock",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Bagus. Bapak suka orang yang antusias.",
+          "id": "l042"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "shock",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Dia nggak antusias, Pak. Dia sekarat.",
+          "id": "l043"
+        },
+        {
+          "speaker": "mangUdin",
+          "emotion": "laugh",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Hahaha! Semoga sukses, Jang!",
+          "sfx": [
+            {
+              "id": "rimshot",
+              "at": "end"
+            }
+          ],
+          "id": "l044"
+        }
+      ]
+    },
+    {
+      "id": "s04",
+      "location": "lapanganUpacara",
+      "cast": {
+        "pakJoko": {
+          "mark": "A",
+          "facing": 1
+        },
+        "kusaka": {
+          "mark": "C",
+          "facing": -1
+        },
+        "ucok": {
+          "mark": "B",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "pakJoko",
+          "emotion": "neutral",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "point",
+          "text": "Dengar baik-baik. Bendera dikerek pelan. Sesuai lagu. Paham?",
+          "caption": "BEBERAPA SAAT KEMUDIAN",
+          "id": "l045"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "embarrassed",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Lagunya Indonesia Raya, kan, Pak? Yang panjang itu?",
+          "id": "l046"
+        },
+        {
+          "speaker": "pakJoko",
+          "emotion": "deadpan",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Satu lagu penuh. Tiga menit. Bendera harus sampai puncak di nada terakhir.",
+          "id": "l047"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "surprised",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "point",
+          "text": "Bah! Aku juga telat, Pak! Jangan lupakan aku!",
+          "move": {
+            "who": "ucok",
+            "from": "offL",
+            "to": "B",
+            "at": 0
+          },
+          "id": "l048"
+        },
+        {
+          "speaker": "pakJoko",
+          "emotion": "smug",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Ucok. Tepat waktu telatnya. Kamu pembawa baki.",
+          "id": "l049"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "shock",
+          "listener": "smug",
+          "shot": "two",
+          "action": "shock",
+          "text": "Baki? Aku, Pak?! Nanti jatuh macam mana pulak?",
+          "id": "l050"
+        },
+        {
+          "speaker": "pakJoko",
+          "emotion": "deadpan",
+          "listener": "shock",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Kalau jatuh, push-up. Kalau nggak jatuh, tetap push-up. Latihan.",
+          "id": "l051"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "defeated",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "slump",
+          "text": "Kok semua jalannya ke push-up, Pak...",
+          "id": "l052"
+        },
+        {
+          "speaker": "pakJoko",
+          "emotion": "neutral",
+          "listener": "defeated",
+          "shot": "two",
+          "action": "idle",
+          "text": "Karena push-up itu solusi. Sekarang latihan.",
+          "id": "l053"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "embarrassed",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Kus, tali ini kok kayak ular. Dari mana narik-nya?",
+          "id": "l054"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "suspicious",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "chin",
+          "text": "Tarik yang... mana ya? Yang merah?",
+          "id": "l055"
+        },
+        {
+          "speaker": "pakJoko",
+          "emotion": "deadpan",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Semuanya putih, Kusaka.",
+          "id": "l056"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "embarrassed",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Berarti... tarik yang putih.",
+          "id": "l057"
+        },
+        {
+          "speaker": "pakJoko",
+          "emotion": "neutral",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "point",
+          "text": "Tarik pelan. Sedikit demi sedikit. Jangan buru-buru.",
+          "id": "l058"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "neutral",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Pelan... pelan... lho, kok macet, Pak?",
+          "id": "l059"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "laugh",
+          "listener": "shock",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Talinya nyangkut di bajumu, Kusaka! Hahaha!",
+          "id": "l060"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "shock",
+          "text": "Hah?! Lepasin, Cok!",
+          "id": "l061"
+        },
+        {
+          "speaker": "pakJoko",
+          "emotion": "deadpan",
+          "listener": "shock",
+          "shot": "two",
+          "action": "facepalm",
+          "text": "Ini pengganti yang Bapak punya. Ya Tuhan.",
+          "sfx": [
+            {
+              "id": "sad_trombone",
+              "at": "end"
+            }
+          ],
+          "id": "l062"
+        }
+      ]
+    },
+    {
+      "id": "s05",
+      "location": "lapanganUpacara",
+      "cast": {
+        "nadia": {
+          "mark": "A",
+          "facing": 1
+        },
+        "kusaka": {
+          "mark": "C",
+          "facing": -1
+        },
+        "ucok": {
+          "mark": "B",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "nadia",
+          "emotion": "neutral",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "point",
+          "text": "Upacara bendera hari Senin segera dimulai. Barisan harap tenang.",
+          "caption": "SENIN PAGI",
+          "id": "l063"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "embarrassed",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Kus. Tanganku gemetar. Baki ini berat kali.",
+          "id": "l064"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "neutral",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Cok, tenang. Cuma bendera. Bukan bom.",
+          "id": "l065"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "shock",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "shock",
+          "text": "Kalau salah, satu sekolah lihat, Kus! Sama dengan bom!",
+          "id": "l066"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "suspicious",
+          "listener": "shock",
+          "shot": "two",
+          "action": "chin",
+          "text": "Kusaka. Lo yang ngerek? Serius?",
+          "id": "l067"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "smug",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Kenapa, Nad? Gue keren, kan? Baca komentar lo semalam.",
+          "id": "l068"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "embarrassed",
+          "listener": "smug",
+          "shot": "two",
+          "action": "facepalm",
+          "text": "Gue ketua kelas. Itu komentar sopan. Bukan lamaran.",
+          "id": "l069"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "shock",
+          "text": "Bukan lamaran?!",
+          "id": "l070"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "deadpan",
+          "listener": "shock",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Fokus ke bendera. Jangan sampai gue malu.",
+          "id": "l071"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "neutral",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Siap, Bu Ketua. Bendera aman.",
+          "id": "l072"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "neutral",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "point",
+          "text": "Pengibaran bendera Merah Putih. Hormat gerak!",
+          "id": "l073"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "embarrassed",
+          "listener": "shock",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Kus... tali ini kok kencang kali?",
+          "id": "l074"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "neutral",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Itu bagian dari seninya, Cok.",
+          "id": "l075"
+        },
+        {
+          "speaker": "pakDarto",
+          "emotion": "suspicious",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "chin",
+          "text": "Bendera apa yang dikibarkan itu?! Kenapa putih di atas?!",
+          "offscreen": true,
+          "id": "l076"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "neutral",
+          "shot": "crash",
+          "action": "shock",
+          "text": "Hah?",
+          "id": "l077"
+        },
+        {
+          "speaker": "ucok",
+          "emotion": "shock",
+          "listener": "shock",
+          "shot": "two",
+          "action": "point",
+          "text": "Terbalik, Kus! Terbalik!",
+          "id": "l078"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "pleading",
+          "listener": "shock",
+          "shot": "two",
+          "action": "plead",
+          "text": "Pak Darto, ini... tadi talinya nyangkut!",
+          "id": "l079"
+        },
+        {
+          "speaker": "pakDarto",
+          "emotion": "deadpan",
+          "listener": "pleading",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Bapak dengar dari sini, Kusaka! Turunkan! Pelan-pelan!",
+          "offscreen": true,
+          "id": "l080"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "embarrassed",
+          "listener": "pleading",
+          "shot": "two",
+          "action": "facepalm",
+          "text": "Ya ampun. Di depan satu sekolah.",
+          "id": "l081"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "phone",
+          "text": "Tenang, Kus. Terekam. Dari angle terbaik.",
+          "offscreen": true,
+          "id": "l082"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "defeated",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "slump",
+          "text": "Lo sahabat terbaik... sekaligus yang terburuk, Jang.",
+          "sfx": [
+            {
+              "id": "sad_trombone",
+              "at": "end"
+            }
+          ],
+          "id": "l083"
+        }
+      ]
+    },
+    {
+      "id": "s09",
+      "location": "ruangGuru",
+      "cast": {
+        "pakDarto": {
+          "mark": "A",
+          "facing": 1
+        },
+        "buWati": {
+          "mark": "B",
+          "facing": -1
+        },
+        "pakJoko": {
+          "mark": "C",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "id": "l139",
+          "speaker": "pakDarto",
+          "emotion": "deadpan",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Dua puluh tahun Bapak jadi guru. Baru kali ini lihat bendera terbalik di upacara.",
+          "caption": "SEMENTARA ITU"
+        },
+        {
+          "id": "l140",
+          "speaker": "pakJoko",
+          "emotion": "embarrassed",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Itu salah Bapak, Pak Darto. Bapak yang menunjuk dia."
+        },
+        {
+          "id": "l141",
+          "speaker": "pakDarto",
+          "emotion": "suspicious",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "chin",
+          "text": "Kamu menunjuk Kusaka? Kenapa bukan siswa teladan?"
+        },
+        {
+          "id": "l142",
+          "speaker": "pakJoko",
+          "emotion": "neutral",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "hips",
+          "text": "Siswa teladannya sakit perut. Yang kebetulan telat cuma Kusaka. Namanya juga darurat."
+        },
+        {
+          "id": "l143",
+          "speaker": "buWati",
+          "emotion": "neutral",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Yang penting dia tepat sasaran. Besok pagi dia kumpulkan PR halaman empat puluh lima."
+        },
+        {
+          "id": "l144",
+          "speaker": "pakDarto",
+          "emotion": "suspicious",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "point",
+          "text": "Bu Wati, anak itu nilainya tiga puluh lima."
+        },
+        {
+          "id": "l145",
+          "speaker": "buWati",
+          "emotion": "deadpan",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Saya tahu, Pak. Saya yang menilai."
+        },
+        {
+          "id": "l146",
+          "speaker": "pakJoko",
+          "emotion": "laugh",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Katanya adiknya terkenal. Videonya seratus lima puluh ribu penonton."
+        },
+        {
+          "id": "l147",
+          "speaker": "pakDarto",
+          "emotion": "surprised",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "shock",
+          "text": "Video apa?"
+        },
+        {
+          "id": "l148",
+          "speaker": "pakJoko",
+          "emotion": "smug",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "point",
+          "text": "Bapak belum nonton? Anak-anak sampai nyanyi di kantin."
+        },
+        {
+          "id": "l149",
+          "speaker": "buWati",
+          "emotion": "embarrassed",
+          "listener": "smug",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Saya cuma lihat sekali. Dua kali. Mungkin tiga kali."
+        },
+        {
+          "id": "l150",
+          "speaker": "pakDarto",
+          "emotion": "shock",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "shock",
+          "text": "Bu Wati juga?!"
+        },
+        {
+          "id": "l151",
+          "speaker": "buWati",
+          "emotion": "deadpan",
+          "listener": "shock",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Itu bagian dari pemantauan siswa, Pak."
+        },
+        {
+          "id": "l152",
+          "speaker": "pakJoko",
+          "emotion": "laugh",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Alasannya sama persis kayak Mang Udin."
+        },
+        {
+          "id": "l153",
+          "speaker": "pakDarto",
+          "emotion": "deadpan",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "hips",
+          "text": "Sudah. Rapat dimulai. Agenda hari ini: kedisiplinan."
+        },
+        {
+          "id": "l154",
+          "speaker": "pakJoko",
+          "emotion": "smug",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Satu agenda saja: Kusaka."
+        },
+        {
+          "id": "l155",
+          "speaker": "buWati",
+          "emotion": "neutral",
+          "listener": "smug",
+          "shot": "two",
+          "action": "point",
+          "text": "Dua agenda. Kusaka dan Ucok."
+        },
+        {
+          "id": "l156",
+          "speaker": "pakDarto",
+          "emotion": "suspicious",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "chin",
+          "text": "Kenapa Ucok?"
+        },
+        {
+          "id": "l157",
+          "speaker": "buWati",
+          "emotion": "deadpan",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Karena dia pembawa baki.",
+          "sfx": [
+            {
+              "id": "rimshot",
+              "at": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "location": "koridor",
+      "cast": {
+        "pakDarto": {
+          "mark": "A",
+          "facing": 1
+        },
+        "kusaka": {
+          "mark": "C",
+          "facing": -1
+        },
+        "ujang": {
+          "mark": "B",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "pakDarto",
+          "emotion": "deadpan",
+          "listener": "defeated",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Kusaka. Bendera terbalik itu bukan lelucon.",
+          "caption": "BEBERAPA SAAT KEMUDIAN",
+          "id": "l084"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "embarrassed",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Saya tahu, Pak. Tapi saya baru dilantik lima menit sebelumnya.",
+          "id": "l085"
+        },
+        {
+          "speaker": "pakDarto",
+          "emotion": "suspicious",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "chin",
+          "text": "Dilantik? Siapa yang menunjuk kamu?",
+          "id": "l086"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "smug",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "point",
+          "text": "Pak Joko, Pak. Katanya pengganti darurat.",
+          "id": "l087"
+        },
+        {
+          "speaker": "pakDarto",
+          "emotion": "deadpan",
+          "listener": "smug",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Pak Joko memang suka darurat. Ujang, kamu saksi?",
+          "id": "l088"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "neutral",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Saksi, Pak. Dia nggak sengaja. Dia cuma... kurang tidur.",
+          "id": "l089"
+        },
+        {
+          "speaker": "pakDarto",
+          "emotion": "suspicious",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "chin",
+          "text": "Kurang tidur kenapa?",
+          "id": "l090"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "embarrassed",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Mikirin... pelajaran, Pak. Matematika.",
+          "id": "l091"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Dia baca komentar Nadia empat puluh delapan kali.",
+          "id": "l092"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "shock",
+          "text": "Jang! Itu rahasia!",
+          "id": "l093"
+        },
+        {
+          "speaker": "pakDarto",
+          "emotion": "laugh",
+          "listener": "shock",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Hmm. Anak muda. Bapak dulu juga pernah.",
+          "id": "l094"
+        },
+        {
+          "speaker": "pakDarto",
+          "emotion": "neutral",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "point",
+          "text": "Tapi bendera itu sudah dilihat satu sekolah. Hukuman tetap.",
+          "id": "l095"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "pleading",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "plead",
+          "text": "Hukuman apa, Pak? Push-up lagi?",
+          "id": "l096"
+        },
+        {
+          "speaker": "pakDarto",
+          "emotion": "smug",
+          "listener": "pleading",
+          "shot": "two",
+          "action": "hips",
+          "text": "Lebih baik. Kamu jadi petugas piket upacara. Sebulan.",
+          "id": "l097"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "smug",
+          "shot": "two",
+          "action": "shock",
+          "text": "Sebulan, Pak?!",
+          "id": "l098"
+        },
+        {
+          "speaker": "pakDarto",
+          "emotion": "deadpan",
+          "listener": "shock",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Kalau protes, dua bulan.",
+          "id": "l099"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "defeated",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "slump",
+          "text": "...Saya diam, Pak.",
+          "id": "l100"
+        },
+        {
+          "speaker": "pakDarto",
+          "emotion": "neutral",
+          "listener": "defeated",
+          "shot": "two",
+          "action": "point",
+          "text": "Dan satu lagi. Jangan telat lagi. Mang Udin sudah lelah.",
+          "id": "l101"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Mang Udin nggak lelah, Pak. Dia senang.",
+          "sfx": [
+            {
+              "id": "rimshot",
+              "at": "end"
+            }
+          ],
+          "id": "l102"
+        }
+      ]
+    },
+    {
+      "id": "s07",
+      "location": "mejaGuru",
+      "cast": {
+        "nadia": {
+          "mark": "A",
+          "facing": 1
+        },
+        "kusaka": {
+          "mark": "C",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "nadia",
+          "emotion": "neutral",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Kusaka. Kertas ulangan lo. Gue tagih sekarang.",
+          "caption": "SATU JAM KEMUDIAN",
+          "id": "l103"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "neutral",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Aman, Bu Ketua. Sudah ditandatangani Ibu.",
+          "id": "l104"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "suspicious",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "chin",
+          "text": "Gue cek dulu. Tanda tangan nggak bisa dipalsukan.",
+          "id": "l105"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "embarrassed",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Itu asli, Nad. Ibu sendiri yang nandatangani. Di ruang tamu.",
+          "id": "l106"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "neutral",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "idle",
+          "text": "...Iya. Tanda tangannya mirip. Dan ada catatan di sini.",
+          "id": "l107"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "surprised",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "shock",
+          "text": "Catatan?",
+          "id": "l108"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "smug",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "point",
+          "text": "'Nilai jelek, tapi anaknya jujur. Ibu bangga.' Dari Ibu lo.",
+          "id": "l109"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "embarrassed",
+          "listener": "smug",
+          "shot": "two",
+          "action": "gesture",
+          "text": "...Ibu nulis begitu?",
+          "id": "l110"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "laugh",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Hahaha. Muka lo merah, Kus.",
+          "id": "l111"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "shock",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "shock",
+          "text": "Nggak! Itu... cuma panas matahari!",
+          "id": "l112"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "neutral",
+          "listener": "shock",
+          "shot": "two",
+          "action": "hips",
+          "text": "Di dalam ruangan?",
+          "id": "l113"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "embarrassed",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "gesture",
+          "text": "...Matahari tembus jendela.",
+          "id": "l114"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "neutral",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "idle",
+          "text": "Oke. Gue bawa ke Bu Wati. Kerja bagus, Kusaka.",
+          "id": "l115"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "laugh",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Hari ini... hari terbaik gue!",
+          "id": "l116"
+        },
+        {
+          "speaker": "nadia",
+          "emotion": "deadpan",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Hari ini lo ngerek bendera terbalik.",
+          "id": "l117"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "embarrassed",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Itu... pengecualian.",
+          "sfx": [
+            {
+              "id": "crickets",
+              "at": "end"
+            }
+          ],
+          "id": "l118"
+        }
+      ]
+    },
+    {
+      "id": "s10",
+      "location": "pasar",
+      "cast": {
+        "ibu": {
+          "mark": "A",
+          "facing": 1
+        },
+        "bapak": {
+          "mark": "B",
+          "facing": -1
+        },
+        "buIjah": {
+          "mark": "C",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "id": "l158",
+          "speaker": "buIjah",
+          "emotion": "laugh",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Bu Ratna! Belanja pagi-pagi. Tumben anak lanang nggak ikut?",
+          "caption": "DI TEMPAT LAIN"
+        },
+        {
+          "id": "l159",
+          "speaker": "ibu",
+          "emotion": "surprised",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Kusaka sudah berangkat dari jam enam. Ibu sampai nggak percaya."
+        },
+        {
+          "id": "l160",
+          "speaker": "buIjah",
+          "emotion": "surprised",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "point",
+          "text": "Lho, kok bisa? Biasanya jam tujuh baru teriak-teriak."
+        },
+        {
+          "id": "l161",
+          "speaker": "ibu",
+          "emotion": "neutral",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Dia berubah. Sejak ngaku nilainya kemarin."
+        },
+        {
+          "id": "l162",
+          "speaker": "buIjah",
+          "emotion": "suspicious",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "chin",
+          "text": "Nilai yang tiga puluh lima itu, Bu?"
+        },
+        {
+          "id": "l163",
+          "speaker": "ibu",
+          "emotion": "shock",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "shock",
+          "text": "Bu Ijah tahu dari mana?!"
+        },
+        {
+          "id": "l164",
+          "speaker": "buIjah",
+          "emotion": "smug",
+          "listener": "shock",
+          "shot": "two",
+          "action": "point",
+          "text": "Dari video Dinda, Bu. Satu RT sudah nonton. Ibu belum?"
+        },
+        {
+          "id": "l165",
+          "speaker": "ibu",
+          "emotion": "suspicious",
+          "listener": "smug",
+          "shot": "two",
+          "action": "hips",
+          "text": "Video apa? Dinda ngapain lagi?"
+        },
+        {
+          "id": "l166",
+          "speaker": "bapak",
+          "emotion": "embarrassed",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "plead",
+          "text": "Bu... itu... Bapak yang nonton duluan. Sekali."
+        },
+        {
+          "id": "l167",
+          "speaker": "ibu",
+          "emotion": "deadpan",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Pak. Kita bicarakan di rumah."
+        },
+        {
+          "id": "l168",
+          "speaker": "bapak",
+          "emotion": "laugh",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Bu, tahu kenapa ayam nyebrang jalan? Soalnya ada diskon di seberang!"
+        },
+        {
+          "id": "l169",
+          "speaker": "ibu",
+          "emotion": "deadpan",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Pak. Tawar-menawar bukan tempat bercanda."
+        },
+        {
+          "id": "l170",
+          "speaker": "buIjah",
+          "emotion": "laugh",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Hahaha! Persis anaknya!"
+        },
+        {
+          "id": "l171",
+          "speaker": "ibu",
+          "emotion": "suspicious",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "chin",
+          "text": "Ngomong-ngomong, utang Kusaka di warung Ibu berapa?"
+        },
+        {
+          "id": "l172",
+          "speaker": "buIjah",
+          "emotion": "neutral",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Nggak banyak, Bu. Cuma sepanjang jalan tol."
+        },
+        {
+          "id": "l173",
+          "speaker": "ibu",
+          "emotion": "shock",
+          "listener": "neutral",
+          "shot": "crash",
+          "action": "shock",
+          "text": "Sepanjang jalan tol itu berapa?!"
+        },
+        {
+          "id": "l174",
+          "speaker": "buIjah",
+          "emotion": "smug",
+          "listener": "shock",
+          "shot": "two",
+          "action": "point",
+          "text": "Seratus dua puluh ribu, Bu. Tiga bulan."
+        },
+        {
+          "id": "l175",
+          "speaker": "ibu",
+          "emotion": "deadpan",
+          "listener": "shock",
+          "shot": "two",
+          "action": "hips",
+          "text": "Pak. Siapkan dompetnya."
+        },
+        {
+          "id": "l176",
+          "speaker": "bapak",
+          "emotion": "defeated",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "slump",
+          "text": "Dompet Bapak... ada di kantong Ibu.",
+          "sfx": [
+            {
+              "id": "rimshot",
+              "at": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s11",
+      "location": "lapanganBasket",
+      "cast": {
+        "bimo": {
+          "mark": "A",
+          "facing": 1
+        },
+        "ucok": {
+          "mark": "B",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "id": "l177",
+          "speaker": "ucok",
+          "emotion": "laugh",
+          "listener": "smug",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Bah, Bang Bimo! Lemparanmu macam bintang NBA!",
+          "caption": "SEMENTARA ITU"
+        },
+        {
+          "id": "l178",
+          "speaker": "bimo",
+          "emotion": "smug",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Santai, Cok. Tinggal latihan."
+        },
+        {
+          "id": "l179",
+          "speaker": "ucok",
+          "emotion": "suspicious",
+          "listener": "smug",
+          "shot": "two",
+          "action": "chin",
+          "text": "Bang. Jujur, ya. Abang suka sama Nadia?"
+        },
+        {
+          "id": "l180",
+          "speaker": "bimo",
+          "emotion": "surprised",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "shock",
+          "text": "Nadia? Kenapa tiba-tiba?"
+        },
+        {
+          "id": "l181",
+          "speaker": "ucok",
+          "emotion": "embarrassed",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Soalnya Kusaka suka dia. Aku nggak tega lihat dua orang naksir satu orang."
+        },
+        {
+          "id": "l182",
+          "speaker": "bimo",
+          "emotion": "neutral",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Gue nggak naksir. Nadia itu rekan OSIS gue. Tadi gue cuma bantu nyanyi."
+        },
+        {
+          "id": "l183",
+          "speaker": "ucok",
+          "emotion": "suspicious",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "chin",
+          "text": "Nyanyi di kantin tadi? Hati-hati, Bang. Orang bisa salah paham."
+        },
+        {
+          "id": "l184",
+          "speaker": "bimo",
+          "emotion": "surprised",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "idle",
+          "text": "Gue nggak tahu Kusaka suka Nadia."
+        },
+        {
+          "id": "l185",
+          "speaker": "ucok",
+          "emotion": "shock",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "shock",
+          "text": "Abang nggak tahu?!"
+        },
+        {
+          "id": "l186",
+          "speaker": "bimo",
+          "emotion": "neutral",
+          "listener": "shock",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Dia nggak pernah bilang."
+        },
+        {
+          "id": "l187",
+          "speaker": "ucok",
+          "emotion": "laugh",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Kau pikir dia mau bilang? Minta tanda tangan Bapaknya aja diam-diam!"
+        },
+        {
+          "id": "l188",
+          "speaker": "bimo",
+          "emotion": "laugh",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Hahaha. Anak itu lucu juga."
+        },
+        {
+          "id": "l189",
+          "speaker": "ucok",
+          "emotion": "smug",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Tenang, Bang. Rahasia ini aman sama aku."
+        },
+        {
+          "id": "l190",
+          "speaker": "sasa",
+          "emotion": "laugh",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "phone",
+          "text": "Guys! Live aku udah enam ribu! Rahasia Kusaka dan Nadia, kita bahas sekarang!",
+          "offscreen": true
+        },
+        {
+          "id": "l191",
+          "speaker": "bimo",
+          "emotion": "deadpan",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "crossed",
+          "text": "...Siapa itu?"
+        },
+        {
+          "id": "l192",
+          "speaker": "ucok",
+          "emotion": "defeated",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "slump",
+          "text": "Sasa, Bang. Rahasia kita... udah jadi konten.",
+          "sfx": [
+            {
+              "id": "sad_trombone",
+              "at": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s12",
+      "location": "halte",
+      "cast": {
+        "nadia": {
+          "mark": "A",
+          "facing": 1
+        },
+        "sasa": {
+          "mark": "B",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "id": "l193",
+          "speaker": "sasa",
+          "emotion": "laugh",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "phone",
+          "text": "Nad, live aku udah enam ribu. Kamu terkenal gara-gara komentarmu!",
+          "caption": "SEPULANG SEKOLAH"
+        },
+        {
+          "id": "l194",
+          "speaker": "nadia",
+          "emotion": "neutral",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Itu cuma komentar jujur, Sa."
+        },
+        {
+          "id": "l195",
+          "speaker": "sasa",
+          "emotion": "smug",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "point",
+          "text": "Jujur? 'Kakakmu keren juga.' Itu nada hati, Nad."
+        },
+        {
+          "id": "l196",
+          "speaker": "nadia",
+          "emotion": "deadpan",
+          "listener": "smug",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Itu nada ketua kelas. Aku cuma menilai."
+        },
+        {
+          "id": "l197",
+          "speaker": "sasa",
+          "emotion": "suspicious",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "chin",
+          "text": "Oke. Kamu nilai Kusaka berapa?"
+        },
+        {
+          "id": "l198",
+          "speaker": "nadia",
+          "emotion": "neutral",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Keberanian, delapan puluh. Nilai ulangan, tiga puluh lima."
+        },
+        {
+          "id": "l199",
+          "speaker": "sasa",
+          "emotion": "surprised",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Jadi tim Kusaka atau tim Bimo?"
+        },
+        {
+          "id": "l200",
+          "speaker": "nadia",
+          "emotion": "embarrassed",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Tim... pulang. Angkotnya udah datang."
+        },
+        {
+          "id": "l201",
+          "speaker": "sasa",
+          "emotion": "laugh",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Kamu ngalihin pembicaraan!"
+        },
+        {
+          "id": "l202",
+          "speaker": "nadia",
+          "emotion": "smug",
+          "listener": "laugh",
+          "shot": "two",
+          "action": "hips",
+          "text": "Aku ketua kelas. Aku jago."
+        },
+        {
+          "id": "l203",
+          "speaker": "sasa",
+          "emotion": "neutral",
+          "listener": "smug",
+          "shot": "two",
+          "action": "idle",
+          "text": "Nad. Serius deh. Kamu sebenarnya gimana soal dia?"
+        },
+        {
+          "id": "l204",
+          "speaker": "nadia",
+          "emotion": "neutral",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "idle",
+          "text": "Dia nggak sempurna. Tapi dia nggak pura-pura. Itu jarang."
+        },
+        {
+          "id": "l205",
+          "speaker": "sasa",
+          "emotion": "surprised",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "shock",
+          "text": "Wah. Hati kamu mulai terbuka."
+        },
+        {
+          "id": "l206",
+          "speaker": "nadia",
+          "emotion": "pleading",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "plead",
+          "text": "Jangan bilang siapa-siapa, ya."
+        },
+        {
+          "id": "l207",
+          "speaker": "sasa",
+          "emotion": "smug",
+          "listener": "pleading",
+          "shot": "two",
+          "action": "phone",
+          "text": "Aku nggak bilang. Aku cuma live."
+        },
+        {
+          "id": "l208",
+          "speaker": "nadia",
+          "emotion": "shock",
+          "listener": "smug",
+          "shot": "crash",
+          "action": "shock",
+          "text": "SASA!"
+        },
+        {
+          "id": "l209",
+          "speaker": "sasa",
+          "emotion": "laugh",
+          "listener": "shock",
+          "shot": "two",
+          "action": "laugh",
+          "text": "Becanda! ...Mungkin.",
+          "sfx": [
+            {
+              "id": "crickets",
+              "at": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s08",
+      "location": "warung",
+      "cast": {
+        "kusaka": {
+          "mark": "A",
+          "facing": 1
+        },
+        "ujang": {
+          "mark": "B",
+          "facing": -1
+        },
+        "buWati": {
+          "mark": "D",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "buIjah",
+          "emotion": "laugh",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "idle",
+          "text": "Le! Utangmu ketambah es teh tadi pagi, ya!",
+          "caption": "SEPULANG SEKOLAH",
+          "offscreen": true,
+          "id": "l119"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "defeated",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "slump",
+          "text": "Bu Ijah, saya baru sembuh dari upacara. Jangan dulu.",
+          "id": "l120"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "defeated",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Gue yang bayar lagi, ya?",
+          "id": "l121"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "pleading",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "plead",
+          "text": "Jang. Lo satu-satunya malaikat gue.",
+          "id": "l122"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "pleading",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Malaikat yang kenapa jadi ATM.",
+          "id": "l123"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "neutral",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "phone",
+          "text": "...Oppa, jangan pergi... jangan tinggalkan aku...",
+          "move": {
+            "who": "buWati",
+            "from": "offR",
+            "to": "D",
+            "at": 0
+          },
+          "id": "l124"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "surprised",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "shock",
+          "text": "Jang. Itu suara Bu Wati?",
+          "id": "l125"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "surprised",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "phone",
+          "text": "Diam, Kus. Dia lagi nonton drakor.",
+          "id": "l126"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "embarrassed",
+          "listener": "shock",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Kusaka? Ujang? Kalian... tidak melihat apa-apa.",
+          "id": "l127"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "smug",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Wah. Bu Wati ternyata punya sisi lembut, ya.",
+          "id": "l128"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "deadpan",
+          "listener": "smug",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Itu bukan sisi lembut. Itu riset.",
+          "id": "l129"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "chin",
+          "text": "Riset apa, Bu?",
+          "id": "l130"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "embarrassed",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Riset... bahasa asing. Untuk persiapan mengajar.",
+          "id": "l131"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "suspicious",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "chin",
+          "text": "Bu, itu 'Oppa saranghae', kan? Bukan bahasa Inggris.",
+          "id": "l132"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "suspicious",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "point",
+          "text": "Kusaka. Kamu kurang tidur dan kebanyakan menonton. Aneh.",
+          "id": "l133"
+        },
+        {
+          "speaker": "ujang",
+          "emotion": "deadpan",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Dia memang aneh, Bu. Sejak semalam.",
+          "id": "l134"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "smug",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "hips",
+          "text": "Baik. Kita buat kesepakatan. Kamu tidak cerita soal drakor.",
+          "id": "l135"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "surprised",
+          "listener": "smug",
+          "shot": "two",
+          "action": "idle",
+          "text": "Dan Ibu... nggak kasih PR?",
+          "id": "l136"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "deadpan",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Itu bukan kesepakatan. Itu pertanyaan.",
+          "id": "l137"
+        },
+        {
+          "speaker": "buWati",
+          "emotion": "neutral",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "point",
+          "text": "Besok pagi. Ke meja Ibu. Kerjakan halaman 45 sampai 90. Sekarang.",
+          "sfx": [
+            {
+              "id": "dun_dun_dun",
+              "at": "end"
+            }
+          ],
+          "id": "l138"
+        }
+      ]
+    }
+  ]
+}

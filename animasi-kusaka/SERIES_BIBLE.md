@@ -221,7 +221,7 @@ lebih aman memakai pustaka orisinal di atas. Kalau Anda punya file yang lisensin
 |---|---|---|---|---|
 | 1 | Operasi Traktir Nadia ✅ (7:39, 10 adegan) | Kamar → Ruang Tamu → Gerbang → Koridor → Kelas → Kantin → BK → Warung → Kamar | Hampir semua pemeran | Dinda live: "Kakakku baru bangun, guys" |
 | 2 | Dompet Sandera ✅ (15:12, 14 adegan) | Kamar → Koridor | Kusaka, Dinda, Raka | Lanjutan cliffhanger Eps. 1: Kusaka jadi "bintang konten" Dinda |
-| 3 | Telat Upacara | Gerbang → Lapangan Upacara | Kusaka, Mang Udin, Pak Joko | Gerbang menutup di depan hidung Kusaka |
+| 3 | Telat Upacara ✅ (13:21, 12 adegan) | Gerbang → Lapangan Upacara → Ruang Guru → Pasar → Lapangan Basket → Halte → Warung | Kusaka, Mang Udin, Pak Joko + adegan tanpa Kusaka | Gerbang menutup di depan hidung Kusaka |
 | 4 | PR Halaman 45 | Kelas–meja guru | Kusaka, Bu Wati, Nadia | "Kerjakan halaman 45 sampai 90." |
 | 5 | Satu Kelompok | Perpustakaan | Kusaka, Nadia, Ujang | Undian kelompok: Kusaka + Nadia |
 | 6 | Gosip Sasa | Koridor | Sasa, Kusaka, Ucok | "Eh, kalian udah denger belum?!" |
@@ -319,3 +319,10 @@ Mengikuti referensi pemilik: karakter KUSAKA tetap, yang diubah adalah bahasa ka
 - **Detail set** untuk 14 lokasi (`src/scene/Details.tsx`, `Details2.tsx`). **Detail karakter**: mata anime, kilau rambut, lipatan baju.
 - **Subtitle** Oswald 600 putih kecil, tanpa highlight karaoke.
 - Panduan lengkap untuk sesi baru: skill `.claude/skills/kusaka-design/SKILL.md`.
+
+## 11. Dunia yang lebih hidup (lokasi v3.1.0)
+
+- **Extras (NPC latar)** (`src/scene/Extras.tsx`): murid/guru/warga anonim di upacara, kelas, koridor, gerbang, kantin, perpustakaan, warung, dan lokasi baru. Tanpa nama dan tanpa dialog, selalu di belakang pemeran, posisi tetap per lokasi. Atur per adegan: `"extras": "off" | "low" | "normal"`.
+- **Adegan tanpa Kusaka**: wajib ada tiap episode panjang (guru rapat, ibu-ibu, Bimo, Nadia–Sasa) agar dunia tidak hanya berputar di tokoh utama.
+- **4 lokasi baru** (total 18): Ruang Guru, Pasar Tradisional, Halte & Jalan Raya, Lapangan Basket (`src/scene/Locations3.tsx`).
+- Cerita boleh keluar dari rumah dan sekolah: pasar, halte, jalan, lapangan, dan seterusnya.

@@ -8,6 +8,7 @@ import { Caption, FlashbackOverlay, SpeedLines, Subtitles } from "./fx/Overlays"
 import { CharLightDefs, LightDef, ScreenLight, SetLight } from "./fx/Lighting";
 import { DETAILS } from "./scene/Details";
 import { DETAILS2 } from "./scene/Details2";
+import { Extras } from "./scene/Extras";
 import sfxLib from "./audio/sfx.json";
 import editing from "./edit/editing.json";
 import { CharId, END_OF_DIALOG, FPS, LINES, Line, SCENES, Scene, beatAt } from "./lib/timeline";
@@ -254,6 +255,7 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
               ? <Layer cam={cam} d={1} w={w} h={h}><image href={staticFile(bgImage)} x={0} y={0} width={1920} height={1080} preserveAspectRatio="xMidYMid slice" /></Layer>
               : loc.layers.map((l, i) => <Layer key={`${scene.id}-${i}`} cam={cam} d={l.d} w={w} h={h}>{l.el(t, { ijahNod })}</Layer>)}
             {Detail && !bgImage && <Layer cam={cam} d={1} w={w} h={h}><Detail t={t} /></Layer>}
+            {!bgImage && <Layer cam={cam} d={1} w={w} h={h}><Extras location={scene.location} t={t} density={(scene as { extras?: string }).extras} /></Layer>}
             <Layer cam={cam} d={1} w={w} h={h}><SetLight light={light} t={t} floor={meta.floor} /></Layer>
           </g>
           <Layer cam={cam} d={1} w={w} h={h}>

@@ -1,4 +1,5 @@
 import { DETAILS } from "../scene/Details";
+import { Extras } from "../scene/Extras";
 import { DETAILS2 } from "../scene/Details2";
 import { LightDef, SetLight } from "../fx/Lighting";
 import React from "react";
@@ -25,6 +26,10 @@ export const DEMO_CAST: Record<LocId, Cast> = {
   perpustakaan: [["nadia", "A", 1, "suspicious", "idle"], ["kusaka", "B", -1, "defeated", "slump"]],
   ruangTamu: [["ibu", "A", 1, "shock", "hips"], ["bapak", "B", -1, "laugh", "thumbsup"]],
   lapanganUpacara: [["mangUdin", "A", 1, "suspicious", "point"], ["pakJoko", "B", -1, "neutral", "hips"]],
+  ruangGuru: [["pakDarto", "A", 1, "suspicious", "chin"], ["buWati", "B", -1, "deadpan", "crossed"]],
+  pasar: [["ibu", "A", 1, "suspicious", "hips"], ["buIjah", "B", -1, "laugh", "gesture"]],
+  halte: [["nadia", "A", 1, "neutral", "idle"], ["sasa", "B", -1, "laugh", "phone"]],
+  lapanganBasket: [["bimo", "A", 1, "smug", "thumbsup"], ["ucok", "B", -1, "laugh", "point"]],
   kos: [["tara", "A", 1, "neutral", "phone"], ["kusaka", "B", -1, "pleading", "plead"]],
 };
 
@@ -41,6 +46,7 @@ export const LocationPlate: React.FC<{ id: LocId; cast?: boolean; marks?: boolea
         <rect width={1920} height={1080} fill={loc.bg} />
         {loc.layers.map((l, i) => <g key={i}>{l.el(t)}</g>)}
         {Detail && <Detail t={t} />}
+        <Extras location={id} t={t} />
         <SetLight light={(m as { light?: LightDef }).light ?? { kind: "sun", from: -1 }} t={t} floor={m.floor} />
         {marks && Object.entries(m.marks).map(([k, x]) => (
           <g key={k} transform={`translate(${x} ${m.floor + 40})`}>
@@ -66,7 +72,7 @@ export const LocationStill: React.FC<{ id: LocId }> = ({ id }) => {
 export const LocationSheet: React.FC = () => {
   useFonts();
   const ids = Object.keys(LOCATIONS) as LocId[];
-  const W = 4000, H = 2080, pw = 768, ph = 432, cols = 5;
+  const W = 4000, H = 2620, pw = 768, ph = 432, cols = 5;
   return (
     <AbsoluteFill style={{ background: "#fdf6e3" }}>
       <svg width={W} height={H}>
@@ -86,7 +92,7 @@ export const LocationSheet: React.FC = () => {
           );
         })}
         {/* rules card */}
-        <g transform={`translate(${24 + 4 * (pw + 27)} ${160 + 2 * (ph + 200)})`}>
+        <g transform={`translate(${24 + 4 * (pw + 27)} ${160 + 3 * (ph + 200)})`}>
           <rect width={pw} height={ph} rx={20} fill="#fff" stroke="#d8ccae" strokeWidth={5} />
           <text x={30} y={66} fontFamily="Bangers" fontSize={46} fill="#e63946">ATURAN SET</text>
           {LOCATION_META.rules.map((r, i) => (

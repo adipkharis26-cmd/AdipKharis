@@ -1,6 +1,7 @@
 import React from "react";
 import meta from "./locations.json";
 import { City, Ground, Sky, Warung } from "./Background";
+import { Halte, HalteBack, LapanganBasket, LapanganBasketBack, Pasar, RuangGuru } from "./Locations3";
 import { Kantin, KelasBelakang, KelasJendela, Kos, LapanganUpacara, LapanganUpacaraBack, MejaGuru, Perpustakaan, RuangBK, RuangTamu } from "./Locations2";
 
 /* Locked location sets. Each set = parallax layers (d: 0 far … 1 character plane) + optional foreground. */
@@ -311,6 +312,10 @@ export const LOCATIONS: Record<LocId, LocationDef> = {
   ruangBK: { id: "ruangBK", bg: "#d7ead9", layers: [{ d: 1, el: (t) => <RuangBK t={t} /> }] },
   perpustakaan: { id: "perpustakaan", bg: "#efe2c8", layers: [{ d: 1, el: (t) => <Perpustakaan t={t} /> }] },
   ruangTamu: { id: "ruangTamu", bg: "#f7dcc4", layers: [{ d: 1, el: (t) => <RuangTamu t={t} /> }] },
+  ruangGuru: { id: "ruangGuru", bg: "#e6efe0", layers: [{ d: 1, el: (t) => <RuangGuru t={t} /> }] },
+  pasar: { id: "pasar", bg: "#d7e6ee", layers: [{ d: 1, el: (t) => <Pasar t={t} /> }] },
+  halte: { id: "halte", bg: "#8fd6ff", layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.5, el: () => <HalteBack /> }, { d: 1, el: (t) => <Halte t={t} /> }] },
+  lapanganBasket: { id: "lapanganBasket", bg: "#8fd6ff", layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.55, el: () => <LapanganBasketBack /> }, { d: 1, el: (t) => <LapanganBasket t={t} /> }] },
   lapanganUpacara: {
     id: "lapanganUpacara", bg: "#8fd6ff",
     layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.55, el: () => <LapanganUpacaraBack /> }, { d: 1, el: (t) => <LapanganUpacara t={t} /> }],

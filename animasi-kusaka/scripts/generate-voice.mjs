@@ -180,7 +180,7 @@ for (const sc of script.scenes) {
     cursor += duration + (line.surprise ? 0.15 : line.gapAfter ?? script.gapSeconds);
   }
   cursor += script.sceneGap ?? 0;
-  timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
+  timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
 }
 timeline.scenes[timeline.scenes.length - 1].end = +(cursor + (script.tail ?? 2.5)).toFixed(3);
 timeline.totalSeconds = timeline.scenes[timeline.scenes.length - 1].end;

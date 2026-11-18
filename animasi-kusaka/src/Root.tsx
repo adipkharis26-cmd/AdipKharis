@@ -22,6 +22,6 @@ export const RemotionRoot: React.FC = () => (
     {(Object.keys(LOCATIONS) as (keyof typeof LOCATIONS)[]).map((id) => (
       <Composition key={id} id={`Loc-${id}`} component={LocationStill} durationInFrames={1} fps={FPS} width={1920} height={1080} defaultProps={{ id }} />
     ))}
-    <Composition id="LocationSheet" component={LocationSheet} durationInFrames={1} fps={FPS} width={4000} height={2080} />
+    <Composition id="LocationSheet" component={LocationSheet} durationInFrames={1} fps={FPS} width={4000} height={2620} />
   </>
 );
