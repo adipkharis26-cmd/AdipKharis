@@ -56,12 +56,16 @@ kusaka design, animasi 2d, sitkom animasi, cerita sekolah, nilai ulangan jelek, 
 
 ---
 
-## Konsep thumbnail (teks hanya judul pendek, tanpa nomor episode, tanpa uang/Rp)
+## Thumbnail (terkunci: `brand/thumbnails/eps02-A/B/C.png`, konfigurasi `src/branding/thumbnails.json`)
 
-- Kiri: Dinda tersenyum licik memegang dompet Kusaka tinggi-tinggi (prop dompet diizinkan, tanpa uang terlihat).
-- Kanan: Kusaka crash zoom kaget memohon, keringat, speed lines.
-- Teks: **"DOMPETKU DISANDERA!"** kuning #ffd23f, outline hitam tebal, sedikit miring.
-- Latar kamar, kontras tinggi (merah/biru), tanpa elemen kecil — harus terbaca di layar HP.
+| | File | Teks | Pasangan judul |
+|---|---|---|---|
+| **A (utama)** | `eps02-A.png` | DOMPETKU DISANDERA! — Kusaka kaget + Dinda licik + dompet | Judul 1 |
+| B | `eps02-B.png` | NILAIKU 35... — Ibu kaget + Kusaka memelas | Judul 2 |
+| C | `eps02-C.png` | IBU, MAAF... — latar oranye hangat, emosional | Judul 3 |
+
+Upload dengan A; masukkan A/B/C ke **Test & Compare** YouTube Studio (pemenang dipilih dari watch time).
+Pantau CTR 48 jam; bila < 5%, ganti ke judul 2.
 
 ---
 
