@@ -368,3 +368,8 @@ arah hadap, shot lebar di momen kunci. Tambahkan benda baru di `src/characters/P
 - Topi upacara (`UpacaraCap`) otomatis di lokasi `"hat": true`; murid hijab tanpa topi. NPC upacara ikut bertopi.
 - Pulang/berangkat sekolah berseragam (lihat aturan 15). Watermark kiri atas juga di video 16:9.
 - Alat audit: `npm run audit:props -- src/data/episodes/<id>.json`. Beri `"ref": ["bendera"]` pada baris yang hanya MEMBICARAKAN benda.
+
+### Intro resmi gaya D "meriah", 6 detik, selalu di awal (brand v1.9.0)
+0–3,3 dtk: 5 shot cepat (gerbang pagi, upacara, kantin, lapangan basket, warung senja) + umbul-umbul + konfeti + kilatan di tiap potongan;
+3,3 dtk: hentakan musik → lencana + ledakan konfeti + kembang api cahaya; 3,6–5,5 dtk: KUSAKA DESIGN + 8 tokoh bersorak; 5,55–6 dtk: zoom menembus lencana ke cahaya.
+Episode lalu muncul dari cahaya (0,5 dtk). Naskah long: `"intro": {"style": "D"}`. Shorts tanpa intro.

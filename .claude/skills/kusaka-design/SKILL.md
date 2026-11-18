@@ -68,6 +68,15 @@ tangan lain `{"item": "wallet", "hand": "back"}`), aksi `hold|carry|give|show|re
 `"l007:end"` = akhir baris), `flagInverted`. Benda: paper, book, kresek, gorengan, cup, mug, tray, ball, wallet, bagTote (tambah di `Props.tsx`).
 Pakai `"shot": "wide"` pada momen kunci agar bendanya tampak. Benda tambahan: whistle, clipboard, broom, bowl, tumbler, pen, helmet, umbrella; aksi: shoot, drink, eat, write, sweep, blow. Jalankan `npm run audit:props -- <naskah>` sampai 0. Pulang/berangkat sekolah tetap berseragam + tas; topi upacara di lapangan upacara; watermark kiri atas juga di video panjang. Tambahkan detail yang kurang tanpa menunggu perintah, tetapi render video tetap hanya atas perintah pemilik.
 
+## Visual sesuai kebutuhan episode (WAJIB)
+Pustaka benda/aksi/lokasi hanyalah titik awal. Tiap episode: daftar semua yang disebut/tersirat di naskah, riset dan buat sendiri yang belum ada
+(`Props.tsx`, pose, bagian set bergerak, lokasi, NPC), audit `npm run audit:props` = 0, kirim pratinjau gambar. Jangan memalsukan dengan gerak tangan.
+
+## Intro resmi (gaya D "meriah", 6 detik, SELALU di awal video panjang)
+Naskah long: `"intro": {"style": "D"}` (tanpa `after` = detik 0). Komponen `IntroD` di `src/branding/IntroCine.tsx`; musik & SFX di `public/intro/` (terkunci).
+Transisi tembus-cahaya ke adegan pertama otomatis (`INTRO_TRANSITION` di `Video.tsx`). Shorts tanpa intro. Tema sinematik, bukan komik.
+Pratinjau gambar: `npx remotion still src/branding/index.ts IntroD --frame=N`.
+
 ## Format naskah (`src/data/episodes/<id>.json`)
 ```json
 { "format": "shorts", "episode": "shorts04", "title": "…", "fps": 30,

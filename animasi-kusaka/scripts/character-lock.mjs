@@ -30,6 +30,11 @@ const FILES = [
   "src/branding/Brand.tsx",
   "src/branding/Thumbnail.tsx",
   "src/branding/Watermark.tsx",
+  "src/branding/Intro.tsx",
+  "src/branding/IntroAlt.tsx",
+  "src/branding/IntroCine.tsx",
+  // musik & SFX intro terkunci
+  ...fs.readdirSync(path.join(root, "public/intro")).filter((f) => f.endsWith(".mp3")).sort().map((f) => `public/intro/${f}`),
   // every SFX file is locked too (sound consistency)
   ...fs.readdirSync(path.join(root, "public/sfx")).filter((f) => f.endsWith(".mp3")).sort().map((f) => `public/sfx/${f}`),
 ];

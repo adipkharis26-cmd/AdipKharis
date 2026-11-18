@@ -28,6 +28,8 @@ export const FPS: number = timeline.fps;
 export const LINES = direct(timeline.lines as unknown as Line[]);
 export const SCENES = (timeline as unknown as { scenes: Scene[] }).scenes;
 export const TOTAL_SECONDS: number = timeline.totalSeconds;
+/** Intro 10 dtk (video panjang): disisipkan setelah adegan pembuka; semua waktu setelahnya sudah bergeser. */
+export const INTRO = (timeline as unknown as { intro?: { start: number; seconds: number; style?: "A" | "B" | "C" | "D" } }).intro ?? null;
 /** false bila naskah memakai "subtitles": false (subtitle tidak dirender). */
 export const SUBTITLES: boolean = (timeline as unknown as { subtitles?: boolean }).subtitles !== false;
 export const TOTAL_FRAMES = Math.ceil(TOTAL_SECONDS * FPS);

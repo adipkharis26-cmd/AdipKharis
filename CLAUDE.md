@@ -56,3 +56,13 @@ Panduan cerita dan strategi: `animasi-kusaka/SERIES_BIBLE.md`.
 15. **Pulang/berangkat sekolah TETAP berseragam** (pemilik 18 Nov 2026). Adegan bercaption "SEPULANG SEKOLAH" / "SENIN PAGI" otomatis berseragam
     (lengkap dengan tas punggung), walau lokasinya warung/halte. Pakaian bebas hanya untuk akhir pekan, malam, dan di rumah (`"wear"` per adegan).
     Topi upacara abu-abu dipakai murid (non-hijab) di lapangan upacara. Audit benda/tindakan: `npm run audit:props -- <naskah.json>` (harus 0 sebelum rilis).
+16. **Visual dibuat sesuai kebutuhan tiap episode, bukan hanya dari pustaka yang ada** (pemilik 18 Nov 2026). Untuk setiap naskah baru: baca baris demi baris,
+    daftar semua benda/tindakan/tempat/suasana yang disebut atau tersirat, lalu RISET dan BUAT sendiri yang belum ada (benda di `Props.tsx`, aksi/pose,
+    bagian set yang bergerak, lokasi baru, NPC latar). Jangan memalsukan dengan gerak tangan atau memakai benda yang "mirip saja". Jalankan
+    `npm run audit:props` sampai 0, kirim pratinjau gambar. Tetap berlaku: desain karakter & suara terkunci, kanon baru naik versi + sheet (dengan izin) + kunci,
+    render video hanya atas perintah, push hanya setelah "cocok".
+17. **Intro resmi = gaya D "meriah", 6 detik, SELALU di awal episode (pemilik 18 Nov 2026).** `IntroD` di `src/branding/IntroCine.tsx`: 5 shot cepat dari
+    set asli (gerbang, upacara, kantin, basket, warung senja), umbul-umbul merah-putih, konfeti, lencana Logo 2 + KUSAKA DESIGN + 8 tokoh bersorak.
+    Tema sinematik, BUKAN komik. Musik instrumental orisinal + SFX perayaan (`public/intro/`, terkunci). Naskah long: `"intro": {"style": "D"}` (detik 0).
+    Transisi ke episode = "tembus cahaya" (zoom menembus lencana → cahaya hangat → adegan pertama muncul 0,5 dtk). Shorts TIDAK diberi intro.
+    Gaya A/B/C hanya arsip. Pratinjau intro berupa gambar (`npx remotion still src/branding/index.ts IntroD --frame=N`).

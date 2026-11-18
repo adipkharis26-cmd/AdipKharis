@@ -1,5 +1,5 @@
 {
-  "version": "1.6.0",
+  "version": "1.9.0",
   "lockedAt": "2026-11-18",
   "channel": "Kusaka Design",
   "handle": "@kusakadesign",
@@ -28,7 +28,8 @@
     "Thumbnail DILARANG memakai uang / mata uang (Rp). Properti hanya benda cerita (mis. dompet).",
     "Wajah karakter besar dengan ekspresi ekstrem, pojok kanan bawah kosong (label durasi), 3 varian untuk Test & Compare.",
     "Watermark Shorts resmi = Contoh 5 (pil gelap transparan, Logo 2, KUSAKA/DESIGN) di pojok kiri atas. Dipakai di Shorts 9:16 DAN video panjang 16:9 (ukuran disesuaikan, pojok kiri atas).",
-    "Thumbnail: IDENTITAS TETAP (bingkai kuning+hitam, judul Bangers kuning/putih + bayangan merah, Kusaka ekspresi ekstrem, maks 4 kata, pojok kanan bawah kosong). KOMPOSISI BERBEDA tiap episode (pola latar, layar terbelah, callout lingkaran/panah, properti cerita, warna dominan, posisi teks). Varian A/B/C tiap episode juga beda komposisi."
+    "Thumbnail: IDENTITAS TETAP (bingkai kuning+hitam, judul Bangers kuning/putih + bayangan merah, Kusaka ekspresi ekstrem, maks 4 kata, pojok kanan bawah kosong). KOMPOSISI BERBEDA tiap episode (pola latar, layar terbelah, callout lingkaran/panah, properti cerita, warna dominan, posisi teks). Varian A/B/C tiap episode juga beda komposisi.",
+    "Intro resmi = gaya D meriah, 6 detik (pemilik 18 Nov 2026): SELALU di awal episode panjang, transisi tembus-cahaya ke adegan pertama, musik + SFX orisinal; tema sinematik, BUKAN komik. Shorts tanpa intro."
   ],
   "watermark": {
     "chosen": 5,
@@ -43,5 +44,18 @@
       "scale": 0.78,
       "note": "video panjang 16:9: gaya sama dengan Shorts, pojok kiri atas; caption keterangan adegan digeser ke bawah watermark"
     }
+  },
+  "intro": {
+    "chosen": "D",
+    "seconds": 6,
+    "file": "src/branding/IntroCine.tsx",
+    "formats": [
+      "long"
+    ],
+    "placement": "SELALU di awal episode (detik 0)",
+    "transition": "zoom menembus lencana ke cahaya hangat, adegan pertama muncul dari cahaya 0,5 dtk sambil kamera sedikit mundur",
+    "concept": "D meriah: 5 shot cepat dari set asli (gerbang, upacara, kantin, basket, warung senja), umbul-umbul merah-putih, konfeti, lencana + 8 tokoh bersorak",
+    "music": "public/intro/music-cine.mp3 (ElevenLabs Music, instrumental orisinal)",
+    "alternatives": "A, B, C hanya arsip"
   }
 }
