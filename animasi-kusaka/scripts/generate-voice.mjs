@@ -86,13 +86,15 @@ for (const [id, s] of Object.entries(sfx.sfx)) {
 
 /* ---------------- voice lock ---------------- */
 function curlJson(url) {
-  const args = ["-sS", url]; if (apiKey) args.push("-H", `xi-api-key: ${apiKey}`);
+  const args = ["-sS", "-m", "45", url]; if (apiKey) args.push("-H", `xi-api-key: ${apiKey}`);
   return JSON.parse(execFileSync("curl", args).toString());
 }
 function verifyVoice(id) {
   const v = canon.characters[id].voice;
   if (v.model_id !== LOCKED_MODEL) fail(`${id}: model harus ${LOCKED_MODEL} (terkunci), bukan ${v.model_id}`);
   if (v.source !== "elevenlabs-library") fail(`${id}: hanya voice library/premade yang boleh (bukan kloning pribadi)`);
+  // Pengecualian SEKALI PAKAI (izin pemilik): endpoint verifikasi ElevenLabs macet, TTS jalan. voice_id/model/seed tetap dari canon.
+  if (process.argv.includes("--skip-voice-verify")) return "verifikasi DILEWATI (izin pemilik, voice_id kanon tetap)";
   const own = curlJson(`https://api.elevenlabs.io/v1/voices/${v.voice_id}`);
   if (own.voice_id === v.voice_id) return "akun";
   const q = encodeURIComponent(v.name_check.split(" - ")[0]);
