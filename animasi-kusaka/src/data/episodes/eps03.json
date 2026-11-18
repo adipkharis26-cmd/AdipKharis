@@ -8,6 +8,9 @@
   "sceneLead": 1.0,
   "sceneGap": 0.6,
   "tail": 3.0,
+  "intro": {
+    "style": "D"
+  },
   "scenes": [
     {
       "id": "s01",

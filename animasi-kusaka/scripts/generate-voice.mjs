@@ -171,6 +171,9 @@ const probe = (f) => parseFloat(execFileSync("ffprobe", ["-v", "error", "-show_e
 // Only verify voices that actually need a new take.
 const timeline = { episode: script.episode, title: script.title, fps: script.fps, scenes: [], lines: [], totalSeconds: 0 };
 let cursor = 0;
+// Intro resmi: SELALU di awal episode (video panjang). Gaya D = 6 dtk.
+const introSec = (st) => script.intro?.seconds ?? (st === "A" ? 10 : 6);
+if (script.intro && !script.intro.after) { const st = script.intro.style ?? "D"; timeline.intro = { start: 0, style: st, seconds: introSec(st) }; cursor = timeline.intro.seconds; }
 const verified = new Set();
 const lineHash = (l) => crypto.createHash("sha256").update(l.text + "|" + voiceHash(l.speaker)).digest("hex").slice(0, 16);
 for (const sc of script.scenes) {
@@ -196,6 +199,7 @@ for (const sc of script.scenes) {
     cursor += duration + (line.surprise ? 0.15 : line.gapAfter ?? script.gapSeconds);
   }
   cursor += script.sceneGap ?? 0;
+  if (script.intro && script.intro.after === sc.id) { timeline.intro = { start: +cursor.toFixed(3), style: script.intro.style ?? "D", seconds: introSec(script.intro.style ?? "D") }; cursor += timeline.intro.seconds; }
   timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), ...(sc.bag !== undefined ? { bag: sc.bag } : {}), ...(sc.hold ? { hold: sc.hold } : {}), ...(sc.tracks ? { tracks: sc.tracks } : {}), ...(sc.flagInverted ? { flagInverted: true } : {}), ...(sc.hat !== undefined ? { hat: sc.hat } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
 }
 timeline.scenes[timeline.scenes.length - 1].end = +(cursor + (script.tail ?? 2.5)).toFixed(3);
@@ -203,6 +207,7 @@ timeline.totalSeconds = timeline.scenes[timeline.scenes.length - 1].end;
 // Duration rules (editing.json → formats). Owner may override the minimum per episode with "minSeconds".
 const fmt = editing.formats?.[script.format ?? "long"];
 if (!fmt) fail(`format "${script.format}" tidak dikenal (pakai "long" atau "shorts")`);
+if (script.intro) { const ids = script.scenes.map((x) => x.id); if ((script.format ?? "long") !== "long") fail("intro hanya untuk video panjang (format long)"); if (script.intro.after !== undefined && (!ids.includes(script.intro.after) || script.intro.after === ids[ids.length - 1])) fail(`intro.after "${script.intro.after}" harus id adegan yang bukan adegan terakhir`); }
 const minS = script.minSeconds ?? fmt.minSeconds;
 if (timeline.totalSeconds < minS) fail(`Durasi ${timeline.totalSeconds.toFixed(1)} dtk < minimum ${minS} dtk untuk ${script.format ?? "long"} (${fmt.aspect}). Tambah adegan/dialog.`);
 if (fmt.maxSeconds && timeline.totalSeconds > fmt.maxSeconds) fail(`Durasi ${timeline.totalSeconds.toFixed(1)} dtk > maksimum ${fmt.maxSeconds} dtk untuk Shorts.`);

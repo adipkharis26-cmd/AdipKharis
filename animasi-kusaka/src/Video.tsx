@@ -13,7 +13,10 @@ import { Extras } from "./scene/Extras";
 import { FLine, activeLine, conversationFacing } from "./edit/facing";
 import sfxLib from "./audio/sfx.json";
 import editing from "./edit/editing.json";
-import { CharId, END_OF_DIALOG, FPS, LINES, Line, SCENES, Scene, beatAt, SUBTITLES, heldAt, trackAt } from "./lib/timeline";
+import { CharId, END_OF_DIALOG, FPS, LINES, Line, SCENES, Scene, beatAt, SUBTITLES, heldAt, trackAt, INTRO } from "./lib/timeline";
+import { Intro } from "./branding/Intro";
+import { IntroB, IntroC } from "./branding/IntroAlt";
+import { IntroD } from "./branding/IntroCine";
 
 /* -------------------------------- stage layout (per scene, from locked location marks) ---- */
 const metaOf = (sc: Scene) => LOCATION_META.locations[sc.location as LocId];
@@ -237,7 +240,7 @@ const Foreground: React.FC<{ kind: string; w: number; h: number; side: number }>
 };
 
 /* -------------------------------- main video --------------------------------- */
-export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
+const KusakaMain: React.FC<{ vertical: boolean }> = ({ vertical }) => {
   useFonts();
   const frame = useCurrentFrame();
   const { width: w, height: h } = useVideoConfig();
@@ -336,6 +339,26 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
       {CUES.map((c, i) => (
         <Sequence key={`c${i}`} from={c.frame}><Audio src={staticFile(`sfx/${c.id}.mp3`)} volume={sfxLib.sfx[c.id].volume} /></Sequence>
       ))}
+    </AbsoluteFill>
+  );
+};
+
+/** Intro resmi (video panjang saja): SELALU di awal episode. Transisi masuk episode = "tembus cahaya":
+ * intro diakhiri zoom menembus lencana ke cahaya hangat, lalu adegan pertama muncul dari cahaya (0,5 dtk) sambil kamera sedikit mundur. */
+const INTRO_TRANSITION = 0.5;
+export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
+  const frame = useCurrentFrame();
+  const a = INTRO ? Math.round(INTRO.start * FPS) : -1, end = INTRO ? a + Math.round(INTRO.seconds * FPS) : -1;
+  if (!vertical && INTRO && frame >= a && frame < end) {
+    const Pick = INTRO.style === "A" ? Intro : INTRO.style === "B" ? IntroB : INTRO.style === "C" ? IntroC : IntroD;
+    return <Sequence from={a}><Pick /></Sequence>;
+  }
+  const k = !vertical && INTRO ? (frame - end) / (INTRO_TRANSITION * FPS) : 1;
+  const tr = k >= 0 && k < 1 ? 1 - k : 0;          // 1 → 0 selama transisi
+  return (
+    <AbsoluteFill>
+      <AbsoluteFill style={{ transform: `scale(${1 + 0.08 * tr * tr})` }}><KusakaMain vertical={vertical} /></AbsoluteFill>
+      {tr > 0 && <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 45%, #fffaf0 0%, #ffe3b0 60%, #ffc98a 100%)", opacity: Math.pow(tr, 1.5) }} />}
     </AbsoluteFill>
   );
 };
