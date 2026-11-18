@@ -200,6 +200,12 @@
       "format": "kurang-lebih",
       "alur": "duel",
       "jawaban": "LEBIH"
+    },
+    {
+      "ep": "oh09",
+      "format": "benar-bohong",
+      "alur": "tangga",
+      "jawaban": "BENAR"
     }
   ]
 }

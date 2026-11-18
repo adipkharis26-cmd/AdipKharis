@@ -1,0 +1,71 @@
+{
+  "ep": "oh09",
+  "catatan": "Thumbnail oh09 (benar/bohong: kertas 42 lipatan sampai Bulan). Jangan tampilkan jawaban (BENAR / 440.000 km / tebal sampai Bulan).",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "OHI mikir di antara kertas dan Bulan + klaim 'kertas dilipat 42×, sampai Bulan?': dua objek yang mustahil bertemu memicu rasa ingin tahu; wajah OHI jelas.",
+      "latar": {
+        "frame": 8.0,
+        "zoom": 1.05,
+        "fokus": [
+          690,
+          1020
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "KERTAS DILIPAT 42×",
+          "warna": "putih"
+        },
+        {
+          "t": "SAMPAI BULAN?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "2753",
+          "x": 905,
+          "y": 1290,
+          "s": 200,
+          "rot": 0.15
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Menara kertas naik melewati Monas dan pesawat memicu penasaran seberapa tinggi lipatan terakhir; hasil akhir (Bulan) tidak diperlihatkan.",
+      "latar": {
+        "frame": 22.0,
+        "zoom": 1.0,
+        "fokus": [
+          540,
+          900
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "1 KERTAS 42 LIPATAN",
+          "warna": "putih"
+        },
+        {
+          "t": "SETEBAL APA?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1F4C4",
+          "x": 200,
+          "y": 1290,
+          "s": 200,
+          "rot": -0.15
+        }
+      ]
+    }
+  ],
+  "thumbPilihan": "A"
+}
