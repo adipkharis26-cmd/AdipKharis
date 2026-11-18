@@ -18,23 +18,28 @@ const SW = 6;
 const ST = canon.style;
 
 type Hair = "spiky" | "buzz" | "hijab" | "ponytail" | "parted" | "bun" | "long" | "quiff" | "cap" | "balding" | "bob" | "curly" | "messy";
-type Outfit = "sma" | "smaGirl" | "smp" | "teacher" | "daster" | "polo" | "tracksuit" | "security" | "casual" | "blouse" | "apron";
-type Bottom = "pants" | "longSkirt" | "skirt" | "dress" | "sarung" | "trackpants";
+type Outfit = "sma" | "smaGirl" | "smp" | "teacher" | "daster" | "polo" | "tracksuit" | "security" | "casual" | "blouse" | "apron"
+  | "tee" | "hoodie" | "jersey"; // pakaian bebas (kanon v3.1.0)
+type Bottom = "pants" | "longSkirt" | "skirt" | "dress" | "sarung" | "trackpants" | "jeans" | "cargo" | "pleated";
 type Pattern = "none" | "kawung" | "floral" | "plaid" | "parang" | "stripes";
 export interface Look {
   skin: string; skinShade: string; hair: string; shirt: string; shirtShade: string; bottom: string; accent: string;
-  hijab?: string; hijabShade?: string; motif?: string; inner?: string; apron?: string;
+  hijab?: string; hijabShade?: string; motif?: string; inner?: string; apron?: string; graphic?: string;
   bodyW: number; belly: number; browThick: number; height: number;
   hairStyle: Hair; glasses: boolean; glassesStyle: "round" | "rect" | "cateye"; bandaid: boolean; tucked: boolean; outfit: Outfit;
   bottomStyle: Bottom; sleeves: "short" | "long"; mustache: boolean; mustacheStyle: "thick" | "thin"; lashes: boolean;
-  badge: "osis" | "nametag" | "security" | "none"; pattern: Pattern; collar: "shirt" | "polo" | "round" | "zip" | "open";
+  badge: "osis" | "nametag" | "security" | "none"; pattern: Pattern; collar: "shirt" | "polo" | "round" | "zip" | "open" | "vneck" | "hood";
   shoes: "shoe" | "sneaker" | "sandal"; accessories: string[]; age: number;
 }
 type CanonChar = (typeof canon.characters)[CharId];
-const toLook = (c: CanonChar): Look => {
-  const f = c.features as Record<string, unknown>;
+/** Pakaian: "seragam" (kanon dasar), "bebas" (lemari `wardrobe.bebas` di canon.json), "rumah" (bebas + sandal). */
+export type Wear = "seragam" | "bebas" | "rumah";
+type Wardrobe = { features?: Record<string, unknown>; palette?: Record<string, string> };
+const toLook = (c: CanonChar, wear: Wear = "seragam"): Look => {
+  const wb = wear === "seragam" ? undefined : (c as unknown as { wardrobe?: { bebas?: Wardrobe } }).wardrobe?.bebas;
+  const f: Record<string, unknown> = { ...(c.features as Record<string, unknown>), ...(wb?.features ?? {}), ...(wb && wear === "rumah" ? { shoes: "sandal" } : {}) };
   return Object.freeze({
-    ...(c.palette as Record<string, string>), ...c.build,
+    ...(c.palette as Record<string, string>), ...(wb?.palette ?? {}), ...c.build, graphic: (f.graphic as string | undefined),
     hairStyle: f.hair as Hair, glasses: !!f.glasses, glassesStyle: (f.glassesStyle ?? "round") as Look["glassesStyle"],
     bandaid: !!f.bandaid, tucked: !!f.tucked, outfit: f.outfit as Outfit, bottomStyle: f.bottom as Bottom,
     sleeves: f.sleeves as Look["sleeves"], mustache: !!f.mustache, mustacheStyle: (f.mustacheStyle ?? "thick") as Look["mustacheStyle"],
@@ -44,6 +49,12 @@ const toLook = (c: CanonChar): Look => {
 };
 export const CHAR_IDS = Object.keys(canon.characters) as CharId[];
 export const LOOKS = Object.freeze(Object.fromEntries(CHAR_IDS.map((id) => [id, toLook(canon.characters[id])]))) as Record<CharId, Look>;
+const WEAR_LOOKS: Record<Wear, Record<CharId, Look>> = {
+  seragam: LOOKS,
+  bebas: Object.freeze(Object.fromEntries(CHAR_IDS.map((id) => [id, toLook(canon.characters[id], "bebas")]))) as Record<CharId, Look>,
+  rumah: Object.freeze(Object.fromEntries(CHAR_IDS.map((id) => [id, toLook(canon.characters[id], "rumah")]))) as Record<CharId, Look>,
+};
+export const lookFor = (id: CharId, wear: Wear = "seragam") => WEAR_LOOKS[wear][id];
 
 /* ------------------------------ poses ----------------------------------- */
 // Arm pose: [shoulder, elbow] in degrees, measured "forward" (toward facing) from pointing down.
@@ -115,15 +126,17 @@ const Arm: React.FC<{ sx: number; sy: number; pose: ArmPose; look: Look; shade?:
   if (hand === "wave") handAngle += Math.sin(t * 12) * 18;
   // long sleeve covers the arm down to the wrist (cuff), short sleeve 62% of the upper arm
   const cuffX = ex + (hx - ex) * 0.86, cuffY = ey + (hy - ey) * 0.86;
+  const baggy = look.outfit === "tee" || look.outfit === "jersey"; // kaos oversize: lengan lebih lebar & panjang
+  const sk = baggy ? 0.78 : 0.62;
   const sleevePath = look.sleeves === "long"
     ? `M ${sx} ${sy} L ${ex} ${ey} L ${cuffX} ${cuffY}`
-    : `M ${sx} ${sy} L ${sx + (ex - sx) * 0.62} ${sy + (ey - sy) * 0.62}`;
+    : `M ${sx} ${sy} L ${sx + (ex - sx) * sk} ${sy + (ey - sy) * sk}`;
   return (
     <g>
       <path d={path} stroke={OUT} strokeWidth={40} fill="none" strokeLinecap="round" strokeLinejoin="round" />
       <path d={path} stroke={skin} strokeWidth={28} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={sleevePath} stroke={OUT} strokeWidth={look.sleeves === "long" ? 46 : 54} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={sleevePath} stroke={cloth} strokeWidth={look.sleeves === "long" ? 34 : 42} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d={sleevePath} stroke={OUT} strokeWidth={look.sleeves === "long" ? (look.outfit === "hoodie" ? 52 : 46) : baggy ? 62 : 54} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d={sleevePath} stroke={cloth} strokeWidth={look.sleeves === "long" ? (look.outfit === "hoodie" ? 40 : 34) : baggy ? 50 : 42} fill="none" strokeLinecap="round" strokeLinejoin="round" />
       {look.pattern === "kawung" && <path d={sleevePath} stroke={look.motif} strokeWidth={6} strokeDasharray="2 14" fill="none" strokeLinecap="round" opacity={shade ? 0.6 : 0.9} />}
       {(look.pattern === "floral" || look.pattern === "parang") && <path d={sleevePath} stroke={look.motif} strokeWidth={7} strokeDasharray="3 16" fill="none" strokeLinecap="round" opacity={0.85} />}
       {look.pattern === "plaid" && <path d={sleevePath} stroke={look.shirtShade} strokeWidth={8} strokeDasharray="6 10" fill="none" opacity={0.9} />}
@@ -201,11 +214,25 @@ const Lower: React.FC<{ look: Look; crouch: number; walk?: number }> = ({ look, 
   const swing = walk === undefined ? 0 : Math.sin(walk) * 20;
   const hipY = -240 + crouch;
   const shade = (c: string) => `color-mix(in srgb, ${c} 82%, black)`;
-  if (look.bottomStyle === "pants" || look.bottomStyle === "trackpants") {
+  if (look.bottomStyle === "pants" || look.bottomStyle === "trackpants" || look.bottomStyle === "jeans" || look.bottomStyle === "cargo") {
+    // baggy jeans / kargo: kaki melebar ke bawah (tren baggy & barrel)
+    const wide = look.bottomStyle === "jeans" || look.bottomStyle === "cargo" ? 10 : 0;
     const leg = (x: number, back: boolean) => (
       <g>
-        <path d={`M ${x - 26 * w} ${hipY} L ${x - 24} -28 L ${x + 26} -28 L ${x + 26 * w} ${hipY} Z`}
+        <path d={`M ${x - 26 * w} ${hipY} L ${x - 24 - wide} -28 L ${x + 26 + wide} -28 L ${x + 26 * w} ${hipY} Z`}
           fill={back ? shade(look.bottom) : look.bottom} stroke={OUT} strokeWidth={SW} strokeLinejoin="round" />
+        {look.bottomStyle === "jeans" && (
+          <g fill="none" strokeLinecap="round">
+            <path d={`M ${x + 6} ${hipY + 4} L ${x + 4} -34`} stroke="#ffffff" strokeWidth={2.5} strokeDasharray="7 7" opacity={0.45} />
+            <path d={`M ${x - 26 - wide} -44 L ${x + 28 + wide} -44`} stroke={shade(look.bottom)} strokeWidth={6} />
+          </g>
+        )}
+        {look.bottomStyle === "cargo" && (
+          <g stroke={OUT} strokeWidth={4}>
+            <rect x={x + 2} y={hipY + 74} width={34} height={42} rx={5} fill={shade(look.bottom)} />
+            <path d={`M ${x + 2} ${hipY + 86} L ${x + 36} ${hipY + 86}`} />
+          </g>
+        )}
         {look.bottomStyle === "trackpants" && <path d={`M ${x + 14 * w} ${hipY + 6} L ${x + 16} -32`} stroke={look.motif ?? "#fff"} strokeWidth={7} />}
         <path d={`M ${x - 14} ${hipY + 128} q 10 7 22 1 M ${x - 10} ${hipY + 146} q 8 5 16 0`} stroke={shade(look.bottom)} strokeWidth={4} fill="none" strokeLinecap="round" />
         <path d={`M ${x - 22 * w} ${hipY + 8} q 6 26 22 30`} stroke={shade(look.bottom)} strokeWidth={4} fill="none" strokeLinecap="round" />
@@ -220,6 +247,7 @@ const Lower: React.FC<{ look: Look; crouch: number; walk?: number }> = ({ look, 
     );
   }
   const long = look.bottomStyle !== "skirt";
+  const pleats = look.bottomStyle === "pleated" ? [-0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75] : [-0.45, 0, 0.45]; // rok plisket
   const hem = long ? -26 : -150;
   const flare = long ? 96 : 84;
   const fill = look.bottomStyle === "dress" ? look.shirt : look.bottom;
@@ -241,7 +269,7 @@ const Lower: React.FC<{ look: Look; crouch: number; walk?: number }> = ({ look, 
       <path d={d} fill={fill} />
       <g clipPath={`url(#${clip})`}><PatternFill look={sarungLook} pattern={pat} x={-120 * w} y={hipY} w={260 * w} h={-hipY} /></g>
       <path d={d} fill="none" stroke={OUT} strokeWidth={SW} strokeLinejoin="round" />
-      {pat === "none" && [-0.45, 0, 0.45].map((k) => <path key={k} d={`M ${k * 50 * w} ${hipY + 30} L ${k * flare * w * 0.9} ${hem - 4}`} stroke={shade(fill)} strokeWidth={5} />)}
+      {pat === "none" && pleats.map((k) => <path key={k} d={`M ${k * 50 * w} ${hipY + 30} L ${k * flare * w * 0.9} ${hem - 4}`} stroke={shade(fill)} strokeWidth={5} />)}
       {look.bottomStyle === "sarung" && <path d={`M ${-60 * w} ${hipY + 14} Q 0 ${hipY + 30} ${62 * w} ${hipY + 12} L ${20 * w} ${hipY + 60} Z`} fill={shade(look.bottom)} stroke={OUT} strokeWidth={4} />}
     </g>
   );
@@ -259,12 +287,15 @@ const Torso: React.FC<{ look: Look; crouch: number }> = ({ look, crouch }) => {
   const line = look.pattern !== "none" && look.outfit !== "tracksuit" ? look.shirtShade : "#c9ccd4";
   return (
     <g>
+      {look.collar === "hood" && (
+        <path d={`M ${-64 * w} ${top + 16} Q ${-74 * w} ${top - 58} 4 ${top - 62} Q ${80 * w} ${top - 58} ${70 * w} ${top + 16} Z`} fill={look.shirtShade} stroke={OUT} strokeWidth={SW} strokeLinejoin="round" />
+      )}
       <clipPath id={clipId}><path d={d} /></clipPath>
       <path d={d} fill={look.shirt} />
       <g clipPath={`url(#${clipId})`}>
         {look.outfit === "casual" && <rect x={-20 * w} y={top - 20} width={50 * w} height={300} fill={look.inner} />}
         {look.outfit === "casual"
-          ? <g><PatternFill look={look} pattern="plaid" x={-100 * w} y={top - 20} w={80 * w} h={300} /><PatternFill look={look} pattern="plaid" x={30 * w} y={top - 20} w={90 * w} h={300} /></g>
+          ? <g><PatternFill look={look} pattern={look.pattern} x={-100 * w} y={top - 20} w={80 * w} h={300} /><PatternFill look={look} pattern={look.pattern} x={30 * w} y={top - 20} w={90 * w} h={300} /></g>
           : <PatternFill look={look} pattern={look.pattern} x={-100 * w} y={top - 10} w={220 * w + belly} h={280} />}
         <path d={`M ${-80 * w} ${top} L ${-40 * w} ${top} Q ${-48 * w} ${top + 110} ${-38 * w} ${bot + 4} L ${-80 * w} ${bot + 4} Z`} fill={look.shirtShade} opacity={look.pattern !== "none" ? 0.55 : 1} />
         <ellipse cx={6} cy={top + 4} rx={46 * w} ry={16} fill={OUT} opacity={0.14} />
@@ -283,6 +314,29 @@ const Torso: React.FC<{ look: Look; crouch: number }> = ({ look, crouch }) => {
         )}
       </g>
       <path d={d} fill="none" stroke={OUT} strokeWidth={SW} strokeLinejoin="round" />
+      {/* kaos oversize: gambar dada sederhana, TANPA teks */}
+      {look.outfit === "tee" && look.graphic === "star" && (
+        <path transform={`translate(${22 * w} ${top + 108}) scale(1.5)`} d="M 0 -22 L 6 -7 L 22 -7 L 9 3 L 14 19 L 0 9 L -14 19 L -9 3 L -22 -7 L -6 -7 Z" fill={look.motif} stroke={OUT} strokeWidth={3} strokeLinejoin="round" />
+      )}
+      {look.outfit === "tee" && look.graphic === "wave" && (
+        <g transform={`translate(${22 * w} ${top + 104})`} stroke={OUT} strokeWidth={3}>
+          <circle r={34} fill={look.motif} /><path d="M -30 8 q 15 -14 30 0 t 30 0" fill="none" stroke={look.accent} strokeWidth={7} strokeLinecap="round" />
+        </g>
+      )}
+      {look.outfit === "jersey" && (
+        <g>
+          <path d={`M -26 ${top - 2} L 10 ${top + 46} L 46 ${top - 2}`} fill="none" stroke={look.motif} strokeWidth={10} strokeLinejoin="round" />
+          <circle cx={46 * w} cy={top + 74} r={12} fill={look.motif} stroke={OUT} strokeWidth={3} />
+          <rect x={-40 * w} y={top + 112} width={32} height={24} rx={4} fill={look.motif} opacity={0.9} />
+        </g>
+      )}
+      {look.outfit === "hoodie" && (
+        <g stroke={OUT} strokeWidth={4} strokeLinejoin="round">
+          <path d={`M ${-34 * w} ${bot - 92} L ${54 * w} ${bot - 92} L ${64 * w} ${bot - 22} L ${-44 * w} ${bot - 22} Z`} fill={look.shirtShade} />
+          <path d={`M -2 ${top + 14} L -6 ${top + 96} M 26 ${top + 14} L 30 ${top + 92}`} fill="none" stroke="#fbfbf7" strokeWidth={6} strokeLinecap="round" />
+          <rect x={-64 * w} y={bot - 22} width={130 * w + belly * 0.4} height={22} fill={look.shirtShade} />
+        </g>
+      )}
       {look.outfit === "casual" && (
         <g stroke={OUT} strokeWidth={5} fill="none"><path d={`M ${-20 * w} ${top + 4} L ${-14 * w} ${bot}`} /><path d={`M ${30 * w} ${top + 4} L ${36 * w} ${bot}`} /></g>
       )}
@@ -334,7 +388,8 @@ const Torso: React.FC<{ look: Look; crouch: number }> = ({ look, crouch }) => {
           <path d={`M ${46} ${top - 2} L ${28} ${top + 26} L ${12} ${top + 6} Z`} fill={look.shirtShade} stroke={OUT} strokeWidth={5} strokeLinejoin="round" />
         </g>
       )}
-      {look.collar === "round" && <path d={`M -26 ${top - 2} Q 10 ${top + 26} 46 ${top - 2}`} fill={look.skinShade} stroke={OUT} strokeWidth={5} />}
+      {(look.collar === "round" || look.collar === "hood") && <path d={`M -26 ${top - 2} Q 10 ${top + 26} 46 ${top - 2}`} fill={look.skinShade} stroke={OUT} strokeWidth={5} />}
+      {look.collar === "vneck" && <path d={`M -22 ${top - 2} L 10 ${top + 38} L 42 ${top - 2} Z`} fill={look.skinShade} stroke={OUT} strokeWidth={5} strokeLinejoin="round" />}
       {look.collar === "zip" && <path d={`M -30 ${top - 14} L 48 ${top - 14} L 46 ${top + 12} L -28 ${top + 12} Z`} fill={look.shirt} stroke={OUT} strokeWidth={5} strokeLinejoin="round" />}
       {look.outfit === "blouse" && <circle cx={10} cy={top + 22} r={9} fill="#e7c86b" stroke={OUT} strokeWidth={3} />}
       {look.tucked && <rect x={-64 * w} y={bot - 22} width={130 * w + belly * 0.4} height={20} fill="#2b2b2b" stroke={OUT} strokeWidth={4} />}
@@ -658,9 +713,9 @@ export const Portrait: React.FC<{ id: CharId; emotion: Emotion; viseme?: Viseme 
 export interface Force { emotion?: Emotion; action?: Action; viseme?: Viseme | null; noFx?: boolean }
 
 /* ------------------------------ Character ------------------------------- */
-export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 | -1; frame: number; scale?: number; force?: Force; walk?: number }> = ({ id, x, y, facing, frame, scale = 1, force, walk }) => {
+export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 | -1; frame: number; scale?: number; force?: Force; walk?: number; wear?: Wear }> = ({ id, x, y, facing, frame, scale = 1, force, walk, wear = "seragam" }) => {
   const t = frame / FPS;
-  const look = LOOKS[id];
+  const look = lookFor(id, wear);
   const st = force
     ? { emotion: force.emotion ?? "neutral", action: force.action ?? "idle", since: 2, line: null }
     : stateAt(id, t);

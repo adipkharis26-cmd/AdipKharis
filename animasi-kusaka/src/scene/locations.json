@@ -1,6 +1,7 @@
 {
-  "version": "3.2.0",
+  "version": "3.3.0",
   "rules": [
+    "v3.3.0: Pakaian per lokasi ('wear'): sekolah = seragam, rumah/kos = rumah (pakaian bebas + sandal), tempat lain di luar sekolah = bebas. Override per adegan dengan \"wear\" di naskah.",
     "v3.2.0: ruangTamu punya NPC latar — warga lewat di jalan depan rumah, hanya terlihat dari jendela (di balik semak & kusen). Tidak ada orang asing di dalam rumah.",
     "Semua set berukuran panggung 1920x1080, lantai karakter di y=960.",
     "Karakter berdiri di titik 'marks' (x) agar blocking antar-episode konsisten.",
@@ -28,7 +29,8 @@
         "kind": "sun",
         "from": 1,
         "leaves": true
-      }
+      },
+      "wear": "bebas"
     },
     "gerbang": {
       "name": "Gerbang SMA Nusantara",
@@ -46,7 +48,8 @@
         "kind": "sun",
         "from": -1,
         "leaves": true
-      }
+      },
+      "wear": "seragam"
     },
     "kelas": {
       "name": "Ruang Kelas XI IPS 2 – depan (papan tulis)",
@@ -63,7 +66,8 @@
       "light": {
         "kind": "window",
         "from": 1
-      }
+      },
+      "wear": "seragam"
     },
     "koridor": {
       "name": "Koridor & Lapangan",
@@ -81,7 +85,8 @@
         "kind": "sun",
         "from": -1,
         "leaves": true
-      }
+      },
+      "wear": "seragam"
     },
     "kamar": {
       "name": "Kamar Kusaka",
@@ -98,7 +103,8 @@
       "light": {
         "kind": "sunset",
         "from": -1
-      }
+      },
+      "wear": "rumah"
     },
     "kelasBelakang": {
       "name": "Ruang Kelas XI IPS 2 – belakang",
@@ -115,7 +121,8 @@
       "light": {
         "kind": "window",
         "from": 1
-      }
+      },
+      "wear": "seragam"
     },
     "kelasJendela": {
       "name": "Ruang Kelas XI IPS 2 – sisi jendela",
@@ -132,7 +139,8 @@
       "light": {
         "kind": "window",
         "from": 1
-      }
+      },
+      "wear": "seragam"
     },
     "mejaGuru": {
       "name": "Ruang Kelas XI IPS 2 – meja guru",
@@ -149,7 +157,8 @@
       "light": {
         "kind": "window",
         "from": -1
-      }
+      },
+      "wear": "seragam"
     },
     "kantin": {
       "name": "Kantin Sekolah",
@@ -166,7 +175,8 @@
       "light": {
         "kind": "window",
         "from": -1
-      }
+      },
+      "wear": "seragam"
     },
     "ruangBK": {
       "name": "Ruang BK",
@@ -183,7 +193,8 @@
       "light": {
         "kind": "window",
         "from": -1
-      }
+      },
+      "wear": "seragam"
     },
     "perpustakaan": {
       "name": "Perpustakaan",
@@ -200,7 +211,8 @@
       "light": {
         "kind": "window",
         "from": -1
-      }
+      },
+      "wear": "seragam"
     },
     "ruangTamu": {
       "name": "Ruang Tamu Rumah Kusaka",
@@ -217,7 +229,8 @@
       "light": {
         "kind": "sunset",
         "from": 1
-      }
+      },
+      "wear": "rumah"
     },
     "lapanganUpacara": {
       "name": "Lapangan Upacara",
@@ -235,7 +248,8 @@
         "kind": "sun",
         "from": -1,
         "leaves": false
-      }
+      },
+      "wear": "seragam"
     },
     "kos": {
       "name": "Kamar Kos Kak Tara",
@@ -252,7 +266,8 @@
       "light": {
         "kind": "night",
         "from": 1
-      }
+      },
+      "wear": "rumah"
     },
     "ruangGuru": {
       "name": "Ruang Guru",
@@ -269,7 +284,8 @@
       "light": {
         "kind": "window",
         "from": -1
-      }
+      },
+      "wear": "seragam"
     },
     "pasar": {
       "name": "Pasar Tradisional",
@@ -287,7 +303,8 @@
         "kind": "sun",
         "from": -1,
         "leaves": false
-      }
+      },
+      "wear": "bebas"
     },
     "halte": {
       "name": "Halte & Jalan Raya",
@@ -304,7 +321,8 @@
       "light": {
         "kind": "sunset",
         "from": 1
-      }
+      },
+      "wear": "bebas"
     },
     "lapanganBasket": {
       "name": "Lapangan Basket",
@@ -322,7 +340,8 @@
         "kind": "sun",
         "from": 1,
         "leaves": true
-      }
+      },
+      "wear": "seragam"
     }
   }
 }

@@ -20,7 +20,7 @@ export interface Line {
 }
 
 export type Mark = "A" | "B" | "C" | "D";
-export interface Scene { id: string; location: string; cast: Record<string, { mark: Mark; facing: 1 | -1 }>; start: number; end: number }
+export interface Scene { id: string; location: string; cast: Record<string, { mark: Mark; facing: 1 | -1 }>; start: number; end: number; wear?: "seragam" | "bebas" | "rumah" }
 
 export const FPS: number = timeline.fps;
 export const LINES = direct(timeline.lines as unknown as Line[]);

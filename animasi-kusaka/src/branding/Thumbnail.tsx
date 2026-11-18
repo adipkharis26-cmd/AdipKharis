@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill } from "remotion";
-import { Character } from "../characters/Character";
+import { Character, Wear } from "../characters/Character";
+import locMeta from "../scene/locations.json";
 import { LocationPlate } from "../sheets/LocationSheet";
 import { useFonts } from "../lib/fonts";
 import type { Action, CharId, Emotion, Viseme } from "../lib/timeline";
@@ -23,8 +24,12 @@ export interface ThumbProps {
   textRot?: number; textAlign?: "middle" | "start";
   // Shorts: sampul vertikal 1080x1920 (9:16). bgX = titik tengah lokasi (koordinat set 1920) yang tampil di sampul.
   size?: "16x9" | "9x16"; bgX?: number;
+  // pakaian aktor; default ikut lokasi latar (sekolah = seragam, luar = bebas, rumah = bebas + sandal)
+  wear?: Wear;
 }
 export const thumbSize = (p: Pick<ThumbProps, "size">) => (p.size === "9x16" ? { w: 1080, h: 1920 } : { w: 1280, h: 720 });
+
+const wearAt = (id: string): Wear => ((locMeta.locations as Record<string, { wear?: string }>)[id]?.wear as Wear) ?? "seragam";
 
 const Burst: React.FC<{ cx: number; cy: number; color: string }> = ({ cx, cy, color }) => {
   const rays = Array.from({ length: 28 }).map((_, i) => {
@@ -116,7 +121,7 @@ export const Thumbnail: React.FC<ThumbProps> = (p) => {
             ? [0, 960].map((y) => <g key={y} transform={`translate(0 ${y}) scale(1.34)`}><Pattern kind={p.pattern ?? "rays"} /></g>)
             : <Pattern kind={p.pattern ?? "rays"} />}
           {p.actors.map((a, i) => (
-            <Character key={i} id={a.id} x={a.x} y={a.y} facing={a.facing} frame={0} scale={a.scale}
+            <Character key={i} id={a.id} x={a.x} y={a.y} facing={a.facing} frame={0} scale={a.scale} wear={p.wear ?? wearAt(p.bg)}
               force={{ emotion: a.emotion, action: a.action, viseme: a.viseme ?? (a.emotion === "shock" ? "O" : null), noFx: true }} />
           ))}
           {p.prop === "wallet" && <Wallet x={p.propX ?? 980} y={p.propY ?? 470} />}

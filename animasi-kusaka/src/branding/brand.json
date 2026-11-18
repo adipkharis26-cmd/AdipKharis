@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "1.5.0",
   "lockedAt": "2026-11-18",
   "channel": "Kusaka Design",
   "handle": "@kusakadesign",
@@ -21,6 +21,7 @@
     "paper": "#fdf6e3"
   },
   "rules": [
+    "v1.5.0: Pakaian aktor di thumbnail ikut lokasi latar (sekolah = seragam, luar sekolah = bebas, rumah = bebas + sandal); override \"wear\".",
     "v1.4.0: Shorts memakai sampul vertikal 1080x1920 (thumbnails.json → \"size\": \"9x16\"), identitas sama (bingkai kuning, Bangers, Kusaka ekspresi ekstrem).",
     "Logo resmi = Logo 2 (lencana Kusaka + KUSAKA DESIGN). Banner resmi = Banner 3 (Panel Komik). Tidak diubah tanpa perintah pemilik.",
     "Thumbnail 1280x720: bingkai kuning, teks HANYA judul (maks 4 kata), tanpa nomor episode/lencana EPS.",

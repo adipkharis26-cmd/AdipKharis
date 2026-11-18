@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill, Audio, Loop, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { useFonts } from "./lib/fonts";
 import { ShortsWatermark } from "./branding/Watermark";
-import { Character } from "./characters/Character";
+import { Character, Wear } from "./characters/Character";
 import { LOCATIONS, LOCATION_META, LocId } from "./scene/Locations";
 import { Caption, FlashbackOverlay, SpeedLines, Subtitles } from "./fx/Overlays";
 import { CharLightDefs, LightDef, ScreenLight, SetLight } from "./fx/Lighting";
@@ -53,6 +53,8 @@ const posOf = (sc: Scene, c: CharId): { x: number; facing: 1 | -1; walk?: number
   const f = conversationFacing(c, activeLine(sceneLines, NOW), sceneLines, (id) => posRaw(sc, id as CharId).x, onStage);
   return f ? { ...p, facing: f } : p;
 };
+/** Pakaian adegan: "wear" di naskah, kalau tidak ada ikut lokasi (sekolah = seragam, luar = bebas, rumah = bebas + sandal). */
+const wearOf = (sc: Scene): Wear => sc.wear ?? ((metaOf(sc) as { wear?: Wear }).wear ?? "seragam");
 const faceOf = (sc: Scene, c: CharId) => ({ x: posOf(sc, c).x + 70 * posOf(sc, c).facing, y: metaOf(sc).floor - 468 - 130 });
 const otherOf = (sc: Scene, c: CharId) => castOf(sc).find((x) => x !== c) ?? c;
 const centerOf = (sc: Scene) => {
@@ -277,12 +279,12 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
             {castOf(scene).map((c) => {
               const p = posOf(scene, c);
               if (closeLine && c !== closeLine.speaker) return null; // single = only the speaker; ots partner is drawn in front below
-              return <g key={`${scene.id}-${c}`}><g filter="url(#charlight)"><Character id={c} x={p.x} y={meta.floor} facing={p.facing} frame={frame} walk={p.walk} /></g></g>;
+              return <g key={`${scene.id}-${c}`}><g filter="url(#charlight)"><Character id={c} x={p.x} y={meta.floor} facing={p.facing} frame={frame} walk={p.walk} wear={wearOf(scene)} /></g></g>;
             })}
             {otsWho && (
               // over-the-shoulder: partner cheated to the frame edge in front of the lens, sharp but dark (foreground silhouette)
               <g style={{ filter: "brightness(0.38) saturate(0.7)" }}>
-                <Character id={otsWho} x={cam.x + otsSide * (w / cam.z / 2 + 20)} y={meta.floor + 70} facing={otsSide > 0 ? -1 : 1} frame={frame} scale={1.2} />
+                <Character id={otsWho} x={cam.x + otsSide * (w / cam.z / 2 + 20)} y={meta.floor + 70} facing={otsSide > 0 ? -1 : 1} frame={frame} scale={1.2} wear={wearOf(scene)} />
               </g>
             )}
           </Layer>

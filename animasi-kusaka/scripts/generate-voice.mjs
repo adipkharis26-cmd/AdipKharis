@@ -35,6 +35,7 @@ const ACTIONS = ["idle","gesture","pocket","chin","point","plead","crossed","sho
 for (const sc of script.scenes) {
   const loc = locations.locations[sc.location];
   if (!loc) fail(`${sc.id}: lokasi "${sc.location}" tidak ada di locations.json`);
+  if (sc.wear && !["seragam", "bebas", "rumah"].includes(sc.wear)) fail(`${sc.id}: wear "${sc.wear}" tidak valid (seragam | bebas | rumah)`);
   const marks = new Set();
   for (const [id, c] of Object.entries(sc.cast ?? {})) {
     if (!canon.characters[id]) fail(`${sc.id}: karakter "${id}" tidak ada di canon.json`);
@@ -180,7 +181,7 @@ for (const sc of script.scenes) {
     cursor += duration + (line.surprise ? 0.15 : line.gapAfter ?? script.gapSeconds);
   }
   cursor += script.sceneGap ?? 0;
-  timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
+  timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
 }
 timeline.scenes[timeline.scenes.length - 1].end = +(cursor + (script.tail ?? 2.5)).toFixed(3);
 timeline.totalSeconds = timeline.scenes[timeline.scenes.length - 1].end;

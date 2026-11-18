@@ -69,6 +69,10 @@ dan sampel suara di `public/voices/<id>.mp3`.
 ```
 
 ### Aturan karakter (WAJIB)
+0b. **Pakaian sesuai tempat** (pemilik, 18 Nov 2026; kanon v3.1.0): di sekolah = seragam; di luar sekolah = pakaian bebas
+   yang sedang tren di Indonesia (lemari `wardrobe.bebas` di `canon.json`, sheet `model-sheets/Wardrobe.png`); di rumah/kos =
+   pakaian bebas + sandal. Otomatis dari `locations.json → wear`; override per adegan `"wear": "seragam" | "bebas" | "rumah"`
+   (mis. berangkat sekolah di halte = seragam). Ciri khas wajah, rambut, dan aksesori tidak berubah.
 0. **Tidak pernah membelakangi lawan bicara** (larangan pemilik): pembicara menghadap lawan bicara, pendengar menghadap
    pembicara — otomatis per baris (`src/edit/facing.ts`). Kalau lawan bicara ambigu, tulis `"to": "<id>"` di baris naskah.
 1. **Desain dikunci kode** (`canon.json`): warna, proporsi, ciri khas, pakaian, aksesori. Tidak ada karakter

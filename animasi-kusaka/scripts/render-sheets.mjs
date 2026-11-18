@@ -7,6 +7,7 @@ fs.mkdirSync("model-sheets/locations", { recursive: true });
 const jobs = [
   ...Object.keys(canon.characters).map((id) => [`ModelSheet-${id}`, `model-sheets/ModelSheet-${id}.png`]),
   ["Lineup", "model-sheets/Lineup.png"],
+  ["Wardrobe", "model-sheets/Wardrobe.png"],
   ["LocationSheet", "model-sheets/LocationSheet.png"],
   ...Object.keys(locs.locations).map((id) => [`Loc-${id}`, `model-sheets/locations/${id}.png`]),
 ];

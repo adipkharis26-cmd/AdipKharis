@@ -218,3 +218,39 @@ export const Lineup: React.FC = () => {
     </AbsoluteFill>
   );
 };
+
+/* Lemari pakaian (kanon v3.1.0): tiap murid — SERAGAM (sekolah) vs BEBAS (luar sekolah) vs RUMAH (bebas + sandal). */
+export const WardrobeSheet: React.FC = () => {
+  useFonts();
+  const ids = (Object.keys(canon.characters) as CharId[]).filter((id) => (canon.characters[id] as { wardrobe?: unknown }).wardrobe);
+  const W = 4000, H = 2700, perRow = 4, cellW = 960;
+  return (
+    <AbsoluteFill style={{ background: PAPER }}>
+      <svg width={W} height={H}>
+        <rect width={W} height={150} fill={OUT} />
+        <Label x={60} y={112} size={104} anchor="start" font="Bangers" color="#ffd23f">LEMARI PAKAIAN · SERAGAM vs BEBAS</Label>
+        <Label x={W - 60} y={100} size={44} anchor="end" color="#fff">kanon v{canon.version} · sekolah = seragam · luar sekolah = bebas · rumah = bebas + sandal</Label>
+        {ids.map((id, i) => {
+          const row = Math.floor(i / perRow), col = i % perRow;
+          const x0 = 40 + col * cellW, floor = 1120 + row * 1250;
+          const c = canon.characters[id] as unknown as { name: string; palette: { accent: string }; wardrobe: { bebas: { desc: string } } };
+          const words = c.wardrobe.bebas.desc.split(" ");
+          const lines: string[] = []; let cur = "";
+          for (const w of words) { if ((cur + " " + w).length > 44) { lines.push(cur.trim()); cur = w; } else cur += " " + w; }
+          lines.push(cur.trim());
+          return (
+            <g key={id}>
+              <rect x={x0 + 10} y={floor - 930} width={cellW - 20} height={1180} rx={24} fill="#fff" stroke="#e6dcc0" strokeWidth={4} />
+              <Character id={id} x={x0 + 260} y={floor} facing={1} frame={0} scale={0.95} force={{ emotion: "neutral", action: "idle", noFx: true }} />
+              <Character id={id} x={x0 + 700} y={floor} facing={-1} frame={0} scale={0.95} wear="bebas" force={{ emotion: "smug", action: "pocket", noFx: true }} />
+              <Label x={x0 + 260} y={floor + 52} size={30} color="#7a6a45">SERAGAM</Label>
+              <Label x={x0 + 700} y={floor + 52} size={30} color="#7a6a45">BEBAS</Label>
+              <Label x={x0 + cellW / 2} y={floor - 860} size={64} font="Bangers" color={c.palette.accent}>{c.name.toUpperCase()}</Label>
+              {lines.map((l, k) => <Label key={k} x={x0 + cellW / 2} y={floor + 112 + k * 36} size={28}>{l}</Label>)}
+            </g>
+          );
+        })}
+      </svg>
+    </AbsoluteFill>
+  );
+};

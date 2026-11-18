@@ -68,6 +68,9 @@ Kamu ahli strategi Shorts: **riset dulu tiap Shorts** (WebSearch: sinyal algorit
     ] }] }
 ```
 - `shot`: tulis `two` agar dipilih otomatis; paksa dengan `wide` / `medium` / `close` / `crash` (crash maks 1 per adegan).
+- **Pakaian per tempat:** sekolah = seragam, luar sekolah = bebas (tren Indonesia), rumah = bebas + sandal — otomatis dari
+  `locations.json → wear`; override adegan `"wear"`. Murid baru/karakter baru wajib punya `wardrobe.bebas`. Riset tren
+  sebelum menambah/mengganti pakaian bebas, lalu naikkan versi canon + `npm run sheets` + `npm run lock:characters`.
 - **Arah hadap otomatis (larangan membelakangi lawan bicara):** `cast.facing` hanya arah awal; tiap baris pembicara
   menghadap lawan bicara, pendengar menghadap pembicara (`src/edit/facing.ts`). Lawan bicara ambigu → `"to": "ibu"`.
   Emosi `listener` berlaku untuk SEMUA pendengar — pakai `reactions` untuk satu tokoh saja (pose slump/condong bisa menutupi wajah tetangga).
