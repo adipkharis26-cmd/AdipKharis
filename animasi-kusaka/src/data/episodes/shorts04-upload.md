@@ -1,6 +1,6 @@
 # Paket Upload YouTube Shorts: KUSAKA "X Itu Mantan"
 
-Durasi: **~46,7 detik** · **full 9:16** (video 1080×1920 + sampul 1080×1920) · **tanpa subtitle** · 1 adegan · ruang tamu (sore)
+Durasi: **~51 detik** · **full 9:16** (video 1080×1920 + sampul 1080×1920) · subtitle Poppins · CTA cerita (like) · 1 adegan · ruang tamu (sore)
 Spin-off Eps. 4 "PR Halaman 45" — naskah Shorts sendiri, bukan potongan episode.
 
 ---
@@ -75,7 +75,8 @@ Sinyal yang paling konsisten di riset: **swipe-away di 1–3 detik pertama** (si
 | Komentar | CTA "tim Bapak atau tim Ibu" (pilih kubu = mudah dijawab), beda pola dari Shorts 03. |
 | Kalimat khas (branding) | Bapak: "Bapak dulu juga gitu, Nak." (membela Kusaka) · Dinda: "Terus aku aduin Ibu, ya!" (sebab Ibu datang). |
 | Share | Dad joke yang bisa dikirim ke grup keluarga/teman; judul 2 menyebut "Bapak kalian". |
-| Tanpa subtitle | Shorts autoplay dengan suara; komedi ini bertumpu pada suara & ekspresi. **Risiko:** penonton mode senyap kehilangan lelucon — pantau retensi 3 detik pertama. |
+| Subtitle | Poppins putih di kotak gelap — terbaca di latar apa pun — penonton mode senyap tetap dapat leluconnya. |
+| CTA cerita | Detik 42,7–47,0, setelah "Din... hapus videonya": Dinda "Kalau yang like banyak, Bapak jadi viral!" → sisipan jempol raksasa, ditekan, wajah Bapak kaget muncul dari tombol. Alasan like = ikut "ngerjain" Bapak; netral YouTube + Instagram; lalu kalimat loop Kusaka. |
 
 **Cek setelah upload (YouTube Studio → Advanced Mode):** kolom *Engaged views* dan *Viewed vs swiped away*.
 Target awal: viewed ≥ 60–70%; loop (views per viewer) > 1. Bandingkan dengan Shorts 01–03 (durasi mirip), bukan angka internet.

@@ -195,6 +195,32 @@
           "id": "l017"
         },
         {
+          "speaker": "dinda",
+          "emotion": "smug",
+          "listener": "smug",
+          "shot": "two",
+          "action": "phone",
+          "to": "bapak",
+          "text": "Tergantung. Kalau yang like banyak, Bapak jadi viral!",
+          "reactions": {
+            "bapak": [
+              "shock",
+              "shock"
+            ]
+          },
+          "cta": {
+            "kind": "like",
+            "text": "LIKE biar Bapak VIRAL!",
+            "keywords": [
+              "LIKE",
+              "VIRAL!"
+            ],
+            "reveal": "bapak",
+            "revealEmotion": "shock"
+          },
+          "id": "l020"
+        },
+        {
           "speaker": "kusaka",
           "emotion": "neutral",
           "listener": "smug",
@@ -205,6 +231,5 @@
         }
       ]
     }
-  ],
-  "subtitles": false
+  ]
 }

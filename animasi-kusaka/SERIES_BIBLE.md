@@ -253,8 +253,11 @@ sinyal terpentingnya adalah **berapa banyak yang tidak menggeser video (swipe aw
 
 ### Shorts
 - **Detik pertama = segalanya.** Mulai dari konflik, ekspresi besar, kalimat pertama di 0,3 dtk.
-- **Full 9:16 tanpa subtitle** (pemilik, 18 Nov 2026): video 1080×1920 + sampul 1080×1920; satu-satunya teks = watermark
-  Contoh 5. Lelucon harus jalan lewat suara + ekspresi.
+- **Full 9:16** (pemilik, 18 Nov 2026): video 1080×1920 + sampul 1080×1920. Subtitle Shorts = Poppins Bold putih di kotak gelap
+  transparan (posisi & ukuran lama). Watermark Contoh 5.
+- **CTA cerita** (YouTube Shorts + Instagram Reels): satu baris tokoh yang memberi alasan lucu untuk like / kirim / ikuti,
+  tampil sebagai sisipan (latar blur, teks ajakan besar, ikon raksasa ditekan, tokoh "korban" muncul dari tombol).
+  Bergantian di tengah atau di akhir; tidak pernah memakai kata "subscribe" (tidak berlaku di Instagram).
 - **Durasi target 40–48 detik** (riset Shorts 2026: komedi kuat di durasi pendek; 40 dtk = batas minimal kanon).
 - **Setiap Shorts memuat ≥1 kalimat khas** karakter (tabel pemeran) dan sifat inti tiap tokoh yang tampil
   (mis. Bapak membela Kusaka, Dinda ngadu) — branding lewat karakter, bukan teks.

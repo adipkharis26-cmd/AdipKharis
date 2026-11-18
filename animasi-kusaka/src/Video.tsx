@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, Audio, Loop, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { useFonts } from "./lib/fonts";
 import { ShortsWatermark } from "./branding/Watermark";
+import { ShortsCta, ctaLineOf } from "./branding/ShortsCta";
 import { Character, Wear } from "./characters/Character";
 import { LOCATIONS, LOCATION_META, LocId } from "./scene/Locations";
 import { Caption, FlashbackOverlay, SpeedLines, Subtitles } from "./fx/Overlays";
@@ -182,6 +183,8 @@ function buildCues(): Cue[] {
   return cues;
 }
 const CUES = buildCues();
+/** CTA cerita Shorts (baris naskah dengan "cta"; hanya dirender di 9:16). */
+const CTA_LINE = ctaLineOf(LINES as unknown as Parameters<typeof ctaLineOf>[0]);
 
 /* -------------------------------- scene transition (no text) --------------- */
 const Wipe: React.FC<{ t: number; w: number; h: number }> = ({ t, w, h }) => {
@@ -297,6 +300,7 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
       <SpeedLines w={w} h={h} frame={frame} opacity={speedOpacity} />
       {flash > 0 && <AbsoluteFill style={{ background: "#fff", opacity: flash }} />}
       <Caption t={t} vertical={vertical} />
+      {vertical && <ShortsCta t={t} line={CTA_LINE} fps={FPS} w={w} h={h} />}
       {SUBTITLES && <Subtitles t={t} vertical={vertical} w={w} />}
       {editing.transition !== "cut" && <Wipe t={t} w={w} h={h} />}
 

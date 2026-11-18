@@ -29,7 +29,13 @@ Branch kerja: `ccr-5483b159-l8zee8`.
 Kamu ahli strategi Shorts: **riset dulu tiap Shorts** (WebSearch: sinyal algoritma terbaru + tren topik) lalu terapkan.
 - **Full 9:16**: video `KusakaEpisodeShorts` 1080×1920 **dan** sampul 1080×1920 (`thumbnails.json` → `"size": "9x16"`,
   `"bgX"` = titik tengah set). Render: `node scripts/render-brand.mjs shorts05`. Komposisi sampul beda dari Shorts sebelumnya.
-- **Tanpa subtitle** di Shorts: naskah `"subtitles": false` (watermark Contoh 5 tetap).
+- **Subtitle Shorts = Poppins Bold putih di kotak gelap transparan** (pilihan pemilik no. 5; ukuran & posisi lama, baris diseimbangkan). Jangan pakai `"subtitles": false`.
+- **CTA cerita (wajib 1 per Shorts, `shortsCta`)** — gaya referensi pemilik ("kaki anjing"): tulis SATU baris dialog tokoh
+  yang memberi alasan lucu untuk like / kirim / ikuti dan nyambung dengan lelucon, mis. Dinda: "Tergantung. Kalau yang
+  like banyak, Bapak jadi viral!" + `"cta": {"kind":"like","text":"LIKE biar Bapak VIRAL!","keywords":["LIKE","VIRAL!"],"reveal":"bapak"}`.
+  Renderer membuat sisipan: latar blur, teks besar atas, ikon raksasa ditekan → partikel → tokoh `reveal` muncul dari tombol.
+  Netral YouTube + Instagram (dilarang kata "subscribe"). Variasikan: like ↔ kirim (sinyal "sends" terkuat di Reels) ↔ ikuti
+  (untuk cerita bersambung); posisi bergantian tengah (setelah punchline) / akhir (sebelum kalimat loop). Jangan di 3 dtk pertama.
 - Sinyal utama: **swipe-away 0–2 dtk** (terkuat, negatif) → kalimat pertama = punchline/premis di 0,3 dtk, tanpa intro;
   **loop/rewatch** → kalimat terakhir menyambung ke kalimat pertama, `tail` 0,2; lalu retensi, share, komentar.
 - Durasi: komedi kuat di durasi pendek → target **40–48 dtk** (40 = batas kanon), buang baris pengisi, `gapSeconds` 0,2.

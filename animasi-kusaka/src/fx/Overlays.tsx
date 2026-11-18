@@ -5,6 +5,8 @@ import { LINES } from "../lib/timeline";
 /* Editing rule (locked in editing.json): on-screen text = subtitles + whitelisted captions ONLY. */
 const OUT = "#1b1b1b";
 const SUB = editing.subtitle;
+/** Shorts 9:16: font/outline dari editing.json → subtitleShorts (ukuran & posisi tetap). */
+const SUBV: typeof editing.subtitle & { box?: string; boxPadding?: string; boxRadius?: number } = { ...editing.subtitle, ...editing.subtitleShorts };
 
 /** Manga-style radial speed lines (screen space, no text) */
 export const SpeedLines: React.FC<{ w: number; h: number; frame: number; opacity: number }> = ({ w, h, frame, opacity }) => {
@@ -36,19 +38,24 @@ export const Subtitles: React.FC<{ t: number; vertical: boolean; w: number }> = 
   if (!line) return null;
   const local = t - line.start;
   const fs = vertical ? SUB.sizeVertical : SUB.sizeLandscape;
+  const S = vertical ? SUBV : SUB;
   return (
-    <div style={{ position: "absolute", left: 0, right: 0, bottom: vertical ? SUB.bottomVertical : SUB.bottomLandscape, display: "flex", justifyContent: "center", fontFamily: SUB.font }}>
-      <div style={{ maxWidth: w * 0.8, textAlign: "center", fontSize: fs, lineHeight: 1.2, fontWeight: SUB.weight }}>
+    <div style={{ position: "absolute", left: 0, right: 0, bottom: vertical ? SUB.bottomVertical : SUB.bottomLandscape, display: "flex", justifyContent: "center", fontFamily: S.font }}>
+      <div style={{ maxWidth: w * 0.8, textAlign: "center", fontSize: fs, lineHeight: vertical && SUBV.box ? 1.5 : 1.2, fontWeight: S.weight, textWrap: vertical ? "balance" : undefined } as React.CSSProperties}>
+        {/* Shorts: satu kotak gelap untuk seluruh baris (pecah per baris teks, bukan per kata) */}
+        <span style={vertical && SUBV.box ? { background: SUBV.box, padding: SUBV.boxPadding, borderRadius: SUBV.boxRadius,
+          boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" } : undefined}>
         {line.words.flatMap((wd, i) => {
           const on = SUB.karaoke && local >= wd.t;
           const word = (
             <span key={i} style={{
-              color: on ? SUB.highlight : SUB.color, WebkitTextStroke: `${SUB.strokeWidth}px ${SUB.stroke}`, paintOrder: "stroke fill",
+              color: on ? SUB.highlight : SUB.color, WebkitTextStroke: S.strokeWidth ? `${S.strokeWidth}px ${S.stroke}` : undefined, paintOrder: "stroke fill",
               display: "inline-block", transform: `scale(${on && local - wd.t < 0.12 ? 1.08 : 1})`, margin: SUB.karaoke ? `0 ${fs * 0.06}px` : 0,
             }}>{wd.w}</span>
           );
           return i > 0 ? [" ", word] : [word]; // real space between words (never merges)
         })}
+        </span>
       </div>
     </div>
   );

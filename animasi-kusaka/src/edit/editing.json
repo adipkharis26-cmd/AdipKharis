@@ -1,7 +1,8 @@
 {
-  "version": "2.2.0",
+  "version": "2.4.0",
   "rules": [
-    "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card. Pengecualian: watermark channel resmi (brand.json) di pojok kiri atas, khusus Shorts.",
+    "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card. Pengecualian: watermark channel resmi (brand.json) di pojok kiri atas, khusus Shorts, dan CTA cerita resmi (shortsCta: teks ajakan besar + ikon like/kirim/ikuti) khusus Shorts.",
+    "v2.3.0: Shorts memakai subtitle Poppins Bold putih di kotak gelap transparan (subtitleShorts), ukuran & posisi sama dengan subtitle lama; video panjang tetap Oswald (subtitle). Shorts juga memuat satu CTA cerita (shortsCta, v2.4.0).",
     "Subtitle: font Baloo 2 ExtraBold, putih dengan outline hitam, kata yang sedang diucapkan berwarna kuning (karaoke), posisi bawah.",
     "Caption: hanya teks dari daftar, huruf kapital, pojok kiri atas, kotak hitam transparan, muncul 0,3 detik dan bertahan selama baris tersebut.",
     "Flashback: filter sepia + vignette + bintik film, SFX flashback_harp saat masuk; caption FLASHBACK atau MASA LALU wajib dipakai di baris pertama flashback.",
@@ -92,5 +93,44 @@
     "closeNote": "Close-up TIDAK pernah memburamkan karakter. 'single' = hanya pembicara di frame; 'ots' = lawan bicara di tepi depan frame, tajam tapi digelapkan. Latar hanya sedikit lembut (dofBlur 2.5). Naskah boleh memaksa dengan \"closeStyle\"."
   },
   "transition": "cut",
-  "transitionNote": "Pindah adegan = potong keras (tanpa wipe & whoosh), seperti referensi. Caption waktu tetap muncul di adegan baru."
+  "transitionNote": "Pindah adegan = potong keras (tanpa wipe & whoosh), seperti referensi. Caption waktu tetap muncul di adegan baru.",
+  "subtitleShorts": {
+    "font": "Poppins",
+    "weight": 700,
+    "strokeWidth": 0,
+    "box": "rgba(17,17,17,0.72)",
+    "boxPadding": "6px 18px",
+    "boxRadius": 10,
+    "note": "Shorts 9:16: Poppins Bold putih di kotak gelap transparan (pilihan pemilik no. 5). Ukuran & posisi = subtitle lama. Video panjang tetap Oswald."
+  },
+  "shortsCta": {
+    "style": "cerita",
+    "kinds": [
+      "like",
+      "kirim",
+      "ikuti"
+    ],
+    "places": [
+      "tengah",
+      "akhir"
+    ],
+    "font": "Baloo2",
+    "fontSize": 84,
+    "stroke": 11,
+    "textTop": 330,
+    "wordStep": 0.12,
+    "iconY": 930,
+    "iconSize": 440,
+    "tapAt": 0.38,
+    "hold": 0.25,
+    "sfx": "pop",
+    "sfxScale": 0.8,
+    "maxPerShorts": 1,
+    "maxTextChars": 36,
+    "note": "CTA CERITA (referensi pemilik): satu baris dialog tokoh dengan alasan lucu untuk like/kirim/ikuti + teks besar di sepertiga atas (kata kunci kuning) + SISIPAN layar penuh: latar diburamkan, ikon raksasa bergaya seri ditekan, meledak jadi partikel, lalu tokoh 'reveal' muncul dari dalam lingkaran (seperti kaki anjing di referensi). Netral YouTube Shorts & Instagram Reels (tanpa kata 'subscribe'). Posisi bergantian antar-Shorts: tengah (setelah punchline) / akhir (sebelum kalimat loop).",
+    "revealAt": 0.58,
+    "revealY": 72,
+    "revealScale": 0.5,
+    "blur": 16
+  }
 }

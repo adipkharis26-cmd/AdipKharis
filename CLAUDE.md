@@ -15,6 +15,11 @@ Aturan dari pemilik proyek, WAJIB diikuti di setiap sesi:
 4. **Suara terkunci:** hanya voice dari `canon.json` (ElevenLabs `eleven_v4`, seed tetap, voice library publik).
    Tidak boleh mengganti, menebak, atau memakai suara cadangan. Jangan menulis API key di repo.
 5. **Teks di video hanya subtitle** (tanpa nama pembicara), plus caption resmi dari `editing.json`.
+   Shorts: subtitle Poppins Bold putih di kotak gelap transparan (`subtitleShorts`) + satu **CTA cerita** (`shortsCta`):
+   satu baris dialog tokoh yang memberi alasan lucu untuk **like / kirim / ikuti** (netral YouTube + Instagram, tanpa kata
+   "subscribe"), ditampilkan sebagai sisipan: latar diburamkan, teks ajakan besar di atas, ikon raksasa ditekan, lalu tokoh
+   "korban" lelucon muncul dari tombol. Posisi bergantian: tengah (setelah punchline) atau akhir (sebelum kalimat loop).
+   Video panjang tetap subtitle Oswald tanpa CTA.
 6. **SFX hanya pelengkap**: volume rendah di bawah dialog (batas di `sfx.json`), satu SFX untuk satu makna.
 7. **Push ke GitHub hanya setelah pemilik bilang "cocok".** Hasil baru (thumbnail, branding, episode, dll.) dibuat
    dulu sebagai draft di `animasi-kusaka/drafts/` (tidak ikut git) dan dikirim sebagai gambar pratinjau. Setelah

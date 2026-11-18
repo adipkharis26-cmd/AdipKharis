@@ -32,6 +32,7 @@ const EMOTIONS = ["neutral", "smug", "suspicious", "shock", "laugh", "pleading",
 const SHOTS = editing.camera.shots;
 if (!script.episode) fail("script.json butuh field \"episode\" (mis. \"eps01\")");
 const ACTIONS = ["idle","gesture","pocket","chin","point","plead","crossed","shock","laugh","slump","wave","thumbsup","peace","facepalm","hips","phone"];
+let ctaCount = 0;
 for (const sc of script.scenes) {
   const loc = locations.locations[sc.location];
   if (!loc) fail(`${sc.id}: lokasi "${sc.location}" tidak ada di locations.json`);
@@ -59,6 +60,15 @@ for (const sc of script.scenes) {
     }
     if (l.offscreen && l.shot !== "two") fail(`${l.id}: suara offscreen harus memakai shot "two"`);
     if (l.action && !ACTIONS.includes(l.action)) fail(`${l.id}: action "${l.action}" tidak valid`);
+    if (l.cta) {
+      const C = editing.shortsCta;
+      if (script.format !== "shorts") fail(`${l.id}: "cta" hanya untuk Shorts`);
+      if (!C.kinds.includes(l.cta.kind)) fail(`${l.id}: cta.kind harus ${C.kinds.join(" | ")}`);
+      if (!l.cta.text || l.cta.text.length > C.maxTextChars) fail(`${l.id}: cta.text wajib, maks ${C.maxTextChars} karakter`);
+      if (/subscribe/i.test(l.cta.text + l.text)) fail(`${l.id}: CTA harus netral YouTube + Instagram — pakai like / kirim / ikuti, bukan "subscribe"`);
+      if (l.cta.reveal && !canon.characters[l.cta.reveal]) fail(`${l.id}: cta.reveal "${l.cta.reveal}" bukan karakter kanon`);
+      ctaCount++;
+    }
     for (const [c, r] of Object.entries(l.reactions ?? {})) {
       if (!sc.cast?.[c]) fail(`${l.id}: reaksi untuk "${c}" yang tidak ada di cast`);
       if (!EMOTIONS.includes(r[0]) || (r[1] && !ACTIONS.includes(r[1]))) fail(`${l.id}: reaksi ${c} tidak valid`);
@@ -124,6 +134,9 @@ function buildWords(a) {
   if (cur) words.push(cur);
   return words;
 }
+
+if (ctaCount > editing.shortsCta.maxPerShorts) fail(`Maksimal ${editing.shortsCta.maxPerShorts} baris CTA per Shorts (ada ${ctaCount})`);
+if (script.format === "shorts" && ctaCount === 0) console.warn("⚠ Shorts tanpa baris CTA cerita (\"cta\") — disarankan satu per Shorts.");
 
 /* ---------------- TTS ---------------- */
 const audioDir = path.join(root, "public/audio", script.episode);
