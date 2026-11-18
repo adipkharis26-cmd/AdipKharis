@@ -69,6 +69,8 @@ dan sampel suara di `public/voices/<id>.mp3`.
 ```
 
 ### Aturan karakter (WAJIB)
+0. **Tidak pernah membelakangi lawan bicara** (larangan pemilik): pembicara menghadap lawan bicara, pendengar menghadap
+   pembicara — otomatis per baris (`src/edit/facing.ts`). Kalau lawan bicara ambigu, tulis `"to": "<id>"` di baris naskah.
 1. **Desain dikunci kode** (`canon.json`): warna, proporsi, ciri khas, pakaian, aksesori. Tidak ada karakter
    yang tampil tanpa ciri khasnya.
 2. **Sifat tidak boleh dilanggar.** Ujang tidak panik duluan. Nadia tidak pernah bodoh. Pak Darto tidak jahat

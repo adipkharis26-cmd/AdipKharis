@@ -29,5 +29,9 @@ Aturan dari pemilik proyek, WAJIB diikuti di setiap sesi:
     **dilarang memakai uang / mata uang (Rp)**. Aset di `animasi-kusaka/brand/` (`npm run brand`).
     **Watermark Shorts resmi = Contoh 5** (pil gelap transparan + Logo 2 + KUSAKA/DESIGN, kiri atas), hanya di Shorts.
 11. **Pratinjau hanya gambar** (storyboard/still). Video MP4 hanya dikirim kalau pemilik memintanya.
+12. **DILARANG membelakangi lawan bicara.** Saat bercakap, pembicara menghadap lawan bicaranya dan semua pendengar
+    menghadap pembicara. Diatur otomatis per baris oleh `src/edit/facing.ts` (lawan bicara: `"to"` di naskah → sapaan di
+    teks → pembicara sebelumnya). Jangan dimatikan. Cek di storyboard: tidak ada wajah yang tertutup kepala tokoh lain.
+    Berlaku untuk produksi ke depan (Shorts & episode). Video yang sudah dirilis atau sedang dirender tidak diganggu.
 
 Panduan cerita dan strategi: `animasi-kusaka/SERIES_BIBLE.md`.

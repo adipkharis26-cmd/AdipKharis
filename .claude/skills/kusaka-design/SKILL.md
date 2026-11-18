@@ -68,6 +68,9 @@ Kamu ahli strategi Shorts: **riset dulu tiap Shorts** (WebSearch: sinyal algorit
     ] }] }
 ```
 - `shot`: tulis `two` agar dipilih otomatis; paksa dengan `wide` / `medium` / `close` / `crash` (crash maks 1 per adegan).
+- **Arah hadap otomatis (larangan membelakangi lawan bicara):** `cast.facing` hanya arah awal; tiap baris pembicara
+  menghadap lawan bicara, pendengar menghadap pembicara (`src/edit/facing.ts`). Lawan bicara ambigu → `"to": "ibu"`.
+  Emosi `listener` berlaku untuk SEMUA pendengar — pakai `reactions` untuk satu tokoh saja (pose slump/condong bisa menutupi wajah tetangga).
 - Opsional: `"camAt": "D"` (kamera diam di titik itu, karakter lewat), `"fg": "tree" | "pillar" | "plant"` (benda depan blur),
   `"move"` (jalan), `"caption"` (hanya dari whitelist), `"flashback": true`, `"offscreen": true` (shot two),
   `"reactions": { "ucok": ["surprised", "idle"] }`, `"sfx": [{ "id": "rimshot", "at": "end" }]` (`at` WAJIB: detik atau "end").

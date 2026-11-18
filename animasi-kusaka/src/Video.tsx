@@ -9,6 +9,7 @@ import { CharLightDefs, LightDef, ScreenLight, SetLight } from "./fx/Lighting";
 import { DETAILS } from "./scene/Details";
 import { DETAILS2 } from "./scene/Details2";
 import { Extras } from "./scene/Extras";
+import { FLine, activeLine, conversationFacing } from "./edit/facing";
 import sfxLib from "./audio/sfx.json";
 import editing from "./edit/editing.json";
 import { CharId, END_OF_DIALOG, FPS, LINES, Line, SCENES, Scene, beatAt, SUBTITLES } from "./lib/timeline";
@@ -22,7 +23,7 @@ const WALK_SPEED: number = editing.camera.walkSpeed;
 const markX = (sc: Scene, m: string) => OFF[m] ?? metaOf(sc).marks[m as keyof ReturnType<typeof metaOf>["marks"]];
 let NOW = 0;
 /** Position of a character at time NOW: start mark, then every `move` of this scene in order. */
-const posOf = (sc: Scene, c: CharId): { x: number; facing: 1 | -1; walk?: number } => {
+const posRaw = (sc: Scene, c: CharId): { x: number; facing: 1 | -1; walk?: number } => {
   let x = markX(sc, sc.cast[c].mark), facing = sc.cast[c].facing;
   const first = LINES.find((l) => l.scene === sc.id && (l as Line & { move?: Move }).move?.who === c) as (Line & { move?: Move }) | undefined;
   if (first?.move?.from) x = markX(sc, first.move.from);
@@ -37,6 +38,20 @@ const posOf = (sc: Scene, c: CharId): { x: number; facing: 1 | -1; walk?: number
     x = to; facing = mv.face ?? dir;
   }
   return { x, facing };
+};
+/* Belum masuk panggung: karakter yang masuk lewat offL/offR sebelum langkah pertamanya dimulai. */
+const notEntered = (sc: Scene, c: CharId) => {
+  const first = LINES.find((l) => l.scene === sc.id && (l as Line & { move?: Move }).move?.who === c) as (Line & { move?: Move }) | undefined;
+  return !!first?.move?.from && OFF[first.move.from] !== undefined && NOW < first.start + (first.move.at ?? 0);
+};
+/** Posisi + arah hadap. ATURAN: saat bercakap tidak ada yang membelakangi lawan bicara (src/edit/facing.ts). */
+const posOf = (sc: Scene, c: CharId): { x: number; facing: 1 | -1; walk?: number } => {
+  const p = posRaw(sc, c);
+  if (p.walk !== undefined) return p; // sedang berjalan: menghadap arah jalan
+  const sceneLines = LINES.filter((l) => l.scene === sc.id) as unknown as FLine[];
+  const onStage = (id: string) => !!sc.cast[id] && !notEntered(sc, id as CharId);
+  const f = conversationFacing(c, activeLine(sceneLines, NOW), sceneLines, (id) => posRaw(sc, id as CharId).x, onStage);
+  return f ? { ...p, facing: f } : p;
 };
 const faceOf = (sc: Scene, c: CharId) => ({ x: posOf(sc, c).x + 70 * posOf(sc, c).facing, y: metaOf(sc).floor - 468 - 130 });
 const otherOf = (sc: Scene, c: CharId) => castOf(sc).find((x) => x !== c) ?? c;
