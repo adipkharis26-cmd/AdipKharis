@@ -1,5 +1,5 @@
 {
-  "version": "3.3.0",
+  "version": "3.5.0",
   "rules": [
     "v3.3.0: Pakaian per lokasi ('wear'): sekolah = seragam, rumah/kos = rumah (pakaian bebas + sandal), tempat lain di luar sekolah = bebas. Override per adegan dengan \"wear\" di naskah.",
     "v3.2.0: ruangTamu punya NPC latar — warga lewat di jalan depan rumah, hanya terlihat dari jendela (di balik semak & kusen). Tidak ada orang asing di dalam rumah.",
@@ -49,7 +49,8 @@
         "from": -1,
         "leaves": true
       },
-      "wear": "seragam"
+      "wear": "seragam",
+      "bag": true
     },
     "kelas": {
       "name": "Ruang Kelas XI IPS 2 – depan (papan tulis)",
@@ -249,7 +250,8 @@
         "from": -1,
         "leaves": false
       },
-      "wear": "seragam"
+      "wear": "seragam",
+      "hat": true
     },
     "kos": {
       "name": "Kamar Kos Kak Tara",
@@ -322,7 +324,8 @@
         "kind": "sunset",
         "from": 1
       },
-      "wear": "bebas"
+      "wear": "bebas",
+      "bag": true
     },
     "lapanganBasket": {
       "name": "Lapangan Basket",

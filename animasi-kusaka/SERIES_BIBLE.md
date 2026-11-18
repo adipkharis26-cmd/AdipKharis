@@ -341,3 +341,30 @@ Mengikuti referensi pemilik: karakter KUSAKA tetap, yang diubah adalah bahasa ka
 - **Adegan tanpa Kusaka**: wajib ada tiap episode panjang (guru rapat, ibu-ibu, Bimo, Nadia–Sasa) agar dunia tidak hanya berputar di tokoh utama.
 - **4 lokasi baru** (total 18): Ruang Guru, Pasar Tradisional, Halte & Jalan Raya, Lapangan Basket (`src/scene/Locations3.tsx`).
 - Cerita boleh keluar dari rumah dan sekolah: pasar, halte, jalan, lapangan, dan seterusnya.
+
+## 12. Aturan "tindakan dan benda terlihat" (kanon v3.2.0)
+
+Dialog tidak boleh berdiri sendiri. Setiap benda/tindakan yang disebut harus tampak:
+
+| Disebut di dialog | Wujud di layar |
+|---|---|
+| kertas ulangan | `paper` dipegang → `show` (ditunjukkan) → `give` (diserahkan) → `read` (dibaca lawan bicara) |
+| buku PR / halaman 45 | `book` di tangan guru, ditunjukkan (`show`) |
+| tiang & tali bendera, bendera terbalik | tiang + tali di set; `tracks.flag` menaikkan kain; `flagInverted` = putih di atas; `pull` saat menarik; `snag` tali nyangkut |
+| "Hormat gerak!" | `salute` tokoh + NPC `tracks.salute` serentak |
+| baki upacara | `tray` berisi bendera terlipat (aksi `hold`) |
+| gerbang ditutup | `tracks.gate` (0 terbuka → 1 tertutup), Mang Udin `pull` |
+| angkot datang | `tracks.angkot` (datang lalu berhenti di halte) |
+| belanja di pasar | `kresek`, `bagTote`, `wallet` |
+| bola, es teh, teh guru | `ball`, `cup`, `mug` |
+| berangkat/pulang sekolah | tas punggung (`bag`), juga pada NPC |
+
+Daftar detail yang dipantau tiap episode: tas, benda di tangan, benda adegan yang bergerak, NPC yang ikut bertindak, pakaian sesuai tempat,
+arah hadap, shot lebar di momen kunci. Tambahkan benda baru di `src/characters/Props.tsx` (jangan memalsukan dengan gerak tangan saja).
+
+### Tambahan v3.5 (benda & aksi jangka panjang)
+- Benda baru: `whistle` (peluit), `clipboard`, `broom` (sapu piket), `bowl` (mangkuk bakso), `tumbler`, `pen`, `helmet`, `umbrella`.
+- Aksi baru: `shoot` (lempar bola), `drink`, `eat`, `write`, `sweep`, `blow` (meniup peluit).
+- Topi upacara (`UpacaraCap`) otomatis di lokasi `"hat": true`; murid hijab tanpa topi. NPC upacara ikut bertopi.
+- Pulang/berangkat sekolah berseragam (lihat aturan 15). Watermark kiri atas juga di video 16:9.
+- Alat audit: `npm run audit:props -- src/data/episodes/<id>.json`. Beri `"ref": ["bendera"]` pada baris yang hanya MEMBICARAKAN benda.

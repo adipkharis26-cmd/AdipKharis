@@ -18,7 +18,7 @@
           "facing": 1
         },
         "kusaka": {
-          "mark": "B",
+          "mark": "C",
           "facing": -1
         }
       },
@@ -34,7 +34,7 @@
           "move": {
             "who": "kusaka",
             "from": "offR",
-            "to": "B",
+            "to": "C",
             "at": 0
           },
           "id": "l001"
@@ -88,8 +88,8 @@
           "speaker": "mangUdin",
           "emotion": "neutral",
           "listener": "shock",
-          "shot": "two",
-          "action": "hips",
+          "shot": "wide",
+          "action": "pull",
           "text": "Nah. Gerbang ditutup. Satu... dua... tiga.",
           "id": "l007"
         },
@@ -153,7 +153,19 @@
           ],
           "id": "l013"
         }
-      ]
+      ],
+      "tracks": {
+        "gate": [
+          [
+            "l007",
+            0
+          ],
+          [
+            "l007:end",
+            1
+          ]
+        ]
+      }
     },
     {
       "id": "s02",
@@ -185,7 +197,7 @@
           "emotion": "laugh",
           "listener": "deadpan",
           "shot": "two",
-          "action": "laugh",
+          "action": "phone",
           "text": "Din, dengerin. 'Kakakmu keren juga.' Keren, Din! Dia bilang keren!",
           "flashback": true,
           "id": "l015"
@@ -205,7 +217,7 @@
           "emotion": "embarrassed",
           "listener": "deadpan",
           "shot": "two",
-          "action": "gesture",
+          "action": "phone",
           "text": "Empat puluh delapan. Satu lagi, terus tidur. Janji.",
           "flashback": true,
           "id": "l017"
@@ -265,7 +277,7 @@
           "emotion": "laugh",
           "listener": "deadpan",
           "shot": "two",
-          "action": "laugh",
+          "action": "phone",
           "text": "Hehehe. Keren. Dia bilang keren.",
           "flashback": true,
           "id": "l023"
@@ -331,9 +343,12 @@
           "emotion": "smug",
           "listener": "neutral",
           "shot": "two",
-          "action": "thumbsup",
+          "action": "show",
           "text": "Aman, Jang. Udah ditandatangani Ibu. Tinggal gue lewat gerbang ini.",
-          "id": "l026"
+          "id": "l026",
+          "hold": {
+            "kusaka": "paper"
+          }
         },
         {
           "speaker": "ujang",
@@ -351,7 +366,10 @@
           "shot": "two",
           "action": "plead",
           "text": "Mang Udin, saya bayar pakai gorengan, deh. Dua. Tiga!",
-          "id": "l028"
+          "id": "l028",
+          "ref": [
+            "gorengan"
+          ]
         },
         {
           "speaker": "mangUdin",
@@ -360,7 +378,16 @@
           "shot": "two",
           "action": "chin",
           "text": "Gorengan dari mana? Dompetmu kan disandera.",
-          "id": "l029"
+          "id": "l029",
+          "reactions": {
+            "kusaka": [
+              "embarrassed",
+              "pocket"
+            ]
+          },
+          "ref": [
+            "gorengan"
+          ]
         },
         {
           "speaker": "kusaka",
@@ -433,7 +460,10 @@
           "shot": "two",
           "action": "shock",
           "text": "Pak Joko...",
-          "id": "l037"
+          "id": "l037",
+          "hold": {
+            "kusaka": null
+          }
         },
         {
           "speaker": "pakJoko",
@@ -466,7 +496,10 @@
           "shot": "two",
           "action": "point",
           "text": "Pengerek bendera hari ini sakit perut. Kamu pengganti.",
-          "id": "l040"
+          "id": "l040",
+          "ref": [
+            "bendera"
+          ]
         },
         {
           "speaker": "kusaka",
@@ -510,7 +543,18 @@
           ],
           "id": "l044"
         }
-      ]
+      ],
+      "tracks": {
+        "gate": [
+          [
+            "l025",
+            1
+          ]
+        ]
+      },
+      "hold": {
+        "kusaka": "paper"
+      }
     },
     {
       "id": "s04",
@@ -534,7 +578,7 @@
           "speaker": "pakJoko",
           "emotion": "neutral",
           "listener": "embarrassed",
-          "shot": "two",
+          "shot": "wide",
           "action": "point",
           "text": "Dengar baik-baik. Bendera dikerek pelan. Sesuai lagu. Paham?",
           "caption": "BEBERAPA SAAT KEMUDIAN",
@@ -553,7 +597,7 @@
           "speaker": "pakJoko",
           "emotion": "deadpan",
           "listener": "embarrassed",
-          "shot": "two",
+          "shot": "wide",
           "action": "crossed",
           "text": "Satu lagu penuh. Tiga menit. Bendera harus sampai puncak di nada terakhir.",
           "id": "l047"
@@ -580,14 +624,17 @@
           "shot": "two",
           "action": "thumbsup",
           "text": "Ucok. Tepat waktu telatnya. Kamu pembawa baki.",
-          "id": "l049"
+          "id": "l049",
+          "hold": {
+            "ucok": "tray"
+          }
         },
         {
           "speaker": "ucok",
           "emotion": "shock",
           "listener": "smug",
           "shot": "two",
-          "action": "shock",
+          "action": "hold",
           "text": "Baki? Aku, Pak?! Nanti jatuh macam mana pulak?",
           "id": "l050"
         },
@@ -622,8 +669,8 @@
           "speaker": "ucok",
           "emotion": "embarrassed",
           "listener": "neutral",
-          "shot": "two",
-          "action": "gesture",
+          "shot": "wide",
+          "action": "hold",
           "text": "Kus, tali ini kok kayak ular. Dari mana narik-nya?",
           "id": "l054"
         },
@@ -649,8 +696,8 @@
           "speaker": "kusaka",
           "emotion": "embarrassed",
           "listener": "deadpan",
-          "shot": "two",
-          "action": "gesture",
+          "shot": "wide",
+          "action": "pull",
           "text": "Berarti... tarik yang putih.",
           "id": "l057"
         },
@@ -658,7 +705,7 @@
           "speaker": "pakJoko",
           "emotion": "neutral",
           "listener": "embarrassed",
-          "shot": "two",
+          "shot": "wide",
           "action": "point",
           "text": "Tarik pelan. Sedikit demi sedikit. Jangan buru-buru.",
           "id": "l058"
@@ -667,8 +714,8 @@
           "speaker": "kusaka",
           "emotion": "neutral",
           "listener": "neutral",
-          "shot": "two",
-          "action": "gesture",
+          "shot": "wide",
+          "action": "pull",
           "text": "Pelan... pelan... lho, kok macet, Pak?",
           "id": "l059"
         },
@@ -676,8 +723,8 @@
           "speaker": "ucok",
           "emotion": "laugh",
           "listener": "shock",
-          "shot": "two",
-          "action": "laugh",
+          "shot": "wide",
+          "action": "hold",
           "text": "Talinya nyangkut di bajumu, Kusaka! Hahaha!",
           "id": "l060"
         },
@@ -705,7 +752,40 @@
           ],
           "id": "l062"
         }
-      ]
+      ],
+      "tracks": {
+        "flag": [
+          [
+            "l045",
+            0
+          ],
+          [
+            "l058",
+            0
+          ],
+          [
+            "l059",
+            0.45
+          ],
+          [
+            "l062:end",
+            0.45
+          ]
+        ],
+        "snag": [
+          [
+            "l059",
+            0
+          ],
+          [
+            "l060",
+            1
+          ]
+        ]
+      },
+      "hold": {
+        "pakJoko": "whistle"
+      }
     },
     {
       "id": "s05",
@@ -729,7 +809,7 @@
           "speaker": "nadia",
           "emotion": "neutral",
           "listener": "embarrassed",
-          "shot": "two",
+          "shot": "wide",
           "action": "point",
           "text": "Upacara bendera hari Senin segera dimulai. Barisan harap tenang.",
           "caption": "SENIN PAGI",
@@ -740,7 +820,7 @@
           "emotion": "embarrassed",
           "listener": "neutral",
           "shot": "two",
-          "action": "gesture",
+          "action": "hold",
           "text": "Kus. Tanganku gemetar. Baki ini berat kali.",
           "id": "l064"
         },
@@ -758,7 +838,7 @@
           "emotion": "shock",
           "listener": "neutral",
           "shot": "two",
-          "action": "shock",
+          "action": "hold",
           "text": "Kalau salah, satu sekolah lihat, Kus! Sama dengan bom!",
           "id": "l066"
         },
@@ -820,17 +900,23 @@
           "speaker": "nadia",
           "emotion": "neutral",
           "listener": "neutral",
-          "shot": "two",
-          "action": "point",
+          "shot": "wide",
+          "action": "salute",
           "text": "Pengibaran bendera Merah Putih. Hormat gerak!",
-          "id": "l073"
+          "id": "l073",
+          "reactions": {
+            "kusaka": [
+              "neutral",
+              "pull"
+            ]
+          }
         },
         {
           "speaker": "ucok",
           "emotion": "embarrassed",
           "listener": "shock",
-          "shot": "two",
-          "action": "gesture",
+          "shot": "wide",
+          "action": "pull",
           "text": "Kus... tali ini kok kencang kali?",
           "id": "l074"
         },
@@ -838,8 +924,8 @@
           "speaker": "kusaka",
           "emotion": "neutral",
           "listener": "embarrassed",
-          "shot": "two",
-          "action": "gesture",
+          "shot": "wide",
+          "action": "pull",
           "text": "Itu bagian dari seninya, Cok.",
           "id": "l075"
         },
@@ -866,8 +952,8 @@
           "speaker": "ucok",
           "emotion": "shock",
           "listener": "shock",
-          "shot": "two",
-          "action": "point",
+          "shot": "wide",
+          "action": "hold",
           "text": "Terbalik, Kus! Terbalik!",
           "id": "l078"
         },
@@ -875,7 +961,7 @@
           "speaker": "kusaka",
           "emotion": "pleading",
           "listener": "shock",
-          "shot": "two",
+          "shot": "wide",
           "action": "plead",
           "text": "Pak Darto, ini... tadi talinya nyangkut!",
           "id": "l079"
@@ -924,7 +1010,63 @@
           ],
           "id": "l083"
         }
-      ]
+      ],
+      "flagInverted": true,
+      "hold": {
+        "ucok": "tray"
+      },
+      "tracks": {
+        "flag": [
+          [
+            "l073:end",
+            0
+          ],
+          [
+            "l076",
+            1
+          ],
+          [
+            "l079:end",
+            1
+          ],
+          [
+            "l080:end",
+            0.15
+          ]
+        ],
+        "salute": [
+          [
+            "l072:end",
+            0
+          ],
+          [
+            "l073",
+            1
+          ],
+          [
+            "l076",
+            1
+          ],
+          [
+            "l077",
+            0
+          ]
+        ],
+        "snag": [
+          [
+            "l074",
+            0
+          ],
+          [
+            "l074:end",
+            1
+          ],
+          [
+            "l079:end",
+            1
+          ]
+        ]
+      }
     },
     {
       "id": "s09",
@@ -952,7 +1094,10 @@
           "shot": "two",
           "action": "crossed",
           "text": "Dua puluh tahun Bapak jadi guru. Baru kali ini lihat bendera terbalik di upacara.",
-          "caption": "SEMENTARA ITU"
+          "caption": "SEMENTARA ITU",
+          "ref": [
+            "bendera"
+          ]
         },
         {
           "id": "l140",
@@ -988,7 +1133,10 @@
           "listener": "neutral",
           "shot": "two",
           "action": "gesture",
-          "text": "Yang penting dia tepat sasaran. Besok pagi dia kumpulkan PR halaman empat puluh lima."
+          "text": "Yang penting dia tepat sasaran. Besok pagi dia kumpulkan PR halaman empat puluh lima.",
+          "hold": {
+            "buWati": "book"
+          }
         },
         {
           "id": "l144",
@@ -997,7 +1145,13 @@
           "listener": "neutral",
           "shot": "two",
           "action": "point",
-          "text": "Bu Wati, anak itu nilainya tiga puluh lima."
+          "text": "Bu Wati, anak itu nilainya tiga puluh lima.",
+          "hold": {
+            "pakDarto": {
+              "item": "paper",
+              "hand": "back"
+            }
+          }
         },
         {
           "id": "l145",
@@ -1014,7 +1168,7 @@
           "emotion": "laugh",
           "listener": "deadpan",
           "shot": "two",
-          "action": "laugh",
+          "action": "phone",
           "text": "Katanya adiknya terkenal. Videonya seratus lima puluh ribu penonton."
         },
         {
@@ -1024,7 +1178,10 @@
           "listener": "laugh",
           "shot": "two",
           "action": "shock",
-          "text": "Video apa?"
+          "text": "Video apa?",
+          "ref": [
+            "HP/video"
+          ]
         },
         {
           "id": "l148",
@@ -1033,7 +1190,10 @@
           "listener": "surprised",
           "shot": "two",
           "action": "point",
-          "text": "Bapak belum nonton? Anak-anak sampai nyanyi di kantin."
+          "text": "Bapak belum nonton? Anak-anak sampai nyanyi di kantin.",
+          "ref": [
+            "HP/video"
+          ]
         },
         {
           "id": "l149",
@@ -1120,9 +1280,16 @@
               "id": "rimshot",
               "at": "end"
             }
+          ],
+          "ref": [
+            "baki"
           ]
         }
-      ]
+      ],
+      "hold": {
+        "pakDarto": "mug",
+        "pakJoko": "mug"
+      }
     },
     {
       "id": "s06",
@@ -1150,7 +1317,10 @@
           "action": "crossed",
           "text": "Kusaka. Bendera terbalik itu bukan lelucon.",
           "caption": "BEBERAPA SAAT KEMUDIAN",
-          "id": "l084"
+          "id": "l084",
+          "ref": [
+            "bendera"
+          ]
         },
         {
           "speaker": "kusaka",
@@ -1222,7 +1392,10 @@
           "shot": "two",
           "action": "crossed",
           "text": "Dia baca komentar Nadia empat puluh delapan kali.",
-          "id": "l092"
+          "id": "l092",
+          "ref": [
+            "HP/video"
+          ]
         },
         {
           "speaker": "kusaka",
@@ -1249,7 +1422,10 @@
           "shot": "two",
           "action": "point",
           "text": "Tapi bendera itu sudah dilihat satu sekolah. Hukuman tetap.",
-          "id": "l095"
+          "id": "l095",
+          "ref": [
+            "bendera"
+          ]
         },
         {
           "speaker": "kusaka",
@@ -1265,9 +1441,12 @@
           "emotion": "smug",
           "listener": "pleading",
           "shot": "two",
-          "action": "hips",
+          "action": "give",
           "text": "Lebih baik. Kamu jadi petugas piket upacara. Sebulan.",
-          "id": "l097"
+          "id": "l097",
+          "hold": {
+            "kusaka": "broom"
+          }
         },
         {
           "speaker": "kusaka",
@@ -1320,7 +1499,8 @@
           ],
           "id": "l102"
         }
-      ]
+      ],
+      "bag": false
     },
     {
       "id": "s07",
@@ -1351,7 +1531,7 @@
           "emotion": "neutral",
           "listener": "neutral",
           "shot": "two",
-          "action": "gesture",
+          "action": "give",
           "text": "Aman, Bu Ketua. Sudah ditandatangani Ibu.",
           "id": "l104"
         },
@@ -1360,9 +1540,13 @@
           "emotion": "suspicious",
           "listener": "neutral",
           "shot": "two",
-          "action": "chin",
+          "action": "read",
           "text": "Gue cek dulu. Tanda tangan nggak bisa dipalsukan.",
-          "id": "l105"
+          "id": "l105",
+          "hold": {
+            "kusaka": null,
+            "nadia": "paper"
+          }
         },
         {
           "speaker": "kusaka",
@@ -1378,7 +1562,7 @@
           "emotion": "neutral",
           "listener": "embarrassed",
           "shot": "two",
-          "action": "idle",
+          "action": "read",
           "text": "...Iya. Tanda tangannya mirip. Dan ada catatan di sini.",
           "id": "l107"
         },
@@ -1396,7 +1580,7 @@
           "emotion": "smug",
           "listener": "surprised",
           "shot": "two",
-          "action": "point",
+          "action": "read",
           "text": "'Nilai jelek, tapi anaknya jujur. Ibu bangga.' Dari Ibu lo.",
           "id": "l109"
         },
@@ -1470,7 +1654,10 @@
           "shot": "two",
           "action": "crossed",
           "text": "Hari ini lo ngerek bendera terbalik.",
-          "id": "l117"
+          "id": "l117",
+          "ref": [
+            "bendera"
+          ]
         },
         {
           "speaker": "kusaka",
@@ -1487,7 +1674,11 @@
           ],
           "id": "l118"
         }
-      ]
+      ],
+      "hold": {
+        "kusaka": "paper"
+      },
+      "bag": false
     },
     {
       "id": "s10",
@@ -1515,7 +1706,13 @@
           "shot": "two",
           "action": "gesture",
           "text": "Bu Ratna! Belanja pagi-pagi. Tumben anak lanang nggak ikut?",
-          "caption": "DI TEMPAT LAIN"
+          "caption": "DI TEMPAT LAIN",
+          "hold": {
+            "bapak": {
+              "item": "bagTote",
+              "hand": "back"
+            }
+          }
         },
         {
           "id": "l159",
@@ -1524,7 +1721,10 @@
           "listener": "laugh",
           "shot": "two",
           "action": "gesture",
-          "text": "Kusaka sudah berangkat dari jam enam. Ibu sampai nggak percaya."
+          "text": "Kusaka sudah berangkat dari jam enam. Ibu sampai nggak percaya.",
+          "ref": [
+            "tas"
+          ]
         },
         {
           "id": "l160",
@@ -1569,7 +1769,10 @@
           "listener": "shock",
           "shot": "two",
           "action": "point",
-          "text": "Dari video Dinda, Bu. Satu RT sudah nonton. Ibu belum?"
+          "text": "Dari video Dinda, Bu. Satu RT sudah nonton. Ibu belum?",
+          "ref": [
+            "HP/video"
+          ]
         },
         {
           "id": "l165",
@@ -1578,7 +1781,10 @@
           "listener": "smug",
           "shot": "two",
           "action": "hips",
-          "text": "Video apa? Dinda ngapain lagi?"
+          "text": "Video apa? Dinda ngapain lagi?",
+          "ref": [
+            "HP/video"
+          ]
         },
         {
           "id": "l166",
@@ -1586,7 +1792,7 @@
           "emotion": "embarrassed",
           "listener": "suspicious",
           "shot": "two",
-          "action": "plead",
+          "action": "phone",
           "text": "Bu... itu... Bapak yang nonton duluan. Sekali."
         },
         {
@@ -1668,7 +1874,13 @@
           "listener": "shock",
           "shot": "two",
           "action": "hips",
-          "text": "Pak. Siapkan dompetnya."
+          "text": "Pak. Siapkan dompetnya.",
+          "reactions": {
+            "bapak": [
+              "embarrassed",
+              "pocket"
+            ]
+          }
         },
         {
           "id": "l176",
@@ -1683,9 +1895,20 @@
               "id": "rimshot",
               "at": "end"
             }
-          ]
+          ],
+          "hold": {
+            "ibu": {
+              "item": "wallet",
+              "hand": "back"
+            }
+          }
         }
-      ]
+      ],
+      "hold": {
+        "ibu": "kresek",
+        "buIjah": "kresek",
+        "bapak": "kresek"
+      }
     },
     {
       "id": "s11",
@@ -1709,7 +1932,13 @@
           "shot": "two",
           "action": "thumbsup",
           "text": "Bah, Bang Bimo! Lemparanmu macam bintang NBA!",
-          "caption": "SEMENTARA ITU"
+          "caption": "SEMENTARA ITU",
+          "reactions": {
+            "bimo": [
+              "smug",
+              "shoot"
+            ]
+          }
         },
         {
           "id": "l178",
@@ -1799,7 +2028,10 @@
           "listener": "neutral",
           "shot": "two",
           "action": "laugh",
-          "text": "Kau pikir dia mau bilang? Minta tanda tangan Bapaknya aja diam-diam!"
+          "text": "Kau pikir dia mau bilang? Minta tanda tangan Bapaknya aja diam-diam!",
+          "ref": [
+            "kertas"
+          ]
         },
         {
           "id": "l188",
@@ -1853,7 +2085,10 @@
             }
           ]
         }
-      ]
+      ],
+      "hold": {
+        "bimo": "ball"
+      }
     },
     {
       "id": "s12",
@@ -1929,7 +2164,7 @@
           "speaker": "sasa",
           "emotion": "surprised",
           "listener": "neutral",
-          "shot": "two",
+          "shot": "wide",
           "action": "gesture",
           "text": "Jadi tim Kusaka atau tim Bimo?"
         },
@@ -1938,7 +2173,7 @@
           "speaker": "nadia",
           "emotion": "embarrassed",
           "listener": "surprised",
-          "shot": "two",
+          "shot": "wide",
           "action": "gesture",
           "text": "Tim... pulang. Angkotnya udah datang."
         },
@@ -1947,7 +2182,7 @@
           "speaker": "sasa",
           "emotion": "laugh",
           "listener": "embarrassed",
-          "shot": "two",
+          "shot": "wide",
           "action": "laugh",
           "text": "Kamu ngalihin pembicaraan!"
         },
@@ -2029,7 +2264,19 @@
             }
           ]
         }
-      ]
+      ],
+      "tracks": {
+        "angkot": [
+          [
+            "l199",
+            0
+          ],
+          [
+            "l200",
+            1
+          ]
+        ]
+      }
     },
     {
       "id": "s08",
@@ -2217,7 +2464,10 @@
           "shot": "two",
           "action": "idle",
           "text": "Dan Ibu... nggak kasih PR?",
-          "id": "l136"
+          "id": "l136",
+          "ref": [
+            "buku/PR"
+          ]
         },
         {
           "speaker": "buWati",
@@ -2233,7 +2483,7 @@
           "emotion": "neutral",
           "listener": "deadpan",
           "shot": "two",
-          "action": "point",
+          "action": "show",
           "text": "Besok pagi. Ke meja Ibu. Kerjakan halaman 45 sampai 90. Sekarang.",
           "sfx": [
             {
@@ -2241,9 +2491,20 @@
               "at": "end"
             }
           ],
-          "id": "l138"
+          "id": "l138",
+          "hold": {
+            "buWati": "book"
+          }
         }
-      ]
+      ],
+      "bag": [
+        "kusaka",
+        "ujang"
+      ],
+      "hold": {
+        "kusaka": "cup",
+        "ujang": "cup"
+      }
     }
   ]
 }

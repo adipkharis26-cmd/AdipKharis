@@ -1,7 +1,7 @@
 {
-  "version": "2.4.0",
+  "version": "2.6.0",
   "rules": [
-    "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card. Pengecualian: watermark channel resmi (brand.json) di pojok kiri atas, khusus Shorts, dan CTA cerita resmi (shortsCta: teks ajakan besar + ikon like/kirim/ikuti) khusus Shorts.",
+    "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card. Pengecualian: watermark channel resmi (brand.json) di pojok kiri atas, di Shorts dan video panjang, dan CTA cerita resmi (shortsCta: teks ajakan besar + ikon like/kirim/ikuti) khusus Shorts.",
     "v2.3.0: Shorts memakai subtitle Poppins Bold putih di kotak gelap transparan (subtitleShorts), ukuran & posisi sama dengan subtitle lama; video panjang tetap Oswald (subtitle). Shorts juga memuat satu CTA cerita (shortsCta, v2.4.0).",
     "Subtitle: font Baloo 2 ExtraBold, putih dengan outline hitam, kata yang sedang diucapkan berwarna kuning (karaoke), posisi bawah.",
     "Caption: hanya teks dari daftar, huruf kapital, pojok kiri atas, kotak hitam transparan, muncul 0,3 detik dan bertahan selama baris tersebut.",
@@ -11,14 +11,14 @@
     "Durasi: Long 16:9 minimal 6 menit (bisa diatur pemilik per episode lewat 'minSeconds'); Shorts 9:16 minimal 40 detik, maksimal 3 menit (ideal 40–60 detik)."
   ],
   "subtitle": {
-    "font": "Oswald",
-    "weight": 600,
+    "font": "Baloo2",
+    "weight": 800,
     "color": "#ffffff",
     "highlight": "#ffffff",
     "karaoke": false,
     "stroke": "#111111",
-    "strokeWidth": 5,
-    "sizeLandscape": 38,
+    "strokeWidth": 8,
+    "sizeLandscape": 44,
     "sizeVertical": 46,
     "bottomLandscape": 34,
     "bottomVertical": 360,
@@ -132,5 +132,7 @@
     "revealY": 72,
     "revealScale": 0.5,
     "blur": 16
-  }
+  },
+  "_note_wm": "v2.5.0: watermark channel resmi sekarang juga di video panjang 16:9 (kiri atas); caption landscape digeser ke bawahnya.",
+  "_note_sub": "v2.6.0: subtitle video panjang = Baloo 2 ExtraBold putih outline tebal (pilihan pemilik no. 3, 18 Nov 2026); Shorts tetap Poppins Bold di kotak gelap."
 }

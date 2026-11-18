@@ -68,7 +68,7 @@ export const Caption: React.FC<{ t: number; vertical: boolean }> = ({ t, vertica
   const k = Math.min(1, (t - line.start + 0.3) / 0.3);
   return (
     <div style={{
-      position: "absolute", top: vertical ? 230 : 50, left: vertical ? 44 : 60, padding: "8px 22px", borderRadius: 10,
+      position: "absolute", top: vertical ? 230 : 128, left: vertical ? 44 : 44, padding: "8px 22px", borderRadius: 10,
       background: "rgba(0,0,0,0.55)", color: "#fff", fontFamily: SUB.font, fontWeight: 800, fontSize: vertical ? 44 : 38,
       letterSpacing: 3, opacity: k, transform: `translateX(${(1 - k) * -30}px)`,
     }}>{line.caption}</div>

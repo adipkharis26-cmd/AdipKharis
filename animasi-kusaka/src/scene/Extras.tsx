@@ -1,4 +1,5 @@
 import React from "react";
+import { UpacaraCap } from "../characters/Props";
 
 /* Extras (NPC latar) — murid/guru/warga anonim agar tempat terasa hidup (kanon lokasi v3.1.0).
    Bukan 16 karakter kanon: tanpa nama, tanpa dialog, selalu di belakang pemeran, bergerak pelan.
@@ -17,7 +18,8 @@ const SKIN = ["#f4c99e", "#e0ab7e", "#c98f62", "#a8714a", "#8a5a3a", "#f7d6b5"];
 const HAIR = ["#1e1b26", "#2b1d14", "#3b2a1f", "#1b1b1b", "#4a3326"];
 const WARGA = ["#e85d75", "#2f7fd8", "#3c8d5a", "#f3a03c", "#8f5bd1", "#2aa6a0", "#d95f3b"];
 
-const Figure: React.FC<Spec & { t: number }> = ({ x, y, s, kind, outfit, seed, dir = 1, t }) => {
+const STUDENT_OUTFITS: Outfit[] = ["sma", "smaGirl", "hijab"];
+const Figure: React.FC<Spec & { t: number; bag?: boolean; salute?: number; hat?: boolean }> = ({ x, y, s, kind, outfit, seed, dir = 1, t, bag, salute = 0, hat }) => {
   const skin = pick(SKIN, seed, 1), hair = pick(HAIR, seed, 2);
   const warga = pick(WARGA, seed, 3);
   const shirt = outfit === "sma" || outfit === "smaGirl" || outfit === "hijab" ? "#fbfbf7" : outfit === "guru" ? "#b9764b" : outfit === "olahraga" ? "#2f7fd8" : warga;
@@ -41,6 +43,9 @@ const Figure: React.FC<Spec & { t: number }> = ({ x, y, s, kind, outfit, seed, d
             <ellipse cx={-14 + step * 0.5} cy={-2} rx={20} ry={8} fill="#2a2035" /><ellipse cx={18 - step * 0.5} cy={-2} rx={20} ry={8} fill="#2a2035" />
           </g>
         )}
+        {bag && STUDENT_OUTFITS.includes(outfit) && kind !== "sit" && (
+          <g><path d="M -34 -258 Q -78 -262 -86 -232 L -80 -150 Q -52 -138 -36 -150 Z" fill={pick(["#2f7fd8", "#e63946", "#3c8d5a", "#8f5bd1", "#f3a03c", "#5b6270"], seed, 12)} /></g>
+        )}
         {/* arms behind torso */}
         <g stroke={OUT} strokeWidth={5}>
           <path d={`M -34 ${-250 + top} Q ${-52 + arm * 0.2} ${-190 + top} ${-46 - arm * 0.6} ${-140 + top}`} fill="none" stroke={shirt} strokeWidth={20} />
@@ -49,6 +54,9 @@ const Figure: React.FC<Spec & { t: number }> = ({ x, y, s, kind, outfit, seed, d
         <rect x={-38} y={-262 + top} width={76} height={140 - top} rx={20} fill={shirt} />
         {outfit === "olahraga" && <rect x={-38} y={-200 + top} width={76} height={14} fill="#ffd23f" stroke="none" />}
         {outfit === "guru" && <path d={`M -38 ${-215 + top} L 38 ${-190 + top} M -38 ${-175 + top} L 38 ${-150 + top}`} stroke="#8a5126" strokeWidth={6} />}
+        {salute > 0.5 && STUDENT_OUTFITS.includes(outfit) && (
+          <g><path d="M 34 -250 Q 74 -262 44 -334" fill="none" stroke={OUT} strokeWidth={26} /><path d="M 34 -250 Q 74 -262 44 -334" fill="none" stroke={shirt} strokeWidth={16} /><circle cx={42} cy={-338} r={11} fill={skin} /></g>
+        )}
         <rect x={-10} y={-282 + top} width={20} height={24} fill={skin} />
         {/* head + hair */}
         <circle cx={0} cy={-312 + top} r={42} fill={skin} />
@@ -59,6 +67,7 @@ const Figure: React.FC<Spec & { t: number }> = ({ x, y, s, kind, outfit, seed, d
             : long
               ? <path d={`M -46 ${-300 + top} Q -50 ${-366 + top} 0 ${-366 + top} Q 50 ${-366 + top} 46 ${-300 + top} L 46 ${-250 + top} L 30 ${-290 + top} Q 0 ${-318 + top} -30 ${-290 + top} L -46 ${-250 + top} Z`} fill={hair} />
               : <path d={`M -44 ${-312 + top} Q -48 ${-366 + top} 0 ${-366 + top} Q 48 ${-366 + top} 44 ${-312 + top} Q 30 ${-340 + top} 0 ${-336 + top} Q -30 ${-340 + top} -44 ${-312 + top} Z`} fill={hair} />}
+        {hat && (outfit === "sma" || outfit === "smaGirl") && <g transform={`translate(0 ${-312 + top}) scale(0.34) translate(-20 0)`} style={{ transformOrigin: "0 0" }}><UpacaraCap /></g>}
         <g stroke="none" fill={OUT}><circle cx={-14} cy={-308 + top} r={4.5} /><circle cx={14} cy={-308 + top} r={4.5} /></g>
         <path d={`M -9 ${-290 + top} Q 0 ${-284 + top + (kind === "talk" ? Math.abs(Math.sin(t * 7 + ph)) * 6 : 0)} 9 ${-290 + top}`} fill="none" strokeWidth={3.5} />
       </g>
@@ -143,7 +152,7 @@ const WINDOW_VIEW: Record<string, { clip: React.ReactNode; front: React.ReactNod
 
 const DENSITY: Record<string, number> = { off: 0, low: 0.5, normal: 1, high: 1 };
 /** Extras layer for a location. `density`: "off" | "low" (separuh) | "normal". Deterministik: orang yang sama di tempat yang sama. */
-export const Extras: React.FC<{ location: string; t: number; density?: string }> = ({ location, t, density = "normal" }) => {
+export const Extras: React.FC<{ location: string; t: number; density?: string; bag?: boolean; salute?: number; hat?: boolean }> = ({ location, t, density = "normal", bag, salute, hat }) => {
   const list = PRESETS[location];
   const d = DENSITY[density] ?? 1;
   if (!list || d === 0) return null;
@@ -161,7 +170,7 @@ export const Extras: React.FC<{ location: string; t: number; density?: string }>
     <g>
       {[...chosen].sort((a, b) => a.y - b.y).map((sp, i) => (
         <g key={i}>
-          <Figure {...sp} t={t} />
+          <Figure {...sp} t={t} bag={bag} salute={salute} hat={hat} />
           {sp.kind === "sit" && desk && (
             <g stroke={OUT} strokeWidth={4}><rect x={sp.x - 70 * sp.s - 20} y={sp.y - 10} width={(140 * sp.s) + 40} height={16} fill="#c98f55" /><rect x={sp.x - 60 * sp.s} y={sp.y + 6} width={10} height={70 * sp.s} fill="#8a5a2b" /><rect x={sp.x + 50 * sp.s} y={sp.y + 6} width={10} height={70 * sp.s} fill="#8a5a2b" /></g>
           )}

@@ -82,8 +82,9 @@ export const Pasar: React.FC<{ t: number }> = ({ t }) => (
 );
 
 /* --------------------------------- HALTE --------------------------------- */
-export const Halte: React.FC<{ t: number }> = ({ t }) => {
-  const carX = ((t * 120) % 3200) - 600;
+export const Halte: React.FC<{ t: number; angkot?: number }> = ({ t, angkot }) => {
+  // angkot: undefined = lewat berulang; 0–1 = datang dari kiri lalu berhenti di depan halte
+  const carX = angkot === undefined ? ((t * 120) % 3200) - 600 : -600 + angkot * 1850;
   return (
     <g>
       <Cloud t={t} />

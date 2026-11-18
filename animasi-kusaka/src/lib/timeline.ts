@@ -9,18 +9,20 @@ export type Emotion =
   | "surprised" | "embarrassed" | "defeated";
 export type Action =
   | "idle" | "gesture" | "pocket" | "chin" | "point" | "plead" | "crossed" | "shock" | "laugh" | "slump"
-  | "wave" | "thumbsup" | "peace" | "facepalm" | "hips" | "phone";
+  | "wave" | "thumbsup" | "peace" | "facepalm" | "hips" | "phone"
+  | "hold" | "carry" | "give" | "show" | "read" | "pull" | "salute" | "shoot" | "drink" | "eat" | "write" | "sweep" | "blow";
 
 export interface Line {
   id: string; speaker: CharId; emotion: Emotion; listener: Emotion; shot: "two" | "speaker" | "medium" | "close" | "wide" | "push" | "crash";
   text: string; audio: string; start: number; duration: number; surprise?: boolean; action?: string;
-  caption?: string; flashback?: boolean; sfx?: { id: string; at: number | "end" }[];
+  caption?: string; flashback?: boolean; hold?: Record<string, string | { item: string; hand?: "front" | "back" } | null>; sfx?: { id: string; at: number | "end" }[];
   scene: string; offscreen?: boolean; reactions?: Record<string, string[]>;
   visemes: { t: number; v: Viseme }[]; words: { w: string; t: number }[];
 }
 
 export type Mark = "A" | "B" | "C" | "D";
-export interface Scene { id: string; location: string; cast: Record<string, { mark: Mark; facing: 1 | -1 }>; start: number; end: number; wear?: "seragam" | "bebas" | "rumah" }
+export interface Scene { id: string; location: string; cast: Record<string, { mark: Mark; facing: 1 | -1 }>; start: number; end: number; wear?: "seragam" | "bebas" | "rumah";
+  bag?: boolean | string[]; hat?: boolean; hold?: Record<string, string | { item: string; hand?: "front" | "back" }>; tracks?: Record<string, [string, number][]>; flagInverted?: boolean }
 
 export const FPS: number = timeline.fps;
 export const LINES = direct(timeline.lines as unknown as Line[]);
@@ -84,3 +86,36 @@ export function stateAt(char: CharId, t: number): { emotion: Emotion; action: Ac
   return { emotion, action, since, line };
 }
 void sceneLines;
+
+/* ---------- properti & benda adegan (kanon v3.2.0) ---------- */
+type HoldVal = string | { item: string; hand?: "front" | "back" } | null;
+/** Benda yang dipegang tiap tangan karakter pada waktu t: awal dari scene.hold, lalu diubah oleh "hold" di baris naskah. */
+export function heldAt(char: CharId, t: number): { front?: string; back?: string } {
+  const { scene, index } = beatAt(t);
+  const out: { front?: string; back?: string } = {};
+  const apply = (v: HoldVal | undefined) => {
+    if (v === undefined) return;
+    if (v === null) { delete out.front; delete out.back; return; }
+    const item = typeof v === "string" ? v : v.item, hand = typeof v === "string" ? "front" : v.hand ?? "front";
+    out[hand] = item;
+  };
+  apply(scene.hold?.[char] as HoldVal | undefined);
+  for (let i = 0; i <= index; i++) { const l = LINES[i]; if (l.scene === scene.id && l.hold) apply(l.hold[char]); }
+  return out;
+}
+/** Waktu (detik) dari kunci "l007" (awal baris) atau "l007:end" (akhir baris). */
+const keyTime = (k: string): number => {
+  const [id, mod] = k.split(":");
+  const l = LINES.find((x) => x.id === id);
+  if (!l) return 0;
+  return mod === "end" ? l.start + l.duration : l.start;
+};
+/** Nilai trek animasi benda adegan (gerbang, bendera, angkot, hormat, tali nyangkut) — interpolasi linear antar kunci. undefined = tidak ada trek. */
+export function trackAt(scene: Scene, name: string, t: number): number | undefined {
+  const keys = scene.tracks?.[name];
+  if (!keys?.length) return undefined;
+  const ks = keys.map(([k, v]) => [keyTime(k), v] as [number, number]).sort((a, b) => a[0] - b[0]);
+  if (t <= ks[0][0]) return ks[0][1];
+  for (let i = 1; i < ks.length; i++) if (t <= ks[i][0]) { const [t0, v0] = ks[i - 1], [t1, v1] = ks[i]; return t1 === t0 ? v1 : v0 + (v1 - v0) * ((t - t0) / (t1 - t0)); }
+  return ks[ks.length - 1][1];
+}
