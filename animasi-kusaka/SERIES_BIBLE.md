@@ -257,8 +257,9 @@ sinyal terpentingnya adalah **berapa banyak yang tidak menggeser video (swipe aw
 ### Video panjang
 - **Thumbnail** (di luar video, boleh ada teks): wajah karakter besar dengan ekspresi ekstrem, maksimal 3 kata,
   palet kuning #ffd23f + merah #e63946 + outline hitam, template sama tiap episode.
-- **Judul:** `[situasi relate] + [konflik] | Kusaka Eps. N`.
-  Contoh: *"Mau Traktir Gebetan, Dompet Malah Ketinggalan 😭 | Kusaka Eps. 1"*.
+- **Judul:** `[situasi relate + emosi] | KUSAKA` (hook di depan, **tanpa nomor episode** di judul dan thumbnail).
+  Contoh: *"Adikku Menyandera Dompetku, Syaratnya 3 Tantangan Gila 😭 | KUSAKA"*.
+  Urutan episode lewat playlist "KUSAKA Musim 1"; "Eps. N" cukup di deskripsi (tautkan episode sebelum/sesudahnya).
 - **Chapters**, **end screen**, dan **playlist per musim** untuk memperpanjang sesi menonton.
 
 ### Komunitas & engagement

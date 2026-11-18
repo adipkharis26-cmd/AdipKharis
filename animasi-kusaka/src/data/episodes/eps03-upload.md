@@ -52,15 +52,15 @@ animasi indonesia, animasi lucu, kartun sekolah, anak sma, anak smp, komedi seko
 
 ---
 
-## Thumbnail (konsep; aturan terkunci: teks hanya judul pendek, tanpa nomor episode, tanpa uang/Rp)
+## Thumbnail (terkunci: `brand/thumbnails/eps03-A/B/C.png`, konfigurasi `src/branding/thumbnails.json`; aturan: teks hanya judul pendek, tanpa nomor episode, tanpa uang/Rp)
 
-| | Teks | Visual | Pasangan judul |
+| | Teks | Komposisi (beda tiap varian) | Pasangan judul |
 |---|---|---|---|
-| **A (utama)** | BENDERA TERBALIK! | Kusaka panik memegang tali, bendera putih di atas, satu sekolah menonton di belakang | Judul 1 |
-| B | TELAT LAGI?! | Mang Udin menutup gerbang, Kusaka menempel di jeruji | Judul 2 |
-| C | SATU SEKOLAH TAHU | Guru, satpam, dan murid memegang HP menonton, Kusaka mengintip dari pojok | Judul 3 |
+| **A (utama)** | BENDERA TERBALIK! | Pola halftone merah; bendera terbalik besar disorot lingkaran + panah merah; Kusaka shock close-up di kiri, Pak Darto mengintip | Judul 1 |
+| B | TELAT LAGI?! | Layar terbelah diagonal (gerbang vs kelas) + garis kecepatan teal; Kusaka memelas, Mang Udin di sisi lain | Judul 2 |
+| C | SATU SEKOLAH TAHU! | Pola garis ungu; Kusaka kecil disorot lingkaran, dikelilingi guru dan satpam yang tertawa memegang HP | Judul 3 |
 
-Palet kuning #ffd23f + merah #e63946 + outline hitam, template sama dengan Eps. 1–2. Upload dengan A; masukkan A/B/C ke **Test & Compare**.
+Identitas tetap seperti Eps. 1–2 (bingkai kuning, Bangers, Kusaka ekspresi ekstrem), tetapi komposisi dibuat berbeda dari Eps. 1–2 agar tidak terlihat seperti video yang sama. Palet kuning #ffd23f + merah #e63946 + outline hitam, template sama dengan Eps. 1–2. Upload dengan A; masukkan A/B/C ke **Test & Compare**.
 
 ---
 
