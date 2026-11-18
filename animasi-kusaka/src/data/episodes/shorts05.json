@@ -1,0 +1,198 @@
+{
+  "format": "shorts",
+  "episode": "shorts05",
+  "title": "Satu Match",
+  "fps": 30,
+  "gapSeconds": 0.2,
+  "sceneLead": 0.3,
+  "sceneGap": 0,
+  "tail": 0.2,
+  "scenes": [
+    {
+      "id": "s01",
+      "location": "kamar",
+      "cast": {
+        "dinda": {
+          "mark": "C",
+          "facing": 1
+        },
+        "raka": {
+          "mark": "A",
+          "facing": -1
+        },
+        "kusaka": {
+          "mark": "B",
+          "facing": -1
+        }
+      },
+      "lines": [
+        {
+          "speaker": "raka",
+          "emotion": "neutral",
+          "listener": "deadpan",
+          "shot": "medium",
+          "action": "phone",
+          "text": "Bentar, satu match lagi!",
+          "id": "l001"
+        },
+        {
+          "speaker": "dinda",
+          "emotion": "deadpan",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Itu yang kamu bilang dari jam tiga, Raka.",
+          "to": "raka",
+          "id": "l002"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "smug",
+          "listener": "surprised",
+          "shot": "two",
+          "action": "pocket",
+          "text": "Minggir. Biar gue tunjukin cara main yang bener.",
+          "move": {
+            "who": "kusaka",
+            "from": "offR",
+            "to": "B",
+            "at": 0
+          },
+          "id": "l003"
+        },
+        {
+          "speaker": "raka",
+          "emotion": "surprised",
+          "listener": "smug",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Bang Kusaka bisa main?",
+          "id": "l004"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "smug",
+          "listener": "suspicious",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Dulu gue peringkat satu. Se-kompleks.",
+          "id": "l005"
+        },
+        {
+          "speaker": "dinda",
+          "emotion": "suspicious",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "chin",
+          "text": "Kompleks kita isinya tiga rumah, Kak.",
+          "id": "l006"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "smug",
+          "listener": "neutral",
+          "shot": "two",
+          "action": "phone",
+          "text": "Fokus. Satu lawan lima pun gue sikat.",
+          "id": "l007"
+        },
+        {
+          "speaker": "raka",
+          "emotion": "shock",
+          "listener": "embarrassed",
+          "shot": "crash",
+          "action": "shock",
+          "text": "BANG! ITU TIM KITA SENDIRI!",
+          "id": "l008"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "embarrassed",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "gesture",
+          "text": "Gue... lagi ngetes mereka.",
+          "id": "l009"
+        },
+        {
+          "speaker": "dinda",
+          "emotion": "smug",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "phone",
+          "text": "Aku rekam. Kirim ke temen kalian yang mainnya kayak Kak Kusaka!",
+          "cta": {
+            "kind": "kirim",
+            "text": "KIRIM ke temen yang BEBAN!",
+            "keywords": [
+              "KIRIM",
+              "BEBAN!"
+            ],
+            "reveal": "kusaka",
+            "revealEmotion": "embarrassed"
+          },
+          "id": "l010"
+        },
+        {
+          "speaker": "ibu",
+          "emotion": "neutral",
+          "listener": "shock",
+          "shot": "two",
+          "action": "hips",
+          "text": "KUSAKA! Kamar kayak kapal pecah! Makan!",
+          "offscreen": true,
+          "id": "l011"
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "pleading",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "plead",
+          "text": "Bentar, Bu! Satu match lagi!",
+          "id": "l012"
+        },
+        {
+          "speaker": "raka",
+          "emotion": "deadpan",
+          "listener": "embarrassed",
+          "shot": "two",
+          "action": "crossed",
+          "text": "Nah. Sekarang Abang ngerti.",
+          "id": "l013"
+        },
+        {
+          "speaker": "dinda",
+          "emotion": "smug",
+          "listener": "smug",
+          "shot": "two",
+          "action": "phone",
+          "text": "Kak, kalah lagi tuh. Aku aduin Ibu, ya!",
+          "id": "l014",
+          "reactions": {
+            "kusaka": [
+              "defeated",
+              "slump"
+            ]
+          }
+        },
+        {
+          "speaker": "kusaka",
+          "emotion": "defeated",
+          "listener": "smug",
+          "shot": "two",
+          "action": "slump",
+          "text": "Oke. Terakhir ya.",
+          "sfx": [
+            {
+              "id": "sad_trombone",
+              "at": "end",
+              "volume": 0.2
+            }
+          ],
+          "id": "l015"
+        }
+      ]
+    }
+  ]
+}
