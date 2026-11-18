@@ -169,10 +169,13 @@
           "emotion": "smug",
           "listener": "shock",
           "shot": "two",
-          "action": "point",
+          "action": "show",
           "text": "Dan besok ulangan. Halaman empat lima sampai sembilan puluh.",
           "to": "kusaka",
-          "id": "l014"
+          "id": "l014",
+          "hold": {
+            "buWati": "book"
+          }
         },
         {
           "speaker": "kusaka",
@@ -182,7 +185,10 @@
           "action": "slump",
           "text": "Itu... lebih serem, Bu.",
           "reactions": {},
-          "id": "l015"
+          "id": "l015",
+          "hold": {
+            "buWati": null
+          }
         },
         {
           "speaker": "tara",
