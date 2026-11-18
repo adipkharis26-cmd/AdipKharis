@@ -1,5 +1,5 @@
 {
-  "version": "1.5.0",
+  "version": "1.6.0",
   "lockedAt": "2026-11-18",
   "channel": "Kusaka Design",
   "handle": "@kusakadesign",
@@ -27,15 +27,21 @@
     "Thumbnail 1280x720: bingkai kuning, teks HANYA judul (maks 4 kata), tanpa nomor episode/lencana EPS.",
     "Thumbnail DILARANG memakai uang / mata uang (Rp). Properti hanya benda cerita (mis. dompet).",
     "Wajah karakter besar dengan ekspresi ekstrem, pojok kanan bawah kosong (label durasi), 3 varian untuk Test & Compare.",
-    "Watermark Shorts resmi = Contoh 5 (pil gelap transparan, Logo 2, KUSAKA/DESIGN) di pojok kiri atas. HANYA di Shorts 9:16, tidak di video panjang.",
+    "Watermark Shorts resmi = Contoh 5 (pil gelap transparan, Logo 2, KUSAKA/DESIGN) di pojok kiri atas. Dipakai di Shorts 9:16 DAN video panjang 16:9 (ukuran disesuaikan, pojok kiri atas).",
     "Thumbnail: IDENTITAS TETAP (bingkai kuning+hitam, judul Bangers kuning/putih + bayangan merah, Kusaka ekspresi ekstrem, maks 4 kata, pojok kanan bawah kosong). KOMPOSISI BERBEDA tiap episode (pola latar, layar terbelah, callout lingkaran/panah, properti cerita, warna dominan, posisi teks). Varian A/B/C tiap episode juga beda komposisi."
   ],
   "watermark": {
     "chosen": 5,
-    "format": "shorts",
+    "format": "shorts + long",
     "position": "kiri atas",
     "top": 90,
     "left": 44,
-    "style": "pil gelap transparan + Logo 2 + KUSAKA / DESIGN"
+    "style": "pil gelap transparan + Logo 2 + KUSAKA / DESIGN",
+    "long": {
+      "top": 34,
+      "left": 40,
+      "scale": 0.78,
+      "note": "video panjang 16:9: gaya sama dengan Shorts, pojok kiri atas; caption keterangan adegan digeser ke bawah watermark"
+    }
   }
 }

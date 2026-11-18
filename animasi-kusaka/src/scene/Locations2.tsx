@@ -319,14 +319,20 @@ export const RuangTamu: React.FC<{ t: number }> = ({ t }) => (
 export const LapanganUpacaraBack: React.FC = () => (
   <g><Tree x={60} y={430} /><Tree x={1860} y={420} /><SchoolBuilding x={160} y={260} w={1600} /></g>
 );
-export const LapanganUpacara: React.FC<{ t: number }> = ({ t }) => (
+export const LapanganUpacara: React.FC<{ t: number; flag?: number; inverted?: boolean; snag?: number }> = ({ t, flag, inverted, snag = 0 }) => (
   <g>
     <rect x={-1200} y={600} width={4400} height={1000} fill="#c9c3b6" stroke={OUT} strokeWidth={SW} />
     <path d="M -200 740 L 2120 740 M -400 900 L 2320 900" stroke="#fff" strokeWidth={8} />
     <rect x={-1200} y={590} width={4400} height={20} fill="#3c8d5a" stroke={OUT} strokeWidth={4} />
     {/* flagpole with base */}
     <g><rect x={860} y={620} width={200} height={40} fill="#f6f1e4" stroke={OUT} strokeWidth={5} /><rect x={890} y={590} width={140} height={34} fill="#f6f1e4" stroke={OUT} strokeWidth={5} /></g>
-    <Flag x={960} y={60} t={t} h={530} />
+    {/* flag: undefined = bendera di puncak (default); angka 0–1 = ketinggian kain; <=0 = belum dipasang */}
+    <Flag x={960} y={60} t={t} h={530} flagY={flag === undefined ? 60 : 60 + (1 - flag) * 430} inverted={inverted} cloth={flag === undefined || flag > 0.001} />
+    {/* tali bendera: dua untai di sisi tiang; "nyangkut" = tali ditarik miring ke badan penarik */}
+    <g stroke={OUT} strokeWidth={3} fill="none">
+      <path d="M 976 70 L 976 700" stroke="#f6f1e4" strokeWidth={5} /><path d="M 990 70 L 990 700" stroke="#f6f1e4" strokeWidth={5} />
+      {snag > 0.5 && <path d="M 990 330 Q 1010 520 930 640" stroke="#f6f1e4" strokeWidth={5} />}
+    </g>
     {/* podium (mimbar) */}
     <g transform="translate(1440 520)" stroke={OUT} strokeWidth={SW}>
       <rect x={-120} y={60} width={240} height={50} fill="#8a5126" />

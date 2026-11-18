@@ -22,3 +22,19 @@ export const ShortsWatermark: React.FC = () => {
     </div>
   );
 };
+
+/** Watermark video panjang 16:9: gaya SAMA dengan Shorts (Contoh 5), pojok kiri atas, ukuran disesuaikan 1080p. */
+export const LongWatermark: React.FC = () => {
+  const w = brand.watermark.long;
+  const k = w.scale;
+  return (
+    <div style={{ position: "absolute", top: w.top, left: w.left, display: "flex", alignItems: "center", gap: 14 * k,
+      background: "rgba(27,27,27,0.55)", borderRadius: 60 * k, padding: `${8 * k}px ${26 * k}px ${8 * k}px ${8 * k}px` }}>
+      <MiniLogo size={88 * k} />
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ fontFamily: "Bangers", fontSize: 46 * k, color: brand.palette.yellow, letterSpacing: 2 * k, lineHeight: 1 }}>KUSAKA</div>
+        <div style={{ fontFamily: "Baloo2", fontWeight: 800, fontSize: 24 * k, color: "#fff", letterSpacing: 8 * k }}>DESIGN</div>
+      </div>
+    </div>
+  );
+};

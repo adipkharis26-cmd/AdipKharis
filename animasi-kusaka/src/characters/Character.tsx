@@ -5,6 +5,7 @@ import { Action, CharId, Emotion, FPS, TOTAL_SECONDS, Viseme, stateAt, visemeAt,
 import { Mouth, pickMouth } from "./Mouth";
 import { Brow, Eye, eyesFor } from "./Eyes";
 import { Hand, HandShape } from "./Hands";
+import { BackpackBack, BackpackStraps, Item, UpacaraCap, bagColor } from "./Props";
 
 /* ------------------------------------------------------------------------------------------
  * Layered 2D character rig (SVG). Origin = between the feet, character faces +x.
@@ -77,6 +78,20 @@ export const POSES: Record<Action, Pose> = {
   facepalm: { front: [70, 132],  back: [-6, 10],    lean: 6,  head: 12,  crouch: 4,  look: [0.3, 0.6],  hands: ["open", "relaxed"] },
   hips:     { front: [41, -72],  back: [-41, 75],  lean: -3, head: -4,  crouch: 0,  look: [0.7, 0],    hands: ["fist", "fist"] },
   phone:    { front: [30, 110],  back: [24, 104],   lean: 3,  head: 10,  crouch: 0,  look: [0.6, 0.7],  hands: ["phone", "fist"] },
+  // aksi benda/tindakan (kanon v3.2.0)
+  hold:     { front: [38, 88],   back: [26, 84],    lean: 2,  head: 4,   crouch: 0,  look: [0.6, 0.5],  hands: ["fist", "fist"] },
+  carry:    { front: [14, 10],   back: [-6, 10],    lean: 1,  head: 0,   crouch: 0,  look: [0.7, 0],    hands: ["fist", "relaxed"] },
+  give:     { front: [80, 8],    back: [-6, 10],    lean: -4, head: -4,  crouch: 0,  look: [0.8, 0],    hands: ["open", "relaxed"] },
+  show:     { front: [116, 34],  back: [-6, 10],    lean: -4, head: -8,  crouch: 0,  look: [0.7, -0.2], hands: ["fist", "relaxed"] },
+  read:     { front: [52, 112],  back: [28, 98],    lean: 2,  head: 10,  crouch: 0,  look: [0.45, 0.8], hands: ["fist", "fist"] },
+  pull:     { front: [66, 62],   back: [50, 70],    lean: 6,  head: 4,   crouch: 6,  look: [0.7, -0.3], hands: ["fist", "fist"] },
+  salute:   { front: [110, 133], back: [-6, 10],    lean: -2, head: -2,  crouch: 0,  look: [0.8, 0],    hands: ["open", "relaxed"] },
+  shoot:    { front: [150, 20],  back: [128, 24],   lean: -8, head: -10, crouch: -4, look: [0.8, -0.6], hands: ["fist", "fist"] },
+  drink:    { front: [58, 146],  back: [-6, 10],    lean: 0,  head: -6,  crouch: 0,  look: [0.6, 0],    hands: ["fist", "relaxed"] },
+  eat:      { front: [58, 146],  back: [30, 88],    lean: 3,  head: 6,   crouch: 0,  look: [0.5, 0.5],  hands: ["fist", "fist"] },
+  write:    { front: [34, 104],  back: [26, 90],    lean: 6,  head: 14,  crouch: 4,  look: [0.4, 0.9],  hands: ["fist", "open"] },
+  sweep:    { front: [32, 62],   back: [38, 70],    lean: 8,  head: 8,   crouch: 6,  look: [0.5, 0.8],  hands: ["fist", "fist"] },
+  blow:     { front: [60, 150],  back: [-6, 10],    lean: -2, head: -4,  crouch: 0,  look: [0.7, 0],    hands: ["fist", "relaxed"] },
 };
 
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
@@ -117,7 +132,7 @@ function armPoints(sx: number, sy: number, [s, e]: ArmPose, upper = 100, fore = 
   return { ex, ey, hx, hy };
 }
 
-const Arm: React.FC<{ sx: number; sy: number; pose: ArmPose; look: Look; shade?: boolean; hand: HandShape; t: number; front?: boolean }> = ({ sx, sy, pose, look, shade, hand, t, front }) => {
+const Arm: React.FC<{ sx: number; sy: number; pose: ArmPose; look: Look; shade?: boolean; hand: HandShape; t: number; front?: boolean; item?: string }> = ({ sx, sy, pose, look, shade, hand, t, front, item }) => {
   const { ex, ey, hx, hy } = armPoints(sx, sy, pose);
   const skin = shade ? look.skinShade : look.skin;
   const cloth = shade ? look.shirtShade : look.shirt;
@@ -147,7 +162,8 @@ const Arm: React.FC<{ sx: number; sy: number; pose: ArmPose; look: Look; shade?:
       {front && look.accessories.includes("watch") && (
         <circle cx={ex + (hx - ex) * 0.82} cy={ey + (hy - ey) * 0.82} r={13} fill="#222" stroke={OUT} strokeWidth={3} />
       )}
-      <g transform={`translate(${hx} ${hy}) rotate(${handAngle})`}><Hand shape={hand} skin={skin} /></g>
+      {item && <Item id={item} x={hx} y={hy} />}
+      <g transform={`translate(${hx} ${hy}) rotate(${handAngle})`}><Hand shape={item ? "fist" : hand} skin={skin} /></g>
     </g>
   );
 };
@@ -713,7 +729,7 @@ export const Portrait: React.FC<{ id: CharId; emotion: Emotion; viseme?: Viseme 
 export interface Force { emotion?: Emotion; action?: Action; viseme?: Viseme | null; noFx?: boolean }
 
 /* ------------------------------ Character ------------------------------- */
-export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 | -1; frame: number; scale?: number; force?: Force; walk?: number; wear?: Wear }> = ({ id, x, y, facing, frame, scale = 1, force, walk, wear = "seragam" }) => {
+export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 | -1; frame: number; scale?: number; force?: Force; walk?: number; wear?: Wear; held?: { front?: string; back?: string }; bag?: boolean; hat?: boolean }> = ({ id, x, y, facing, frame, scale = 1, force, walk, wear = "seragam", held, bag, hat }) => {
   const t = frame / FPS;
   const look = lookFor(id, wear);
   const st = force
@@ -733,6 +749,9 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
     pose = { ...pose, front: [pose.front[0] + Math.sin(t * 5 + phase) * 10, pose.front[1] + Math.sin(t * 7) * 12] };
   }
   if (walk !== undefined) pose = { ...pose, front: [pose.front[0] - Math.sin(walk) * 22, pose.front[1]], back: [pose.back[0] + Math.sin(walk) * 22, pose.back[1]] };
+  if (st.action === "sweep") { const w = Math.sin(t * 5); pose = { ...pose, front: [pose.front[0] + w * 10, pose.front[1]], back: [pose.back[0] + w * 10, pose.back[1]] }; }
+  if (st.action === "shoot") { const w = Math.max(0, Math.sin(t * 3)); pose = { ...pose, front: [pose.front[0] + w * 14, pose.front[1]], back: [pose.back[0] + w * 14, pose.back[1]] }; }
+  if (st.action === "pull") { const w = Math.sin(t * 4.2); pose = { ...pose, front: [pose.front[0] + w * 16, pose.front[1] + w * 22], back: [pose.back[0] - w * 16, pose.back[1] - w * 22] }; }
   if (st.action === "wave") pose = { ...pose, front: [pose.front[0] + Math.sin(t * 10) * 8, pose.front[1]] };
 
   const breathe = 1 + Math.sin(t * 2.3 + phase) * 0.012;
@@ -755,11 +774,13 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
     <g transform={`translate(${x + bodyX} ${y + bodyY}) scale(${facing * s} ${s})`}>
       <ellipse cx={0} cy={2} rx={120 * look.bodyW} ry={16} fill="#000" opacity={0.18} transform={`scale(${1 + bodyY / 400} 1)`} />
       <g transform={`rotate(${pose.lean} 0 0)`}>
-        <Arm sx={backShoulder[0]} sy={backShoulder[1]} pose={pose.back} look={look} shade hand={pose.hands[1]} t={t} />
+        {bag && <BackpackBack color={bagColor(CHAR_IDS.indexOf(id) * 3 + 1)} crouch={crouch} />}
+        <Arm sx={backShoulder[0]} sy={backShoulder[1]} pose={pose.back} look={look} shade hand={pose.hands[1]} t={t} item={held?.back} />
         <Lower look={look} crouch={crouch} walk={walk} />
         <g transform={`translate(0 ${-240 + crouch}) scale(1 ${breathe}) translate(0 ${240 - crouch})`}>
           <Torso look={look} crouch={crouch} />
         </g>
+        {bag && <BackpackStraps color={bagColor(CHAR_IDS.indexOf(id) * 3 + 1)} bodyW={look.bodyW} crouch={crouch} />}
         <rect x={-18} y={-488 + crouch} width={40} height={40} fill={look.skinShade} stroke={OUT} strokeWidth={SW} />
         {look.accessories.includes("headset") && (
           <g>
@@ -770,9 +791,10 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
         )}
         <g transform={`translate(4 ${-468 + crouch}) rotate(${pose.head + nod + extraTilt}) scale(${ST.headScale})`}>
           <Head id={id} look={look} t={t} emotion={st.emotion} viseme={viseme} blink={blink} lookDir={pose.look} since={st.since} />
+          {hat && look.hairStyle !== "hijab" && <UpacaraCap />}
           {!force?.noFx && <HeadFx emotion={st.emotion} t={t} since={force ? 0 : st.since} />}
         </g>
-        <Arm sx={frontShoulder[0]} sy={frontShoulder[1]} pose={pose.front} look={look} hand={pose.hands[0]} t={t} front />
+        <Arm sx={frontShoulder[0]} sy={frontShoulder[1]} pose={pose.front} look={look} hand={pose.hands[0]} t={t} front item={held?.front} />
       </g>
     </g>
   );

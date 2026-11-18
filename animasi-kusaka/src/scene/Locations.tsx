@@ -8,7 +8,8 @@ import { Kantin, KelasBelakang, KelasJendela, Kos, LapanganUpacara, LapanganUpac
 const OUT = "#1b1b1b";
 const SW = 6;
 export type LocId = keyof typeof meta.locations;
-export interface Layer { d: number; el: (t: number, opts?: { ijahNod?: number }) => React.ReactNode }
+export interface SceneOpts { ijahNod?: number; flag?: number; flagInverted?: boolean; snag?: number; gate?: number; angkot?: number }
+export interface Layer { d: number; el: (t: number, opts?: SceneOpts) => React.ReactNode }
 export interface LocationDef { id: LocId; bg: string; layers: Layer[]; front?: Layer[] }
 
 export const Tree: React.FC<{ x: number; y: number; s?: number }> = ({ x, y, s = 1 }) => (
@@ -18,15 +19,22 @@ export const Tree: React.FC<{ x: number; y: number; s?: number }> = ({ x, y, s =
   </g>
 );
 
-export const Flag: React.FC<{ x: number; y: number; t: number; h?: number }> = ({ x, y, t, h = 520 }) => {
+/** Tiang bendera. flagY = posisi kain bendera (default di puncak); inverted = putih di atas (terbalik); cloth=false = kain belum dipasang. */
+export const Flag: React.FC<{ x: number; y: number; t: number; h?: number; flagY?: number; inverted?: boolean; cloth?: boolean }> = ({ x, y, t, h = 520, flagY, inverted, cloth = true }) => {
   const w = (k: number) => Math.sin(t * 5 + k) * 8;
+  const fy = flagY ?? y;
+  const top = inverted ? "#fff" : "#e63946", bot = inverted ? "#e63946" : "#fff";
   return (
     <g>
       <rect x={x - 6} y={y} width={12} height={h} fill="#d9d9d9" stroke={OUT} strokeWidth={4} />
       <circle cx={x} cy={y - 6} r={10} fill="#f3c66b" stroke={OUT} strokeWidth={4} />
-      <path d={`M ${x + 6} ${y + 10} Q ${x + 60} ${y + 10 + w(0)} ${x + 120} ${y + 10 + w(1)} L ${x + 120} ${y + 50 + w(1)} Q ${x + 60} ${y + 50 + w(0)} ${x + 6} ${y + 50} Z`} fill="#e63946" />
-      <path d={`M ${x + 6} ${y + 50} Q ${x + 60} ${y + 50 + w(0)} ${x + 120} ${y + 50 + w(1)} L ${x + 120} ${y + 90 + w(1)} Q ${x + 60} ${y + 90 + w(0)} ${x + 6} ${y + 90} Z`} fill="#fff" />
-      <path d={`M ${x + 6} ${y + 10} Q ${x + 60} ${y + 10 + w(0)} ${x + 120} ${y + 10 + w(1)} L ${x + 120} ${y + 90 + w(1)} Q ${x + 60} ${y + 90 + w(0)} ${x + 6} ${y + 90} Z`} fill="none" stroke={OUT} strokeWidth={4} />
+      {cloth && (
+        <g>
+          <path d={`M ${x + 6} ${fy + 10} Q ${x + 60} ${fy + 10 + w(0)} ${x + 120} ${fy + 10 + w(1)} L ${x + 120} ${fy + 50 + w(1)} Q ${x + 60} ${fy + 50 + w(0)} ${x + 6} ${fy + 50} Z`} fill={top} />
+          <path d={`M ${x + 6} ${fy + 50} Q ${x + 60} ${fy + 50 + w(0)} ${x + 120} ${fy + 50 + w(1)} L ${x + 120} ${fy + 90 + w(1)} Q ${x + 60} ${fy + 90 + w(0)} ${x + 6} ${fy + 90} Z`} fill={bot} />
+          <path d={`M ${x + 6} ${fy + 10} Q ${x + 60} ${fy + 10 + w(0)} ${x + 120} ${fy + 10 + w(1)} L ${x + 120} ${fy + 90 + w(1)} Q ${x + 60} ${fy + 90 + w(0)} ${x + 6} ${fy + 90} Z`} fill="none" stroke={OUT} strokeWidth={4} />
+        </g>
+      )}
     </g>
   );
 };
@@ -53,7 +61,7 @@ export const SchoolBuilding: React.FC<{ x: number; y: number; w: number; floors?
 };
 
 /* ------------------------------ GERBANG ---------------------------------- */
-const Gerbang: React.FC<{ t: number }> = ({ t }) => (
+const Gerbang: React.FC<{ t: number; gate?: number }> = ({ t, gate = 0 }) => (
   <g>
     {/* fence wall */}
     <rect x={-400} y={700} width={1160} height={180} fill="#e8dcc0" stroke={OUT} strokeWidth={SW} />
@@ -64,9 +72,14 @@ const Gerbang: React.FC<{ t: number }> = ({ t }) => (
     <rect x={-400} y={590} width={2800} height={16} fill="#3c8d5a" stroke={OUT} strokeWidth={4} />
     {/* sliding iron gate (half open) */}
     <g>
-      <rect x={560} y={560} width={220} height={320} fill="none" stroke={OUT} strokeWidth={8} />
-      {Array.from({ length: 9 }).map((_, i) => <rect key={i} x={566 + i * 24} y={562} width={9} height={316} fill="#2f6b45" stroke={OUT} strokeWidth={3} />)}
-      <rect x={560} y={700} width={220} height={12} fill="#2f6b45" stroke={OUT} strokeWidth={4} />
+      {/* gerbang besi geser: gate 0 = terbuka (menumpuk di kiri), 1 = tertutup menutup celah di antara tiang */}
+      {(() => { const gx = 560 + 240 * gate, gw = 220 + 120 * gate, n = Math.round(gw / 24); return (
+        <g>
+          <rect x={gx} y={560} width={gw} height={320} fill="none" stroke={OUT} strokeWidth={8} />
+          {Array.from({ length: n }).map((_, i) => <rect key={i} x={gx + 6 + i * ((gw - 12) / n)} y={562} width={9} height={316} fill="#2f6b45" stroke={OUT} strokeWidth={3} />)}
+          <rect x={gx} y={700} width={gw} height={12} fill="#2f6b45" stroke={OUT} strokeWidth={4} />
+          {gate > 0.97 && <rect x={gx + gw / 2 - 16} y={690} width={32} height={26} rx={5} fill="#ffd23f" stroke={OUT} strokeWidth={4} />}
+        </g>); })()}
     </g>
     {/* pillars + arch sign */}
     {[740, 1140].map((x) => (
@@ -296,7 +309,7 @@ export const LOCATIONS: Record<LocId, LocationDef> = {
       { d: 0.25, el: (t) => <Sky t={t} /> },
       { d: 0.55, el: () => <g><Tree x={120} y={420} /><Tree x={1820} y={430} /><SchoolBuilding x={260} y={280} w={1400} /></g> },
       { d: 1, el: () => <Paving /> },
-      { d: 1, el: (t) => <Gerbang t={t} /> },
+      { d: 1, el: (t, o) => <Gerbang t={t} gate={o?.gate} /> },
     ],
   },
   kelas: { id: "kelas", bg: "#f6e7c1", layers: [{ d: 1, el: (t) => <Kelas t={t} /> }] },
@@ -314,11 +327,11 @@ export const LOCATIONS: Record<LocId, LocationDef> = {
   ruangTamu: { id: "ruangTamu", bg: "#f7dcc4", layers: [{ d: 1, el: (t) => <RuangTamu t={t} /> }] },
   ruangGuru: { id: "ruangGuru", bg: "#e6efe0", layers: [{ d: 1, el: (t) => <RuangGuru t={t} /> }] },
   pasar: { id: "pasar", bg: "#d7e6ee", layers: [{ d: 1, el: (t) => <Pasar t={t} /> }] },
-  halte: { id: "halte", bg: "#8fd6ff", layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.5, el: () => <HalteBack /> }, { d: 1, el: (t) => <Halte t={t} /> }] },
+  halte: { id: "halte", bg: "#8fd6ff", layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.5, el: () => <HalteBack /> }, { d: 1, el: (t, o) => <Halte t={t} angkot={o?.angkot} /> }] },
   lapanganBasket: { id: "lapanganBasket", bg: "#8fd6ff", layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.55, el: () => <LapanganBasketBack /> }, { d: 1, el: (t) => <LapanganBasket t={t} /> }] },
   lapanganUpacara: {
     id: "lapanganUpacara", bg: "#8fd6ff",
-    layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.55, el: () => <LapanganUpacaraBack /> }, { d: 1, el: (t) => <LapanganUpacara t={t} /> }],
+    layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.55, el: () => <LapanganUpacaraBack /> }, { d: 1, el: (t, o) => <LapanganUpacara t={t} flag={o?.flag} inverted={o?.flagInverted} snag={o?.snag} /> }],
   },
   kos: { id: "kos", bg: "#e9edf2", layers: [{ d: 1, el: (t) => <Kos t={t} /> }] },
 };

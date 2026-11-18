@@ -32,7 +32,7 @@ Aturan dari pemilik proyek, WAJIB diikuti di setiap sesi:
 10. **Brand terkunci** (`src/branding/brand.json`): nama channel **Kusaka Design**, logo resmi **Logo 2 (lencana)**,
     banner resmi **Banner 3 (Panel Komik)**. Thumbnail: teks hanya judul (tanpa nomor episode/lencana EPS),
     **dilarang memakai uang / mata uang (Rp)**. Aset di `animasi-kusaka/brand/` (`npm run brand`).
-    **Watermark Shorts resmi = Contoh 5** (pil gelap transparan + Logo 2 + KUSAKA/DESIGN, kiri atas), hanya di Shorts.
+    **Watermark resmi = Contoh 5** (pil gelap transparan + Logo 2 + KUSAKA/DESIGN, kiri atas) di **Shorts 9:16 dan video panjang 16:9** (ukuran disesuaikan; caption adegan 16:9 digeser ke bawahnya).
 11. **Pratinjau hanya gambar** (storyboard/still). Video MP4 hanya dikirim kalau pemilik memintanya.
 12. **DILARANG membelakangi lawan bicara.** Saat bercakap, pembicara menghadap lawan bicaranya dan semua pendengar
     menghadap pembicara. Diatur otomatis per baris oleh `src/edit/facing.ts` (lawan bicara: `"to"` di naskah → sapaan di
@@ -45,3 +45,14 @@ Aturan dari pemilik proyek, WAJIB diikuti di setiap sesi:
     id internal `shorts04`). Arsip GitHub: `releases/Kusaka-ShortsN-Judul-Dua-Kata.mp4`. Judul YouTube/Instagram tetap tanpa nomor.
 
 Panduan cerita dan strategi: `animasi-kusaka/SERIES_BIBLE.md`.
+14. **Tindakan dan benda HARUS terlihat (sinkron dengan dialog).** Kalau dialog menyebut benda atau tindakan, di layar harus ada
+    benda itu dan tindakan itu dilakukan, bukan sekadar bicara dan gerak tangan. Contoh: kertas ulangan dipegang/ditunjukkan/dibaca,
+    tiang dan tali bendera ada, bendera naik dan terbalik, gerbang benar-benar menutup, belanjaan di pasar, bola, gelas, buku PR, HP.
+    Sistem: `hold` (benda di tangan per baris/adegan), aksi `hold|carry|give|show|read|pull|salute`, `tracks` (gerbang/bendera/angkot/hormat/tali),
+    `bag` (tas), `src/characters/Props.tsx`. Murid memakai **tas punggung saat berangkat dan pulang sekolah** (lokasi gerbang/halte otomatis,
+    atau `"bag"` per adegan; tanpa tas di jam pelajaran/istirahat). NPC latar ikut bertindak (hormat serentak, bertas).
+    Momen kunci memakai shot `wide` agar bendanya terlihat. Audit tiap naskah: baca setiap baris dan tanya "benda/tindakan apa yang disebut?".
+    Berlaku mulai Eps. 3 dan seterusnya; tambahkan detail yang kurang tanpa menunggu perintah, tetapi RENDER video tetap hanya atas perintah pemilik (aturan 1).
+15. **Pulang/berangkat sekolah TETAP berseragam** (pemilik 18 Nov 2026). Adegan bercaption "SEPULANG SEKOLAH" / "SENIN PAGI" otomatis berseragam
+    (lengkap dengan tas punggung), walau lokasinya warung/halte. Pakaian bebas hanya untuk akhir pekan, malam, dan di rumah (`"wear"` per adegan).
+    Topi upacara abu-abu dipakai murid (non-hijab) di lapangan upacara. Audit benda/tindakan: `npm run audit:props -- <naskah.json>` (harus 0 sebelum rilis).

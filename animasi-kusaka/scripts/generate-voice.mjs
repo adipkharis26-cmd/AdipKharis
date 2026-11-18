@@ -31,7 +31,7 @@ const fail = (msg) => { console.error(`✗ ${msg}`); process.exit(1); };
 const EMOTIONS = ["neutral", "smug", "suspicious", "shock", "laugh", "pleading", "deadpan", "surprised", "embarrassed", "defeated"];
 const SHOTS = editing.camera.shots;
 if (!script.episode) fail("script.json butuh field \"episode\" (mis. \"eps01\")");
-const ACTIONS = ["idle","gesture","pocket","chin","point","plead","crossed","shock","laugh","slump","wave","thumbsup","peace","facepalm","hips","phone"];
+const ACTIONS = ["idle","gesture","pocket","chin","point","plead","crossed","shock","laugh","slump","wave","thumbsup","peace","facepalm","hips","phone","hold","carry","give","show","read","pull","salute","shoot","drink","eat","write","sweep","blow"];
 let ctaCount = 0;
 for (const sc of script.scenes) {
   const loc = locations.locations[sc.location];
@@ -194,7 +194,7 @@ for (const sc of script.scenes) {
     cursor += duration + (line.surprise ? 0.15 : line.gapAfter ?? script.gapSeconds);
   }
   cursor += script.sceneGap ?? 0;
-  timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
+  timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), ...(sc.bag !== undefined ? { bag: sc.bag } : {}), ...(sc.hold ? { hold: sc.hold } : {}), ...(sc.tracks ? { tracks: sc.tracks } : {}), ...(sc.flagInverted ? { flagInverted: true } : {}), ...(sc.hat !== undefined ? { hat: sc.hat } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
 }
 timeline.scenes[timeline.scenes.length - 1].end = +(cursor + (script.tail ?? 2.5)).toFixed(3);
 timeline.totalSeconds = timeline.scenes[timeline.scenes.length - 1].end;

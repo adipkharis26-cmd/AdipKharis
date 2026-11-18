@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Audio, Loop, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { useFonts } from "./lib/fonts";
-import { ShortsWatermark } from "./branding/Watermark";
+import { LongWatermark, ShortsWatermark } from "./branding/Watermark";
 import { ShortsCta, ctaLineOf } from "./branding/ShortsCta";
 import { Character, Wear } from "./characters/Character";
 import { LOCATIONS, LOCATION_META, LocId } from "./scene/Locations";
@@ -13,7 +13,7 @@ import { Extras } from "./scene/Extras";
 import { FLine, activeLine, conversationFacing } from "./edit/facing";
 import sfxLib from "./audio/sfx.json";
 import editing from "./edit/editing.json";
-import { CharId, END_OF_DIALOG, FPS, LINES, Line, SCENES, Scene, beatAt, SUBTITLES } from "./lib/timeline";
+import { CharId, END_OF_DIALOG, FPS, LINES, Line, SCENES, Scene, beatAt, SUBTITLES, heldAt, trackAt } from "./lib/timeline";
 
 /* -------------------------------- stage layout (per scene, from locked location marks) ---- */
 const metaOf = (sc: Scene) => LOCATION_META.locations[sc.location as LocId];
@@ -55,7 +55,20 @@ const posOf = (sc: Scene, c: CharId): { x: number; facing: 1 | -1; walk?: number
   return f ? { ...p, facing: f } : p;
 };
 /** Pakaian adegan: "wear" di naskah, kalau tidak ada ikut lokasi (sekolah = seragam, luar = bebas, rumah = bebas + sandal). */
-const wearOf = (sc: Scene): Wear => sc.wear ?? ((metaOf(sc) as { wear?: Wear }).wear ?? "seragam");
+/** Murid membawa tas punggung saat berangkat/pulang sekolah: lokasi "bag": true (gerbang, halte) atau naskah scene "bag": true | ["id", ...] | false. */
+const STUDENTS = ["kusaka", "ujang", "nadia", "sasa", "ucok", "bimo", "dinda", "raka"];
+const bagOf = (sc: Scene, c: CharId): boolean => {
+  const sb = sc.bag ?? (metaOf(sc) as { bag?: boolean }).bag ?? false;
+  return Array.isArray(sb) ? sb.includes(c) : !!sb && STUDENTS.includes(c);
+};
+export const hasBagScene = (sc: Scene) => (sc.bag ?? (metaOf(sc) as { bag?: boolean }).bag ?? false) !== false;
+/** Pulang/berangkat sekolah TETAP berseragam (aturan pemilik): scene bercaption SEPULANG SEKOLAH / SENIN PAGI otomatis seragam. */
+const SCHOOL_CAPTIONS = ["SEPULANG SEKOLAH", "SENIN PAGI"];
+const schoolCommute = (sc: Scene) => LINES.some((l) => l.scene === sc.id && !!l.caption && SCHOOL_CAPTIONS.includes(l.caption));
+const wearOf = (sc: Scene): Wear => sc.wear ?? (schoolCommute(sc) ? "seragam" : ((metaOf(sc) as { wear?: Wear }).wear ?? "seragam"));
+/** Topi upacara: lokasi "hat": true (lapangan upacara) atau naskah scene "hat": true | false; hanya untuk berseragam. */
+export const hasHatScene = (sc: Scene) => (sc.hat ?? (metaOf(sc) as { hat?: boolean }).hat ?? false) === true;
+const hatOf = (sc: Scene, c: CharId) => hasHatScene(sc) && STUDENTS.includes(c) && wearOf(sc) === "seragam";
 const faceOf = (sc: Scene, c: CharId) => ({ x: posOf(sc, c).x + 70 * posOf(sc, c).facing, y: metaOf(sc).floor - 468 - 130 });
 const otherOf = (sc: Scene, c: CharId) => castOf(sc).find((x) => x !== c) ?? c;
 const centerOf = (sc: Scene) => {
@@ -273,21 +286,21 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
           <g filter={dof > 0 ? "url(#dof)" : undefined}>
             {bgImage
               ? <Layer cam={cam} d={1} w={w} h={h}><image href={staticFile(bgImage)} x={0} y={0} width={1920} height={1080} preserveAspectRatio="xMidYMid slice" /></Layer>
-              : loc.layers.map((l, i) => <Layer key={`${scene.id}-${i}`} cam={cam} d={l.d} w={w} h={h}>{l.el(t, { ijahNod })}</Layer>)}
+              : loc.layers.map((l, i) => <Layer key={`${scene.id}-${i}`} cam={cam} d={l.d} w={w} h={h}>{l.el(t, { ijahNod, flag: trackAt(scene, "flag", t), flagInverted: scene.flagInverted, snag: trackAt(scene, "snag", t), gate: trackAt(scene, "gate", t), angkot: trackAt(scene, "angkot", t) })}</Layer>)}
             {Detail && !bgImage && <Layer cam={cam} d={1} w={w} h={h}><Detail t={t} /></Layer>}
-            {!bgImage && <Layer cam={cam} d={1} w={w} h={h}><Extras location={scene.location} t={t} density={(scene as { extras?: string }).extras} /></Layer>}
+            {!bgImage && <Layer cam={cam} d={1} w={w} h={h}><Extras location={scene.location} t={t} density={(scene as { extras?: string }).extras} bag={hasBagScene(scene)} hat={hasHatScene(scene)} salute={trackAt(scene, "salute", t) ?? 0} /></Layer>}
             <Layer cam={cam} d={1} w={w} h={h}><SetLight light={light} t={t} floor={meta.floor} /></Layer>
           </g>
           <Layer cam={cam} d={1} w={w} h={h}>
             {castOf(scene).map((c) => {
               const p = posOf(scene, c);
               if (closeLine && c !== closeLine.speaker) return null; // single = only the speaker; ots partner is drawn in front below
-              return <g key={`${scene.id}-${c}`}><g filter="url(#charlight)"><Character id={c} x={p.x} y={meta.floor} facing={p.facing} frame={frame} walk={p.walk} wear={wearOf(scene)} /></g></g>;
+              return <g key={`${scene.id}-${c}`}><g filter="url(#charlight)"><Character id={c} x={p.x} y={meta.floor} facing={p.facing} frame={frame} walk={p.walk} wear={wearOf(scene)} held={heldAt(c, NOW)} bag={bagOf(scene, c)} hat={hatOf(scene, c)} /></g></g>;
             })}
             {otsWho && (
               // over-the-shoulder: partner cheated to the frame edge in front of the lens, sharp but dark (foreground silhouette)
               <g style={{ filter: "brightness(0.38) saturate(0.7)" }}>
-                <Character id={otsWho} x={cam.x + otsSide * (w / cam.z / 2 + 20)} y={meta.floor + 70} facing={otsSide > 0 ? -1 : 1} frame={frame} scale={1.2} wear={wearOf(scene)} />
+                <Character id={otsWho} x={cam.x + otsSide * (w / cam.z / 2 + 20)} y={meta.floor + 70} facing={otsSide > 0 ? -1 : 1} frame={frame} scale={1.2} wear={wearOf(scene)} held={heldAt(otsWho, NOW)} bag={bagOf(scene, otsWho)} hat={hatOf(scene, otsWho)} />
               </g>
             )}
           </Layer>
@@ -299,6 +312,7 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
       <FlashbackOverlay w={w} h={h} frame={frame} amount={fbAmount} />
       <SpeedLines w={w} h={h} frame={frame} opacity={speedOpacity} />
       {flash > 0 && <AbsoluteFill style={{ background: "#fff", opacity: flash }} />}
+      {!vertical && <LongWatermark />}
       <Caption t={t} vertical={vertical} />
       {vertical && <ShortsCta t={t} line={CTA_LINE} fps={FPS} w={w} h={h} />}
       {SUBTITLES && <Subtitles t={t} vertical={vertical} w={w} />}

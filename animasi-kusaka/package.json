@@ -17,7 +17,8 @@
     "prerender:shorts": "npm run check:characters --silent",
     "voice:samples": "node scripts/voice-samples.mjs",
     "sfx": "node scripts/generate-sfx.mjs && ./scripts/normalize-sfx.sh",
-    "brand": "node scripts/render-brand.mjs"
+    "brand": "node scripts/render-brand.mjs",
+    "audit:props": "node scripts/audit-props.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.540",

@@ -61,6 +61,13 @@ Kamu ahli strategi Shorts: **riset dulu tiap Shorts** (WebSearch: sinyal algorit
 - **Detail set**: `src/scene/Details.tsx` + `Details2.tsx` (14 lokasi).
 - **Subtitle**: Oswald 600, putih, kecil, outline tipis, tengah bawah, tanpa highlight karaoke.
 
+## Tindakan & benda terlihat (WAJIB, aturan 13)
+Audit setiap naskah baris demi baris: kalau teks menyebut benda atau tindakan, tampilkan: `"hold": {"kusaka": "paper"}` (atau `null` untuk melepas;
+tangan lain `{"item": "wallet", "hand": "back"}`), aksi `hold|carry|give|show|read|pull|salute`, `scene.hold` untuk benda dari awal adegan,
+`scene.bag` (`true` | `["id"]` | `false`; gerbang/halte otomatis), `scene.tracks` (`gate`, `flag`, `snag`, `angkot`, `salute`; kunci `["l007", 0]`,
+`"l007:end"` = akhir baris), `flagInverted`. Benda: paper, book, kresek, gorengan, cup, mug, tray, ball, wallet, bagTote (tambah di `Props.tsx`).
+Pakai `"shot": "wide"` pada momen kunci agar bendanya tampak. Benda tambahan: whistle, clipboard, broom, bowl, tumbler, pen, helmet, umbrella; aksi: shoot, drink, eat, write, sweep, blow. Jalankan `npm run audit:props -- <naskah>` sampai 0. Pulang/berangkat sekolah tetap berseragam + tas; topi upacara di lapangan upacara; watermark kiri atas juga di video panjang. Tambahkan detail yang kurang tanpa menunggu perintah, tetapi render video tetap hanya atas perintah pemilik.
+
 ## Format naskah (`src/data/episodes/<id>.json`)
 ```json
 { "format": "shorts", "episode": "shorts04", "title": "…", "fps": 30,
