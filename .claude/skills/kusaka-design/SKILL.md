@@ -69,6 +69,18 @@ Branch kerja: `ccr-5483b159-l8zee8`.
 5. Buat `<id>-upload.md`. Kirim gambar pratinjau. Tunggu **"cocok"** → commit → push ke branch kerja.
 6. `src/data/timeline.json` harus berisi data rilis terakhir sebelum commit (jangan commit timeline draft).
 
+## Alur hemat kuota + hasil maksimal (TERKUNCI)
+- **Satu sesi per episode/Shorts.** Skill ini otomatis terbaca; jangan minta pemilik menjelaskan ulang.
+- **Revisi di tahap naskah/storyboard** (gambar). Video **dirender sekali** setelah "cocok" + perintah render.
+- ElevenLabs: take dipakai ulang per hash; revisi teks hanya membuat ulang baris yang berubah; uji gaya pakai naskah pendek.
+- **Render master sekali** (Remotion default, 1080p ±6,5 Mbps). Long > ±75 menit render → pecah per batas adegan
+  (`--frames=a-b --concurrency=4`, tiap bagian di background ≤ 2 jam), gabung dengan `ffmpeg -f concat`.
+- Dari master dibuat dua file tanpa render ulang:
+  1. **HQ kirim ke pemilik** ≤ 380 MB (batas kirim chat 400 MB): 2-pass libx264 `-preset slow -tune animation`,
+     video ≈ (360 MB × 8 / durasi) − 192 kbps, audio AAC 192k, `-movflags +faststart`. Kirim lewat chat (SendUserFile).
+  2. **Arsip GitHub** < 100 MB di `releases/`: 2-pass ±650 kbps + AAC 128k.
+- File master/HQ tetap di `out/` (tidak ikut git). Unduhan pemilik cukup sekali (file HQ).
+
 ## Catatan teknis
 - ElevenLabs lewat `curl` (proxy menyuntik auth). Verifikasi voice: `/v1/voices/{id}` lalu fallback `/v1/shared-voices`.
 - Kuota ElevenLabs terbatas: pakai ulang take, uji pakai naskah pendek.
