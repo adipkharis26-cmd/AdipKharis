@@ -39,4 +39,9 @@ Aturan dari pemilik proyek, WAJIB diikuti di setiap sesi:
     teks → pembicara sebelumnya). Jangan dimatikan. Cek di storyboard: tidak ada wajah yang tertutup kepala tokoh lain.
     Berlaku untuk produksi ke depan (Shorts & episode). Video yang sudah dirilis atau sedang dirender tidak diganggu.
 
+13. **Format output final Shorts (TERKUNCI, pemilik 18 Nov 2026).** Setelah render, kirim ke pemilik berurutan:
+    (1) **MP4 HQ**, (2) **thumbnail 9:16**, lalu (3) **judul + deskripsi** (siap salin, beserta tag/hashtag) ditulis di chat
+    tepat di bawahnya. Nama keluaran: **"Shorts N - Judul Dua Kata"** (penomoran baru mulai Shorts 1 = "Mantan Matematika",
+    id internal `shorts04`). Arsip GitHub: `releases/Kusaka-ShortsN-Judul-Dua-Kata.mp4`. Judul YouTube/Instagram tetap tanpa nomor.
+
 Panduan cerita dan strategi: `animasi-kusaka/SERIES_BIBLE.md`.

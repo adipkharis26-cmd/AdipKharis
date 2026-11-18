@@ -92,6 +92,12 @@ Kamu ahli strategi Shorts: **riset dulu tiap Shorts** (WebSearch: sinyal algorit
 - **Thumbnail**: pola `rays|halftone|speed|stripes|grid`, properti `wallet|flagUpsideDown|bookStack|phoneDrama`, `split`, `callout`, `textRot`/`textAlign`. Render: `npm run brand -- eps04`.
 - **Storyboard**: grid 4×6 still (2 per adegan) → `storyboards/<id>.png` (kompres palet 256 warna).
 
+## Format output final Shorts (TERKUNCI)
+Urutan kirim setelah render: **MP4 HQ → thumbnail 9:16 → judul + deskripsi + tag/hashtag di chat di bawahnya** (siap salin).
+Nama: **"Shorts N - Judul Dua Kata"**; penomoran baru: Shorts 1 = "Mantan Matematika" (id `shorts04`), berikutnya Shorts 2, 3, …
+File: HQ `out/Shorts-N-Judul-Dua-Kata.mp4` (dikirim), arsip `releases/Kusaka-ShortsN-Judul-Dua-Kata.mp4`, thumbnail
+`brand/thumbnails/<id>-A.png`. Judul platform tetap tanpa nomor.
+
 ## Alur kerja
 1. Tulis naskah (hook ≤ 2 dtk, ending loop/cliffhanger, catchphrase karakter).
 2. `node scripts/generate-voice.mjs src/data/episodes/<id>.json` — validasi + suara terkunci (take dipakai ulang per hash).
