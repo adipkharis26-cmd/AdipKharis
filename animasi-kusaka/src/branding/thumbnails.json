@@ -515,5 +515,42 @@
       }
     ],
     "prop": null
+  },
+  "shorts05-A": {
+    "episode": 5,
+    "size": "9x16",
+    "bg": "kamar",
+    "bgX": 980,
+    "burst": "#6c3fc4",
+    "pattern": "speed",
+    "text": [
+      "SATU MATCH",
+      "LAGI?!"
+    ],
+    "textX": 540,
+    "textY": 230,
+    "textSize": 180,
+    "textRot": -4,
+    "actors": [
+      {
+        "id": "raka",
+        "emotion": "shock",
+        "action": "point",
+        "x": 790,
+        "y": 1480,
+        "scale": 1.8,
+        "facing": -1
+      },
+      {
+        "id": "kusaka",
+        "emotion": "embarrassed",
+        "action": "phone",
+        "x": 380,
+        "y": 2820,
+        "scale": 2.5,
+        "facing": 1
+      }
+    ],
+    "prop": null
   }
 }
