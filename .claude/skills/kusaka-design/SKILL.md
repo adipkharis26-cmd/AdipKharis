@@ -62,6 +62,8 @@ Branch kerja: `ccr-5483b159-l8zee8`.
   ruangTamu, lapanganUpacara, kos, ruangGuru, pasar, halte, lapanganBasket.
 - **Extras (NPC latar)** muncul otomatis per lokasi (`src/scene/Extras.tsx`); per adegan `"extras": "off" | "low" | "normal"`.
 - **Setiap episode panjang**: sertakan adegan TANPA Kusaka dan lokasi di luar rumah/sekolah (pasar, halte, lapangan, dll.).
+- **Thumbnail**: pola `rays|halftone|speed|stripes|grid`, properti `wallet|flagUpsideDown|bookStack|phoneDrama`, `split`, `callout`, `textRot`/`textAlign`. Render: `npm run brand -- eps04`.
+- **Storyboard**: grid 4×6 still (2 per adegan) → `storyboards/<id>.png` (kompres palet 256 warna).
 
 ## Alur kerja
 1. Tulis naskah (hook ≤ 2 dtk, ending loop/cliffhanger, catchphrase karakter).

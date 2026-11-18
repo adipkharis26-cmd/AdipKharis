@@ -80,13 +80,14 @@ Teks banner dibuat **singkat tapi jelas**: hanya **KUSAKA DESIGN** + label **ANI
 
 ---
 
-## Sistem thumbnail (v1.2.0): identitas tetap, komposisi berbeda tiap episode
+## Sistem thumbnail (v1.3.0): identitas tetap, komposisi berbeda tiap episode
 **Tetap (agar dikenali di beranda/halaman saran):** bingkai kuning + hitam, judul Bangers (putih/kuning, outline hitam, bayangan merah),
 Kusaka dengan ekspresi ekstrem, maksimal 4 kata, tanpa nomor episode, pojok kanan bawah kosong, tanpa uang/Rp.
 **Berubah tiap episode (agar tidak terlihat seperti video yang sama):** pola latar (`pattern`: rays / halftone / speed / stripes),
 layar terbelah diagonal (`split`), sorotan lingkaran + panah merah (`callout`), properti cerita (dompet, bendera terbalik, dll.),
 warna dominan, sudut/posisi teks (`textRot`, `textX`), ukuran dan posisi Kusaka (dekat / kecil / di sisi). Varian A/B/C tiap episode
 juga sengaja berbeda komposisi. Eps. 1–2 tidak diubah.
+v1.3.0 (Eps. 4): pola `grid` (kertas kotak-kotak), properti `bookStack` (menara buku PR) dan `phoneDrama` (HP drakor), layar terbelah dengan sudut negatif.
 
 Aturan dasar (berlaku untuk semua episode):
 1. **Bingkai kuning** + garis hitam di tepi.

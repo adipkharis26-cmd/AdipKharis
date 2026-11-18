@@ -15,9 +15,9 @@ export interface Actor { id: CharId; emotion: Emotion; action: Action; viseme?: 
 export interface ThumbProps {
   episode: number; bg: LocId; burst: string; text: string[]; textX: number; textY: number; textSize?: number;
   // RULE: no money / currency (Rp) props in thumbnails — story props only (e.g. the wallet)
-  actors: Actor[]; prop?: "wallet" | "flagUpsideDown" | null; propX?: number; propY?: number; propScale?: number;
+  actors: Actor[]; prop?: "wallet" | "flagUpsideDown" | "bookStack" | "phoneDrama" | null; propX?: number; propY?: number; propScale?: number;
   // Variasi per episode (identitas tetap: bingkai kuning, Bangers kuning/putih + bayangan merah, Kusaka ekspresi ekstrem)
-  pattern?: "rays" | "halftone" | "speed" | "stripes";
+  pattern?: "rays" | "halftone" | "speed" | "stripes" | "grid";
   split?: { bg: LocId; angle?: number };          // layar terbelah diagonal: kiri = bg, kanan = split.bg
   callout?: { x: number; y: number; rx: number; ry: number; arrow?: { x: number; y: number } }; // lingkaran + panah merah
   textRot?: number; textAlign?: "middle" | "start";
@@ -46,6 +46,7 @@ const Wallet: React.FC<{ x: number; y: number }> = ({ x, y }) => (
 const Pattern: React.FC<{ kind: NonNullable<ThumbProps["pattern"]> }> = ({ kind }) => {
   if (kind === "halftone") return <g opacity={0.22} fill="#fff">{Array.from({ length: 22 * 13 }).map((_, i) => { const c = i % 22, r = Math.floor(i / 22); const d = Math.max(0, 1 - Math.hypot(c * 60 - 1000, r * 60 - 560) / 1000); return <circle key={i} cx={c * 60 + (r % 2) * 30} cy={r * 60} r={3 + d * 14} />; })}</g>;
   if (kind === "speed") return <g stroke="#fff" opacity={0.3} strokeLinecap="round">{Array.from({ length: 34 }).map((_, i) => <line key={i} x1={160 + ((i * 97) % 1100)} y1={(i * 53) % 720} x2={-200} y2={(i * 53) % 720} strokeWidth={4 + (i % 4) * 3} />)}</g>;
+  if (kind === "grid") return <g stroke="#fff" opacity={0.28}>{Array.from({ length: 33 }).map((_, i) => <line key={`v${i}`} x1={i * 40} y1={0} x2={i * 40} y2={720} strokeWidth={i % 4 === 0 ? 4 : 1.5} />)}{Array.from({ length: 19 }).map((_, i) => <line key={`h${i}`} x1={0} y1={i * 40} x2={1280} y2={i * 40} strokeWidth={i % 4 === 0 ? 4 : 1.5} />)}</g>;
   if (kind === "stripes") return <g fill="#fff" opacity={0.16}>{Array.from({ length: 14 }).map((_, i) => <path key={i} d={`M ${i * 120 - 300} 720 L ${i * 120 - 180} 720 L ${i * 120 + 300} 0 L ${i * 120 + 180} 0 Z`} />)}</g>;
   return <g opacity={0.55}><Burst cx={420} cy={360} color="transparent" /></g>;
 };
@@ -53,6 +54,31 @@ const FlagUpsideDown: React.FC<{ x: number; y: number; s: number }> = ({ x, y, s
   <g transform={`translate(${x} ${y}) scale(${s})`} stroke={OUT} strokeWidth={8} strokeLinejoin="round">
     <rect x={-8} y={-30} width={16} height={560} fill="#d9d9d9" /><circle cx={0} cy={-38} r={14} fill="#f3c66b" />
     <rect x={8} y={-10} width={300} height={90} fill="#fff" /><rect x={8} y={80} width={300} height={90} fill="#e63946" />
+  </g>
+);
+/* Tumpukan buku PR menjulang (miring-miring, tanpa teks) */
+const BOOKS = ["#e63946", "#2f7fd8", "#2aa6a0", "#ffd23f", "#8a4b26", "#6c3fc4", "#f28c28", "#e85d9a", "#3d9a4a", "#2f7fd8", "#e63946", "#ffd23f"];
+const BookStack: React.FC<{ x: number; y: number; s: number }> = ({ x, y, s }) => (
+  <g transform={`translate(${x} ${y}) scale(${s})`} stroke={OUT} strokeWidth={7} strokeLinejoin="round">
+    {BOOKS.map((c, i) => { const w = 250 - (i % 3) * 22, h = 52 + (i % 2) * 10, off = Math.sin(i * 1.7) * 26, yy = -i * 58;
+      return <g key={i} transform={`translate(${off} ${yy}) rotate(${Math.sin(i * 2.3) * 5})`}>
+        <rect x={-w / 2} y={-h} width={w} height={h} rx={6} fill={c} />
+        <rect x={-w / 2 + 14} y={-h + 10} width={w - 40} height={h - 20} rx={3} fill="#fdf6e3" strokeWidth={4} />
+        <path d={`M ${-w / 2 + 30} ${-h / 2} L ${w / 2 - 40} ${-h / 2}`} strokeWidth={3} opacity={0.5} />
+      </g>; })}
+    {/* kertas melayang */}
+    <g transform="translate(-170 -560) rotate(-18)"><rect x={-40} y={-50} width={80} height={100} fill="#fff" strokeWidth={5} /><path d="M -25 -25 L 25 -25 M -25 0 L 25 0 M -25 25 L 10 25" strokeWidth={4} /></g>
+    <g transform="translate(180 -420) rotate(22)"><rect x={-40} y={-50} width={80} height={100} fill="#fff" strokeWidth={5} /><path d="M -25 -25 L 25 -25 M -25 0 L 25 0 M -25 25 L 10 25" strokeWidth={4} /></g>
+  </g>
+);
+/* HP drakor: layar dengan hati besar + air mata (tanpa teks) */
+const PhoneDrama: React.FC<{ x: number; y: number; s: number }> = ({ x, y, s }) => (
+  <g transform={`translate(${x} ${y}) scale(${s}) rotate(8)`} stroke={OUT} strokeWidth={9} strokeLinejoin="round">
+    <rect x={-110} y={-200} width={220} height={400} rx={30} fill="#222" />
+    <rect x={-90} y={-170} width={180} height={330} rx={12} fill="#ffb3c7" strokeWidth={5} />
+    <path d="M 0 40 C -90 -20 -70 -110 0 -70 C 70 -110 90 -20 0 40 Z" fill={BRAND.red} strokeWidth={7} />
+    <path d="M -40 70 q 6 22 0 34 q -6 -12 0 -34 Z M 40 80 q 6 22 0 34 q -6 -12 0 -34 Z" fill="#7cc6ff" strokeWidth={4} />
+    <circle cx={0} cy={182} r={9} fill="#555" strokeWidth={3} />
   </g>
 );
 const Callout: React.FC<{ c: NonNullable<ThumbProps["callout"]> }> = ({ c }) => (
@@ -86,6 +112,8 @@ export const Thumbnail: React.FC<ThumbProps> = (p) => {
           ))}
           {p.prop === "wallet" && <Wallet x={p.propX ?? 980} y={p.propY ?? 470} />}
           {p.prop === "flagUpsideDown" && <FlagUpsideDown x={p.propX ?? 960} y={p.propY ?? 140} s={p.propScale ?? 1} />}
+          {p.prop === "bookStack" && <BookStack x={p.propX ?? 980} y={p.propY ?? 700} s={p.propScale ?? 1} />}
+          {p.prop === "phoneDrama" && <PhoneDrama x={p.propX ?? 980} y={p.propY ?? 360} s={p.propScale ?? 1} />}
           {p.callout && <Callout c={p.callout} />}
           {/* headline: max 3–4 words, yellow + thick black outline + red drop */}
           <g transform={`translate(${p.textX} ${p.textY}) rotate(${p.textRot ?? -4})`}>

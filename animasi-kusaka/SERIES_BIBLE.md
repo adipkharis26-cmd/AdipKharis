@@ -222,7 +222,7 @@ lebih aman memakai pustaka orisinal di atas. Kalau Anda punya file yang lisensin
 | 1 | Operasi Traktir Nadia ✅ (7:39, 10 adegan) | Kamar → Ruang Tamu → Gerbang → Koridor → Kelas → Kantin → BK → Warung → Kamar | Hampir semua pemeran | Dinda live: "Kakakku baru bangun, guys" |
 | 2 | Dompet Sandera ✅ (15:12, 14 adegan) | Kamar → Koridor | Kusaka, Dinda, Raka | Lanjutan cliffhanger Eps. 1: Kusaka jadi "bintang konten" Dinda |
 | 3 | Telat Upacara ✅ (13:21, 12 adegan) | Gerbang → Lapangan Upacara → Ruang Guru → Pasar → Lapangan Basket → Halte → Warung | Kusaka, Mang Udin, Pak Joko + adegan tanpa Kusaka | Gerbang menutup di depan hidung Kusaka |
-| 4 | PR Halaman 45 | Kelas–meja guru | Kusaka, Bu Wati, Nadia | "Kerjakan halaman 45 sampai 90." |
+| 4 | PR Halaman 45 ✅ (15:34, 11 adegan) | Warung → Halte → Pasar → Ruang Tamu → Kamar → Gerbang → Lapangan Basket → Kelas Jendela → Ruang Guru → Meja Guru → Warung | Kusaka, Bu Wati, Nadia + adegan tanpa Kusaka | Lanjutan cliffhanger Eps. 3: "Itu PR atau novel?!" |
 | 5 | Satu Kelompok | Perpustakaan | Kusaka, Nadia, Ujang | Undian kelompok: Kusaka + Nadia |
 | 6 | Gosip Sasa | Koridor | Sasa, Kusaka, Ucok | "Eh, kalian udah denger belum?!" |
 | 7 | Saingan Datang | Kantin | Bimo, Nadia, Kusaka | Bimo mentraktir satu meja |

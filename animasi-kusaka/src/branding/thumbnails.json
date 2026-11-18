@@ -346,5 +346,127 @@
       }
     ],
     "prop": null
+  },
+  "eps04-A": {
+    "episode": 4,
+    "bg": "mejaGuru",
+    "burst": "#2f7fd8",
+    "pattern": "grid",
+    "text": [
+      "PR",
+      "SEGUNUNG!"
+    ],
+    "textX": 330,
+    "textY": 150,
+    "textSize": 150,
+    "textRot": -6,
+    "prop": "bookStack",
+    "propX": 930,
+    "propY": 735,
+    "propScale": 1.08,
+    "actors": [
+      {
+        "id": "kusaka",
+        "emotion": "shock",
+        "action": "shock",
+        "x": 360,
+        "y": 1400,
+        "scale": 1.6,
+        "facing": 1
+      }
+    ]
+  },
+  "eps04-B": {
+    "episode": 4,
+    "bg": "warung",
+    "burst": "#f28c28",
+    "pattern": "rays",
+    "text": [
+      "BU WATI",
+      "KETAHUAN!"
+    ],
+    "textX": 780,
+    "textY": 115,
+    "textSize": 118,
+    "textRot": 3,
+    "prop": "phoneDrama",
+    "propX": 640,
+    "propY": 430,
+    "propScale": 0.75,
+    "callout": {
+      "x": 645,
+      "y": 430,
+      "rx": 135,
+      "ry": 190
+    },
+    "actors": [
+      {
+        "id": "kusaka",
+        "emotion": "shock",
+        "action": "point",
+        "x": 230,
+        "y": 1380,
+        "scale": 1.55,
+        "facing": 1
+      },
+      {
+        "id": "buWati",
+        "emotion": "embarrassed",
+        "action": "phone",
+        "x": 1060,
+        "y": 1210,
+        "scale": 1.15,
+        "facing": -1
+      }
+    ]
+  },
+  "eps04-C": {
+    "episode": 4,
+    "bg": "kelasJendela",
+    "split": {
+      "bg": "lapanganBasket",
+      "angle": -14
+    },
+    "burst": "#e85d9a",
+    "pattern": "speed",
+    "text": [
+      "BELAJAR",
+      "BARENG?!"
+    ],
+    "textX": 50,
+    "textY": 135,
+    "textSize": 135,
+    "textRot": -5,
+    "textAlign": "start",
+    "actors": [
+      {
+        "id": "nadia",
+        "emotion": "smug",
+        "action": "point",
+        "x": 300,
+        "y": 1300,
+        "scale": 1.25,
+        "facing": 1
+      },
+      {
+        "id": "kusaka",
+        "emotion": "laugh",
+        "action": "thumbsup",
+        "x": 680,
+        "y": 1400,
+        "scale": 1.45,
+        "facing": -1
+      },
+      {
+        "id": "bimo",
+        "emotion": "smug",
+        "action": "wave",
+        "x": 1090,
+        "y": 1260,
+        "scale": 1.15,
+        "facing": -1
+      }
+    ],
+    "prop": null
   }
 }
