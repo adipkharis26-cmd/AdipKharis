@@ -36,6 +36,8 @@ Kamu ahli strategi Shorts: **riset dulu tiap Shorts** (WebSearch: sinyal algorit
 - Satu crash zoom di titik balik (±tengah video). Lelucon harus jalan tanpa teks (ekspresi + suara).
 - Sampul custom diunggah lewat Studio desktop (bertahap, bisa butuh YPP); cadangan: frame crash zoom. Jangan tempel sampul
   di frame pertama (menunda hook). Shorts tidak punya A/B test sampul/judul.
+- Gaya cerita: cek naskah terhadap `SERIES_BIBLE.md` (sifat, bahasa, struktur Shorts) dan masukkan ≥1 kalimat khas
+  tiap Shorts; tiap kemunculan tokoh dipicu sebab di cerita (mis. Dinda ngadu → Ibu datang).
 - Upload.md Shorts wajib berisi tabel "sinyal → penerapan" + metrik cek (Viewed vs swiped away, Engaged views, loop).
 
 ## Gaya visual v3 ("anime-drama", mengikuti referensi pemilik)

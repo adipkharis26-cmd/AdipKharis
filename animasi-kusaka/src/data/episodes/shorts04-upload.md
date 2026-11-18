@@ -1,6 +1,6 @@
 # Paket Upload YouTube Shorts: KUSAKA "X Itu Mantan"
 
-Durasi: **~44,5 detik** · **full 9:16** (video 1080×1920 + sampul 1080×1920) · **tanpa subtitle** · 1 adegan · ruang tamu (sore)
+Durasi: **~46,7 detik** · **full 9:16** (video 1080×1920 + sampul 1080×1920) · **tanpa subtitle** · 1 adegan · ruang tamu (sore)
 Spin-off Eps. 4 "PR Halaman 45" — naskah Shorts sendiri, bukan potongan episode.
 
 ---
@@ -10,9 +10,9 @@ Spin-off Eps. 4 "PR Halaman 45" — naskah Shorts sendiri, bukan potongan episod
 Shorts tidak punya A/B test judul/thumbnail di YouTube → pakai **Judul 1** dulu; ganti ke Judul 2 hanya kalau
 dalam 48 jam "Viewed vs swiped away" < 60%.
 
-1. Bapak Bantu PR Matematika... Malah Curhat Mantan 😭 | KUSAKA
+1. Minta Bapak Bantu PR Matematika... Malah Curhat Mantan 😭 | KUSAKA
 2. "X Itu Mantan, Nggak Usah Dicari Lagi" — Bapak Kalian Juga Gini? 💀 | KUSAKA
-3. Bapak Jago Matematika? Ternyata yang Jago Ibu 🤣 | KUSAKA
+3. Bapak Ngajarin Matematika, Ibu yang Jawab 🤣 | KUSAKA
 
 ---
 
@@ -20,7 +20,7 @@ dalam 48 jam "Viewed vs swiped away" < 60%.
 
 Minta Bapak bantu PR matematika, jawabannya malah "X itu mantan, nggak usah dicari lagi." 😭
 
-Ibu lewat, satu pertanyaan, dan ketahuan siapa yang dulu ngerjain PR Bapak. 💀
+Dinda ngadu ke Ibu, dan ketahuan siapa yang dulu ngerjain PR Bapak. 💀
 
 Kalian tim Bapak atau tim Ibu? Tulis di kolom komentar! 👇
 
@@ -50,7 +50,7 @@ Komposisi sengaja beda dari Shorts 01–03 (ketiganya: satu tokoh dewasa menghad
   pola **halftone**, warna dominan **hijau** (baju Bapak), bingkai kuning seri. Tanpa nomor, tanpa uang.
 - **Cara pasang:** upload sampul lewat **YouTube Studio desktop** (Konten → Shorts → Thumbnail → Upload). Fitur ini
   bertahap & bisa butuh akun YPP + verifikasi nomor HP.
-- **Kalau tombol upload belum ada / upload dari HP:** pilih frame **detik 21,7–23,0** (crash zoom Bapak, kedua tangan
+- **Kalau tombol upload belum ada / upload dari HP:** pilih frame **detik 23,9–25,5** (crash zoom Bapak, kedua tangan
   terangkat, garis kecepatan). Sampul tidak ditempel di frame pertama video supaya hook 0,3 dtk tidak tertunda.
 
 ---
@@ -69,10 +69,11 @@ Sinyal yang paling konsisten di riset: **swipe-away di 1–3 detik pertama** (si
 | Sinyal | Penerapan di Shorts ini |
 |---|---|
 | Swipe-away 0–2 dtk | Dad joke jadi **kalimat pertama di 0,3 dtk**, tanpa intro; frame pertama sudah Bapak medium shot pegang dagu. |
-| Retensi | Dipadatkan 55 → **44,5 dtk** (riset: komedi kuat di durasi pendek; 40 dtk = batas minimal kanon). Baris pengisi dibuang, jeda 0,2 dtk. |
-| Titik balik | **Satu crash zoom** di 21,7 dtk: "KE ANGKA SEBELAS, BU!" — tepat di tengah, mencegah drop pertengahan. |
+| Retensi | Dipadatkan 55 → **46,7 dtk** (riset: komedi kuat di durasi pendek; 40 dtk = batas minimal kanon). Baris pengisi dibuang, jeda 0,2 dtk. |
+| Titik balik | **Satu crash zoom** di 23,9 dtk: "KE ANGKA SEBELAS, BU!" — tepat di tengah, mencegah drop pertengahan. |
 | Loop / rewatch | "Cari nilai X." → kembali ke "X itu mantan… nggak usah dicari lagi." Ekor 0,2 dtk + lead 0,3 dtk = sambungan 0,5 dtk, terasa seperti jeda biasa. |
 | Komentar | CTA "tim Bapak atau tim Ibu" (pilih kubu = mudah dijawab), beda pola dari Shorts 03. |
+| Kalimat khas (branding) | Bapak: "Bapak dulu juga gitu, Nak." (membela Kusaka) · Dinda: "Terus aku aduin Ibu, ya!" (sebab Ibu datang). |
 | Share | Dad joke yang bisa dikirim ke grup keluarga/teman; judul 2 menyebut "Bapak kalian". |
 | Tanpa subtitle | Shorts autoplay dengan suara; komedi ini bertumpu pada suara & ekspresi. **Risiko:** penonton mode senyap kehilangan lelucon — pantau retensi 3 detik pertama. |
 

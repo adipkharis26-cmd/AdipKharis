@@ -246,7 +246,12 @@ YouTube merekomendasikan video yang **diklik**, **ditonton lama**, dan **membuat
 sinyal terpentingnya adalah **berapa banyak yang tidak menggeser video (swipe away)** dan **berapa yang menonton ulang**.
 
 ### Shorts
-- **Detik pertama = segalanya.** Mulai dari konflik, ekspresi besar, subtitle langsung muncul.
+- **Detik pertama = segalanya.** Mulai dari konflik, ekspresi besar, kalimat pertama di 0,3 dtk.
+- **Full 9:16 tanpa subtitle** (pemilik, 18 Nov 2026): video 1080×1920 + sampul 1080×1920; satu-satunya teks = watermark
+  Contoh 5. Lelucon harus jalan lewat suara + ekspresi.
+- **Durasi target 40–48 detik** (riset Shorts 2026: komedi kuat di durasi pendek; 40 dtk = batas minimal kanon).
+- **Setiap Shorts memuat ≥1 kalimat khas** karakter (tabel pemeran) dan sifat inti tiap tokoh yang tampil
+  (mis. Bapak membela Kusaka, Dinda ngadu) — branding lewat karakter, bukan teks.
 - **Minimal 40 detik** (ideal 40–60 detik), punchline di detik 30–45, tanpa jeda mati lebih dari 0,5 detik.
 - **Loop**: akhir menyambung ke awal.
 - **Branding lewat konsistensi**, bukan teks: desain karakter, suara, dan SFX yang sama membuat penonton

@@ -50,12 +50,21 @@
           "id": "l002"
         },
         {
+          "speaker": "bapak",
+          "emotion": "laugh",
+          "listener": "deadpan",
+          "shot": "two",
+          "action": "thumbsup",
+          "text": "Bapak dulu juga gitu, Nak.",
+          "id": "l019"
+        },
+        {
           "speaker": "dinda",
           "emotion": "smug",
           "listener": "neutral",
           "shot": "two",
           "action": "phone",
-          "text": "Aku rekam, ya. Lumayan buat konten.",
+          "text": "Aku rekam. Terus aku aduin Ibu, ya!",
           "id": "l003"
         },
         {
