@@ -4,7 +4,7 @@ import React from "react";
  * Gambar saja — tanpa teks. Benda yang dipegang tangan + tas punggung + benda "sebab-akibat" cerita. */
 const OUT = "#1b1b1b";
 
-export const ITEMS = ["paper", "book", "kresek", "gorengan", "cup", "mug", "tray", "ball", "wallet", "bagTote", "whistle", "clipboard", "broom", "bowl", "tumbler", "pen", "helmet", "umbrella"] as const;
+export const ITEMS = ["paper", "book", "kresek", "gorengan", "cup", "mug", "tray", "ball", "wallet", "bagTote", "whistle", "clipboard", "broom", "bowl", "tumbler", "pen", "helmet", "umbrella", "folder", "alarm", "ledger", "bookStack"] as const;
 export type ItemId = (typeof ITEMS)[number];
 
 const sw = (w = 5) => ({ stroke: OUT, strokeWidth: w, strokeLinejoin: "round" as const, strokeLinecap: "round" as const });
@@ -113,7 +113,46 @@ const Helmet: React.FC = () => (
 const Umbrella: React.FC = () => (
   <g><rect x={-3} y={-60} width={6} height={150} fill="#555" {...sw(3.5)} /><path d="M -110 -60 Q -100 -150 0 -158 Q 100 -150 110 -60 Q 55 -80 0 -60 Q -55 -80 -110 -60 Z" fill="#2f7fd8" {...sw(5)} /></g>
 );
-const MAP: Record<ItemId, React.FC> = { paper: Paper, book: Book, kresek: Kresek, gorengan: Gorengan, cup: Cup, mug: Mug, tray: Tray, ball: Ball, wallet: Wallet, bagTote: BagTote, whistle: Whistle, clipboard: Clipboard, broom: Broom, bowl: Bowl, tumbler: Tumbler, pen: Pen, helmet: Helmet, umbrella: Umbrella };
+/* ---- Eps. 4 "PR Halaman 45" ---- */
+/** Map berkas OSIS: map plastik hijau bening, kertas di dalam, kancing tekan. */
+const Folder: React.FC = () => (
+  <g transform="rotate(-8) translate(0 -34)">
+    <rect x={-30} y={-40} width={60} height={78} rx={4} fill="#fffdf5" {...sw(3.5)} />
+    <rect x={-34} y={-34} width={68} height={76} rx={5} fill="#3c8d5a" fillOpacity={0.78} {...sw(4.5)} />
+    <path d="M -34 -16 L 34 -16" {...sw(3)} /><circle cx={0} cy={-24} r={5} fill="#fbfbf7" {...sw(3)} />
+    {[2, 14, 26].map((y) => <line key={y} x1={-20} x2={18} y1={y} y2={y} stroke="#fff" strokeWidth={3} opacity={0.65} strokeLinecap="round" />)}
+  </g>
+);
+/** Jam weker dua lonceng (merah), jarum menunjuk jam lima, tanpa angka. */
+const Alarm: React.FC = () => (
+  <g transform="translate(0 -34)">
+    <circle cx={-20} cy={-28} r={11} fill="#ffd23f" {...sw(4)} /><circle cx={20} cy={-28} r={11} fill="#ffd23f" {...sw(4)} />
+    <path d="M -18 26 L -26 40 M 18 26 L 26 40" {...sw(5)} />
+    <circle r={32} fill="#e63946" {...sw(5)} /><circle r={23} fill="#fffdf5" {...sw(3.5)} />
+    <path d="M 0 0 L 0 -16 M 0 0 L 9 14" {...sw(4)} /><circle r={3.5} fill={OUT} stroke="none" />
+  </g>
+);
+/** Buku utang warung: buku tulis bersampul cokelat kusam, diikat karet, ujung kertas menyembul. */
+const Ledger: React.FC = () => (
+  <g transform="rotate(5) translate(0 -34)">
+    <rect x={-30} y={-40} width={60} height={78} rx={3} fill="#b07a45" {...sw(5)} />
+    <path d="M -28 -34 l 56 0 M -28 32 l 56 0" stroke="#fffdf5" strokeWidth={4} />
+    <rect x={-30} y={-6} width={60} height={8} fill="#e85d75" {...sw(3)} />
+    <rect x={-14} y={-28} width={28} height={14} rx={2} fill="#fffdf5" {...sw(3)} />
+  </g>
+);
+/** Tumpukan PR 46 halaman: buku paket + LKS + kertas jawaban bertumpuk tinggi, dibawa dua tangan. */
+const BookStack: React.FC = () => (
+  <g transform="translate(0 -20)">
+    {[["#2f7fd8", 0, 0], ["#ffd23f", -4, -22], ["#e63946", 3, -42], ["#3c8d5a", -2, -62], ["#8f5bd1", 4, -82]].map(([c, dx, y], i) => (
+      <g key={i} transform={`translate(${dx} ${y}) rotate(${i % 2 ? 3 : -3})`}>
+        <rect x={-46} y={-20} width={92} height={20} rx={3} fill={c as string} {...sw(4.5)} />
+        <path d="M -40 -6 L 40 -6" stroke="#fffdf5" strokeWidth={3} opacity={0.8} />
+      </g>))}
+    <g transform="translate(6 -112) rotate(-6)"><rect x={-36} y={-12} width={72} height={14} fill="#fffdf5" {...sw(3.5)} /><path d="M -28 -5 l 40 0" stroke="#7a8696" strokeWidth={3} /></g>
+  </g>
+);
+const MAP: Record<ItemId, React.FC> = { paper: Paper, book: Book, kresek: Kresek, gorengan: Gorengan, cup: Cup, mug: Mug, tray: Tray, ball: Ball, wallet: Wallet, bagTote: BagTote, whistle: Whistle, clipboard: Clipboard, broom: Broom, bowl: Bowl, tumbler: Tumbler, pen: Pen, helmet: Helmet, umbrella: Umbrella, folder: Folder, alarm: Alarm, ledger: Ledger, bookStack: BookStack };
 export const Item: React.FC<{ id: string; x: number; y: number }> = ({ id, x, y }) => {
   const C = MAP[id as ItemId];
   return C ? <g transform={`translate(${x} ${y})`}><C /></g> : null;

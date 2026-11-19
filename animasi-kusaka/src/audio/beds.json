@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "rules": [
     "Lapisan suara suasana (bed) per adegan: AMBIENCE tempat (otomatis dari locations.json \"beds\") + MUSIK latar sesuai suasana (naskah per adegan \"music\").",
     "Ducking otomatis: saat ada yang bicara, bed turun ke 'duck.under' dari volumenya; naik lagi saat hening (attack/release dalam detik).",
@@ -29,6 +29,10 @@
     "music-market-angklung": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Cheerful light Indonesian folk underscore for a market scene: angklung and kendang hand drum with a soft bass, playful, low intensity background, instrumental, loopable" },
     "music-court-beat": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Chill light hip-hop beat underscore for teenage boys talking at a basketball court: soft kick and snare, mellow keys, relaxed groove, low intensity, instrumental, loopable" },
     "music-sunset-guitar": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Warm mellow acoustic guitar underscore at sunset for two best friends talking about a crush, soft and tender, light shaker, quiet background, instrumental, loopable" },
-    "music-warung-comedy": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Light comedic underscore for friends hanging out at a street food stall: ukulele, soft claps, bouncy bass, cheeky and relaxed, low intensity background, instrumental, loopable" }
+    "music-warung-comedy": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Light comedic underscore for friends hanging out at a street food stall: ukulele, soft claps, bouncy bass, cheeky and relaxed, low intensity background, instrumental, loopable" },
+    "amb-home-evening": { "kind": "ambience", "volume": 0.75, "duration": 20, "prompt": "Indonesian family living room at 8 p.m.: crickets outside the window, a ceiling fan whirring softly, faint spoon clinking in a glass of tea from the kitchen, an occasional motorbike passing on the small street, calm and homey, no voices, no TV music" },
+    "music-homework-tension": { "kind": "music", "volume": 0.45, "duration": 30, "prompt": "Playful comedic tension underscore for a student panicking over a huge pile of math homework: ticking clock-like pizzicato strings, light marimba, bouncy bassoon, mischievous and light, quiet background, instrumental, loopable" },
+    "music-awkward-crush": { "kind": "music", "volume": 0.45, "duration": 30, "prompt": "Light awkward romantic comedy underscore for a shy teenage boy trying to impress his crush: plucky ukulele, soft glockenspiel, gentle hand claps, cute and slightly clumsy, quiet background, instrumental, loopable" },
+    "music-sleepy-dawn": { "kind": "music", "volume": 0.42, "duration": 30, "prompt": "Sleepy comedic early-dawn underscore, a student arriving at school far too early before sunrise: slow lazy acoustic guitar, soft yawning clarinet, light brushed shaker, calm and gently funny, quiet background, instrumental, loopable" }
   }
 }

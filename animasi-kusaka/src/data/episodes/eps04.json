@@ -8,6 +8,9 @@
   "sceneLead": 1.0,
   "sceneGap": 0.6,
   "tail": 3.0,
+  "intro": {
+    "style": "D"
+  },
   "scenes": [
     {
       "id": "s01",
@@ -31,8 +34,8 @@
           "speaker": "kusaka",
           "emotion": "shock",
           "listener": "deadpan",
-          "shot": "two",
-          "action": "shock",
+          "shot": "wide",
+          "action": "show",
           "text": "Empat puluh lima sampai sembilan puluh?! Itu PR atau novel, Jang?!",
           "id": "l001"
         },
@@ -41,9 +44,15 @@
           "emotion": "deadpan",
           "listener": "shock",
           "shot": "two",
-          "action": "crossed",
+          "action": "read",
           "text": "Empat puluh enam halaman. Udah gue hitung.",
-          "id": "l002"
+          "id": "l002",
+          "hold": {
+            "ujang": {
+              "item": "cup",
+              "hand": "back"
+            }
+          }
         },
         {
           "speaker": "kusaka",
@@ -77,9 +86,12 @@
           "emotion": "laugh",
           "listener": "embarrassed",
           "shot": "two",
-          "action": "gesture",
+          "action": "show",
           "text": "Le, Bu Wati tadi beli es teh dua. Satu buat Oppa-nya, katanya.",
-          "id": "l006"
+          "id": "l006",
+          "hold": {
+            "buIjah": "cup"
+          }
         },
         {
           "speaker": "kusaka",
@@ -95,9 +107,12 @@
           "emotion": "smug",
           "listener": "surprised",
           "shot": "two",
-          "action": "point",
+          "action": "show",
           "text": "Warung ini punya telinga, Le. Sama buku utang.",
-          "id": "l008"
+          "id": "l008",
+          "hold": {
+            "buIjah": "ledger"
+          }
         },
         {
           "speaker": "kusaka",
@@ -113,7 +128,7 @@
           "emotion": "neutral",
           "listener": "defeated",
           "shot": "two",
-          "action": "gesture",
+          "action": "drink",
           "text": "Nggak mati. Cuma nggak tidur. Bedanya tipis.",
           "id": "l010"
         },
@@ -173,7 +188,7 @@
           "emotion": "laugh",
           "listener": "embarrassed",
           "shot": "two",
-          "action": "laugh",
+          "action": "show",
           "text": "Le, kalau modusmu gagal, utangmu tetap jalan, ya.",
           "id": "l016"
         },
@@ -192,7 +207,21 @@
           ],
           "id": "l017"
         }
-      ]
+      ],
+      "wear": "seragam",
+      "bag": [
+        "kusaka",
+        "ujang"
+      ],
+      "music": "music-warung-comedy",
+      "hold": {
+        "kusaka": "book",
+        "ujang": "cup",
+        "buIjah": {
+          "item": "ledger",
+          "hand": "back"
+        }
+      }
     },
     {
       "id": "s02",
@@ -275,7 +304,7 @@
           "emotion": "pleading",
           "listener": "deadpan",
           "shot": "two",
-          "action": "plead",
+          "action": "show",
           "text": "Nad. Bu Wati ngasih gue PR halaman empat puluh lima sampai sembilan puluh. Besok pagi.",
           "id": "l023"
         },
@@ -322,7 +351,10 @@
           "shot": "two",
           "action": "chin",
           "text": "Drama Korea? Maksudnya?",
-          "id": "l028"
+          "id": "l028",
+          "ref": [
+            "HP/video"
+          ]
         },
         {
           "speaker": "kusaka",
@@ -358,7 +390,13 @@
           "shot": "two",
           "action": "crossed",
           "text": "Dompet lo masih disandera, Kus.",
-          "id": "l032"
+          "id": "l032",
+          "reactions": {
+            "kusaka": [
+              "embarrassed",
+              "pocket"
+            ]
+          }
         },
         {
           "speaker": "nadia",
@@ -394,7 +432,10 @@
           "shot": "two",
           "action": "crossed",
           "text": "Dia takut, Nad. Kemarin gerbang nutup di depan hidungnya.",
-          "id": "l036"
+          "id": "l036",
+          "ref": [
+            "gerbang"
+          ]
         },
         {
           "speaker": "nadia",
@@ -403,7 +444,10 @@
           "shot": "two",
           "action": "laugh",
           "text": "Gue tahu. Gue juga lihat benderanya.",
-          "id": "l037"
+          "id": "l037",
+          "ref": [
+            "bendera"
+          ]
         },
         {
           "speaker": "kusaka",
@@ -418,7 +462,7 @@
           "speaker": "nadia",
           "emotion": "neutral",
           "listener": "embarrassed",
-          "shot": "two",
+          "shot": "wide",
           "action": "wave",
           "text": "Angkot gue datang. Jam enam, Kus. Telat semenit, gue pulang.",
           "id": "l039"
@@ -438,7 +482,24 @@
           ],
           "id": "l040"
         }
-      ]
+      ],
+      "wear": "seragam",
+      "music": "music-awkward-crush",
+      "hold": {
+        "kusaka": "book"
+      },
+      "tracks": {
+        "angkot": [
+          [
+            "l038:end",
+            0
+          ],
+          [
+            "l039:end",
+            1
+          ]
+        ]
+      }
     },
     {
       "id": "s03",
@@ -495,8 +556,8 @@
           "speaker": "ibu",
           "emotion": "laugh",
           "listener": "embarrassed",
-          "shot": "two",
-          "action": "laugh",
+          "shot": "wide",
+          "action": "phone",
           "text": "Bu, saya juga nonton. Yang Oppa-nya jadi dokter itu, kan?",
           "id": "l045"
         },
@@ -523,7 +584,7 @@
           "emotion": "laugh",
           "listener": "smug",
           "shot": "two",
-          "action": "laugh",
+          "action": "phone",
           "text": "Episode empat belas, Bu! Waktu dia hujan-hujanan!",
           "id": "l048"
         },
@@ -552,7 +613,10 @@
           "shot": "two",
           "action": "gesture",
           "text": "Oh iya, Bu. Kusaka bilang dapat PR banyak dari Ibu. Empat puluh enam halaman.",
-          "id": "l051"
+          "id": "l051",
+          "ref": [
+            "buku/PR"
+          ]
         },
         {
           "speaker": "buWati",
@@ -641,7 +705,12 @@
           ],
           "id": "l060"
         }
-      ]
+      ],
+      "music": "music-market-angklung",
+      "hold": {
+        "ibu": "kresek",
+        "buWati": "bagTote"
+      }
     },
     {
       "id": "s04",
@@ -707,7 +776,7 @@
           "emotion": "neutral",
           "listener": "embarrassed",
           "shot": "two",
-          "action": "gesture",
+          "action": "read",
           "text": "Soal pertama, Pak. Dua x tambah tiga sama dengan sebelas. X-nya berapa?",
           "id": "l065"
         },
@@ -758,7 +827,7 @@
           "emotion": "neutral",
           "listener": "neutral",
           "shot": "two",
-          "action": "gesture",
+          "action": "write",
           "text": "Oke, oke. Sebelas kurang tiga, delapan. Bagi dua... empat!",
           "id": "l070"
         },
@@ -857,7 +926,7 @@
           "emotion": "neutral",
           "listener": "suspicious",
           "shot": "two",
-          "action": "gesture",
+          "action": "read",
           "text": "Dua puluh. Dikali empat puluh enam halaman...",
           "id": "l081"
         },
@@ -884,9 +953,12 @@
           "emotion": "neutral",
           "listener": "shock",
           "shot": "two",
-          "action": "gesture",
+          "action": "give",
           "text": "Kerjakan. Ibu buatkan teh manis. Yang banyak.",
-          "id": "l084"
+          "id": "l084",
+          "hold": {
+            "ibu": "mug"
+          }
         },
         {
           "speaker": "bapak",
@@ -921,7 +993,18 @@
           ],
           "id": "l087"
         }
-      ]
+      ],
+      "amb": [
+        "amb-home-evening"
+      ],
+      "music": "music-homework-tension",
+      "hold": {
+        "kusaka": "book",
+        "bapak": {
+          "item": "pen",
+          "hand": "back"
+        }
+      }
     },
     {
       "id": "s05",
@@ -942,7 +1025,7 @@
           "emotion": "defeated",
           "listener": "deadpan",
           "shot": "two",
-          "action": "slump",
+          "action": "read",
           "text": "Soal nomor empat ratus dua belas. Angka-angkanya mulai joget.",
           "caption": "SATU JAM KEMUDIAN",
           "id": "l088"
@@ -997,7 +1080,7 @@
           "emotion": "embarrassed",
           "listener": "smug",
           "shot": "two",
-          "action": "gesture",
+          "action": "show",
           "text": "Oke. Bantu satu halaman aja. Nanti Kakak jadi bintang konten kamu sekali lagi.",
           "id": "l094"
         },
@@ -1080,23 +1163,29 @@
           "shot": "two",
           "action": "crossed",
           "text": "Kak. Alarmnya jam berapa?",
-          "id": "l103"
+          "id": "l103",
+          "hold": {
+            "dinda": "alarm"
+          }
         },
         {
           "speaker": "kusaka",
           "emotion": "smug",
           "listener": "deadpan",
           "shot": "two",
-          "action": "thumbsup",
+          "action": "show",
           "text": "Jam lima. Tiga alarm. Kusaka versi baru... beneran baru.",
-          "id": "l104"
+          "id": "l104",
+          "hold": {
+            "kusaka": "alarm"
+          }
         },
         {
           "speaker": "dinda",
           "emotion": "deadpan",
           "listener": "smug",
           "shot": "two",
-          "action": "crossed",
+          "action": "show",
           "text": "Aku taruh satu lagi di bawah bantal. Buat jaga-jaga.",
           "sfx": [
             {
@@ -1106,7 +1195,14 @@
           ],
           "id": "l105"
         }
-      ]
+      ],
+      "amb": [
+        "amb-night-room"
+      ],
+      "music": "music-night-lofi",
+      "hold": {
+        "kusaka": "book"
+      }
     },
     {
       "id": "s06",
@@ -1164,7 +1260,10 @@
           "shot": "two",
           "action": "chin",
           "text": "Versi baru dari mana? Kemarin gerbang nutup di depan hidungmu.",
-          "id": "l109"
+          "id": "l109",
+          "ref": [
+            "gerbang"
+          ]
         },
         {
           "speaker": "kusaka",
@@ -1182,7 +1281,10 @@
           "shot": "two",
           "action": "crossed",
           "text": "Gerbang buka jam enam, Jang. Peraturan.",
-          "id": "l111"
+          "id": "l111",
+          "ref": [
+            "gerbang"
+          ]
         },
         {
           "speaker": "kusaka",
@@ -1225,9 +1327,12 @@
           "emotion": "pleading",
           "listener": "laugh",
           "shot": "two",
-          "action": "plead",
+          "action": "show",
           "text": "Mang, saya bawa gorengan. Dari rumah. Bikinan Ibu.",
-          "id": "l116"
+          "id": "l116",
+          "hold": {
+            "kusaka": "gorengan"
+          }
         },
         {
           "speaker": "mangUdin",
@@ -1243,7 +1348,7 @@
           "emotion": "smug",
           "listener": "surprised",
           "shot": "two",
-          "action": "thumbsup",
+          "action": "show",
           "text": "Bakwan jagung. Masih anget.",
           "id": "l118"
         },
@@ -1251,8 +1356,8 @@
           "speaker": "mangUdin",
           "emotion": "smug",
           "listener": "smug",
-          "shot": "two",
-          "action": "gesture",
+          "shot": "wide",
+          "action": "pull",
           "text": "Jang... gerbang ini buka lima menit lebih cepat. Khusus hari ini.",
           "id": "l119"
         },
@@ -1270,7 +1375,7 @@
           "emotion": "deadpan",
           "listener": "laugh",
           "shot": "two",
-          "action": "point",
+          "action": "eat",
           "text": "Bukan buat kamu. Buat bakwan.",
           "sfx": [
             {
@@ -1278,9 +1383,33 @@
               "at": "end"
             }
           ],
-          "id": "l121"
+          "id": "l121",
+          "hold": {
+            "kusaka": null,
+            "mangUdin": "gorengan"
+          }
         }
-      ]
+      ],
+      "amb": [
+        "amb-birds-morning"
+      ],
+      "music": "music-sleepy-dawn",
+      "tracks": {
+        "gate": [
+          [
+            "l106",
+            1
+          ],
+          [
+            "l119",
+            1
+          ],
+          [
+            "l119:end",
+            0
+          ]
+        ]
+      }
     },
     {
       "id": "s07",
@@ -1304,7 +1433,7 @@
           "speaker": "ucok",
           "emotion": "surprised",
           "listener": "neutral",
-          "shot": "two",
+          "shot": "wide",
           "action": "point",
           "text": "Bang Bimo! Jam segini udah latihan? Matahari aja belum bangun!",
           "caption": "SEMENTARA ITU",
@@ -1314,7 +1443,13 @@
             "to": "B",
             "at": 0
           },
-          "id": "l122"
+          "id": "l122",
+          "reactions": {
+            "bimo": [
+              "neutral",
+              "shoot"
+            ]
+          }
         },
         {
           "speaker": "bimo",
@@ -1330,7 +1465,7 @@
           "emotion": "defeated",
           "listener": "smug",
           "shot": "two",
-          "action": "slump",
+          "action": "show",
           "text": "PR Bu Wati, Bang. Aku kebagian halaman empat puluh lima juga.",
           "id": "l124"
         },
@@ -1410,7 +1545,13 @@
           "shot": "two",
           "action": "gesture",
           "text": "Kebetulan. Gue mau nganter berkas OSIS ke Nadia.",
-          "id": "l132"
+          "id": "l132",
+          "hold": {
+            "bimo": {
+              "item": "folder",
+              "hand": "back"
+            }
+          }
         },
         {
           "speaker": "ucok",
@@ -1455,7 +1596,10 @@
           "shot": "two",
           "action": "phone",
           "text": "Guys! Kapten basket menuju ke kelas! Cinta segitiga, guys!",
-          "id": "l137"
+          "id": "l137",
+          "ref": [
+            "bola"
+          ]
         },
         {
           "speaker": "ucok",
@@ -1496,7 +1640,16 @@
           ],
           "id": "l140"
         }
-      ]
+      ],
+      "music": "music-court-beat",
+      "bag": [
+        "ucok",
+        "sasa"
+      ],
+      "hold": {
+        "bimo": "ball",
+        "ucok": "book"
+      }
     },
     {
       "id": "s08",
@@ -1522,7 +1675,7 @@
           "emotion": "neutral",
           "listener": "neutral",
           "shot": "two",
-          "action": "point",
+          "action": "show",
           "text": "Oke. Halaman empat puluh lima. Persamaan linear. Lo ngerti x itu apa?",
           "id": "l141"
         },
@@ -1567,7 +1720,7 @@
           "emotion": "neutral",
           "listener": "neutral",
           "shot": "two",
-          "action": "gesture",
+          "action": "write",
           "text": "Sebelas... kurang tiga. Delapan!",
           "id": "l146"
         },
@@ -1585,7 +1738,7 @@
           "emotion": "laugh",
           "listener": "neutral",
           "shot": "two",
-          "action": "thumbsup",
+          "action": "write",
           "text": "Empat! X-nya empat! Gue nemuin mantan!",
           "id": "l148"
         },
@@ -1644,8 +1797,8 @@
           "speaker": "bimo",
           "emotion": "neutral",
           "listener": "neutral",
-          "shot": "two",
-          "action": "wave",
+          "shot": "wide",
+          "action": "give",
           "text": "Nad! Pagi. Ini berkas OSIS buat rapat nanti.",
           "move": {
             "who": "bimo",
@@ -1653,7 +1806,10 @@
             "to": "B",
             "at": 0
           },
-          "id": "l154"
+          "id": "l154",
+          "hold": {
+            "bimo": "folder"
+          }
         },
         {
           "speaker": "kusaka",
@@ -1671,7 +1827,14 @@
           "shot": "two",
           "action": "gesture",
           "text": "Makasih, Kak Bimo. Taruh di meja aja.",
-          "id": "l156"
+          "id": "l156",
+          "hold": {
+            "bimo": "ball",
+            "nadia": {
+              "item": "folder",
+              "hand": "back"
+            }
+          }
         },
         {
           "speaker": "bimo",
@@ -1696,7 +1859,7 @@
           "emotion": "smug",
           "listener": "suspicious",
           "shot": "two",
-          "action": "gesture",
+          "action": "shoot",
           "text": "Gini, Bro. Bayangin basket. Skor akhir sebelas. Tiga dari tembakan jauh. Sisanya dua kali tembakan. Satu tembakan berapa?",
           "id": "l159"
         },
@@ -1775,7 +1938,16 @@
           ],
           "id": "l166"
         }
-      ]
+      ],
+      "music": "music-awkward-crush",
+      "hold": {
+        "nadia": "book",
+        "kusaka": "pen",
+        "bimo": {
+          "item": "ball",
+          "hand": "back"
+        }
+      }
     },
     {
       "id": "s09",
@@ -1837,7 +2009,7 @@
           "emotion": "neutral",
           "listener": "surprised",
           "shot": "two",
-          "action": "point",
+          "action": "show",
           "text": "Halaman empat puluh lima sampai sembilan puluh. Satu malam.",
           "id": "l171"
         },
@@ -1864,7 +2036,7 @@
           "emotion": "embarrassed",
           "listener": "suspicious",
           "shot": "two",
-          "action": "gesture",
+          "action": "show",
           "text": "Satu halaman, Pak.",
           "id": "l174"
         },
@@ -1936,7 +2108,7 @@
           "emotion": "smug",
           "listener": "shock",
           "shot": "two",
-          "action": "thumbsup",
+          "action": "phone",
           "text": "Tenang, Bu. Saya juga nonton. Yang dokter itu. Episode empat belas, waktu hujan-hujanan.",
           "id": "l182"
         },
@@ -1982,7 +2154,16 @@
           "text": "Kita lihat dulu, Pak. Kalau dia selesai, saya yang minta maaf.",
           "id": "l186"
         }
-      ]
+      ],
+      "music": "music-teachers-jazz",
+      "hold": {
+        "buWati": "book",
+        "pakDarto": "mug",
+        "pakJoko": {
+          "item": "whistle",
+          "hand": "back"
+        }
+      }
     },
     {
       "id": "s10",
@@ -2016,8 +2197,8 @@
           "speaker": "kusaka",
           "emotion": "smug",
           "listener": "deadpan",
-          "shot": "two",
-          "action": "thumbsup",
+          "shot": "wide",
+          "action": "carry",
           "text": "Ini, Bu. Empat puluh enam halaman. Sembilan ratus dua puluh soal.",
           "id": "l188"
         },
@@ -2062,9 +2243,12 @@
           "emotion": "neutral",
           "listener": "neutral",
           "shot": "two",
-          "action": "idle",
+          "action": "read",
           "text": "Hmm. Nomor dua ratus tiga puluh. Benar. Nomor lima ratus. Benar...",
-          "id": "l193"
+          "id": "l193",
+          "hold": {
+            "buWati": "paper"
+          }
         },
         {
           "speaker": "kusaka",
@@ -2080,7 +2264,7 @@
           "emotion": "deadpan",
           "listener": "laugh",
           "shot": "two",
-          "action": "crossed",
+          "action": "show",
           "text": "Nomor tujuh ratus delapan salah. Jawabanmu: 'Oppa'.",
           "id": "l195"
         },
@@ -2127,7 +2311,10 @@
           "shot": "two",
           "action": "idle",
           "text": "Kemarin sore? Nggak ada, Bu. Kemarin sore saya beli es teh. Itu saja.",
-          "id": "l200"
+          "id": "l200",
+          "ref": [
+            "minuman"
+          ]
         },
         {
           "speaker": "buWati",
@@ -2152,7 +2339,7 @@
           "emotion": "neutral",
           "listener": "smug",
           "shot": "two",
-          "action": "idle",
+          "action": "show",
           "text": "Baik. Kusaka, Ibu minta maaf. PR untuk kelas sebenarnya cuma satu halaman.",
           "id": "l203"
         },
@@ -2225,7 +2412,15 @@
           ],
           "id": "l210"
         }
-      ]
+      ],
+      "music": "music-homework-tension",
+      "hold": {
+        "kusaka": "bookStack",
+        "buWati": {
+          "item": "book",
+          "hand": "back"
+        }
+      }
     },
     {
       "id": "s11",
@@ -2308,8 +2503,8 @@
           "speaker": "buIjah",
           "emotion": "laugh",
           "listener": "deadpan",
-          "shot": "two",
-          "action": "gesture",
+          "shot": "wide",
+          "action": "show",
           "text": "Le! Katanya PR-mu sampai halaman sembilan puluh. Hebat. Utangmu juga sudah sampai halaman sembilan puluh.",
           "id": "l217"
         },
@@ -2320,7 +2515,10 @@
           "shot": "two",
           "action": "shock",
           "text": "Bu Ijah! Itu beda buku!",
-          "id": "l218"
+          "id": "l218",
+          "ref": [
+            "buku/PR"
+          ]
         },
         {
           "speaker": "buIjah",
@@ -2371,7 +2569,10 @@
           "shot": "two",
           "action": "chin",
           "text": "Apa, Cok? Bendera terbalik lagi?",
-          "id": "l223"
+          "id": "l223",
+          "ref": [
+            "bendera"
+          ]
         },
         {
           "speaker": "ucok",
@@ -2451,7 +2652,17 @@
           ],
           "id": "l231"
         }
-      ]
+      ],
+      "bag": [
+        "kusaka",
+        "ujang",
+        "ucok"
+      ],
+      "music": "music-warung-comedy",
+      "hold": {
+        "buIjah": "ledger",
+        "ujang": "cup"
+      }
     }
   ]
 }

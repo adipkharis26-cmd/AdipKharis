@@ -1,6 +1,6 @@
 # Paket Upload YouTube: KUSAKA Eps. 4 "PR Halaman 45"
 
-Durasi: **15:34** · 16:9 · 11 adegan · 231 baris dialog · lanjutan langsung ending Eps. 3 (Bu Wati ketahuan nonton drakor di warung → PR halaman 45 sampai 90)
+Durasi: **15:40** (termasuk intro resmi 6 dtk) · 16:9 · 11 adegan · 231 baris dialog · lanjutan langsung ending Eps. 3 (Bu Wati ketahuan nonton drakor di warung → PR halaman 45 sampai 90)
 
 ---
 
@@ -26,16 +26,16 @@ Episode sebelumnya: Eps. 3 "Telat Upacara" · Berikutnya: Eps. 5 "Satu Kelompok"
 
 Chapters:
 0:00 PR 46 halaman
-1:09 Minta diajarin Nadia di halte
-2:34 Bu Wati & Ibu di pasar (tanpa Kusaka)
-3:56 Bapak bantu matematika
-5:40 Dinda nge-live jam sebelas malam
-6:57 Kepagian di gerbang
-7:55 Bimo, Ucok & Sasa di lapangan basket (tanpa Kusaka)
-9:13 Belajar bareng Nadia... dan Bimo
-11:06 Rapat guru (tanpa Kusaka)
-12:26 Mengumpulkan PR
-14:12 Undian kelompok
+1:15 Minta diajarin Nadia di halte
+2:40 Bu Wati & Ibu di pasar (tanpa Kusaka)
+4:02 Bapak bantu matematika
+5:46 Dinda nge-live jam sebelas malam
+7:03 Kepagian di gerbang
+8:01 Bimo, Ucok & Sasa di lapangan basket (tanpa Kusaka)
+9:19 Belajar bareng Nadia... dan Bimo
+11:12 Rapat guru (tanpa Kusaka)
+12:32 Mengumpulkan PR
+14:18 Undian kelompok
 
 #animasiindonesia #kusaka #anaksekolah #komedi #animasilucu #kartunsekolah #animasi2d
 
@@ -73,7 +73,7 @@ Properti baru: menara buku (`bookStack`) dan HP drakor (`phoneDrama`), pola baru
 
 ## Shorts turunan (tautkan lewat Related video ke episode ini)
 
-1. Bapak: "X itu mantan. Nggak usah dicari lagi." (adegan 4)
+1. ~~Bapak: "X itu mantan"~~ — sudah dirilis sebagai **Shorts 1 "Mantan Matematika"**
 2. Bu Wati & Ibu ketemu di pasar: sama-sama fans drakor, "Anak Ibu." (adegan 3)
 3. Mang Udin: "Telat nggak boleh, kepagian juga nggak boleh" + bakwan (adegan 6)
 4. Bimo ngajarin persamaan pakai basket (adegan 8)
@@ -89,6 +89,13 @@ Properti baru: menara buku (`bookStack`) dan HP drakor (`phoneDrama`), pola baru
 - Comments: aktifkan. Pinned comment di atas.
 
 ---
+
+## Standar produksi (aturan 14–18)
+
+- Intro resmi gaya D (6 dtk) di awal; watermark Contoh 5 kiri atas.
+- Benda & tindakan terlihat: `npm run audit:props` = 0 (buku PR, tumpukan PR 46 halaman, buku utang Bu Ijah, es teh, kresek pasar, HP drakor, jam weker, bakwan, bola, map berkas OSIS, gerbang dibuka Mang Udin, angkot datang).
+- Sepulang sekolah (warung, halte) tetap berseragam + tas; pasar = pakaian bebas; rumah = pakaian rumah.
+- Suasana per adegan: ambience otomatis + musik (warung-comedy, awkward-crush*, market-angklung, homework-tension*, night-lofi, sleepy-dawn*, court-beat, teachers-jazz); *bed baru Eps. 4, plus amb-home-evening.
 
 ## Strategi algoritma
 

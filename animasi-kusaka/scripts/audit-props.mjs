@@ -6,7 +6,9 @@ const sc = JSON.parse(fs.readFileSync(file, "utf8"));
 const locs = JSON.parse(fs.readFileSync("src/scene/locations.json", "utf8")).locations;
 const RULES = [
   { re: /kertas|lembar|tanda tangan/i, label: "kertas", item: "paper", acts: ["read", "show", "give"] },
-  { re: /buku|halaman|\bPR\b/i, label: "buku/PR", item: "book", acts: ["show"] },
+  { re: /buku|halaman|\bPR\b/i, label: "buku/PR", item: "book|bookStack|ledger", acts: ["show"] },
+  { re: /berkas/i, label: "berkas", item: "folder|clipboard", acts: ["give"] },
+  { re: /alarm|weker/i, label: "alarm", item: "alarm" },
   { re: /\bbaki\b/i, label: "baki", item: "tray" },
   { re: /\bbola\b|lempar|basket/i, label: "bola", item: "ball", acts: ["shoot"] },
   { re: /\bes teh\b|\bteh\b|kopi/i, label: "minuman", item: "cup|mug|tumbler", acts: ["drink"] },
