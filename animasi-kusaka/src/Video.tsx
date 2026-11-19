@@ -383,7 +383,7 @@ export const KusakaWarung: React.FC<{ vertical: boolean }> = ({ vertical }) => {
   const tr = k >= 0 && k < 1 ? 1 - k : 0;          // 1 → 0 selama transisi
   return (
     <AbsoluteFill>
-      <AbsoluteFill style={{ transform: `scale(${1 + 0.08 * tr * tr})` }}><KusakaMain vertical={vertical} /></AbsoluteFill>
+      <AbsoluteFill style={tr > 0 ? { transform: `scale(${1 + 0.08 * tr * tr})` } : undefined}><KusakaMain vertical={vertical} /></AbsoluteFill>
       {tr > 0 && <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 45%, #fffaf0 0%, #ffe3b0 60%, #ffc98a 100%)", opacity: Math.pow(tr, 1.5) }} />}
     </AbsoluteFill>
   );

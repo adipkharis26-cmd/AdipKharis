@@ -1,6 +1,6 @@
 # Paket Upload YouTube: KUSAKA Eps. 3 "Telat Upacara"
 
-Durasi: **13:21** · 16:9 · 12 adegan · 209 baris dialog · lanjutan langsung ending Eps. 2 (jam dua pagi, besok Senin upacara)
+Durasi: **13:27** · 16:9 · intro 6 dtk + 12 adegan · 209 baris dialog · lanjutan langsung ending Eps. 2 (jam dua pagi, besok Senin upacara)
 
 ---
 
@@ -23,18 +23,19 @@ Sementara itu, di tempat lain: para guru rapat sambil mengaku diam-diam nonton v
 Pernah telat upacara lalu dihukum yang aneh-aneh? Ceritakan di komentar! 👇
 
 Chapters:
-0:00 Gerbang ditutup
-0:49 Semalam jam dua pagi
-1:35 Pak Joko butuh pengganti
-2:50 Latihan mengerek bendera
-4:05 Upacara hari Senin
-5:25 Rapat guru (tanpa Kusaka)
-6:38 Sidang Pak Darto
-7:45 Tanda tangan Ibu
-8:41 Ibu, Bapak, dan Bu Ijah di pasar
-9:54 Bimo dan Ucok di lapangan basket
-10:57 Curhat Nadia di halte
-11:58 Rahasia Bu Wati
+0:00 Intro
+0:06 Gerbang ditutup
+0:55 Semalam jam dua pagi
+1:41 Pak Joko butuh pengganti
+2:56 Latihan mengerek bendera
+4:11 Upacara hari Senin
+5:31 Rapat guru (tanpa Kusaka)
+6:44 Sidang Pak Darto
+7:51 Tanda tangan Ibu
+8:47 Ibu, Bapak, dan Bu Ijah di pasar
+10:00 Bimo dan Ucok di lapangan basket
+11:03 Curhat Nadia di halte
+12:04 Rahasia Bu Wati
 
 #animasiindonesia #kusaka #anaksekolah #komedi #animasilucu #kartunsekolah #animasi2d
 
