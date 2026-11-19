@@ -25,6 +25,8 @@ const FILES = [
   "src/edit/director.ts",
   "src/edit/editing.json",
   "src/audio/sfx.json",
+  "src/audio/beds.json",
+  "src/audio/beds-durations.json",
   "src/fx/Overlays.tsx",
   "src/branding/brand.json",
   "src/branding/Brand.tsx",
@@ -33,6 +35,8 @@ const FILES = [
   "src/branding/Intro.tsx",
   "src/branding/IntroAlt.tsx",
   "src/branding/IntroCine.tsx",
+  // lapisan suara suasana (ambience + musik latar) terkunci
+  ...fs.readdirSync(path.join(root, "public/beds")).filter((f) => f.endsWith(".mp3")).sort().map((f) => `public/beds/${f}`),
   // musik & SFX intro terkunci
   ...fs.readdirSync(path.join(root, "public/intro")).filter((f) => f.endsWith(".mp3")).sort().map((f) => `public/intro/${f}`),
   // every SFX file is locked too (sound consistency)

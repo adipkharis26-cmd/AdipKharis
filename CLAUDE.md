@@ -66,3 +66,10 @@ Panduan cerita dan strategi: `animasi-kusaka/SERIES_BIBLE.md`.
     Tema sinematik, BUKAN komik. Musik instrumental orisinal + SFX perayaan (`public/intro/`, terkunci). Naskah long: `"intro": {"style": "D"}` (detik 0).
     Transisi ke episode = "tembus cahaya" (zoom menembus lencana → cahaya hangat → adegan pertama muncul 0,5 dtk). Shorts TIDAK diberi intro.
     Gaya A/B/C hanya arsip. Pratinjau intro berupa gambar (`npx remotion still src/branding/index.ts IntroD --frame=N`).
+18. **Lapisan suara suasana per adegan (pemilik 18 Nov 2026).** Selain dialog & SFX momen, tiap adegan punya: (a) **ambience tempat** otomatis dari
+    `locations.json → beds` (burung pagi, halaman sekolah, kelas, pasar, jalan sore, warung, angin lapangan, AC ruang guru, malam jangkrik, dll.), dapat
+    ditimpa per adegan dengan `"amb": [...]`; (b) **musik latar** sesuai emosi adegan lewat `"music": "<id>"` (instrumental orisinal, tanpa vokal/lagu
+    berhak cipta/Indonesia Raya). Katalog & prompt di `src/audio/beds.json`, file di `public/beds/` (`npm run beds`, terkunci). **Ducking otomatis**:
+    saat ada yang bicara bed turun ke 32% (≥ 20 dB di bawah dialog), naik lagi saat hening; fade di awal/akhir adegan. RISET tiap episode: pilih suasana
+    nyata tempat & waktunya serta musik yang mendukung emosi; buat bed baru di `beds.json` bila belum ada (aturan 16).
+

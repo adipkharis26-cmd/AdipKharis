@@ -22,7 +22,7 @@ export interface Line {
 
 export type Mark = "A" | "B" | "C" | "D";
 export interface Scene { id: string; location: string; cast: Record<string, { mark: Mark; facing: 1 | -1 }>; start: number; end: number; wear?: "seragam" | "bebas" | "rumah";
-  bag?: boolean | string[]; hat?: boolean; hold?: Record<string, string | { item: string; hand?: "front" | "back" }>; tracks?: Record<string, [string, number][]>; flagInverted?: boolean }
+  bag?: boolean | string[]; hat?: boolean; music?: string; amb?: string[]; hold?: Record<string, string | { item: string; hand?: "front" | "back" }>; tracks?: Record<string, [string, number][]>; flagInverted?: boolean }
 
 export const FPS: number = timeline.fps;
 export const LINES = direct(timeline.lines as unknown as Line[]);
@@ -120,4 +120,17 @@ export function trackAt(scene: Scene, name: string, t: number): number | undefin
   if (t <= ks[0][0]) return ks[0][1];
   for (let i = 1; i < ks.length; i++) if (t <= ks[i][0]) { const [t0, v0] = ks[i - 1], [t1, v1] = ks[i]; return t1 === t0 ? v1 : v0 + (v1 - v0) * ((t - t0) / (t1 - t0)); }
   return ks[ks.length - 1][1];
+}
+
+/* ---------- lapisan suara suasana: ducking di bawah dialog (src/audio/beds.json) ---------- */
+/** Faktor volume bed pada waktu t: 1 saat hening, turun ke `under` saat ada yang bicara (attack sebelum baris, release sesudahnya). */
+export function duckAt(t: number, under: number, attack: number, release: number): number {
+  let g = 1;
+  for (const l of LINES) {
+    const s = l.start, e = l.start + l.duration;
+    if (t < s - attack || t > e + release) continue;
+    const k = t < s ? (s - t) / attack : t > e ? (t - e) / release : 0; // 0 = penuh tertekan
+    g = Math.min(g, under + (1 - under) * Math.min(1, k));
+  }
+  return g;
 }

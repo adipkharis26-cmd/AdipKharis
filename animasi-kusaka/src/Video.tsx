@@ -13,8 +13,10 @@ import { Extras } from "./scene/Extras";
 import { FLine, activeLine, conversationFacing } from "./edit/facing";
 import sfxLib from "./audio/sfx.json";
 import editing from "./edit/editing.json";
-import { CharId, END_OF_DIALOG, FPS, LINES, Line, SCENES, Scene, beatAt, SUBTITLES, heldAt, trackAt, INTRO } from "./lib/timeline";
+import { CharId, END_OF_DIALOG, FPS, LINES, Line, SCENES, Scene, beatAt, SUBTITLES, heldAt, trackAt, INTRO, duckAt } from "./lib/timeline";
 import { Intro } from "./branding/Intro";
+import bedsLib from "./audio/beds.json";
+import bedDur from "./audio/beds-durations.json";
 import { IntroB, IntroC } from "./branding/IntroAlt";
 import { IntroD } from "./branding/IntroCine";
 
@@ -68,6 +70,13 @@ export const hasBagScene = (sc: Scene) => (sc.bag ?? (metaOf(sc) as { bag?: bool
 /** Pulang/berangkat sekolah TETAP berseragam (aturan pemilik): scene bercaption SEPULANG SEKOLAH / SENIN PAGI otomatis seragam. */
 const SCHOOL_CAPTIONS = ["SEPULANG SEKOLAH", "SENIN PAGI"];
 const schoolCommute = (sc: Scene) => LINES.some((l) => l.scene === sc.id && !!l.caption && SCHOOL_CAPTIONS.includes(l.caption));
+/** Lapisan suara suasana per adegan: ambience lokasi (atau "amb" naskah) + musik latar ("music" naskah). Hanya file yang sudah dibuat. */
+type BedKind = "ambience" | "music";
+const BED_DUR = bedDur as Record<string, number>;
+const bedsOf = (sc: Scene): { id: string; kind: BedKind }[] => {
+  const amb = sc.amb ?? ((metaOf(sc) as { beds?: string[] }).beds ?? []);
+  return [...amb.map((id) => ({ id, kind: "ambience" as BedKind })), ...(sc.music ? [{ id: sc.music, kind: "music" as BedKind }] : [])].filter((b) => BED_DUR[b.id] > 1);
+};
 const wearOf = (sc: Scene): Wear => sc.wear ?? (schoolCommute(sc) ? "seragam" : ((metaOf(sc) as { wear?: Wear }).wear ?? "seragam"));
 /** Topi upacara: lokasi "hat": true (lapangan upacara) atau naskah scene "hat": true | false; hanya untuk berseragam. */
 export const hasHatScene = (sc: Scene) => (sc.hat ?? (metaOf(sc) as { hat?: boolean }).hat ?? false) === true;
@@ -322,7 +331,24 @@ const KusakaMain: React.FC<{ vertical: boolean }> = ({ vertical }) => {
       {editing.transition !== "cut" && <Wipe t={t} w={w} h={h} />}
 
       {/* ---------------- audio ---------------- */}
-      {SCENES.map((sc) => {
+      {/* lapisan suara suasana (ambience + musik latar) dengan ducking di bawah dialog */}
+      {SCENES.flatMap((sc) => bedsOf(sc).flatMap((b) => {
+        const L = BED_DUR[b.id], len = sc.end - sc.start, base = (bedsLib.beds as Record<string, { volume: number }>)[b.id].volume;
+        const fd = bedsLib.fade[b.kind], D = bedsLib.duck, out: React.ReactNode[] = [];
+        for (let off = 0; off < len - 0.05; off += L - 0.02) {
+          out.push(
+            <Sequence key={`bed-${sc.id}-${b.id}-${off.toFixed(2)}`} from={Math.round((sc.start + off) * FPS)} durationInFrames={Math.max(1, Math.round(Math.min(L, len - off) * FPS))}>
+              <Audio src={staticFile(`beds/${b.id}.mp3`)} volume={(f) => {
+                const tt = sc.start + off + f / FPS;
+                const env = Math.max(0, Math.min(1, (tt - sc.start) / fd, (sc.end - tt) / fd));
+                return base * env * duckAt(tt, D.under, D.attack, D.release);
+              }} />
+            </Sequence>,
+          );
+        }
+        return out;
+      }))}
+      {SCENES.filter((sc) => !bedsOf(sc).some((b) => b.kind === "ambience")).map((sc) => {
         const amb = LOCATION_META.locations[sc.location as LocId].ambience as SfxId;
         const len = Math.round((sc.end - sc.start) * FPS);
         return (

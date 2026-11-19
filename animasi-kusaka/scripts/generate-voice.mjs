@@ -21,6 +21,7 @@ const canon = read("src/characters/canon.json");
 const editing = read("src/edit/editing.json");
 const sfx = read("src/audio/sfx.json");
 const locations = read("src/scene/locations.json");
+const beds = read("src/audio/beds.json");
 const force = process.argv.includes("--force");
 const apiKey = process.env.ELEVENLABS_API_KEY; // optional when a proxy injects auth
 const LOCKED_MODEL = "eleven_v4";
@@ -36,6 +37,8 @@ let ctaCount = 0;
 for (const sc of script.scenes) {
   const loc = locations.locations[sc.location];
   if (!loc) fail(`${sc.id}: lokasi "${sc.location}" tidak ada di locations.json`);
+  if (sc.music && beds.beds[sc.music]?.kind !== "music") fail(`${sc.id}: music "${sc.music}" tidak ada di beds.json (kind music)`);
+  for (const a of sc.amb ?? []) if (beds.beds[a]?.kind !== "ambience") fail(`${sc.id}: amb "${a}" tidak ada di beds.json (kind ambience)`);
   if (sc.wear && !["seragam", "bebas", "rumah"].includes(sc.wear)) fail(`${sc.id}: wear "${sc.wear}" tidak valid (seragam | bebas | rumah)`);
   const marks = new Set();
   for (const [id, c] of Object.entries(sc.cast ?? {})) {
@@ -198,7 +201,7 @@ for (const sc of script.scenes) {
   }
   cursor += script.sceneGap ?? 0;
   if (script.intro && script.intro.after === sc.id) { timeline.intro = { start: +cursor.toFixed(3), style: script.intro.style ?? "D", seconds: introSec(script.intro.style ?? "D") }; cursor += timeline.intro.seconds; }
-  timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), ...(sc.bag !== undefined ? { bag: sc.bag } : {}), ...(sc.hold ? { hold: sc.hold } : {}), ...(sc.tracks ? { tracks: sc.tracks } : {}), ...(sc.flagInverted ? { flagInverted: true } : {}), ...(sc.hat !== undefined ? { hat: sc.hat } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
+  timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), ...(sc.bag !== undefined ? { bag: sc.bag } : {}), ...(sc.hold ? { hold: sc.hold } : {}), ...(sc.tracks ? { tracks: sc.tracks } : {}), ...(sc.flagInverted ? { flagInverted: true } : {}), ...(sc.hat !== undefined ? { hat: sc.hat } : {}), ...(sc.music ? { music: sc.music } : {}), ...(sc.amb ? { amb: sc.amb } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
 }
 timeline.scenes[timeline.scenes.length - 1].end = +(cursor + (script.tail ?? 2.5)).toFixed(3);
 timeline.totalSeconds = timeline.scenes[timeline.scenes.length - 1].end;

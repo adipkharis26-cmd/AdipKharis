@@ -77,6 +77,11 @@ Naskah long: `"intro": {"style": "D"}` (tanpa `after` = detik 0). Komponen `Intr
 Transisi tembus-cahaya ke adegan pertama otomatis (`INTRO_TRANSITION` di `Video.tsx`). Shorts tanpa intro. Tema sinematik, bukan komik.
 Pratinjau gambar: `npx remotion still src/branding/index.ts IntroD --frame=N`.
 
+## Suara suasana per adegan (aturan 18)
+Ambience otomatis dari `locations.json → beds`; per adegan boleh `"amb": ["amb-night-room"]` dan `"music": "music-sunset-guitar"`. Katalog/prompt `src/audio/beds.json`,
+buat file baru `npm run beds` (ElevenLabs; loop mulus, −30 LUFS ambience / −27 LUFS musik). Ducking otomatis (`duckAt`) — jangan menaikkan volume bed di atas katalog.
+Riset suasana tiap adegan (tempat, waktu, keramaian, emosi) dan tambahkan bed baru bila perlu.
+
 ## Format naskah (`src/data/episodes/<id>.json`)
 ```json
 { "format": "shorts", "episode": "shorts04", "title": "…", "fps": 30,

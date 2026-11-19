@@ -18,7 +18,8 @@
     "voice:samples": "node scripts/voice-samples.mjs",
     "sfx": "node scripts/generate-sfx.mjs && ./scripts/normalize-sfx.sh",
     "brand": "node scripts/render-brand.mjs",
-    "audit:props": "node scripts/audit-props.mjs"
+    "audit:props": "node scripts/audit-props.mjs",
+    "beds": "node scripts/generate-beds.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.540",

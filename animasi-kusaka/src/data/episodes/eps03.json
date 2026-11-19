@@ -168,7 +168,8 @@
             1
           ]
         ]
-      }
+      },
+      "music": "music-morning-rush"
     },
     {
       "id": "s02",
@@ -301,6 +302,10 @@
           ],
           "id": "l024"
         }
+      ],
+      "music": "music-night-lofi",
+      "amb": [
+        "amb-night-room"
       ]
     },
     {
@@ -557,7 +562,8 @@
       },
       "hold": {
         "kusaka": "paper"
-      }
+      },
+      "music": "music-morning-rush"
     },
     {
       "id": "s04",
@@ -788,7 +794,8 @@
       },
       "hold": {
         "pakJoko": "whistle"
-      }
+      },
+      "music": "music-ceremony-tension"
     },
     {
       "id": "s05",
@@ -1292,7 +1299,8 @@
       "hold": {
         "pakDarto": "mug",
         "pakJoko": "mug"
-      }
+      },
+      "music": "music-teachers-jazz"
     },
     {
       "id": "s06",
@@ -1503,7 +1511,8 @@
           "id": "l102"
         }
       ],
-      "bag": false
+      "bag": false,
+      "music": "music-warung-comedy"
     },
     {
       "id": "s07",
@@ -1681,7 +1690,8 @@
       "hold": {
         "kusaka": "paper"
       },
-      "bag": false
+      "bag": false,
+      "music": "music-warm-piano"
     },
     {
       "id": "s10",
@@ -1911,7 +1921,8 @@
         "ibu": "kresek",
         "buIjah": "kresek",
         "bapak": "kresek"
-      }
+      },
+      "music": "music-market-angklung"
     },
     {
       "id": "s11",
@@ -2091,7 +2102,8 @@
       ],
       "hold": {
         "bimo": "ball"
-      }
+      },
+      "music": "music-court-beat"
     },
     {
       "id": "s12",
@@ -2279,7 +2291,8 @@
             1
           ]
         ]
-      }
+      },
+      "music": "music-sunset-guitar"
     },
     {
       "id": "s08",
@@ -2507,7 +2520,8 @@
       "hold": {
         "kusaka": "cup",
         "ujang": "cup"
-      }
+      },
+      "music": "music-warung-comedy"
     }
   ]
 }

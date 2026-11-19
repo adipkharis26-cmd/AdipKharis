@@ -1,0 +1,34 @@
+{
+  "version": "1.0.0",
+  "rules": [
+    "Lapisan suara suasana (bed) per adegan: AMBIENCE tempat (otomatis dari locations.json \"beds\") + MUSIK latar sesuai suasana (naskah per adegan \"music\").",
+    "Ducking otomatis: saat ada yang bicara, bed turun ke 'duck.under' dari volumenya; naik lagi saat hening (attack/release dalam detik).",
+    "File dinormalisasi: ambience -30 LUFS, musik -27 LUFS, puncak -3 dBTP, lalu dibuat loop mulus (crossfade 1 dtk).",
+    "Volume efektif di bawah dialog harus >= 15 dB lebih pelan dari suara tokoh. Musik latar instrumental orisinal (tanpa vokal, tanpa lagu berhak cipta, tanpa Indonesia Raya).",
+    "Riset per adegan: pilih suasana nyata tempat itu (waktu, cuaca, keramaian) dan musik yang mendukung emosi adegan, bukan menutupinya."
+  ],
+  "duck": { "under": 0.32, "attack": 0.18, "release": 0.6 },
+  "fade": { "music": 0.6, "ambience": 0.25 },
+  "beds": {
+    "amb-birds-morning": { "kind": "ambience", "volume": 0.8, "duration": 20, "prompt": "Early morning outside an Indonesian high school: birds chirping, light breeze, occasional distant motorbikes passing, calm and fresh, no voices close to the mic" },
+    "amb-schoolyard": { "kind": "ambience", "volume": 0.55, "duration": 20, "prompt": "Distant high school yard ambience: many students chatting far away, occasional laughter, footsteps, a bicycle bell, indistinct, no words" },
+    "amb-night-room": { "kind": "ambience", "volume": 0.75, "duration": 20, "prompt": "Quiet bedroom at 2 a.m. in a tropical Indonesian house: crickets and geckos outside, soft ceiling fan hum, a dog barking very far away" },
+    "amb-field-wind": { "kind": "ambience", "volume": 0.7, "duration": 20, "prompt": "Open school ceremony field in the morning: gentle wind, flag rope clinking on a metal pole, distant murmur of hundreds of students standing in lines" },
+    "amb-office-ac": { "kind": "ambience", "volume": 0.6, "duration": 20, "prompt": "Teachers' office room: steady air conditioner hum, wall clock ticking, occasional keyboard typing and paper shuffling, quiet" },
+    "amb-classroom": { "kind": "ambience", "volume": 0.55, "duration": 20, "prompt": "High school classroom during a break: soft murmur of students, chairs scraping now and then, ceiling fan, indistinct chatter, no clear words" },
+    "amb-corridor": { "kind": "ambience", "volume": 0.55, "duration": 20, "prompt": "School corridor at break time: students walking and chatting in the background, footsteps echo, distant laughter, indistinct" },
+    "amb-market": { "kind": "ambience", "volume": 0.6, "duration": 20, "prompt": "Busy traditional Indonesian wet market in the morning: indistinct vendors calling, plastic bags rustling, motorbike passing, chickens far away, lively but in the background" },
+    "amb-court": { "kind": "ambience", "volume": 0.6, "duration": 20, "prompt": "Outdoor school basketball court: basketball bouncing, sneakers squeaking, occasional distant cheers, afternoon breeze" },
+    "amb-street-evening": { "kind": "ambience", "volume": 0.6, "duration": 20, "prompt": "Indonesian roadside bus stop in the late afternoon: light traffic, a minibus angkot passing, a distant horn, evening birds, warm and calm" },
+    "amb-warung": { "kind": "ambience", "volume": 0.6, "duration": 20, "prompt": "Small Indonesian street food stall in the afternoon: frying sizzle, spoon clinking on glasses, kettle, motorbikes passing on the street, relaxed" },
+    "music-morning-rush": { "kind": "music", "volume": 0.55, "duration": 30, "prompt": "Light comedic hurry underscore for a late-for-school scene: playful pizzicato strings, shaker and woodblock, bouncy bass, steady medium tempo, low intensity background music, no lead melody dominating, instrumental, loopable" },
+    "music-night-lofi": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Soft dreamy lo-fi piano underscore for a sleepless night of a smitten teenager, warm vinyl texture, gentle and quiet, slow tempo, instrumental, loopable background" },
+    "music-ceremony-tension": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Playful light tension underscore for a school flag ceremony rehearsal going wrong: soft marching snare, muted brass, plucked bass, comedic suspense, low intensity, instrumental, loopable" },
+    "music-teachers-jazz": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Relaxed soft jazz underscore for a teachers' meeting gossip: brushed drums, upright bass, light piano comping, low intensity background, instrumental, loopable" },
+    "music-warm-piano": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Gentle heartfelt piano underscore for a touching moment between classmates, warm and simple, soft strings pad, slow, quiet background, instrumental, loopable" },
+    "music-market-angklung": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Cheerful light Indonesian folk underscore for a market scene: angklung and kendang hand drum with a soft bass, playful, low intensity background, instrumental, loopable" },
+    "music-court-beat": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Chill light hip-hop beat underscore for teenage boys talking at a basketball court: soft kick and snare, mellow keys, relaxed groove, low intensity, instrumental, loopable" },
+    "music-sunset-guitar": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Warm mellow acoustic guitar underscore at sunset for two best friends talking about a crush, soft and tender, light shaker, quiet background, instrumental, loopable" },
+    "music-warung-comedy": { "kind": "music", "volume": 0.5, "duration": 30, "prompt": "Light comedic underscore for friends hanging out at a street food stall: ukulele, soft claps, bouncy bass, cheeky and relaxed, low intensity background, instrumental, loopable" }
+  }
+}

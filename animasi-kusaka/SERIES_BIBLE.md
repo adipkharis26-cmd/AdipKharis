@@ -373,3 +373,22 @@ arah hadap, shot lebar di momen kunci. Tambahkan benda baru di `src/characters/P
 0–3,3 dtk: 5 shot cepat (gerbang pagi, upacara, kantin, lapangan basket, warung senja) + umbul-umbul + konfeti + kilatan di tiap potongan;
 3,3 dtk: hentakan musik → lencana + ledakan konfeti + kembang api cahaya; 3,6–5,5 dtk: KUSAKA DESIGN + 8 tokoh bersorak; 5,55–6 dtk: zoom menembus lencana ke cahaya.
 Episode lalu muncul dari cahaya (0,5 dtk). Naskah long: `"intro": {"style": "D"}`. Shorts tanpa intro.
+
+## 13. Lapisan suara suasana (beds v1.0.0)
+| Lokasi | Ambience otomatis |
+|---|---|
+| Gerbang | burung pagi + halaman sekolah |
+| Kelas (semua sisi), meja guru | murmur kelas |
+| Koridor, kantin | keramaian koridor (+ burung di koridor) |
+| Ruang guru, BK, perpustakaan | AC + jam dinding + ketikan |
+| Lapangan upacara | angin + tali bendera + barisan murid |
+| Lapangan basket | pantulan bola + decit sepatu |
+| Warung | gorengan + sendok + motor lewat |
+| Halte | lalu lintas sore + angkot |
+| Pasar | keramaian pasar tradisional |
+| Kamar, ruang tamu, kos | per adegan (mis. `amb-night-room` untuk malam) |
+
+Musik latar per adegan (`"music"`): morning-rush (telat/buru-buru), night-lofi (malam), ceremony-tension (upacara kacau), teachers-jazz (ruang guru),
+warm-piano (momen hangat), market-angklung (pasar), court-beat (lapangan basket), sunset-guitar (sore/curhat), warung-comedy (nongkrong).
+Ducking otomatis di bawah dialog; adegan khidmat (upacara bendera) tanpa musik.
+
