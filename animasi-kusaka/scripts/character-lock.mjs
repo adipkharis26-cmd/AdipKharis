@@ -32,6 +32,7 @@ const FILES = [
   "src/branding/Brand.tsx",
   "src/branding/Thumbnail.tsx",
   "src/branding/Watermark.tsx",
+  "src/branding/ThumbPro.tsx",
   "src/branding/Intro.tsx",
   "src/branding/IntroAlt.tsx",
   "src/branding/IntroCine.tsx",

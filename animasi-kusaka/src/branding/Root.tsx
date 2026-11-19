@@ -6,6 +6,8 @@ import { Intro, INTRO_SECONDS } from "./Intro";
 import { INTRO_ALT_SECONDS, IntroB, IntroC } from "./IntroAlt";
 import { INTRO_CINE_SECONDS, IntroD } from "./IntroCine";
 import thumbs from "./thumbnails.json";
+import thumbpro from "./thumbpro.json";
+import { ThumbPro, ThumbProProps } from "./ThumbPro";
 import brand from "./brand.json";
 
 /* LOCKED brand assets (brand.json): official logo = Logo 2, official banner = Banner 3. */
@@ -18,6 +20,9 @@ export const BrandingRoot: React.FC = () => (
     <Composition id="IntroB" component={IntroB} durationInFrames={INTRO_ALT_SECONDS * 30} fps={30} width={1920} height={1080} />
     <Composition id="IntroC" component={IntroC} durationInFrames={INTRO_ALT_SECONDS * 30} fps={30} width={1920} height={1080} />
     <Composition id="IntroD" component={IntroD} durationInFrames={INTRO_CINE_SECONDS * 30} fps={30} width={1920} height={1080} />
+    {Object.entries(thumbpro as unknown as Record<string, ThumbProProps>).map(([id, p]) => (
+      <Composition key={id} id={`Rec-${id}`} component={ThumbPro as unknown as React.FC<Record<string, unknown>>} durationInFrames={1} fps={30} width={1280} height={720} defaultProps={p as unknown as Record<string, unknown>} />
+    ))}
     {Object.entries(thumbs as Record<string, ThumbProps>).map(([id, p]) => (
       <Composition key={id} id={`Thumb-${id}`} component={Thumbnail as unknown as React.FC<Record<string, unknown>>} durationInFrames={1} fps={30} width={thumbSize(p).w} height={thumbSize(p).h} defaultProps={p as unknown as Record<string, unknown>} />
     ))}

@@ -82,6 +82,11 @@ Ambience otomatis dari `locations.json → beds`; per adegan boleh `"amb": ["amb
 buat file baru `npm run beds` (ElevenLabs; loop mulus, −30 LUFS ambience / −27 LUFS musik). Ducking otomatis (`duckAt`) — jangan menaikkan volume bed di atas katalog.
 Riset suasana tiap adegan (tempat, waktu, keramaian, emosi) dan tambahkan bed baru bila perlu.
 
+## Output final video panjang (aturan 19)
+Setelah render long: MP4 HQ → 3 thumbnail rekomendasi (ThumbPro, tanpa garis tepi; 3 sudut berbeda: emosi wajah / konflik-relasi / kontras-penasaran)
+→ judul + deskripsi (chapters, hashtag) + tag dalam blok kode siap salin. Konfigurasi `src/branding/thumbpro.json` (id `epsNN-1..3`), render
+`npx remotion still src/branding/index.ts Rec-<id>`, simpan ke `brand/thumbnails/rekomendasi/`. Shorts tetap aturan 13.
+
 ## Format naskah (`src/data/episodes/<id>.json`)
 ```json
 { "format": "shorts", "episode": "shorts04", "title": "…", "fps": 30,

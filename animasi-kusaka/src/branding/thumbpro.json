@@ -1,0 +1,264 @@
+{
+  "eps01-1": {
+    "v": "R3",
+    "face": {
+      "id": "kusaka",
+      "emotion": "shock",
+      "viseme": "O",
+      "x": 860,
+      "y": 740,
+      "s": 1.75
+    },
+    "props": [
+      {
+        "item": "wallet",
+        "x": 250,
+        "y": 300,
+        "s": 3.6,
+        "rot": -12
+      }
+    ],
+    "text": {
+      "lines": [
+        "DOMPETKU",
+        "MANA?!"
+      ],
+      "x": 50,
+      "y": 430,
+      "size": 112,
+      "rot": -3
+    }
+  },
+  "eps01-2": {
+    "v": "R2",
+    "plate": {
+      "loc": "kantin",
+      "cx": 960,
+      "cy": 560,
+      "z": 1.0
+    },
+    "stickers": [
+      {
+        "id": "kusaka",
+        "x": 360,
+        "y": 1090,
+        "s": 1.1,
+        "f": 1,
+        "e": "pleading",
+        "a": "plead"
+      },
+      {
+        "id": "nadia",
+        "x": 700,
+        "y": 1060,
+        "s": 0.9,
+        "f": -1,
+        "e": "surprised",
+        "a": "idle"
+      }
+    ],
+    "props": [
+      {
+        "item": "wallet",
+        "x": 1080,
+        "y": 560,
+        "s": 3.0,
+        "rot": 14
+      }
+    ],
+    "text": {
+      "lines": [
+        "TRAKTIR",
+        "GAGAL!"
+      ],
+      "x": 1240,
+      "y": 50,
+      "size": 112,
+      "align": "right",
+      "rot": -4
+    }
+  },
+  "eps01-3": {
+    "v": "R4",
+    "plate": {
+      "loc": "kantin",
+      "cx": 900,
+      "cy": 500,
+      "z": 1.2,
+      "actors": [
+        {
+          "id": "kusaka",
+          "x": 470,
+          "y": 1000,
+          "s": 1.0,
+          "f": 1,
+          "e": "smug",
+          "a": "thumbsup"
+        }
+      ]
+    },
+    "plate2": {
+      "loc": "warung",
+      "cx": 1080,
+      "cy": 560,
+      "z": 1.15,
+      "wear": "seragam",
+      "actors": [
+        {
+          "id": "kusaka",
+          "x": 1500,
+          "y": 1010,
+          "s": 1.05,
+          "f": -1,
+          "e": "shock",
+          "a": "shock"
+        }
+      ]
+    },
+    "tintL": "rgba(255,170,80,0.30)",
+    "tintR": "rgba(40,90,180,0.40)",
+    "text": {
+      "lines": [
+        "MAU TRAKTIR"
+      ],
+      "x": 40,
+      "y": 40,
+      "size": 84,
+      "colors": [
+        "#fff"
+      ]
+    },
+    "text2": {
+      "lines": [
+        "DOMPET MANA?!"
+      ],
+      "x": 1240,
+      "y": 40,
+      "size": 84,
+      "align": "right",
+      "colors": [
+        "#ffd23f"
+      ]
+    }
+  },
+  "eps02-1": {
+    "v": "R2",
+    "plate": {
+      "loc": "kamar",
+      "cx": 960,
+      "cy": 560,
+      "z": 1.0,
+      "wear": "rumah"
+    },
+    "stickers": [
+      {
+        "id": "kusaka",
+        "x": 360,
+        "y": 1090,
+        "s": 1.1,
+        "f": 1,
+        "e": "pleading",
+        "a": "plead",
+        "wear": "rumah"
+      },
+      {
+        "id": "dinda",
+        "x": 820,
+        "y": 1010,
+        "s": 1.05,
+        "f": -1,
+        "e": "smug",
+        "a": "peace",
+        "wear": "rumah"
+      }
+    ],
+    "text": {
+      "lines": [
+        "DOMPETKU",
+        "DISANDERA!"
+      ],
+      "x": 1240,
+      "y": 40,
+      "size": 100,
+      "align": "right",
+      "rot": -3
+    },
+    "props": [
+      {
+        "item": "wallet",
+        "x": 1110,
+        "y": 560,
+        "s": 3.0,
+        "rot": 12
+      }
+    ]
+  },
+  "eps02-2": {
+    "v": "R3",
+    "bg": "radial-gradient(circle at 70% 45%, #b388ff 0%, #6c3fc4 55%, #2a1650 100%)",
+    "face": {
+      "id": "kusaka",
+      "emotion": "pleading",
+      "x": 860,
+      "y": 740,
+      "s": 1.75
+    },
+    "props": [
+      {
+        "item": "paper",
+        "x": 250,
+        "y": 330,
+        "s": 3.6,
+        "rot": -10
+      }
+    ],
+    "text": {
+      "lines": [
+        "NILAIKU",
+        "35..."
+      ],
+      "x": 50,
+      "y": 450,
+      "size": 112,
+      "rot": -3
+    }
+  },
+  "eps02-3": {
+    "v": "R6",
+    "stickers": [
+      {
+        "id": "dinda",
+        "x": 430,
+        "y": 1130,
+        "s": 1.5,
+        "f": 1,
+        "e": "smug",
+        "a": "phone",
+        "wear": "rumah"
+      }
+    ],
+    "props": [
+      {
+        "item": "wallet",
+        "x": 1010,
+        "y": 230,
+        "s": 3.2,
+        "rot": 10
+      }
+    ],
+    "text": {
+      "lines": [
+        "JADI",
+        "KONTEN!"
+      ],
+      "x": 1235,
+      "y": 330,
+      "size": 120,
+      "align": "right",
+      "colors": [
+        "#e63946",
+        "#e63946"
+      ]
+    }
+  }
+}

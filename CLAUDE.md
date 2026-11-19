@@ -72,4 +72,10 @@ Panduan cerita dan strategi: `animasi-kusaka/SERIES_BIBLE.md`.
     berhak cipta/Indonesia Raya). Katalog & prompt di `src/audio/beds.json`, file di `public/beds/` (`npm run beds`, terkunci). **Ducking otomatis**:
     saat ada yang bicara bed turun ke 32% (≥ 20 dB di bawah dialog), naik lagi saat hening; fade di awal/akhir adegan. RISET tiap episode: pilih suasana
     nyata tempat & waktunya serta musik yang mendukung emosi; buat bed baru di `beds.json` bila belum ada (aturan 16).
+19. **Format output final VIDEO PANJANG (TERKUNCI, pemilik 19 Nov 2026; mulai Eps. 4, juga dibuat untuk Eps. 1–3).** Setelah render long,
+    kirim ke pemilik berurutan: (1) **MP4 HQ**, (2) **3 thumbnail rekomendasi siap unduh** (1280×720, TANPA garis tepi) yang dipilih sebagai
+    ahli strategi dari 7 gaya (gaya awal + R1 sinematik, R2 stiker, R3 close-up wajah, R4 layar terbelah, R5 momen cerita, R6 blok warna) —
+    tiga sudut psikologis berbeda (emosi wajah, konflik/relasi, kontras/penasaran), lalu (3) **judul, deskripsi (dengan chapters & hashtag), dan tag**
+    di chat dalam blok kode siap salin. Konfigurasi `src/branding/thumbpro.json` (komponen `ThumbPro.tsx`); sumber per episode dicatat di `src/branding/rekomendasi.json` (gaya awal `Thumb-*` boleh dipakai — Eps. 3 memakai gaya awal atas pilihan pemilik); file `brand/thumbnails/rekomendasi/<id>-1..3.png`.
+    Format Shorts tetap aturan 13 (tidak diubah), hanya thumbnail Shorts juga TANPA garis tepi.
 

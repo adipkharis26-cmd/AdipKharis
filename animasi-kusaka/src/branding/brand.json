@@ -1,5 +1,5 @@
 {
-  "version": "1.10.0",
+  "version": "1.11.0",
   "lockedAt": "2026-11-18",
   "channel": "Kusaka Design",
   "handle": "@kusakadesign",
@@ -29,7 +29,8 @@
     "Wajah karakter besar dengan ekspresi ekstrem, pojok kanan bawah kosong (label durasi), 3 varian untuk Test & Compare.",
     "Watermark Shorts resmi = Contoh 5 (pil gelap transparan, Logo 2, KUSAKA/DESIGN) di pojok kiri atas. Dipakai di Shorts 9:16 DAN video panjang 16:9 (ukuran disesuaikan, pojok kiri atas).",
     "Thumbnail: IDENTITAS TETAP (judul Bangers kuning/putih + bayangan merah, Kusaka ekspresi ekstrem, maks 4 kata, pojok kanan bawah kosong). KOMPOSISI BERBEDA tiap episode (pola latar, layar terbelah, callout lingkaran/panah, properti cerita, warna dominan, posisi teks). Varian A/B/C tiap episode juga beda komposisi.",
-    "Intro resmi = gaya D meriah, 6 detik (pemilik 18 Nov 2026): SELALU di awal episode panjang, transisi tembus-cahaya ke adegan pertama, musik + SFX orisinal; tema sinematik, BUKAN komik. Shorts tanpa intro."
+    "Intro resmi = gaya D meriah, 6 detik (pemilik 18 Nov 2026): SELALU di awal episode panjang, transisi tembus-cahaya ke adegan pertama, musik + SFX orisinal; tema sinematik, BUKAN komik. Shorts tanpa intro.",
+    "Output video panjang: 3 thumbnail rekomendasi (ThumbPro, gaya R1–R6 atau gaya awal, tanpa garis tepi) + judul/deskripsi/tag siap salin (aturan 19)."
   ],
   "watermark": {
     "chosen": 5,

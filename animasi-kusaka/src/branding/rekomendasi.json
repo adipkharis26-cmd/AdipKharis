@@ -1,0 +1,20 @@
+{
+  "_note": "Sumber 3 thumbnail rekomendasi per episode: Rec-* = ThumbPro (thumbpro.json), Thumb-* = gaya awal (thumbnails.json). Eps. 3 = gaya awal (pilihan pemilik).",
+  "episodes": {
+    "eps01": [
+      "Rec-eps01-1",
+      "Rec-eps01-2",
+      "Rec-eps01-3"
+    ],
+    "eps02": [
+      "Rec-eps02-1",
+      "Rec-eps02-2",
+      "Rec-eps02-3"
+    ],
+    "eps03": [
+      "Thumb-eps03-A",
+      "Thumb-eps03-B",
+      "Thumb-eps03-C"
+    ]
+  }
+}
