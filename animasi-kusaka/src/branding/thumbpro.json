@@ -260,5 +260,158 @@
         "#e63946"
       ]
     }
+  },
+  "eps04-1": {
+    "v": "R3",
+    "bg": "radial-gradient(circle at 70% 45%, #6fb6ff 0%, #2f7fd8 55%, #13305e 100%)",
+    "face": {
+      "id": "kusaka",
+      "emotion": "shock",
+      "viseme": "O",
+      "x": 860,
+      "y": 740,
+      "s": 1.75
+    },
+    "props": [
+      {
+        "item": "bookStack",
+        "x": 250,
+        "y": 560,
+        "s": 2.6,
+        "rot": -6
+      }
+    ],
+    "text": {
+      "lines": [
+        "PR",
+        "SEGUNUNG!"
+      ],
+      "x": 50,
+      "y": 40,
+      "size": 118,
+      "rot": -3
+    }
+  },
+  "eps04-2": {
+    "v": "R2",
+    "plate": {
+      "loc": "kelasJendela",
+      "cx": 960,
+      "cy": 560,
+      "z": 1.0
+    },
+    "stickers": [
+      {
+        "id": "nadia",
+        "x": 250,
+        "y": 1080,
+        "s": 1.0,
+        "f": 1,
+        "e": "smug",
+        "a": "crossed",
+        "held": {
+          "front": "book"
+        }
+      },
+      {
+        "id": "kusaka",
+        "x": 560,
+        "y": 1090,
+        "s": 1.05,
+        "f": -1,
+        "e": "shock",
+        "a": "shock"
+      },
+      {
+        "id": "bimo",
+        "x": 850,
+        "y": 1060,
+        "s": 0.92,
+        "f": -1,
+        "e": "smug",
+        "a": "wave",
+        "held": {
+          "back": "ball"
+        }
+      }
+    ],
+    "text": {
+      "lines": [
+        "BELAJAR",
+        "BARENG?!"
+      ],
+      "x": 1240,
+      "y": 40,
+      "size": 104,
+      "align": "right",
+      "rot": -3
+    }
+  },
+  "eps04-3": {
+    "v": "R4",
+    "plate": {
+      "loc": "kamar",
+      "cx": 960,
+      "cy": 560,
+      "z": 1.15,
+      "wear": "rumah",
+      "actors": [
+        {
+          "id": "kusaka",
+          "x": 470,
+          "y": 1010,
+          "s": 1.0,
+          "f": 1,
+          "e": "defeated",
+          "a": "hold",
+          "held": {
+            "front": "bookStack"
+          },
+          "wear": "rumah"
+        }
+      ]
+    },
+    "plate2": {
+      "loc": "mejaGuru",
+      "cx": 1060,
+      "cy": 560,
+      "z": 1.15,
+      "actors": [
+        {
+          "id": "kusaka",
+          "x": 1500,
+          "y": 1080,
+          "s": 0.95,
+          "f": -1,
+          "e": "shock",
+          "a": "shock"
+        }
+      ]
+    },
+    "tintL": "rgba(40,60,140,0.45)",
+    "tintR": "rgba(255,170,80,0.30)",
+    "text": {
+      "lines": [
+        "46 HALAMAN"
+      ],
+      "x": 40,
+      "y": 40,
+      "size": 84,
+      "colors": [
+        "#fff"
+      ]
+    },
+    "text2": {
+      "lines": [
+        "CUMA SATU?!"
+      ],
+      "x": 1240,
+      "y": 40,
+      "size": 84,
+      "align": "right",
+      "colors": [
+        "#ffd23f"
+      ]
+    }
   }
 }
