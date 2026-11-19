@@ -32,7 +32,8 @@
     ],
     "prop": "wallet",
     "propX": 900,
-    "propY": 480
+    "propY": 480,
+    "border": true
   },
   "eps01-B": {
     "episode": 1,
@@ -65,7 +66,8 @@
         "facing": -1
       }
     ],
-    "prop": null
+    "prop": null,
+    "border": true
   },
   "eps01-C": {
     "episode": 1,
@@ -98,7 +100,8 @@
         "facing": 1
       }
     ],
-    "prop": null
+    "prop": null,
+    "border": true
   },
   "eps02-A": {
     "episode": 2,
@@ -133,7 +136,8 @@
     ],
     "prop": "wallet",
     "propX": 860,
-    "propY": 470
+    "propY": 470,
+    "border": true
   },
   "eps02-B": {
     "episode": 2,
@@ -166,7 +170,8 @@
         "facing": 1
       }
     ],
-    "prop": null
+    "prop": null,
+    "border": true
   },
   "eps02-C": {
     "episode": 2,
@@ -199,7 +204,8 @@
         "facing": -1
       }
     ],
-    "prop": null
+    "prop": null,
+    "border": true
   },
   "eps03-A": {
     "episode": 3,

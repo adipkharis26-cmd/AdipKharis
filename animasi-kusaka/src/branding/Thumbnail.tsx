@@ -18,6 +18,7 @@ export interface ThumbProps {
   // RULE: no money / currency (Rp) props in thumbnails — story props only (e.g. the wallet)
   actors: Actor[]; prop?: "wallet" | "flagUpsideDown" | "bookStack" | "phoneDrama" | null; propX?: number; propY?: number; propScale?: number;
   // Variasi per episode (identitas tetap: bingkai kuning, Bangers kuning/putih + bayangan merah, Kusaka ekspresi ekstrem)
+  border?: boolean; // true = bingkai lama (hanya untuk thumbnail yang sudah terbit)
   pattern?: "rays" | "halftone" | "speed" | "stripes" | "grid";
   split?: { bg: LocId; angle?: number };          // layar terbelah diagonal: kiri = bg, kanan = split.bg
   callout?: { x: number; y: number; rx: number; ry: number; arrow?: { x: number; y: number } }; // lingkaran + panah merah
@@ -137,9 +138,10 @@ export const Thumbnail: React.FC<ThumbProps> = (p) => {
                 style={{ filter: `drop-shadow(8px 8px 0 ${BRAND.red})` }}>{t}</text>
             ))}
           </g>
-          {/* series frame: yellow border + black/yellow hazard corner (bottom-left, never bottom-right) */}
-          <rect x={7} y={7} width={W - 14} height={H - 14} fill="none" stroke={BRAND.yellow} strokeWidth={14} />
-          <rect x={0} y={0} width={W} height={H} fill="none" stroke={OUT} strokeWidth={6} />
+          {/* garis tepi (bingkai kuning + hitam) DIHAPUS sejak merek v1.10.0 (pilihan pemilik); hanya thumbnail lama yang
+              memakai "border": true tetap berbingkai agar identik dengan yang sudah terbit */}
+          {p.border && <rect x={7} y={7} width={W - 14} height={H - 14} fill="none" stroke={BRAND.yellow} strokeWidth={14} />}
+          {p.border && <rect x={0} y={0} width={W} height={H} fill="none" stroke={OUT} strokeWidth={6} />}
         </g>
       </svg>
     </AbsoluteFill>

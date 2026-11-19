@@ -19,7 +19,7 @@ Branch kerja: `ccr-5483b159-l8zee8`.
 6. **SFX pelengkap**: volume rendah di bawah dialog, satu SFX satu makna.
 7. **Durasi**: Long ≥ 6 menit (atau `minSeconds` per episode). Shorts 40 dtk–3 mnt, ideal 40–60 dtk, naskah sendiri.
 8. **Brand**: channel *Kusaka Design*, Logo 2, Banner 3, watermark Shorts = Contoh 5 (hanya Shorts).
-   Judul video: `[hook + emosi] | KUSAKA`, tanpa nomor episode. Thumbnail: teks hanya judul, tanpa nomor episode, **tanpa uang/Rp**. Identitas tetap (bingkai kuning, font Bangers, Kusaka ekspresi ekstrem)
+   Judul video: `[hook + emosi] | KUSAKA`, tanpa nomor episode. Thumbnail: teks hanya judul, tanpa nomor episode, **tanpa uang/Rp**. Identitas tetap (TANPA garis tepi sejak v1.10.0, font Bangers, Kusaka ekspresi ekstrem)
    tetapi **komposisi berbeda tiap episode dan tiap varian** (pola, split, callout, properti, warna) — lihat `brand/BRANDING.md`.
 9. Rilis final di `animasi-kusaka/releases/` (< 100 MB, `ffmpeg -c:v libx264 -tune animation -crf 29`).
 10. **Setiap MP4 rilis wajib punya `src/data/episodes/<id>-upload.md`** mengikuti `upload-template.md`

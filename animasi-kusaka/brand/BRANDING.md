@@ -81,7 +81,7 @@ Teks banner dibuat **singkat tapi jelas**: hanya **KUSAKA DESIGN** + label **ANI
 ---
 
 ## Sistem thumbnail (v1.3.0): identitas tetap, komposisi berbeda tiap episode
-**Tetap (agar dikenali di beranda/halaman saran):** bingkai kuning + hitam, judul Bangers (putih/kuning, outline hitam, bayangan merah),
+**Tetap (agar dikenali di beranda/halaman saran):** TANPA garis tepi (sejak merek v1.10.0; thumbnail yang sudah terbit tetap berbingkai lewat `"border": true`), judul Bangers (putih/kuning, outline hitam, bayangan merah),
 Kusaka dengan ekspresi ekstrem, maksimal 4 kata, tanpa nomor episode, pojok kanan bawah kosong, tanpa uang/Rp.
 **Berubah tiap episode (agar tidak terlihat seperti video yang sama):** pola latar (`pattern`: rays / halftone / speed / stripes),
 layar terbelah diagonal (`split`), sorotan lingkaran + panah merah (`callout`), properti cerita (dompet, bendera terbalik, dll.),

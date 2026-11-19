@@ -1,6 +1,6 @@
 {
-  "version": "3.2.0+loc3.6.0+edit2.9.0+sfx1.1.0+brand1.9.0",
-  "lockedAt": "2026-11-18",
+  "version": "3.2.0+loc3.6.0+edit2.9.0+sfx1.1.0+brand1.10.0",
+  "lockedAt": "2026-11-19",
   "files": {
     "src/characters/canon.json": "86a61089fb39c86ee3cd18c6edec46240dbb783a787ebe4dcf3a686f2860d091",
     "src/characters/Character.tsx": "45b23a19f003cbf6f53b84a6e818d2251fd0dd0619b1a3c93c24e33c653c293d",
@@ -22,9 +22,9 @@
     "src/audio/beds.json": "b43c7c28ae086864cfe671a11416f24ad4051760683fc4cf0b820d238a581b63",
     "src/audio/beds-durations.json": "c70a90ea254da4ba15fb6fff7bf2f7871aadb0cec7bf7ec6a588970ee3a1ade9",
     "src/fx/Overlays.tsx": "af7e7ed8999c1a9124cf9037b26c065e1b3d93dbb6011462102242e91f6a0132",
-    "src/branding/brand.json": "90f6837c2bb4c527329a69fecb55a0f0c3582903be56f470535717d08b6843b8",
+    "src/branding/brand.json": "de42696c2c9db5f8e4f98c23190528c5c2ab261e2de82213b1e4443b1facf6b9",
     "src/branding/Brand.tsx": "a57f76b5a742822a20e4e35e94a515c7bf1e34bfeefb86e939bc616de1cdb2ed",
-    "src/branding/Thumbnail.tsx": "600a5a79adb6e655b39f7a2d4aa3dcd327b2345e6de324af0cd0d11783ab534d",
+    "src/branding/Thumbnail.tsx": "7d6d93c6f2bd84db8f8898bb4761081ffcc541d8eed94359454d5f52a8fdd052",
     "src/branding/Watermark.tsx": "2b9c548c53a3d7921a9919f18df060f0edec4ad93dd9f0dee9526c8c09e76e0b",
     "src/branding/Intro.tsx": "f2ee1b8987fd7b0df7183f39a048e817d00f797f025c17d5979f126a70788a4a",
     "src/branding/IntroAlt.tsx": "061ad2fa3a4c39ebe3c2234792d982e6bfcf5816f20c7e992b8c8fef0c702e1e",
