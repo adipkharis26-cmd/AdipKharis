@@ -91,7 +91,7 @@ for (const [id, s] of Object.entries(sfx.sfx)) {
 /* ---------------- voice lock ---------------- */
 function curlJson(url) {
   const args = ["-sS", "-m", "45", url]; if (apiKey) args.push("-H", `xi-api-key: ${apiKey}`);
-  return JSON.parse(execFileSync("curl", args).toString());
+  return JSON.parse(execFileSync("curl", args, { maxBuffer: 64 * 1024 * 1024 }).toString());
 }
 function verifyVoice(id) {
   const v = canon.characters[id].voice;
