@@ -1,6 +1,7 @@
 PROYEK: Quibble & Snick — kartun bisu (tanpa dialog/teks) untuk YouTube Shorts, TikTok, Reels, target internasional.
 Repo: adipkharis26-cmd/adipkharis, branch `global-shorts`, folder `global-shorts/`.
-JANGAN menyentuh folder `animasi-kusaka/` dan JANGAN ikuti aturan KUSAKA. Jangan riset ulang niche/strategi; semua sudah ada di repo.
+BATAS KERJA (WAJIB): hanya baca & ubah file di dalam folder `global-shorts/`. JANGAN membaca, menjalankan, atau mengubah apa pun di luar folder itu
+(termasuk `animasi-kusaka/`, app.py, api/, naskah/, workflow/, CLAUDE.md milik proyek lain, dan branch lain). Jangan riset ulang niche/strategi.
 
 EPISODE YANG DIBUAT: [isi, mis. "Vending Machine 🥤" dari daftar ide di global-shorts/03-strategi-channel.md]
 
