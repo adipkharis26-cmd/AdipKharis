@@ -22,10 +22,14 @@ const RULES = [
   { re: /\bhp\b|video|\blive\b|nonton|rekam|komentar|penonton/i, label: "HP/video", item: "phonePhoto", acts: ["phone", "photo"] },
   // Eps. 5 "Satu Kelompok"
   { re: /undian|diundi|\bkotak|gulungan|\bkaret\b|kertas kado/i, label: "undian", item: "lotteryBox|lotScroll|lotScrollRed|lotSlip|rubberBands" },
-  { re: /\bfoto|motret|memotret|\bklik\b/i, label: "foto", item: "phonePhoto", acts: ["photo"] },
+  { re: /\bfoto|motret|memotret|\bklik\b/i, label: "foto", item: "phonePhoto|phoneGallery", acts: ["photo"] },
   { re: /\brak\b/i, label: "rak", acts: ["reach"], loc: "perpustakaan" },
   { re: /penjaga perpus/i, label: "penjaga perpus", loc: "perpustakaan" },
   { re: /lembar tugas|lembar jawab/i, label: "lembar tugas", item: "paper", acts: ["read", "write", "give"] },
+  // Shorts "Papan Tulis": menghapus/mencatat papan tulis, galeri foto papan
+  { re: /hapus|dihapus|penghapus/i, label: "hapus papan", item: "boardEraser", acts: ["erase"], track: "board" },
+  { re: /papan tulis|\bcatat|dicatat/i, label: "papan tulis/catat", item: "pen|boardEraser|phoneGallery", acts: ["write", "erase", "photo"], track: "board" },
+  { re: /galeri/i, label: "galeri HP", item: "phoneGallery" },
   { re: /hormat/i, label: "hormat", acts: ["salute"], track: "salute" },
   { re: /bendera|tiang/i, label: "bendera", track: "flag", loc: "lapanganUpacara" },
   { re: /\btali\b/i, label: "tali", track: "flag|snag", loc: "lapanganUpacara" },

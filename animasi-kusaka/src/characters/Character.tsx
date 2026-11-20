@@ -95,6 +95,8 @@ export const POSES: Record<Action, Pose> = {
   // Eps. 5 "Satu Kelompok": meraih buku di rak atas; memotret dengan HP setinggi mata (+ kilatan blitz)
   reach:    { front: [92, 4],    back: [-4, 12],    lean: 7,  head: -4,  crouch: 0,  look: [0.9, -0.1], hands: ["open", "relaxed"] },
   photo:    { front: [110, 50],  back: [96, 62],    lean: -2, head: 2,   crouch: 0,  look: [0.9, 0],    hands: ["phone", "fist"] },
+  // Shorts "Papan Tulis": menghapus papan tulis di belakang tanpa membelakangi murid (tangan depan terangkat + mengusap, tangan belakang di pinggang)
+  erase:    { front: [122, -8],  back: [-41, 75],   lean: -3, head: -4,  crouch: 0,  look: [0.7, 0],    hands: ["fist", "fist"] },
 };
 
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
@@ -759,6 +761,7 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
   }
   if (walk !== undefined) pose = { ...pose, front: [pose.front[0] - Math.sin(walk) * 22, pose.front[1]], back: [pose.back[0] + Math.sin(walk) * 22, pose.back[1]] };
   if (st.action === "sweep") { const w = Math.sin(t * 5); pose = { ...pose, front: [pose.front[0] + w * 10, pose.front[1]], back: [pose.back[0] + w * 10, pose.back[1]] }; }
+  if (st.action === "erase") { const w = Math.sin(t * 9); pose = { ...pose, front: [pose.front[0] + w * 14, pose.front[1] + Math.cos(t * 9) * 12] }; }
   if (st.action === "shoot") { const w = Math.max(0, Math.sin(t * 3)); pose = { ...pose, front: [pose.front[0] + w * 14, pose.front[1]], back: [pose.back[0] + w * 14, pose.back[1]] }; }
   if (st.action === "pull") { const w = Math.sin(t * 4.2); pose = { ...pose, front: [pose.front[0] + w * 16, pose.front[1] + w * 22], back: [pose.back[0] - w * 16, pose.back[1] - w * 22] }; }
   if (st.action === "wave") pose = { ...pose, front: [pose.front[0] + Math.sin(t * 10) * 8, pose.front[1]] };
