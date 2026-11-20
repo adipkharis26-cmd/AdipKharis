@@ -1,2 +1,9 @@
 video/node_modules/
-video/out/still-*
+video/out/
+video/audio/el_cache/*.wav
+__pycache__/
+# override .gitignore akar repo: simpan video final, cover, storyboard & audio mix
+!*.mp4
+!*.png
+!*.wav
+!*.mp3
