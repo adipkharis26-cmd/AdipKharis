@@ -6,7 +6,7 @@ const OUT = "#1b1b1b";
 
 export const ITEMS = ["paper", "book", "kresek", "gorengan", "cup", "mug", "tray", "ball", "wallet", "bagTote", "whistle", "clipboard", "broom", "bowl", "tumbler", "pen", "helmet", "umbrella", "folder", "alarm", "ledger", "bookStack",
   "lotteryBox", "lotScroll", "lotScrollRed", "lotSlip", "libBook", "phonePhoto", "rubberBands",
-  "boardEraser", "phoneGallery"] as const;
+  "boardEraser", "phoneGallery", "coins", "gorenganTiga"] as const;
 export type ItemId = (typeof ITEMS)[number];
 
 const sw = (w = 5) => ({ stroke: OUT, strokeWidth: w, strokeLinejoin: "round" as const, strokeLinecap: "round" as const });
@@ -237,9 +237,27 @@ const PhoneGallery: React.FC = () => (
     )))}
   </g>
 );
+/** Uang pas (Shorts "Bayar Gorengan"): tumpukan koin perak + selembar uang kertas terlipat, tanpa angka/teks. */
+const Coins: React.FC = () => (
+  <g transform="translate(0 -18)">
+    <rect x={-30} y={-22} width={46} height={24} rx={3} fill="#a8d5a2" {...sw(4)} transform="rotate(-12)" />
+    <circle cx={-8} cy={-10} r={6} fill="none" stroke="#5f9a58" strokeWidth={2.5} transform="rotate(-12)" />
+    {[0, 1, 2].map((i) => <ellipse key={i} cx={14} cy={10 - i * 7} rx={16} ry={6} fill={i === 2 ? "#e3e6ea" : "#c4c9d0"} {...sw(3.5)} />)}
+  </g>
+);
+/** Tiga gorengan di tangan (Shorts "Bayar Gorengan"): bakwan, tempe goreng, pisang goreng disusun kipas. */
+const GorenganTiga: React.FC = () => (
+  <g transform="translate(0 -26)">
+    <path d="M -34 -6 q -6 -26 14 -34 q 22 -6 26 16 q 2 20 -18 26 q -16 4 -22 -8 Z" fill="#d99a3c" {...sw(4)} transform="rotate(-24)" />
+    <path d="M -22 -24 q 4 -8 12 -4 M -16 -14 q 6 -6 12 0" fill="none" stroke="#a66a1f" strokeWidth={3} strokeLinecap="round" transform="rotate(-24)" />
+    <rect x={-12} y={-46} width={26} height={46} rx={6} fill="#e8b65a" {...sw(4)} />
+    {[[-4, -36], [6, -28], [-2, -18], [7, -10]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={2.6} fill="#c08a2e" />)}
+    <path d="M 16 -38 q 26 -8 30 16 q 2 16 -10 22 q -14 2 -20 -14 Z" fill="#f0c25a" {...sw(4)} transform="rotate(22)" />
+  </g>
+);
 const MAP: Record<ItemId, React.FC> = { paper: Paper, book: Book, kresek: Kresek, gorengan: Gorengan, cup: Cup, mug: Mug, tray: Tray, ball: Ball, wallet: Wallet, bagTote: BagTote, whistle: Whistle, clipboard: Clipboard, broom: Broom, bowl: Bowl, tumbler: Tumbler, pen: Pen, helmet: Helmet, umbrella: Umbrella, folder: Folder, alarm: Alarm, ledger: Ledger, bookStack: BookStack,
   lotteryBox: LotteryBox, lotScroll: LotScroll, lotScrollRed: LotScrollRed, lotSlip: LotSlip, libBook: LibBook, phonePhoto: PhonePhoto, rubberBands: RubberBands,
-  boardEraser: BoardEraser, phoneGallery: PhoneGallery };
+  boardEraser: BoardEraser, phoneGallery: PhoneGallery, coins: Coins, gorenganTiga: GorenganTiga };
 export const Item: React.FC<{ id: string; x: number; y: number }> = ({ id, x, y }) => {
   const C = MAP[id as ItemId];
   return C ? <g transform={`translate(${x} ${y})`}><C /></g> : null;

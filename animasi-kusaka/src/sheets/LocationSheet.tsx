@@ -6,7 +6,7 @@ import React from "react";
 import { AbsoluteFill } from "remotion";
 import { Character } from "../characters/Character";
 import canon from "../characters/canon.json";
-import { LOCATIONS, LOCATION_META, LocId } from "../scene/Locations";
+import { LOCATIONS, LOCATION_META, LocId, SceneOpts } from "../scene/Locations";
 import { useFonts } from "../lib/fonts";
 import type { CharId, Emotion, Action } from "../lib/timeline";
 
@@ -34,7 +34,7 @@ export const DEMO_CAST: Record<LocId, Cast> = {
 };
 
 /** One location set rendered on its own (optionally with demo cast + stage marks). */
-export const LocationPlate: React.FC<{ id: LocId; cast?: boolean; marks?: boolean; frame?: number }> = ({ id, cast = false, marks = false, frame = 45 }) => {
+export const LocationPlate: React.FC<{ id: LocId; cast?: boolean; marks?: boolean; frame?: number; opts?: SceneOpts }> = ({ id, cast = false, marks = false, frame = 45, opts }) => {
   const loc = LOCATIONS[id];
   const m = LOCATION_META.locations[id];
   const t = frame / 30;
@@ -44,7 +44,7 @@ export const LocationPlate: React.FC<{ id: LocId; cast?: boolean; marks?: boolea
       <defs><clipPath id={`plate-${id}`}><rect width={1920} height={1080} /></clipPath></defs>
       <g clipPath={`url(#plate-${id})`}>
         <rect width={1920} height={1080} fill={loc.bg} />
-        {loc.layers.map((l, i) => <g key={i}>{l.el(t)}</g>)}
+        {loc.layers.map((l, i) => <g key={i}>{l.el(t, opts)}</g>)}
         {Detail && <Detail t={t} />}
         <Extras location={id} t={t} />
         <SetLight light={(m as { light?: LightDef }).light ?? { kind: "sun", from: -1 }} t={t} floor={m.floor} />

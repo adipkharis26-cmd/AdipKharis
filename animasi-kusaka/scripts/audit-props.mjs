@@ -12,7 +12,7 @@ const RULES = [
   { re: /\bbaki\b/i, label: "baki", item: "tray" },
   { re: /\bbola\b|lempar|basket/i, label: "bola", item: "ball", acts: ["shoot"] },
   { re: /\bes teh\b|\bteh\b|kopi/i, label: "minuman", item: "cup|mug|tumbler", acts: ["drink"] },
-  { re: /gorengan/i, label: "gorengan", item: "gorengan" },
+  { re: /gorengan/i, label: "gorengan", item: "gorengan|gorenganTiga" },
   { re: /belanja|kresek|belanjaan/i, label: "belanjaan", item: "kresek|bagTote" },
   { re: /dompet/i, label: "dompet", item: "wallet", acts: ["pocket"] },
   { re: /peluit|\bpriit\b/i, label: "peluit", item: "whistle", acts: ["blow"] },
@@ -32,6 +32,9 @@ const RULES = [
   { re: /galeri/i, label: "galeri HP", item: "phoneGallery" },
   // Eps. 5: menara buku yang roboh di perpustakaan
   { re: /menara|roboh|runtuh/i, label: "menara buku", track: "tower" },
+  // Shorts "Bayar Gorengan": uang pas / bayar / traktir, buku utang
+  { re: /\buang\b|bayar|traktir/i, label: "uang/bayar", item: "coins|wallet" },
+  { re: /utang/i, label: "buku utang", item: "ledger" },
   { re: /hormat/i, label: "hormat", acts: ["salute"], track: "salute" },
   { re: /bendera|tiang/i, label: "bendera", track: "flag", loc: "lapanganUpacara" },
   { re: /\btali\b/i, label: "tali", track: "flag|snag", loc: "lapanganUpacara" },

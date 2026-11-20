@@ -8,7 +8,7 @@ import { Kantin, KelasBelakang, KelasJendela, Kos, LapanganUpacara, LapanganUpac
 const OUT = "#1b1b1b";
 const SW = 6;
 export type LocId = keyof typeof meta.locations;
-export interface SceneOpts { ijahNod?: number; flag?: number; flagInverted?: boolean; snag?: number; gate?: number; angkot?: number; board?: number; tower?: number }
+export interface SceneOpts { ijahNod?: number; flag?: number; flagInverted?: boolean; snag?: number; gate?: number; angkot?: number; board?: number; tower?: number; ijahOut?: boolean }
 export interface Layer { d: number; el: (t: number, opts?: SceneOpts) => React.ReactNode }
 export interface LocationDef { id: LocId; bg: string; layers: Layer[]; front?: Layer[] }
 
@@ -309,7 +309,7 @@ const Kamar: React.FC<{ t: number }> = ({ t }) => (
 export const LOCATIONS: Record<LocId, LocationDef> = {
   warung: {
     id: "warung", bg: "#8fd6ff",
-    layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.6, el: () => <City /> }, { d: 1, el: () => <Ground /> }, { d: 1, el: (t, o) => <Warung t={t} ijahNod={o?.ijahNod ?? 0} /> }],
+    layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.6, el: () => <City /> }, { d: 1, el: () => <Ground /> }, { d: 1, el: (t, o) => <Warung t={t} ijahNod={o?.ijahNod ?? 0} ijahOut={o?.ijahOut} /> }],
   },
   gerbang: {
     id: "gerbang", bg: "#8fd6ff",

@@ -113,7 +113,7 @@ export const Thumbnail: React.FC<ThumbProps> = (p) => {
         </defs>
         <g clipPath="url(#frame)">
           {/* background: locked location, pushed back, + colour burst for contrast */}
-          <g transform={plateT}><LocationPlate id={p.bg} /></g>
+          <g transform={plateT}><LocationPlate id={p.bg} opts={{ ijahOut: p.actors.some((a) => a.id === "buIjah") }} /></g>
           {!vert && p.split && (() => { const ang = p.split.angle ?? 14, dx = Math.tan((ang * Math.PI) / 180) * 360; const poly = `${640 + dx},0 1280,0 1280,720 ${640 - dx},720`;
             return <g><clipPath id="splitR"><polygon points={poly} /></clipPath><g clipPath="url(#splitR)"><g transform="translate(-160 -90) scale(0.83)"><LocationPlate id={p.split.bg} /></g></g>
               <polygon points={`${640 + dx - 9},0 ${640 + dx + 9},0 ${640 - dx + 9},720 ${640 - dx - 9},720`} fill="#fff" stroke={OUT} strokeWidth={6} /></g>; })()}

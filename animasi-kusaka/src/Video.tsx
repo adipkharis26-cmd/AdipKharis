@@ -301,7 +301,7 @@ const KusakaMain: React.FC<{ vertical: boolean }> = ({ vertical }) => {
           <g filter={dof > 0 ? "url(#dof)" : undefined}>
             {bgImage
               ? <Layer cam={cam} d={1} w={w} h={h}><image href={staticFile(bgImage)} x={0} y={0} width={1920} height={1080} preserveAspectRatio="xMidYMid slice" /></Layer>
-              : loc.layers.map((l, i) => <Layer key={`${scene.id}-${i}`} cam={cam} d={l.d} w={w} h={h}>{l.el(t, { ijahNod, flag: trackAt(scene, "flag", t), flagInverted: scene.flagInverted, snag: trackAt(scene, "snag", t), gate: trackAt(scene, "gate", t), angkot: trackAt(scene, "angkot", t), board: trackAt(scene, "board", t), tower: trackAt(scene, "tower", t) })}</Layer>)}
+              : loc.layers.map((l, i) => <Layer key={`${scene.id}-${i}`} cam={cam} d={l.d} w={w} h={h}>{l.el(t, { ijahNod, flag: trackAt(scene, "flag", t), flagInverted: scene.flagInverted, snag: trackAt(scene, "snag", t), gate: trackAt(scene, "gate", t), angkot: trackAt(scene, "angkot", t), board: trackAt(scene, "board", t), tower: trackAt(scene, "tower", t), ijahOut: !!scene.cast?.buIjah })}</Layer>)}
             {Detail && !bgImage && <Layer cam={cam} d={1} w={w} h={h}><Detail t={t} /></Layer>}
             {!bgImage && <Layer cam={cam} d={1} w={w} h={h}><Extras location={scene.location} t={t} density={(scene as { extras?: string }).extras} bag={hasBagScene(scene)} hat={hasHatScene(scene)} salute={trackAt(scene, "salute", t) ?? 0} /></Layer>}
             <Layer cam={cam} d={1} w={w} h={h}><SetLight light={light} t={t} floor={meta.floor} /></Layer>

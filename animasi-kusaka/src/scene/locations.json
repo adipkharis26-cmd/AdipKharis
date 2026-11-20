@@ -1,5 +1,5 @@
 {
-  "version": "3.9.0",
+  "version": "3.10.0",
   "rules": [
     "v3.3.0: Pakaian per lokasi ('wear'): sekolah = seragam, rumah/kos = rumah (pakaian bebas + sandal), tempat lain di luar sekolah = bebas. Override per adegan dengan \"wear\" di naskah.",
     "v3.2.0: ruangTamu punya NPC latar — warga lewat di jalan depan rumah, hanya terlihat dari jendela (di balik semak & kusen). Tidak ada orang asing di dalam rumah.",
@@ -13,7 +13,7 @@
     "Cahaya per lokasi terkunci (light).",
     "Ambience lapis kedua per lokasi di 'beds' (src/audio/beds.json); naskah boleh menimpa per adegan dengan \"amb\": [...] dan menambah \"music\": \"<id>\".",
     "v3.7.0 (Eps. 5): perpustakaan punya NPC penjaga perpustakaan (berdiri di dekat rak kanan, Extras.tsx).",
-    "v3.9.0 (Eps. 5): perpustakaan punya trek \"tower\" (menara 14 buku + 5 bola peluang di lantai; 0 = berdiri, 1 = roboh berserakan dengan debu). Pakai: scene.tracks.tower dengan kunci baris."
+    "v3.10.0 (Eps. 5): perpustakaan punya trek \"tower\" (menara 14 buku + 5 bola peluang di lantai; 0 = berdiri, 1 = roboh berserakan dengan debu). Pakai: scene.tracks.tower dengan kunci baris."
   ],
   "locations": {
     "warung": {

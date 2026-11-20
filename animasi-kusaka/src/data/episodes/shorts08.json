@@ -1,0 +1,249 @@
+{
+ "format": "shorts",
+ "episode": "shorts08",
+ "title": "Bayar Gorengan",
+ "fps": 30,
+ "gapSeconds": 0.2,
+ "sceneLead": 0.3,
+ "sceneGap": 0,
+ "tail": 0.2,
+ "hook": {
+  "lines": [
+   "TIPE-TIPE MURID",
+   "BAYAR GORENGAN"
+  ],
+  "keywords": [
+   "TIPE-TIPE",
+   "GORENGAN"
+  ],
+  "seconds": 1.6
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "location": "warung",
+   "wear": "seragam",
+   "bag": true,
+   "music": "music-warung-comedy",
+   "cast": {
+    "buIjah": {
+     "mark": "C",
+     "facing": 1
+    },
+    "kusaka": {
+     "mark": "A",
+     "facing": -1
+    },
+    "ujang": {
+     "mark": "B",
+     "facing": -1
+    },
+    "nadia": {
+     "mark": "D",
+     "facing": -1
+    }
+   },
+   "hold": {
+    "buIjah": {
+     "item": "ledger",
+     "hand": "back"
+    },
+    "kusaka": "gorenganTiga"
+   },
+   "lines": [
+    {
+     "id": "l001",
+     "speaker": "buIjah",
+     "emotion": "suspicious",
+     "listener": "surprised",
+     "shot": "crash",
+     "action": "point",
+     "to": "nadia",
+     "text": "Hayo! Makan gorengan berapa?!",
+     "reactions": {
+      "kusaka": [
+       "smug",
+       "eat"
+      ]
+     }
+    },
+    {
+     "id": "l002",
+     "speaker": "nadia",
+     "emotion": "neutral",
+     "listener": "neutral",
+     "shot": "medium",
+     "action": "give",
+     "to": "buIjah",
+     "text": "Tiga, Bu. Uangnya pas.",
+     "hold": {
+      "nadia": "coins"
+     }
+    },
+    {
+     "id": "l003",
+     "speaker": "ujang",
+     "emotion": "suspicious",
+     "listener": "neutral",
+     "shot": "two",
+     "action": "chin",
+     "to": "buIjah",
+     "text": "Empat... lima? Ya udah, enam aja, Bu. Biar aman.",
+     "hold": {
+      "nadia": null,
+      "ujang": "gorengan"
+     }
+    },
+    {
+     "id": "l004",
+     "speaker": "kusaka",
+     "emotion": "smug",
+     "listener": "suspicious",
+     "shot": "medium",
+     "action": "eat",
+     "to": "buIjah",
+     "text": "Dua, Bu.",
+     "hold": {
+      "kusaka": "gorenganTiga"
+     }
+    },
+    {
+     "id": "l005",
+     "speaker": "buIjah",
+     "emotion": "suspicious",
+     "listener": "embarrassed",
+     "shot": "two",
+     "action": "point",
+     "to": "kusaka",
+     "text": "Dua? Tanganmu masih megang tiga, Le."
+    },
+    {
+     "id": "l006",
+     "speaker": "kusaka",
+     "emotion": "embarrassed",
+     "listener": "suspicious",
+     "shot": "two",
+     "action": "show",
+     "to": "buIjah",
+     "text": "Ini... buat oleh-oleh Dinda, Bu."
+    },
+    {
+     "id": "l007",
+     "speaker": "buIjah",
+     "emotion": "deadpan",
+     "listener": "embarrassed",
+     "shot": "two",
+     "action": "write",
+     "to": "kusaka",
+     "text": "Tak catat. Utangmu udah sepanjang jalan tol, Le.",
+     "hold": {
+      "buIjah": [
+       "pen",
+       {
+        "item": "ledger",
+        "hand": "back"
+       }
+      ]
+     },
+     "sfx": [
+      {
+       "id": "slide_whistle_down",
+       "at": "end"
+      }
+     ]
+    },
+    {
+     "id": "l008",
+     "speaker": "kusaka",
+     "emotion": "smug",
+     "listener": "shock",
+     "shot": "two",
+     "action": "thumbsup",
+     "text": "Tenang aja! Hari ini gue yang traktir!",
+     "to": "nadia",
+     "hold": {
+      "kusaka": null
+     },
+     "ref": [
+      "uang/bayar"
+     ]
+    },
+    {
+     "id": "l009",
+     "speaker": "nadia",
+     "emotion": "suspicious",
+     "listener": "embarrassed",
+     "shot": "two",
+     "action": "crossed",
+     "to": "kusaka",
+     "text": "Traktir pakai uang siapa?",
+     "ref": [
+      "uang/bayar"
+     ]
+    },
+    {
+     "id": "l010",
+     "speaker": "kusaka",
+     "emotion": "embarrassed",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "point",
+     "to": "ujang",
+     "text": "Ujang."
+    },
+    {
+     "id": "l011",
+     "speaker": "ujang",
+     "emotion": "deadpan",
+     "listener": "laugh",
+     "shot": "close",
+     "closeStyle": "single",
+     "action": "give",
+     "to": "buIjah",
+     "text": "Udah gue duga. Sini, Bu, gue yang bayar.",
+     "hold": {
+      "ujang": "wallet"
+     },
+     "sfx": [
+      {
+       "id": "rimshot",
+       "at": "end"
+      }
+     ]
+    },
+    {
+     "id": "l012",
+     "speaker": "kusaka",
+     "emotion": "pleading",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "plead",
+     "to": "buIjah",
+     "text": "Bu, kalau like-nya banyak, utang gue lunas, ya?",
+     "cta": {
+      "kind": "like",
+      "text": "LIKE biar UTANG LUNAS!",
+      "keywords": [
+       "LIKE",
+       "LUNAS!"
+      ],
+      "reveal": "buIjah"
+     }
+    },
+    {
+     "id": "l013",
+     "speaker": "buIjah",
+     "emotion": "smug",
+     "listener": "shock",
+     "shot": "two",
+     "action": "read",
+     "to": "kusaka",
+     "text": "Lunas apanya, Le. Wis, ulang dari awal!",
+     "hold": {
+      "buIjah": "ledger"
+     }
+    }
+   ]
+  }
+ ]
+}

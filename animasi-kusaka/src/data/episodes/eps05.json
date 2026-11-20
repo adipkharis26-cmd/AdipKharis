@@ -476,7 +476,8 @@
             "buIjah": "cup"
           },
           "ref": [
-            "papan tulis/catat"
+            "papan tulis/catat",
+            "uang/bayar"
           ]
         },
         {
@@ -1010,7 +1011,10 @@
             "from": "B",
             "to": "offR",
             "at": 1.6
-          }
+          },
+          "ref": [
+            "buku utang"
+          ]
         }
       ],
       "tracks": {

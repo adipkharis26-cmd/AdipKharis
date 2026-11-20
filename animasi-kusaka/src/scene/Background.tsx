@@ -67,7 +67,7 @@ const BuIjah: React.FC<{ t: number; nod: number }> = ({ t, nod }) => {
 };
 
 /** Layer 2 – the warung (same depth as characters) */
-export const Warung: React.FC<{ t: number; ijahNod: number }> = ({ t, ijahNod }) => {
+export const Warung: React.FC<{ t: number; ijahNod: number; ijahOut?: boolean }> = ({ t, ijahNod, ijahOut }) => {
   const sway = Math.sin(t * 1.3) * 2;
   return (
     <g>
@@ -89,7 +89,8 @@ export const Warung: React.FC<{ t: number; ijahNod: number }> = ({ t, ijahNod })
           ))}
         </g>
       ))}
-      <BuIjah t={t} nod={ijahNod} />
+      {/* Bu Ijah di balik etalase disembunyikan kalau Bu Ijah tampil sebagai pemeran (cegah tokoh ganda) */}
+      {!ijahOut && <BuIjah t={t} nod={ijahNod} />}
       {/* counter */}
       <rect x={340} y={630} width={1240} height={30} fill="#8a5126" stroke={OUT} strokeWidth={SW} />
       <rect x={360} y={660} width={1200} height={230} fill="#a8642f" stroke={OUT} strokeWidth={SW} />
