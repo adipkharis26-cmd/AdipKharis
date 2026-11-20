@@ -1,0 +1,5 @@
+{"fps":30,"frames":420,
+ "cutWide":24,"dashIn":[24,40],"shakeOff":[42,56],"tiltAway":[62,72],"tug":[80,126],"lift":[126,136],"letGo":146,"plop":152,"lower":[154,166],"standUp":[160,170],
+ "tinyOut":172,"tinyOpen":180,"bigDrop":198,"walk":[206,216],"throw":[216,222],"dart":222,"leak":[224,258],
+ "gust":[258,270],"flip":270,"fill":[272,300],"grab":[300,312],"carry":[312,328],"turn":[328,336],"dump":336,"splash":[336,352],
+ "dotIn":[348,364],"duck":[364,372],"hatFall":[372,380],"walkOff":[374,392],"loopCU":[390,420]}
