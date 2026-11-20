@@ -2,7 +2,8 @@
 const C = { bg:'#FFF4E0', ink:'#1E1E24', q:'#2EC4B6', s:'#FF6B6B', y:'#FFD23F', floor:'#EAD9BC', wall:'#FDE9C9', glass:'#BFE6F2', white:'#fff', paint:'#7B61FF' };
 const sw = 5;
 const L = (x1,y1,x2,y2,w=sw,c=C.ink)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"/>`;
-function eyes(cx,cy,gap,r,look=[0,0],cross=false){
+function eyes(cx,cy,gap,r,look=[0,0],cross=false,blink=false){
+  if(blink) return L(cx-gap-r,cy,cx-gap+r,cy,sw)+L(cx+gap-r,cy,cx+gap+r,cy,sw);
   const p=(ex,dx)=>`<circle cx="${ex}" cy="${cy}" r="${r}" fill="#fff" stroke="${C.ink}" stroke-width="${sw-1}"/><circle cx="${ex+dx[0]}" cy="${cy+dx[1]}" r="${r*0.42}" fill="${C.ink}"/>`;
   if(cross) return p(cx-gap,[r*0.4,0])+p(cx+gap,[-r*0.4,0]);
   return p(cx-gap,[look[0]*r*0.45,look[1]*r*0.45])+p(cx+gap,[look[0]*r*0.45,look[1]*r*0.45]);
@@ -25,7 +26,7 @@ function mouth(cx,cy,kind,w=22){
 }
 // Quibble: kapsul toska, alis tebal = mesin ekspresi. (x,y)=titik kaki tengah
 function quibble(x,y,s=1,o={}){
-  const {look=[0,0],brow='flat',m='flat',arms='down',cross=false,squash=1,flip=false,stripes=false,legs='stand',hold=''}=o;
+  const {look=[0,0],brow='flat',m='flat',arms='down',cross=false,squash=1,flip=false,stripes=false,legs='stand',hold='',blink=false}=o;
   const w=74, h=118*squash, top=-20-h;
   let g='';
   const leg = legs==='stand'? L(-14,-22,-16,0)+L(14,-22,16,0)+L(-16,0,-26,0)+L(16,0,26,0)
@@ -45,19 +46,19 @@ function quibble(x,y,s=1,o={}){
   g+=`<rect x="${-w/2+10}" y="${top+12}" width="10" height="${Math.max(10,h*0.35)}" rx="5" fill="#fff" opacity=".45"/>`;
   if(stripes) for(let i=0;i<3;i++) g+=`<rect x="${-w/2+3}" y="${top+h*0.62+i*13}" width="${w-6}" height="6" fill="${C.paint}"/>`;
   const ey=top+34*Math.min(1,squash+0.2);
-  g+=eyes(0,ey,15,12,look,cross)+brows(0,ey-20,15,20,brow)+mouth(0,ey+30,m);
+  g+=eyes(0,ey,15,12,look,cross,blink)+brows(0,ey-20,15,20,brow)+mouth(0,ey+30,m);
   if(hold) g+=`<g transform="translate(${w/2+26},${top+h*0.5})">${hold}</g>`;
   return `<g transform="translate(${x},${y}) scale(${flip?-s:s},${s})">${g}</g>`;
 }
 // Snick: segitiga koral kecil, satu jambul, senyum licik
 function snick(x,y,s=1,o={}){
-  const {look=[0,0],brow='smug',m='grin',arms='down',flip=false,hold=''}=o;
+  const {look=[0,0],brow='smug',m='grin',arms='down',flip=false,hold='',blink=false}=o;
   let g=L(-10,-14,-12,0,4)+L(10,-14,12,0,4)+L(-12,0,-20,0,4)+L(12,0,20,0,4);
   const ar={down:L(-22,-36,-34,-22,4)+L(22,-36,34,-22,4), wave:L(-22,-36,-34,-22,4)+L(22,-40,40,-66,4)+`<circle cx="42" cy="-70" r="5" fill="${C.ink}"/>`, up:L(-20,-40,-36,-64,4)+L(20,-40,36,-64,4), reachL:L(22,-36,34,-22,4)+L(-22,-38,-56,-44,4)}[arms]||'';
   g+=ar;
   g+=`<path d="M0,-96 L34,-14 L-34,-14 Z" fill="${C.s}" stroke="${C.ink}" stroke-width="${sw}" stroke-linejoin="round"/>`;
   g+=`<path d="M0,-96 q-4,-14 6,-20 q-2,10 6,12" fill="none" stroke="${C.ink}" stroke-width="4" stroke-linecap="round"/>`;
-  g+=eyes(0,-52,9,8,look)+brows(0,-66,9,12,brow)+mouth(0,-36,m,16);
+  g+=eyes(0,-52,9,8,look,false,blink)+brows(0,-66,9,12,brow)+mouth(0,-36,m,16);
   if(hold) g+=`<g transform="translate(-40,-46)">${hold}</g>`;
   return `<g transform="translate(${x},${y}) scale(${flip?-s:s},${s})">${g}</g>`;
 }
@@ -94,4 +95,4 @@ function panel(inner,{bg=C.bg,floor=true,wall=false,raw=false,floorY=FLOOR}={}){
   const body = raw? inner : `<g transform="translate(${TX},${TY}) scale(${K})">${inner}</g>`;
   return `<svg viewBox="0 0 270 480" width="270" height="480" xmlns="http://www.w3.org/2000/svg"><rect width="270" height="480" fill="${bg}"/>${wall?`<rect width="270" height="${fy}" fill="${C.wall}"/>`:''}${floor?`<rect y="${fy}" width="270" height="${480-fy}" fill="${C.floor}"/>${L(0,fy,270,fy,4)}`:''}${body}${safeOverlay()}</svg>`;
 }
-export {C,quibble,snick,P,panel,L};
+export {C,quibble,snick,P,panel,L,eyes,brows,mouth};

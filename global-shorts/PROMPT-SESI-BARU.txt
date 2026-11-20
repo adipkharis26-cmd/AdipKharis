@@ -6,12 +6,18 @@ EPISODE YANG DIBUAT: [isi, mis. "Vending Machine 🥤" dari daftar ide di global
 
 BACA DULU (jadikan acuan gaya, jangan dirombak):
 - global-shorts/03-strategi-channel.md (positioning, formula, 15 ide)
-- global-shorts/video/src/draw.js (karakter & properti; tambah prop baru di sini bila perlu)
-- global-shorts/video/src/EP02.tsx + ep02-timeline.json (contoh terbaru: struktur adegan, kamera, safe zone, seamless loop)
-- global-shorts/video/audio/el_ep02.py (contoh daftar cue audio ElevenLabs + mix)
+- global-shorts/video/src/draw.js (Quibble, Snick, properti dasar) + draw2.ts (visual v2: Dot, Brick, bayangan, latar gradasi+vignette, kedip, efek)
+- global-shorts/video/src/EP04.tsx + ep04-timeline.json (contoh TERBARU & acuan utama: pemeran bergiliran, visual v2, jeda benturan 2 frame, seamless loop)
+- global-shorts/video/audio/el_ep04.py (contoh TERBARU: cue ElevenLabs dengan sinkron puncak bunyi ke frame kejadian)
+- global-shorts/storyboard/cast-v2.png (lembar pemeran)
 
 ATURAN GAYA (wajib):
-- Karakter: Quibble (kapsul toska, emosi lewat alis) & Snick (segitiga koral, licik). Flat 2D, outline tebal, palet tetap. Tanpa dialog, tanpa teks di layar.
+- PEMERAN BERGILIR (jangan selalu fokus 2 karakter; pilih 2–3 per episode, variasikan):
+  Quibble (kapsul toska, ekspresif, sering sial) · Snick (segitiga koral, licik) · Dot (bola lilac kecil, ceria, cepat, menggelinding) · Brick (balok oranye besar, unibrow, kuat, pemarah tapi kalem).
+  Boleh menambah karakter baru di draw2.ts dengan bentuk geometris sederhana + warna unik + satu ciri khas.
+- VISUAL v2 wajib: bayangan di bawah karakter, latar gradasi + vignette (defs/vignette dari draw2.ts), kedip natural (blinkAt), gerak sekunder (squash/stretch, goyang), getar kamera & jeda 2 frame saat benturan, jejak gerak saat lari.
+- SINKRON: setiap SFX dipasang di frame kejadian dan PUNCAK bunyinya disejajarkan ke frame itu (lihat el_ep04.py). Verifikasi selisih < 40 ms untuk benturan utama.
+- Flat 2D, outline tebal. Tanpa dialog, tanpa teks di layar.
 - Durasi 13–15 dtk, 30 fps, 1080×1920.
 - Hook: frame 0 sudah bergerak, konflik terbaca < 1 dtk.
 - Retensi: ada gag/kejadian tiap 1–2 dtk, usaha makin meningkat, payoff palsu lalu twist. Variasikan siapa yang menang.
@@ -20,7 +26,7 @@ ATURAN GAYA (wajib):
 
 AUDIO:
 - ElevenLabs Sound Effects lewat proxy sesi (key sudah tersimpan sebagai network secret untuk api.elevenlabs.io; di kode pakai placeholder `proxy-injected`, JANGAN tulis key di repo/chat).
-- Cek kuota dulu (GET /v1/user/subscription). Satu episode ±300 kredit. Kalau kuota tidak cukup: JANGAN generate, laporkan.
+- Cek kuota dulu (GET /v1/user/subscription). Satu episode ±100–300 kredit. Kalau kuota tidak cukup: JANGAN generate, laporkan.
 - Musik & SFX instrumental tanpa vokal berbahasa. Dilarang lagu/klip berhak cipta.
 
 SETUP TEKNIS:

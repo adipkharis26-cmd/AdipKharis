@@ -1,0 +1,6 @@
+{"fps":30,"frames":420,
+ "cutWide":30,"shakes":[[36,44],[48,56],[60,68],[72,80]],"kick":92,"hop":[96,132],
+ "dotIn":[134,150],"dotCoin":154,"dotButton":160,"dotDrop":168,"dotOut":[176,196],
+ "qCoin":204,"spin2":[208,224],"stuck2":224,"rage":[226,242],
+ "brickIn":[242,264],"tap":274,"rumble":[274,286],"avalanche":[284,306],"pile":[306,320],"popUp":320,
+ "open":334,"spray":[336,354],"drench":[354,368],"insert":[372,384],"loopCU":[390,420]}
