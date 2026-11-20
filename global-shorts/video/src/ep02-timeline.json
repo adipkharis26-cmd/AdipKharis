@@ -1,0 +1,7 @@
+{"fps":30,"frames":420,
+ "freeze":6,"cutWide":30,"rise":[30,60],"wag":[60,90],"groundSit":[90,104],"lick":[104,135],
+ "wind":[135,150],"flip":143,"groundWet":[146,160],"lookDown":[150,180],
+ "stretch":[180,214],"snap":[214,221],"iceFly":[214,245],
+ "snickIn":[226,245],"catch":245,"benchHop":[245,258],"snickLick":[258,292],
+ "snickStuck":[292,300],"waddle":[300,350],"popFree":330,"laugh":[336,348],"dash":[348,356],"snatch":356,"snickOff":[356,380],
+ "walk":[376,405],"sitDown":[405,420]}
