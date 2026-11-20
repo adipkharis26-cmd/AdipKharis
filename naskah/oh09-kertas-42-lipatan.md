@@ -38,6 +38,16 @@
 - Perlu dicek cekfakta sebelum tayang: tebal kertas yang dipakai (±0,1 mm) dan status rekor lipatan terbaru.
 
 ## Paket posting
-- **Judul:** Kertas Dilipat 42 Kali Setebal Sampai Bulan: Benar atau Bohong? 🌙
-- **Deskripsi:** Katanya selembar kertas yang dilipat 42 kali bisa setebal sampai Bulan. Benar atau bohong? Kertas ±0,1 mm (perkiraan) × 2⁴² ≈ 439.805 km, lebih jauh dari jarak Bumi–Bulan (384.400 km). Tapi ini cuma hitungan: rekor lipatan kertas sungguhan baru ±12 kali (Britney Gallivan, 2002). Tadi kamu jawab benar atau bohong?
-- **Hashtag:** #Ohhiyaa #Kertas #Bulan #FaktaUnik #TahukahKamu #Shorts
+### Judul
+```
+Kertas Dilipat 42 Kali Sampai Bulan, Benar atau Bohong? 🌙 | OHHIYAA!
+```
+### Deskripsi
+```
+Katanya, selembar kertas yang dilipat 42 kali bisa setebal sampai Bulan. Benar atau bohong? 🌙📄
+Kertas ±0,1 mm (perkiraan) × 2⁴² ≈ 439.805 km, lebih jauh dari jarak Bumi–Bulan (384.400 km). Tapi ini cuma hitungan: rekor lipatan kertas sungguhan baru ±12 kali (Britney Gallivan, 2002).
+
+Tadi kamu jawab benar atau bohong? 👇
+
+#shorts #ohhiyaa #kertas #bulan #faktaunik #tahukahkamu
+```

@@ -158,15 +158,16 @@ Yang **wajib dipakai penulis episode** supaya "wow":
 6. Thumbnail (skill `thumbnail-high-cta`): frame dengan OHI + tumpukan + teks pertanyaan, **tanpa membocorkan angka jawaban**.
 7. **Kemas output siap (wajib, bagian 9):** `python3 video/src/siap.py ohNN`.
 
-## 9. OUTPUT SIAP (TERKUNCI, owner 16 Nov 2026)
+## 9. OUTPUT SIAP (TERKUNCI, owner 16 Nov 2026; format posting diperbarui 20 Nov 2026)
 Satu episode dianggap SELESAI hanya kalau paketnya persis ini, tidak kurang dan tidak lebih:
 1. **1 MP4** `ohNN.mp4` (1080×1920, H.264 + AAC, 40–55 dtk, sudah berisi VO + musik + SFX).
 2. **2 thumbnail** `ohNN-thumb-A.png` (varian utama) dan `ohNN-thumb-B.png` (cadangan), 1080×1920, tanpa membocorkan jawaban.
-3. **1 judul** `judul.txt` (maks 70 karakter, satu baris).
-4. **1 deskripsi** `deskripsi.txt` (satu paragraf berisi hitungan dan sumber + ajakan komentar, lalu 5–8 hashtag di baris terpisah).
-- Judul dan deskripsi diambil dari bagian **Paket posting** naskah (`**Judul:**`, `**Deskripsi:**`, `**Hashtag:**`): masing-masing **tepat satu baris**. Bukan beberapa pilihan.
-- Perintah pengemas dan pemeriksa: `python3 video/src/siap.py ohNN`. Hasil di `video/out/siap/ohNN/`. Kalau perintah itu gagal, episode belum siap dan tidak boleh dilaporkan selesai.
-- Berkas lain (naskah, VO, mix, spesifikasi thumbnail) tetap disimpan di repo sebagai bahan, tetapi yang diserahkan ke owner hanya lima berkas di atas.
+3. **1 judul** dan 4. **1 deskripsi**: **DITAMPILKAN LANGSUNG DI CHAT dalam kotak kode (siap salin), BUKAN berkas .txt** (perintah owner 20 Nov 2026). Format:
+   - **Judul YouTube Shorts:** satu baris, maks 70 karakter, boleh 1–2 emoji, **diakhiri ` | OHHIYAA!`**. Contoh: `Kertas Dilipat 42 Kali Sampai Bulan, Benar atau Bohong? 🌙 | OHHIYAA!`
+   - **Deskripsi YouTube Shorts:** (a) 1–2 kalimat pembuka santai dengan emoji (klaim/pertanyaan video); (b) 1–2 kalimat hitungan + sumber singkat; (c) baris kosong, lalu **ajakan komentar sesuai format** diakhiri 👇 (mis. "Tadi kamu jawab benar atau bohong? 👇"); (d) baris kosong, lalu **5–8 hashtag huruf kecil, diawali `#shorts`** (mis. `#shorts #ohhiyaa #faktaunik #indonesia #tahukahkamu`).
+- Judul dan deskripsi ditulis di naskah (`naskah/ohNN-*.md`) bagian **Paket posting** sebagai dua kotak kode: `### Judul` (1 kotak) lalu `### Deskripsi` (1 kotak). Tepat satu judul dan satu deskripsi, bukan beberapa pilihan.
+- Perintah pengemas dan pemeriksa: `python3 video/src/siap.py ohNN`. Hasil berkas di `video/out/siap/ohNN/` (MP4 + 2 PNG saja), dan perintah itu **mencetak judul + deskripsi dalam kotak kode**: tempel apa adanya ke balasan chat bersama pengiriman MP4 dan thumbnail. Kalau perintah itu gagal, episode belum siap dan tidak boleh dilaporkan selesai.
+- Berkas lain (naskah, VO, mix, spesifikasi thumbnail) tetap disimpan di repo sebagai bahan, tetapi yang diserahkan ke owner hanya MP4, 2 thumbnail, 1 judul, 1 deskripsi.
 
 ## 8. Larangan
 - Angka karangan atau hitungan yang tidak bisa dicek.
@@ -174,6 +175,6 @@ Satu episode dianggap SELESAI hanya kalau paketnya persis ini, tidak kurang dan 
 - Meniru judul atau gaya peta Geser Dikit.
 - Durasi di luar 40–55 detik.
 - Momen OHHIYAA! lebih dari sekali.
-- Menyerahkan paket yang tidak lolos `siap.py` (mis. 2 judul, 3 thumbnail, tanpa deskripsi).
+- Menyerahkan paket yang tidak lolos `siap.py` (mis. 2 judul, 3 thumbnail, tanpa deskripsi), atau menyerahkan judul/deskripsi sebagai berkas .txt.
 - Memakai format A/B/C terus-menerus, atau jawaban benar yang sama berurutan, atau menukar hasil `oh_format.py` secara manual.
 - Alur yang sama persis dengan episode sebelumnya (hook → tebak → tangga → jawaban) tanpa mengikuti hasil acak.

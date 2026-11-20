@@ -38,7 +38,16 @@
 - Asumsi: semua air minum diukur sebagai air putih 2 L/hari sepanjang hidup (tidak ada variasi umur/aktivitas); galon ditumpuk lurus tanpa celah. Tinggi menara di layar tidak linear, ditandai "Ilustrasi skala".
 
 ## Paket posting
-- **Judul:** Air yang Kamu Minum Seumur Hidup, Kalau Jadi Galon, Setinggi Apa? 💧🤯
-- **Deskripsi:** 2 liter/hari (Kemenkes) × 365 × 74,15 tahun (BPS 2024) ≈ 54.000 liter ≈ 2.850 galon (19 L) ≈ ±1,4 km kalau ditumpuk (galon ±50 cm), lebih tinggi dari Burj Khalifa (828 m). Berapa tebakanmu? Yang paling dekat, ketik 🎯
-- **Komentar disematkan:** Tadi tebakan angkamu berapa galon? 👇 Yang paling dekat ketik 🎯
-- **Hashtag:** #Ohhiyaa #AirMinum #FaktaUnik #Indonesia #TahukahKamu #Shorts
+### Judul
+```
+Air Seumur Hidup Jadi Galon, Setinggi Apa? 💧🤯 | OHHIYAA!
+```
+### Deskripsi
+```
+Air yang kamu minum seumur hidup, kalau dijadikan galon dan ditumpuk... lebih tinggi dari Burj Khalifa! 💧🤯
+2 liter/hari (Kemenkes) × 365 × 74,15 tahun (BPS 2024) ≈ 54.000 liter ≈ 2.850 galon (19 L) × ±50 cm ≈ ±1,4 km.
+
+Tebakan angkamu berapa galon? Yang paling dekat, ketik 🎯 👇
+
+#shorts #ohhiyaa #faktaunik #airminum #tahukahkamu #indonesia
+```

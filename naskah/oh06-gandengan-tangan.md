@@ -39,6 +39,16 @@
 - Cincin di layar: 10 cincin penuh + 1 cincin 0,65 (10,65 putaran); jarak Bumi–Bulan tidak sesuai skala ("Ilustrasi skala").
 
 ## Paket posting
-- **Judul:** Semua Orang Indonesia Gandengan Tangan, Cuma Keliling Bumi 1×? 🤝
-- **Deskripsi:** Katanya semua orang Indonesia bergandengan tangan cuma cukup keliling Bumi sekali. Benar atau bohong? 284,67 juta penduduk (BPS SUPAS 2025) × ±1,5 m rentang tangan (asumsi) ≈ ±427.000 km ≈ 10,7× keliling Bumi (40.075 km), bahkan lebih jauh dari jarak Bumi–Bulan (384.400 km). Tadi kamu jawab benar atau bohong?
-- **Hashtag:** #Ohhiyaa #FaktaUnik #Indonesia #TahukahKamu #Bumi #Shorts
+### Judul
+```
+Semua Orang RI Gandengan Tangan, Cuma Keliling Bumi 1×? 🤝 | OHHIYAA!
+```
+### Deskripsi
+```
+Katanya, kalau semua orang Indonesia bergandengan tangan, cuma cukup keliling Bumi satu kali. Benar atau bohong? 🤝🌏
+284,67 juta penduduk (BPS SUPAS 2025) × ±1,5 m rentang tangan (asumsi) ≈ ±427.000 km ≈ 10,7× keliling Bumi, bahkan lewat Bulan (384.400 km).
+
+Tadi kamu jawab benar atau bohong? 👇
+
+#shorts #ohhiyaa #faktaunik #indonesia #tahukahkamu #bumi
+```

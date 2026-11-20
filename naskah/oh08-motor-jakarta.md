@@ -38,6 +38,16 @@
 - Perlu dicek cekfakta sebelum tayang: jumlah motor DKI per tabel resmi BPS 2024/2025.
 
 ## Paket posting
-- **Judul:** Semua Motor Jakarta Dijejer: Kurang atau Lebih dari Sabang–Merauke? 🏍️
-- **Deskripsi:** 9,38 juta motor di Jakarta (BPS 2025) × ±1,877 m (Honda BeAT) ≈ ±17.600 km, dijejer ujung ke ujung. Sabang–Merauke ±5.200 km (perkiraan). Lebih atau kurang? Ketik KURANG atau LEBIH di komentar!
-- **Hashtag:** #Ohhiyaa #Motor #Jakarta #FaktaUnik #Indonesia #Shorts
+### Judul
+```
+Motor Jakarta Dijejer Lebih Panjang dari Sabang–Merauke? 🏍️ | OHHIYAA!
+```
+### Deskripsi
+```
+Semua motor di Jakarta dijejer ujung ke ujung, lebih panjang atau lebih pendek dari Sabang sampai Merauke? 🏍️🤯
+9,38 juta motor (BPS 2025) × ±1,877 m ≈ ±17.600 km. Sabang–Merauke ±5.200 km (perkiraan).
+
+Kamu jawab kurang atau lebih? Ketik di komentar 👇
+
+#shorts #ohhiyaa #motor #jakarta #faktaunik #indonesia
+```

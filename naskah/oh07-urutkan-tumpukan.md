@@ -38,6 +38,16 @@
 - Tumpukan 3D di layar tidak linear (ditandai "Ilustrasi skala"); hanya perbandingan uang vs Monas yang dibuat sebanding.
 
 ## Paket posting
-- **Judul:** 1 Juta Galon vs Nasi Bungkus vs Uang 100 Ribu: Urutkan Tinggi! 📚
-- **Deskripsi:** Kalau masing-masing 1 juta buah ditumpuk, urutkan dari yang paling pendek! 1 juta lembar uang Rp100.000 × ±0,1 mm (perkiraan) ≈ ±100 m. 1 juta nasi bungkus × ±5 cm (asumsi) ≈ ±50 km. 1 juta galon × ±50 cm ≈ ±500 km (lewat Stasiun Luar Angkasa ±408 km). Menurutmu urutannya bagaimana? Ketik 1-2-3 di komentar!
-- **Hashtag:** #Ohhiyaa #FaktaUnik #Indonesia #TahukahKamu #Galon #Shorts
+### Judul
+```
+1 Juta Galon vs Nasi Bungkus vs Uang 100 Ribu: Urutkan! 📚 | OHHIYAA!
+```
+### Deskripsi
+```
+Kalau masing-masing 1 juta buah ditumpuk, mana yang paling tinggi? Urutkan dari yang paling pendek! 📚🤯
+1 juta lembar Rp100.000 × ±0,1 mm ≈ ±100 m (perkiraan). 1 juta nasi bungkus × ±5 cm ≈ ±50 km (asumsi). 1 juta galon × ±50 cm ≈ ±500 km, lewat Stasiun Luar Angkasa (±408 km).
+
+Urutanmu gimana? Ketik 1-2-3 di komentar 👇
+
+#shorts #ohhiyaa #faktaunik #indonesia #tahukahkamu #galon
+```
