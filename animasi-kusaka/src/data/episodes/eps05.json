@@ -925,7 +925,7 @@
           "speaker": "nadia",
           "emotion": "shock",
           "listener": "neutral",
-          "shot": "two",
+          "shot": "wide",
           "action": "shock",
           "text": "Kus! Bukunya! Bolanya! Semuanya!",
           "ref": [
@@ -1012,7 +1012,23 @@
             "at": 1.6
           }
         }
-      ]
+      ],
+      "tracks": {
+        "tower": [
+          [
+            "l059",
+            0
+          ],
+          [
+            "l067",
+            0
+          ],
+          [
+            "l067:end",
+            1
+          ]
+        ]
+      }
     },
     {
       "id": "s07",

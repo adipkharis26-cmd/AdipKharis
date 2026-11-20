@@ -252,7 +252,47 @@ export const RuangBK: React.FC<{ t: number }> = ({ t }) => (
 );
 
 /* ------------------------------ PERPUSTAKAAN ----------------------------- */
-export const Perpustakaan: React.FC<{ t: number }> = ({ t }) => (
+/* ---- Menara buku & bola peluang (Eps. 5, trek "tower": 0 = berdiri, 1 = sudah roboh berserakan) ---- */
+const rnd = (i: number, k: number) => { const v = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453; return v - Math.floor(v); };
+const TOWER_COLORS = ["#2f7fd8", "#ffd23f", "#e63946", "#3c8d5a", "#8f5bd1", "#ff8a3d", "#2bb3a3"];
+const BookTower: React.FC<{ x: number; y: number; p: number; t: number }> = ({ x, y, p: track, t }) => {
+  const p = Math.min(1, track / 0.4); // runtuh terjadi di 40% awal trek (±1 dtk), sisanya tinggal tumpukan
+  const N = 14, BH = 24, ease = (v: number) => v * v;
+  const books = Array.from({ length: N }, (_, i) => {
+    const w = 104 + rnd(i, 1) * 30, bx = (rnd(i, 2) - 0.5) * 14, by = -(i + 1) * BH, rot0 = (rnd(i, 3) - 0.5) * 3;
+    // buku paling atas mulai jatuh lebih dulu
+    const local = Math.max(0, Math.min(1, p * 1.5 - (1 - i / N) * 0.5));
+    const k = ease(local);
+    const endX = (rnd(i, 4) - 0.5) * 520, endRot = (rnd(i, 5) - 0.5) * 330, endY = -(6 + Math.floor(rnd(i, 6) * 2) * 14);
+    return { i, w, c: TOWER_COLORS[i % TOWER_COLORS.length], tx: bx + (endX - bx) * Math.min(1, local * 1.1), ty: by + (endY - by) * k, rot: rot0 + (endRot - rot0) * Math.min(1, local * 1.2) };
+  });
+  const sway = p <= 0 ? Math.sin(t * 9) * 1.4 : 0; // menara goyang tipis sebelum roboh
+  const balls = [["#e63946", -52], ["#e63946", -26], ["#e63946", 0], ["#ffffff", 26], ["#ffffff", 52]].map(([c, bx], i) => {
+    const local = Math.max(0, Math.min(1, p * 1.25 - 0.05));
+    const r = 19, endX = (rnd(i, 7) - 0.3) * 640 + (i % 2 ? 160 : -160), startY = -N * BH - r - 4;
+    const fall = ease(local), bounce = local > 0.55 ? Math.abs(Math.sin((local - 0.55) * 9)) * 34 * (1 - local) : 0;
+    return { i, c: c as string, bx: (bx as number) + (endX - (bx as number)) * Math.min(1, local * 1.05), by: startY + (-r - startY) * fall - bounce, spin: local * (380 + i * 90) };
+  });
+  const dust = p > 0.55 && p < 1 ? (p - 0.55) / 0.45 : 0;
+  return (
+    <g transform={`translate(${x} ${y})`} stroke={OUT} strokeWidth={5}>
+      <g transform={`rotate(${sway} 0 0)`}>
+        {books.map((b) => (
+          <g key={b.i} transform={`translate(${b.tx} ${b.ty}) rotate(${b.rot})`}>
+            <rect x={-b.w / 2} y={-BH} width={b.w} height={BH} rx={3} fill={b.c} />
+            <path d={`M ${-b.w / 2 + 8} ${-BH / 2} L ${b.w / 2 - 8} ${-BH / 2}`} stroke="#fffdf5" strokeWidth={3} opacity={0.8} />
+          </g>))}
+      </g>
+      {balls.map((b) => (
+        <g key={b.i} transform={`translate(${b.bx} ${b.by}) rotate(${b.spin})`}>
+          <circle r={19} fill={b.c} /><path d="M -19 0 L 19 0 M 0 -19 Q 8 0 0 19" fill="none" stroke={OUT} strokeWidth={3} />
+        </g>))}
+      {dust > 0 && <g stroke="none" opacity={0.55 * (1 - dust)}>{[-180, -90, 60, 150, 230].map((dx, i) => <circle key={i} cx={dx * (0.5 + dust)} cy={-14 - dust * 26 * (1 + (i % 2))} r={20 + dust * 34} fill="#e8dcc4" />)}</g>}
+    </g>
+  );
+};
+
+export const Perpustakaan: React.FC<{ t: number; tower?: number }> = ({ t, tower }) => (
   <g>
     <Wall fill="#efe2c8" />
     <Floor y={800} fill="#c58b56" line="#a8713f" kind="wood" />
@@ -275,6 +315,7 @@ export const Perpustakaan: React.FC<{ t: number }> = ({ t }) => (
       {[200, 900].map((x) => <g key={x} transform={`translate(${x} 0)`}><rect x={-4} y={-90} width={8} height={90} fill="#3c8d5a" strokeWidth={4} /><path d="M -50 -90 L 50 -90 L 30 -130 L -30 -130 Z" fill="#3c8d5a" strokeWidth={4} /></g>)}
       <rect x={480} y={-16} width={120} height={16} fill="#2f7fd8" strokeWidth={4} /><rect x={620} y={-30} width={100} height={30} fill="#fff" strokeWidth={4} />
     </g>
+    {tower !== undefined && <BookTower x={1290} y={968} p={tower} t={t} />}
   </g>
 );
 

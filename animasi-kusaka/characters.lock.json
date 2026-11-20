@@ -1,5 +1,5 @@
 {
-  "version": "3.4.0+loc3.8.0+edit2.11.0+sfx1.2.0+brand1.11.0",
+  "version": "3.4.0+loc3.9.0+edit2.11.0+sfx1.2.0+brand1.11.0",
   "lockedAt": "2026-11-20",
   "files": {
     "src/characters/canon.json": "554b6e7b6ac03e69746ac5733e9230e9d933c6430650cd44dd70af1097c2c399",
@@ -7,10 +7,10 @@
     "src/characters/Mouth.tsx": "9a59147e0acfce56ef7119100b9b2e75c3f7b120d70022163a13a32697cf1ba2",
     "src/characters/Eyes.tsx": "910d22db5612d9b80f3404d898a28ef0993d9f10ae9e66ec4b512035c4d81bbf",
     "src/characters/Hands.tsx": "55c1d493bf3bedb44122aa1241b410231d5965c23ea4c1972913ce9700e88b0b",
-    "src/scene/locations.json": "25b418742a9ba51e4affe76ee8b67c52e2ae35a6ad859668bd58a22b3a176fd0",
-    "src/scene/Locations.tsx": "dbd45bfb82b1e363486ff47ecb0c5cc8d708f0ef78dd3291ca26cf06f03e1644",
+    "src/scene/locations.json": "ccd4334be795c9d72ac34b4c3df3931a563b6bceb6cf1b031b19f141e613da82",
+    "src/scene/Locations.tsx": "4c72f882ea1c2dc81203062d2e8a23d7c213b57883f0a6cc38219ad51afcb63a",
     "src/scene/Background.tsx": "0f3efa718c88136c9184170a7c46caffe7b631b2ae39954766bd208085d8538a",
-    "src/scene/Locations2.tsx": "e883c29aff6fda899a871b3a7534203dca62d079b01cc180cb91115bc19dcc9f",
+    "src/scene/Locations2.tsx": "d28cb7cc9c35b88378b9541d7e08c8b222079c2e815f5bd50100c8ce3061a891",
     "src/scene/Details.tsx": "4c1343dee1e8e488821cd862479b02e7929dbbb3a19d25407e4fd89c2425fc13",
     "src/scene/Details2.tsx": "9f16aeaf4ef1e2d6048029eabb2aa3e2bee82730a33174e3947cca40a5ac83fb",
     "src/scene/Locations3.tsx": "4aad7138b44ecabadbe1926deb17ddf16f1da30983b4156c431b109d0f146d42",

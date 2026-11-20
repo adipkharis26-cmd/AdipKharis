@@ -8,7 +8,7 @@ import { Kantin, KelasBelakang, KelasJendela, Kos, LapanganUpacara, LapanganUpac
 const OUT = "#1b1b1b";
 const SW = 6;
 export type LocId = keyof typeof meta.locations;
-export interface SceneOpts { ijahNod?: number; flag?: number; flagInverted?: boolean; snag?: number; gate?: number; angkot?: number; board?: number }
+export interface SceneOpts { ijahNod?: number; flag?: number; flagInverted?: boolean; snag?: number; gate?: number; angkot?: number; board?: number; tower?: number }
 export interface Layer { d: number; el: (t: number, opts?: SceneOpts) => React.ReactNode }
 export interface LocationDef { id: LocId; bg: string; layers: Layer[]; front?: Layer[] }
 
@@ -331,7 +331,7 @@ export const LOCATIONS: Record<LocId, LocationDef> = {
   mejaGuru: { id: "mejaGuru", bg: "#f6e7c1", layers: [{ d: 1, el: (t) => <MejaGuru t={t} /> }] },
   kantin: { id: "kantin", bg: "#f3e3b5", layers: [{ d: 1, el: (t) => <Kantin t={t} /> }] },
   ruangBK: { id: "ruangBK", bg: "#d7ead9", layers: [{ d: 1, el: (t) => <RuangBK t={t} /> }] },
-  perpustakaan: { id: "perpustakaan", bg: "#efe2c8", layers: [{ d: 1, el: (t) => <Perpustakaan t={t} /> }] },
+  perpustakaan: { id: "perpustakaan", bg: "#efe2c8", layers: [{ d: 1, el: (t, o) => <Perpustakaan t={t} tower={o?.tower} /> }] },
   ruangTamu: { id: "ruangTamu", bg: "#f7dcc4", layers: [{ d: 1, el: (t) => <RuangTamu t={t} /> }] },
   ruangGuru: { id: "ruangGuru", bg: "#e6efe0", layers: [{ d: 1, el: (t) => <RuangGuru t={t} /> }] },
   pasar: { id: "pasar", bg: "#d7e6ee", layers: [{ d: 1, el: (t) => <Pasar t={t} /> }] },

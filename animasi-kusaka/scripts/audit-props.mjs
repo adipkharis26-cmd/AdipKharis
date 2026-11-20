@@ -30,6 +30,8 @@ const RULES = [
   { re: /hapus|dihapus|penghapus/i, label: "hapus papan", item: "boardEraser", acts: ["erase"], track: "board" },
   { re: /papan tulis|\bcatat|dicatat/i, label: "papan tulis/catat", item: "pen|boardEraser|phoneGallery", acts: ["write", "erase", "photo"], track: "board" },
   { re: /galeri/i, label: "galeri HP", item: "phoneGallery" },
+  // Eps. 5: menara buku yang roboh di perpustakaan
+  { re: /menara|roboh|runtuh/i, label: "menara buku", track: "tower" },
   { re: /hormat/i, label: "hormat", acts: ["salute"], track: "salute" },
   { re: /bendera|tiang/i, label: "bendera", track: "flag", loc: "lapanganUpacara" },
   { re: /\btali\b/i, label: "tali", track: "flag|snag", loc: "lapanganUpacara" },
