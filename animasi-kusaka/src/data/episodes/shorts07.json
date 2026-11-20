@@ -1,0 +1,301 @@
+{
+ "format": "shorts",
+ "episode": "shorts07",
+ "title": "Papan Tulis",
+ "fps": 30,
+ "gapSeconds": 0.2,
+ "sceneLead": 0.3,
+ "sceneGap": 0,
+ "tail": 0.2,
+ "hook": {
+  "lines": [
+   "JANGAN DIHAPUS!",
+   "DULU vs SEKARANG"
+  ],
+  "keywords": [
+   "DIHAPUS!",
+   "DULU",
+   "SEKARANG"
+  ],
+  "seconds": 1.6
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "location": "kelas",
+   "music": "music-morning-rush",
+   "cast": {
+    "ucok": {
+     "mark": "A",
+     "facing": 1
+    },
+    "buWati": {
+     "mark": "C",
+     "facing": -1
+    },
+    "sasa": {
+     "mark": "B",
+     "facing": -1
+    }
+   },
+   "hold": {
+    "buWati": "boardEraser",
+    "ucok": [
+     "pen",
+     {
+      "item": "book",
+      "hand": "back"
+     }
+    ],
+    "sasa": [
+     "pen",
+     {
+      "item": "book",
+      "hand": "back"
+     }
+    ]
+   },
+   "tracks": {
+    "board": [
+     [
+      "l001",
+      0
+     ],
+     [
+      "l001:end",
+      0.1
+     ],
+     [
+      "l005",
+      0.1
+     ],
+     [
+      "l005:end",
+      1
+     ]
+    ]
+   },
+   "lines": [
+    {
+     "id": "l001",
+     "speaker": "ucok",
+     "emotion": "shock",
+     "listener": "deadpan",
+     "shot": "crash",
+     "action": "plead",
+     "to": "buWati",
+     "flashback": true,
+     "text": "BU! JANGAN DIHAPUS DULU, BU!",
+     "reactions": {
+      "buWati": [
+       "deadpan",
+       "erase"
+      ]
+     }
+    },
+    {
+     "id": "l002",
+     "speaker": "buWati",
+     "emotion": "deadpan",
+     "listener": "shock",
+     "shot": "medium",
+     "action": "erase",
+     "flashback": true,
+     "text": "Ibu hitung sampai tiga. Satu...",
+     "caption": "MASA LALU"
+    },
+    {
+     "id": "l003",
+     "speaker": "sasa",
+     "emotion": "pleading",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "write",
+     "to": "buWati",
+     "flashback": true,
+     "text": "Bu, catatan saya baru sampai tanggal!",
+     "reactions": {
+      "ucok": [
+       "shock",
+       "write"
+      ]
+     }
+    },
+    {
+     "id": "l004",
+     "speaker": "ucok",
+     "emotion": "shock",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "write",
+     "to": "buWati",
+     "flashback": true,
+     "text": "Macam mana pulak ini?! Tangan aku keriting, Bu!"
+    },
+    {
+     "id": "l005",
+     "speaker": "buWati",
+     "emotion": "smug",
+     "listener": "defeated",
+     "shot": "wide",
+     "action": "erase",
+     "flashback": true,
+     "text": "Dua. Tiga.",
+     "sfx": [
+      {
+       "id": "slide_whistle_down",
+       "at": "end"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "location": "kelas",
+   "music": "music-warung-comedy",
+   "cast": {
+    "ucok": {
+     "mark": "A",
+     "facing": 1
+    },
+    "buWati": {
+     "mark": "C",
+     "facing": -1
+    },
+    "sasa": {
+     "mark": "B",
+     "facing": -1
+    }
+   },
+   "hold": {
+    "buWati": "boardEraser"
+   },
+   "tracks": {
+    "board": [
+     [
+      "l013",
+      0
+     ],
+     [
+      "l013:end",
+      1
+     ]
+    ]
+   },
+   "lines": [
+    {
+     "id": "l006",
+     "speaker": "buWati",
+     "emotion": "neutral",
+     "listener": "surprised",
+     "shot": "two",
+     "action": "hold",
+     "text": "Sudah dicatat semua? Ibu hapus, ya."
+    },
+    {
+     "id": "l007",
+     "speaker": "ucok",
+     "emotion": "surprised",
+     "listener": "suspicious",
+     "shot": "medium",
+     "action": "photo",
+     "to": "buWati",
+     "text": "Bentar, Bu! Cekrek!",
+     "reactions": {
+      "sasa": [
+       "neutral",
+       "photo"
+      ]
+     }
+    },
+    {
+     "id": "l008",
+     "speaker": "sasa",
+     "emotion": "deadpan",
+     "listener": "embarrassed",
+     "shot": "two",
+     "action": "photo",
+     "to": "buWati",
+     "text": "Bu, geser dikit. Kepala Ibu ikut kefoto."
+    },
+    {
+     "id": "l009",
+     "speaker": "buWati",
+     "emotion": "suspicious",
+     "listener": "embarrassed",
+     "shot": "two",
+     "action": "crossed",
+     "text": "Foto papan tulis kalian itu... pernah dibuka lagi?",
+     "hold": {
+      "ucok": "phoneGallery",
+      "sasa": "phoneGallery",
+      "buWati": null
+     },
+     "ref": [
+      "menulis/catatan"
+     ]
+    },
+    {
+     "id": "l010",
+     "speaker": "ucok",
+     "emotion": "embarrassed",
+     "listener": "suspicious",
+     "shot": "medium",
+     "action": "show",
+     "to": "buWati",
+     "text": "Galeri aku isinya papan tulis semua, Bu. Belum pernah dibuka.",
+     "ref": [
+      "menulis/catatan"
+     ]
+    },
+    {
+     "id": "l011",
+     "speaker": "buWati",
+     "emotion": "smug",
+     "listener": "shock",
+     "shot": "close",
+     "closeStyle": "single",
+     "action": "point",
+     "text": "Bagus. Kerjakan semua soal di galeri kalian. Sekarang.",
+     "sfx": [
+      {
+       "id": "rimshot",
+       "at": "end"
+      }
+     ]
+    },
+    {
+     "id": "l012",
+     "speaker": "sasa",
+     "emotion": "laugh",
+     "listener": "shock",
+     "shot": "two",
+     "action": "photo",
+     "text": "Kirim ke teman sebangku yang dulu teriak jangan dihapus!",
+     "cta": {
+      "kind": "kirim",
+      "text": "KIRIM ke TEMAN SEBANGKU!",
+      "keywords": [
+       "KIRIM",
+       "SEBANGKU!"
+      ],
+      "reveal": "ucok"
+     }
+    },
+    {
+     "id": "l013",
+     "speaker": "buWati",
+     "emotion": "deadpan",
+     "listener": "shock",
+     "shot": "wide",
+     "action": "erase",
+     "text": "Oke. Ibu hapus sekarang.",
+     "hold": {
+      "buWati": "boardEraser"
+     }
+    }
+   ]
+  }
+ ]
+}

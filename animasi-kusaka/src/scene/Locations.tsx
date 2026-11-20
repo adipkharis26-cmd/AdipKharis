@@ -8,7 +8,7 @@ import { Kantin, KelasBelakang, KelasJendela, Kos, LapanganUpacara, LapanganUpac
 const OUT = "#1b1b1b";
 const SW = 6;
 export type LocId = keyof typeof meta.locations;
-export interface SceneOpts { ijahNod?: number; flag?: number; flagInverted?: boolean; snag?: number; gate?: number; angkot?: number }
+export interface SceneOpts { ijahNod?: number; flag?: number; flagInverted?: boolean; snag?: number; gate?: number; angkot?: number; board?: number }
 export interface Layer { d: number; el: (t: number, opts?: SceneOpts) => React.ReactNode }
 export interface LocationDef { id: LocId; bg: string; layers: Layer[]; front?: Layer[] }
 
@@ -129,7 +129,7 @@ export const Desk: React.FC<{ x: number; y: number; s?: number; bag?: string }> 
     <rect x={-70} y={-38} width={12} height={38} fill="#555" /><rect x={78} y={-38} width={12} height={38} fill="#555" />
   </g>
 );
-const Kelas: React.FC<{ t: number }> = ({ t }) => (
+const Kelas: React.FC<{ t: number; board?: number }> = ({ t, board = 0 }) => (
   <g>
     <rect x={-400} y={-400} width={2720} height={1170} fill="#f6e7c1" />
     <rect x={-400} y={620} width={2720} height={150} fill="#b9d7c9" stroke={OUT} strokeWidth={SW} />
@@ -152,6 +152,8 @@ const Kelas: React.FC<{ t: number }> = ({ t }) => (
     {/* whiteboard */}
     <rect x={540} y={170} width={840} height={360} fill="#fbfdff" stroke="#8d939c" strokeWidth={14} />
     <rect x={540} y={170} width={840} height={360} fill="none" stroke={OUT} strokeWidth={SW} />
+    {/* tulisan papan (trek "board": 0 = penuh, 1 = terhapus bersih; diusap dari kiri ke kanan dengan sisa noda) */}
+    <g>
     {/* supply–demand graph doodle */}
     <g fill="none" strokeLinecap="round" strokeWidth={6}>
       <path d="M 1010 230 L 1010 470 L 1300 470" stroke="#2b2b2b" />
@@ -163,6 +165,12 @@ const Kelas: React.FC<{ t: number }> = ({ t }) => (
       <path key={y} d={`M 590 ${y} q 30 -14 60 0 t 60 0 t 60 0 ${i % 2 ? "t 60 0" : ""}`} fill="none" stroke="#3a3a3a" strokeWidth={5} strokeLinecap="round" />
     ))}
     <circle cx={1150} cy={350} r={10} fill="#e63946" />
+      {board > 0 && <g>
+        <rect x={552} y={182} width={816 * Math.min(1, board)} height={336} fill="#fbfdff" />
+        {board < 1 && <path d={`M ${552 + 816 * board} 182 q -26 84 0 168 q 26 84 0 168`} fill="none" stroke="#d7dde6" strokeWidth={22} strokeLinecap="round" />}
+        <g opacity={0.22 * Math.min(1, board)} fill="#8d939c">{[[640, 300, 70], [820, 420, 110], [1080, 260, 90], [1240, 380, 80]].map(([x, y, w], i) => <ellipse key={i} cx={Math.min(x, 552 + 816 * board)} cy={y} rx={w} ry={16} />)}</g>
+      </g>}
+    </g>
     <rect x={600} y={530} width={720} height={16} fill="#8d939c" stroke={OUT} strokeWidth={4} />
     {/* bulletin board (mading) */}
     <g transform="translate(90 200)" stroke={OUT} strokeWidth={5}>
@@ -312,7 +320,7 @@ export const LOCATIONS: Record<LocId, LocationDef> = {
       { d: 1, el: (t, o) => <Gerbang t={t} gate={o?.gate} /> },
     ],
   },
-  kelas: { id: "kelas", bg: "#f6e7c1", layers: [{ d: 1, el: (t) => <Kelas t={t} /> }] },
+  kelas: { id: "kelas", bg: "#f6e7c1", layers: [{ d: 1, el: (t, o) => <Kelas t={t} board={o?.board} /> }] },
   koridor: {
     id: "koridor", bg: "#8fd6ff",
     layers: [{ d: 0.25, el: (t) => <Sky t={t} /> }, { d: 0.5, el: () => <Lapangan /> }, { d: 1, el: (t) => <Koridor t={t} /> }],

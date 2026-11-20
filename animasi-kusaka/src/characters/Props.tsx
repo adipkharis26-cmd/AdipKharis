@@ -5,7 +5,8 @@ import React from "react";
 const OUT = "#1b1b1b";
 
 export const ITEMS = ["paper", "book", "kresek", "gorengan", "cup", "mug", "tray", "ball", "wallet", "bagTote", "whistle", "clipboard", "broom", "bowl", "tumbler", "pen", "helmet", "umbrella", "folder", "alarm", "ledger", "bookStack",
-  "lotteryBox", "lotScroll", "lotScrollRed", "lotSlip", "libBook", "phonePhoto", "rubberBands"] as const;
+  "lotteryBox", "lotScroll", "lotScrollRed", "lotSlip", "libBook", "phonePhoto", "rubberBands",
+  "boardEraser", "phoneGallery"] as const;
 export type ItemId = (typeof ITEMS)[number];
 
 const sw = (w = 5) => ({ stroke: OUT, strokeWidth: w, strokeLinejoin: "round" as const, strokeLinecap: "round" as const });
@@ -214,8 +215,31 @@ const RubberBands: React.FC = () => (
     {[[-14, -10], [8, -6], [-4, 8], [14, 14], [-16, 16], [2, 22]].map(([x, y], i) => <ellipse key={i} cx={x} cy={y} rx={9} ry={6} fill="none" stroke="#e63946" strokeWidth={3.5} />)}
   </g>
 );
+/** Penghapus papan tulis (Shorts "Papan Tulis"): gagang plastik hitam + alas busa/flanel abu-abu yang bernoda tinta spidol. */
+const BoardEraser: React.FC = () => (
+  <g transform="translate(0 -6)">
+    <rect x={-44} y={-4} width={88} height={22} rx={4} fill="#d9d9d9" {...sw(4.5)} />
+    <path d="M -36 8 q 12 -4 22 2 M 4 10 q 14 -6 26 0" fill="none" stroke="#5a6b86" strokeWidth={3} strokeLinecap="round" opacity={0.8} />
+    <rect x={-40} y={-24} width={80} height={22} rx={6} fill="#2b2b2b" {...sw(4.5)} />
+    <rect x={-30} y={-20} width={60} height={5} rx={2} fill="#4a4a4a" />
+  </g>
+);
+/** HP berisi galeri penuh foto papan tulis (Shorts "Papan Tulis"): grid thumbnail papan putih bergaris, tanpa teks. */
+const PhoneGallery: React.FC = () => (
+  <g transform="translate(0 -40)">
+    <rect x={-28} y={-48} width={56} height={96} rx={8} fill="#2d2d3a" {...sw(5)} />
+    <rect x={-22} y={-40} width={44} height={76} rx={3} fill="#1f2430" />
+    {[0, 1, 2, 3, 4].map((r) => [0, 1, 2].map((c) => (
+      <g key={`${r}-${c}`} transform={`translate(${-20 + c * 14.5} ${-37 + r * 14.5})`}>
+        <rect width={12} height={12} fill="#f4f7fb" stroke="#8d939c" strokeWidth={1.5} />
+        <path d={`M 2 ${4 + ((r + c) % 2)} l 7 0 M 2 ${8 - ((r + c) % 2)} l 5 0`} stroke={(r + c) % 3 === 0 ? "#2f7fd8" : "#3a3a3a"} strokeWidth={1.4} />
+      </g>
+    )))}
+  </g>
+);
 const MAP: Record<ItemId, React.FC> = { paper: Paper, book: Book, kresek: Kresek, gorengan: Gorengan, cup: Cup, mug: Mug, tray: Tray, ball: Ball, wallet: Wallet, bagTote: BagTote, whistle: Whistle, clipboard: Clipboard, broom: Broom, bowl: Bowl, tumbler: Tumbler, pen: Pen, helmet: Helmet, umbrella: Umbrella, folder: Folder, alarm: Alarm, ledger: Ledger, bookStack: BookStack,
-  lotteryBox: LotteryBox, lotScroll: LotScroll, lotScrollRed: LotScrollRed, lotSlip: LotSlip, libBook: LibBook, phonePhoto: PhonePhoto, rubberBands: RubberBands };
+  lotteryBox: LotteryBox, lotScroll: LotScroll, lotScrollRed: LotScrollRed, lotSlip: LotSlip, libBook: LibBook, phonePhoto: PhonePhoto, rubberBands: RubberBands,
+  boardEraser: BoardEraser, phoneGallery: PhoneGallery };
 export const Item: React.FC<{ id: string; x: number; y: number }> = ({ id, x, y }) => {
   const C = MAP[id as ItemId];
   return C ? <g transform={`translate(${x} ${y})`}><C /></g> : null;
