@@ -1,4 +1,2 @@
 video/node_modules/
 video/out/still-*
-video/audio/el_cache/*.wav
-__pycache__/

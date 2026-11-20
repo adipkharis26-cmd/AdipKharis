@@ -1,0 +1,9 @@
+{"fps":30,"frames":420,
+ "slam":6,"cutWide":30,
+ "tugs":[[40,48,1],[48,55,-1],[55,60,1],[60,65,-1],[65,69,1],[69,73,-1]],
+ "point":[90,100],"yawn":[102,126],"pointDroop":[126,135],
+ "inhale":[135,150],"sneeze":150,"recoil":[150,162],"grab":165,"runOff":[166,182],
+ "sad":[182,196],"cutSnick":196,"bite":206,"plastic":[206,238],
+ "cutReveal":240,"boxOut":[240,250],"munch":[256,296],"snickBack":[282,298],
+ "whistle":[300,330],"newSlice":[330,344],"leanIn":[344,360],
+ "loopReach":[360,420]}
