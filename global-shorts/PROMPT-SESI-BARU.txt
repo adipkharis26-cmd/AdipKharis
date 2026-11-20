@@ -1,0 +1,40 @@
+PROYEK: Quibble & Snick — kartun bisu (tanpa dialog/teks) untuk YouTube Shorts, TikTok, Reels, target internasional.
+Repo: adipkharis26-cmd/adipkharis, branch `global-shorts`, folder `global-shorts/`.
+JANGAN menyentuh folder `animasi-kusaka/` dan JANGAN ikuti aturan KUSAKA. Jangan riset ulang niche/strategi; semua sudah ada di repo.
+
+EPISODE YANG DIBUAT: [isi, mis. "Vending Machine 🥤" dari daftar ide di global-shorts/03-strategi-channel.md]
+
+BACA DULU (jadikan acuan gaya, jangan dirombak):
+- global-shorts/03-strategi-channel.md (positioning, formula, 15 ide)
+- global-shorts/video/src/draw.js (karakter & properti; tambah prop baru di sini bila perlu)
+- global-shorts/video/src/EP02.tsx + ep02-timeline.json (contoh terbaru: struktur adegan, kamera, safe zone, seamless loop)
+- global-shorts/video/audio/el_ep02.py (contoh daftar cue audio ElevenLabs + mix)
+
+ATURAN GAYA (wajib):
+- Karakter: Quibble (kapsul toska, emosi lewat alis) & Snick (segitiga koral, licik). Flat 2D, outline tebal, palet tetap. Tanpa dialog, tanpa teks di layar.
+- Durasi 13–15 dtk, 30 fps, 1080×1920.
+- Hook: frame 0 sudah bergerak, konflik terbaca < 1 dtk.
+- Retensi: ada gag/kejadian tiap 1–2 dtk, usaha makin meningkat, payoff palsu lalu twist. Variasikan siapa yang menang.
+- SEAMLESS LOOP: frame terakhir harus menyambung mulus ke frame 0 (gerakan, posisi, zoom, kecepatan, elemen latar berulang). Audio dimix melingkar supaya tidak ada jeda di titik loop. Cek frame (akhir-20…akhir) + (0…10) sebelum final.
+- Safe zone: aksi penting di luar 20% bawah dan kolom kanan bawah (UI Shorts); lantai di ~65% tinggi layar.
+
+AUDIO:
+- ElevenLabs Sound Effects lewat proxy sesi (key sudah tersimpan sebagai network secret untuk api.elevenlabs.io; di kode pakai placeholder `proxy-injected`, JANGAN tulis key di repo/chat).
+- Cek kuota dulu (GET /v1/user/subscription). Satu episode ±300 kredit. Kalau kuota tidak cukup: JANGAN generate, laporkan.
+- Musik & SFX instrumental tanpa vokal berbahasa. Dilarang lagu/klip berhak cipta.
+
+SETUP TEKNIS:
+- `cd global-shorts/video && npm install`; `pip install numpy scipy`.
+- Remotion memakai Chromium bawaan sesi (lihat remotion.config.ts).
+- Render: `npx remotion render src/index.ts <ID> out/<nama>.mp4 --codec=h264 --crf=18`. Target loudness ±-14 LUFS, puncak ≤ -1 dB.
+
+OUTPUT (kerjakan sampai jadi tanpa menunggu perintah):
+1. Video final + 2 cover PNG di global-shorts/upload/<EPxx-nama>/ dan kirim ke saya.
+2. Teks upload di CHAT (bukan file .md), format persis:
+   **Judul** (YouTube/Instagram, tanpa nomor): blok kode, akhiri dengan "| Quibble & Snick"
+   Alternatif: `inline code`
+   **Deskripsi YouTube Shorts:** blok kode (2–3 baris + pertanyaan + 5–6 hashtag)
+   **Komentar pin**, **Caption TikTok**, **Caption Reels**, **Tag**: masing-masing blok kode.
+   Bahasa Inggris sederhana untuk penonton global.
+3. Commit & push ke branch `global-shorts` (pastikan tidak ada API key di repo).
+4. Laporan ke saya dalam bahasa Indonesia, ringkas, pakai tabel. Jujur bila ada yang belum dicek (mis. audio tidak bisa didengar).
