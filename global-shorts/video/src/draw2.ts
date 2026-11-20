@@ -170,3 +170,44 @@ export const splash = (x, y, p, n = 9, r = 40, c = '#7FC8F8') => Array.from({len
   const a = Math.PI + (i / (n - 1)) * Math.PI, d = r * p;
   return `<path transform="translate(${x + Math.cos(a) * d},${y + Math.sin(a) * d * 1.2 + p * p * 30}) rotate(${a * 57.3 + 90}) scale(${0.9 - p * 0.4})" d="M0,-10 Q7,2 0,7 Q-7,2 0,-10Z" fill="${c}" stroke="${C.ink}" stroke-width="2.2" opacity="${1 - p * 0.6}"/>`;
 }).join('');
+
+// ===== EP06 Selfie Fail: kamera tripod dengan timer LED, foto instan, latar taman =====
+// (x,y): tripod -> kaki di lantai; tanpa tripod -> pusat badan. dir 1 = lensa menghadap kanan. leds = jumlah LED timer menyala (0..3)
+export function camera(x, y, o: any = {}) {
+  const {dir = 1, leds = 0, tripod = true, rot = 0, flash = 0} = o;
+  const cy = tripod ? y - 128 : y;
+  let s = '';
+  if (tripod) s += L(x, cy + 14, x - 26, y, 4) + L(x, cy + 14, x + 26, y, 4) + L(x, cy + 14, x + 3, y, 4) + `<rect x="${x - 7}" y="${cy + 12}" width="14" height="8" rx="2" fill="#4A4A55" stroke="${C.ink}" stroke-width="3"/>`;
+  let b = `<rect x="-24" y="-16" width="48" height="32" rx="6" fill="#3A3A46" stroke="${C.ink}" stroke-width="4"/>` +
+    `<rect x="-16" y="-23" width="18" height="9" rx="2" fill="#3A3A46" stroke="${C.ink}" stroke-width="3.5"/>` +
+    `<rect x="-20" y="-12" width="12" height="7" rx="2" fill="#FFF6C8" stroke="${C.ink}" stroke-width="2" opacity="${0.6 + 0.4 * flash}"/>` +
+    `<rect x="-24" y="4" width="48" height="6" fill="#000" opacity=".2"/>` +
+    `<circle cx="24" cy="0" r="12" fill="#2b2b33" stroke="${C.ink}" stroke-width="4"/><circle cx="24" cy="0" r="7" fill="#7FC8F8" stroke="${C.ink}" stroke-width="2.5"/><circle cx="21.5" cy="-2.5" r="2.2" fill="#fff"/>` +
+    [0, 1, 2].map(i => `<circle cx="${6 + i * 7}" cy="-20" r="3" fill="${i < leds ? '#FF3B3B' : '#6B4A50'}" stroke="${C.ink}" stroke-width="1.5"/>`).join('');
+  if (flash > 0) b += `<circle cx="-14" cy="-8" r="${10 + flash * 26}" fill="#FFF8D6" opacity="${flash * 0.9}"/>`;
+  s += `<g transform="translate(${x},${cy}) rotate(${rot}) scale(${dir},1)">${b}</g>`;
+  return s;
+}
+// FOTO INSTAN: bingkai putih + isi (svg mini, koordinat pusat 0,0 dalam jendela 22x22)
+export function photo(x, y, s = 1, rot = 0, inner = '') {
+  const id = 'ph' + (uid++);
+  return `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})"><rect x="-15" y="-15" width="30" height="36" rx="2" fill="#fff" stroke="${C.ink}" stroke-width="2.5"/>` +
+    `<defs><clipPath id="${id}"><rect x="-11" y="-11" width="22" height="22"/></clipPath></defs><rect x="-11" y="-11" width="22" height="22" fill="#CFEFFF"/>` +
+    `<g clip-path="url(#${id})"><rect x="-11" y="5" width="22" height="6" fill="#8CCB6B"/>${inner}</g><rect x="-11" y="-11" width="22" height="22" fill="none" stroke="${C.ink}" stroke-width="1.5"/></g>`;
+}
+export const parkDefs = `<defs><linearGradient id="skyP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ED8FF"/><stop offset="1" stop-color="#E6F6FF"/></linearGradient>
+<linearGradient id="grassG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8CCB6B"/><stop offset="1" stop-color="#5E9E47"/></linearGradient></defs>`;
+// TAMAN: langit, matahari, awan bergerak (periode 420), bukit, pohon, semak, rumput
+export function park(f) {
+  let s = `<rect x="-600" y="-500" width="1600" height="900" fill="url(#skyP)"/><circle cx="215" cy="70" r="26" fill="#FFE27A" stroke="${C.ink}" stroke-width="4"/>`;
+  for (const [cx0, cy, k] of [[20, 90, 1], [260, 140, 0.8], [140, 40, 0.7]]) {
+    const cx = ((cx0 + f * (30 / 420) * 14) % 420) - 80;  // tepat 1 putaran per loop
+    s += `<g transform="translate(${cx},${cy}) scale(${k})"><path d="M-30,10 q-4,-18 14,-20 q6,-18 26,-12 q16,-10 26,6 q16,0 14,26z" fill="#fff" stroke="${C.ink}" stroke-width="3.5" stroke-linejoin="round"/></g>`;
+  }
+  s += `<path d="M-600,360 Q-200,300 60,345 T420,330 T1000,350 V420 H-600Z" fill="#B5E0A0"/>`;
+  for (const [tx, th, tr] of [[-30, 170, 44], [250, 150, 40], [320, 180, 48]]) s += `<rect x="${tx - 7}" y="${400 - th}" width="14" height="${th}" fill="#A0703F" stroke="${C.ink}" stroke-width="4"/><circle cx="${tx}" cy="${400 - th}" r="${tr}" fill="#5FAF4E" stroke="${C.ink}" stroke-width="4"/><circle cx="${tx - tr * 0.35}" cy="${400 - th - tr * 0.35}" r="${tr * 0.35}" fill="#fff" opacity=".18"/>`;
+  s += `<path d="M196,400 q0,-26 24,-24 q10,-20 30,-6 q22,-6 22,30z" fill="#4E9A40" stroke="${C.ink}" stroke-width="4" stroke-linejoin="round"/>`;
+  s += `<rect x="-600" y="400" width="1600" height="400" fill="url(#grassG)"/>` + L(-600, 400, 1000, 400, 4);
+  for (let i = -10; i < 14; i++) s += `<path d="M${i * 37 + 8},${430 + (i % 3) * 22} l3,-8 l3,8" fill="none" stroke="#3F7A30" stroke-width="2.5" stroke-linecap="round"/>`;
+  return s;
+}

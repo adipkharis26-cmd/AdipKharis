@@ -1,0 +1,8 @@
+{"fps":30,"frames":420,
+ "cutWide":24,"topple":36,"flash1":44,
+ "getUp":[50,60],"run2":[60,68],"press2":70,"back2":[72,84],"snickIn":[94,106],"flash2":112,
+ "push":118,"snickOut":[118,132],"run3":[132,140],"press3":142,"back3":[144,154],"dotRoll":[150,182],"flash3":168,"facepalm":[172,182],
+ "run4":[182,188],"press4":188,"back4":[190,200],"sneak":[190,206],"liftCam":[206,214],"flash4":222,"notice":[224,230],"rage":[230,240],
+ "stomp":[240,252],"snatch":252,"walkBack":[256,268],"press5":268,"climb":[272,292],"leap":[292,300],"duck":[294,302],"smack":300,"flash5":300,"fly":[302,316],"twinkle":318,
+ "setBack":[330,342],"press6":346,"back6":[348,358],"flash6":370,"run7":[372,380],"press7":382,"back7":[382,388],"flipUp":[384,390],
+ "loopCU":[390,420]}
