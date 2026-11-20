@@ -595,5 +595,42 @@
       }
     ],
     "prop": null
+  },
+  "shorts07-A": {
+    "episode": 7,
+    "size": "9x16",
+    "bg": "kelas",
+    "bgX": 960,
+    "burst": "#1f6f78",
+    "pattern": "grid",
+    "text": [
+      "JANGAN",
+      "DIHAPUS!"
+    ],
+    "textX": 540,
+    "textY": 230,
+    "textSize": 200,
+    "textRot": -4,
+    "actors": [
+      {
+        "id": "buWati",
+        "emotion": "smug",
+        "action": "erase",
+        "x": 800,
+        "y": 1520,
+        "scale": 1.7,
+        "facing": -1
+      },
+      {
+        "id": "ucok",
+        "emotion": "shock",
+        "action": "plead",
+        "x": 350,
+        "y": 2860,
+        "scale": 2.5,
+        "facing": 1
+      }
+    ],
+    "prop": null
   }
 }
