@@ -1,9 +1,3 @@
-video/node_modules/
-video/out/
-video/audio/el_cache/*.wav
-__pycache__/
-# override .gitignore akar repo: simpan video final, cover, storyboard & audio mix
-!*.mp4
+# override .gitignore akar repo untuk arsip
 !*.png
 !*.wav
-!*.mp3

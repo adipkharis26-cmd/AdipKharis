@@ -1,16 +1,31 @@
-PROYEK: Quibble & Snick — kartun bisu (tanpa dialog/teks) untuk YouTube Shorts, TikTok, Reels, target internasional.
-Repo: adipkharis26-cmd/adipkharis, branch `global-shorts`, folder `global-shorts/`.
-BATAS KERJA (WAJIB): hanya baca & ubah file di dalam folder `global-shorts/`. JANGAN membaca, menjalankan, atau mengubah apa pun di luar folder itu
-(termasuk `animasi-kusaka/`, app.py, api/, naskah/, workflow/, CLAUDE.md milik proyek lain, dan branch lain). Jangan riset ulang niche/strategi.
+PROYEK: Quibble & Snick no verbal — kartun bisu (tanpa dialog/teks) untuk YouTube Shorts, TikTok, Reels, target internasional.
+Repo: adipkharis26-cmd/adipkharis, branch `global-shorts`, folder `quibble-snick-no-verbal/`.
+BATAS KERJA (WAJIB): hanya baca & ubah file di dalam folder `quibble-snick-no-verbal/`. JANGAN membaca, menjalankan, atau mengubah apa pun di luar folder itu
+(termasuk `global-shorts/` (arsip lama), `animasi-kusaka/`, app.py, api/, naskah/, workflow/, CLAUDE.md milik proyek lain, dan branch lain). Jangan riset ulang niche/strategi.
 
-EPISODE YANG DIBUAT: [isi, mis. "Vending Machine 🥤" dari daftar ide di global-shorts/03-strategi-channel.md]
+EPISODE YANG DIBUAT: [isi dari DAFTAR IDE di bawah, atau ide baru]
+
+DAFTAR IDE (judul — hook 1 kalimat):
+- Umbrella War ☂️ — Satu payung, dua kepala, hujan deras.
+- Elevator Button 🛗 — Seseorang menekan SEMUA tombol lantai.
+- Alarm Clock ⏰ — Alarm dilempar, memantul kembali.
+- Escalator 🔁 — Berlari di eskalator yang berjalan berlawanan.
+- Popcorn 🍿 — Satu biji jagung di microwave jadi gunung popcorn.
+- Tangled Earphones 🎧 — Terikat kabel dari kepala sampai kaki.
+- Balloon 🎈 — Terlalu banyak balon, mulai melayang.
+- Snowman ☃️ — Hidung wortel boneka salju hilang, tersangka jelas.
+- Parking Spot 🚗 — Dua mobil mini mengincar satu tempat parkir.
+- Domino 🁢 — Satu sentuhan kecil, seluruh kota ambruk berantai.
+- Selfie Fail 📸 — Kamera menghitung mundur, pose masih terbalik.
+Sudah dibuat (jangan diulang): EP01 The Last Slice, EP02 Wet Paint, EP03 The Door, EP04 Vending Machine.
+
+FORMULA 13–15 dtk: 0–1 hook (aksi/konflik) → setup → usaha meningkat + gagal → twist/punchline → payoff yang menyambung ke frame 0 (seamless loop).
 
 BACA DULU (jadikan acuan gaya, jangan dirombak):
-- global-shorts/03-strategi-channel.md (positioning, formula, 15 ide)
-- global-shorts/video/src/draw.js (Quibble, Snick, properti dasar) + draw2.ts (visual v2: Dot, Brick, bayangan, latar gradasi+vignette, kedip, efek)
-- global-shorts/video/src/EP04.tsx + ep04-timeline.json (contoh TERBARU & acuan utama: pemeran bergiliran, visual v2, jeda benturan 2 frame, seamless loop)
-- global-shorts/video/audio/el_ep04.py (contoh TERBARU: cue ElevenLabs dengan sinkron puncak bunyi ke frame kejadian)
-- global-shorts/storyboard/cast-v2.png (lembar pemeran)
+- quibble-snick-no-verbal/video/src/draw.js (Quibble, Snick, properti dasar) + draw2.ts (visual v2: Dot, Brick, bayangan, latar gradasi+vignette, kedip, efek)
+- quibble-snick-no-verbal/video/src/EP04.tsx + ep04-timeline.json (contoh TERBARU & acuan utama: pemeran bergiliran, visual v2, jeda benturan 2 frame, seamless loop)
+- quibble-snick-no-verbal/video/audio/el_ep04.py (contoh TERBARU: cue ElevenLabs dengan sinkron puncak bunyi ke frame kejadian)
+- quibble-snick-no-verbal/karakter/cast-v2.png (lembar pemeran)
 
 ATURAN GAYA (wajib):
 - PEMERAN BERGILIR (jangan selalu fokus 2 karakter; pilih 2–3 per episode, variasikan):
@@ -31,13 +46,13 @@ AUDIO:
 - Musik & SFX instrumental tanpa vokal berbahasa. Dilarang lagu/klip berhak cipta.
 
 SETUP TEKNIS:
-- `cd global-shorts/video && npm install`; `pip install numpy scipy`.
+- `cd quibble-snick-no-verbal/video && npm install`; `pip install numpy scipy`.
 - Remotion memakai Chromium bawaan sesi (lihat remotion.config.ts).
 - Render: `npx remotion render src/index.ts <ID> out/<nama>.mp4 --codec=h264 --crf=18`. Target loudness ±-14 LUFS, puncak ≤ -1 dB.
 
 OUTPUT (kerjakan sampai jadi tanpa menunggu perintah):
-1. Video final + 2 cover PNG di global-shorts/upload/<EPxx-nama>/ dan kirim ke saya.
-2. Teks upload di CHAT (bukan file .md), format persis:
+1. Video final + 2 cover PNG di quibble-snick-no-verbal/upload/<EPxx-nama>/ dan kirim ke saya.
+2. Teks upload di CHAT (jangan buat file .md), format persis:
    **Judul** (YouTube/Instagram, tanpa nomor): blok kode, akhiri dengan "| Quibble & Snick"
    Alternatif: `inline code`
    **Deskripsi YouTube Shorts:** blok kode (2–3 baris + pertanyaan + 5–6 hashtag)
