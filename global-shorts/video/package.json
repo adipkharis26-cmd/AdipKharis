@@ -1,0 +1,3 @@
+{"name":"quibble-snick-video","private":true,"scripts":{"render:ep03":"remotion render src/index.ts EP03 out/ep03-the-door.mp4"},
+"dependencies":{"remotion":"4.0.540","@remotion/cli":"4.0.540","react":"18.3.1","react-dom":"18.3.1"},
+"devDependencies":{"typescript":"5.6.3","@types/react":"18.3.12"}}

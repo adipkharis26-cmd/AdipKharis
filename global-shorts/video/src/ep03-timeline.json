@@ -1,0 +1,7 @@
+{"fps":30,"frames":450,
+ "impact":3,"slideStart":16,"cutWide":30,
+ "jumps":[42,64,86],"bonk":96,"bonkJumpH":150,
+ "danceStart":120,"peekOpen":162,"peekClose":178,
+ "cutSnick":210,"snickIn":[210,250],"doorOpen":[240,252],"snickExit":[252,274],"doubleTake":262,"runToDoor":[276,300],
+ "doorClose":[300,307],"squishHold":[307,375],
+ "popOut":376,"standUp":388,"lookIcon":398,"push":410,"pushOpen":[410,422],"runIn":[424,440],"zoomLoop":[436,450]}

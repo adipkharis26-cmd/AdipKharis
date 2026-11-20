@@ -1,0 +1,7 @@
+# Kredit pihak ketiga
+| Komponen | Sumber | Lisensi | Dipakai di |
+|---|---|---|---|
+| dsp.py, instruments.py (kit DSP & instrumen sintetis) | github.com/mromidev/claude-animated-shorts (commit e3b817b) | MIT — teks lengkap di video/audio/vendor/LICENSE-mromidev-claude-animated-shorts | video/audio/vendor/ |
+| Remotion 4.0.540 | remotion.dev | Remotion License (gratis untuk individu & tim kecil; cek syarat bila channel tumbuh menjadi perusahaan) | render video |
+| Ide overlay safe-zone | github.com/howznguyen/shorts-kit | MIT | konsep saja, tidak ada kode yang disalin |
+Karakter, gambar, animasi, musik & SFX EP03 dibuat orisinal dari kode di repo ini. Tidak ada sampel audio/klip berhak cipta.
