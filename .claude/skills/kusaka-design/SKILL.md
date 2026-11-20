@@ -17,7 +17,10 @@ Branch kerja: `ccr-5483b159-l8zee8`.
 4. **Push hanya setelah pemilik bilang "cocok".** Hasil baru dibuat di `animasi-kusaka/drafts/` (tidak ikut git).
 5. **Teks di video hanya subtitle** (tanpa nama pembicara) + caption resmi (`editing.json → captions`).
 6. **SFX pelengkap**: volume rendah di bawah dialog, satu SFX satu makna.
-7. **Durasi**: Long ≥ 6 menit (atau `minSeconds` per episode). Shorts 40 dtk–3 mnt, ideal 40–60 dtk, naskah sendiri.
+7. **Durasi** (pemilik 20 Nov 2026, mulai Eps. 5): **Long 16:9 = 8–10 menit, DILARANG < 8:00, WAJIB < 11:00** (maks 10:59 termasuk intro 6 dtk;
+   `editing.json → formats.long` 480–659 dtk, divalidasi `npm run voice`). Rancang naskah langsung ±9–10 menit: **±130–160 baris,
+   ±5.800–6.500 karakter** (±0,083 dtk/karakter + jeda). Cek dulu `node scripts/generate-voice.mjs <naskah> --estimate` (tanpa kuota).
+   `minSeconds`/`maxSeconds` naskah hanya memperketat. Shorts 40 dtk–3 mnt, ideal 40–60 dtk, naskah sendiri.
 8. **Brand**: channel *Kusaka Design*, Logo 2, Banner 3, watermark Shorts = Contoh 5 (hanya Shorts).
    Judul video: `[hook + emosi] | KUSAKA`, tanpa nomor episode. Thumbnail: teks hanya judul, tanpa nomor episode, **tanpa uang/Rp**. Identitas tetap (TANPA garis tepi sejak v1.10.0, font Bangers, Kusaka ekspresi ekstrem)
    tetapi **komposisi berbeda tiap episode dan tiap varian** (pola, split, callout, properti, warna) — lihat `brand/BRANDING.md`.
@@ -126,7 +129,10 @@ File: HQ `out/Shorts-N-Judul-Dua-Kata.mp4` (dikirim), arsip `releases/Kusaka-Sho
 
 ## Alur kerja
 1. Tulis naskah (hook ≤ 2 dtk, ending loop/cliffhanger, catchphrase karakter).
-2. `node scripts/generate-voice.mjs src/data/episodes/<id>.json` — validasi + suara terkunci (take dipakai ulang per hash).
+2. `node scripts/generate-voice.mjs src/data/episodes/<id>.json --estimate` — validasi + perkiraan durasi + jumlah karakter ElevenLabs (tanpa API);
+   cocokkan dengan sisa kuota (`GET /v1/user/subscription`: character_limit − character_count). Kuota kurang → JANGAN generate sebagian,
+   jangan suara cadangan; selesaikan naskah/benda/audit dan kirim pratinjau gambar dulu.
+   Lalu `node scripts/generate-voice.mjs src/data/episodes/<id>.json` — validasi + suara terkunci (take dipakai ulang per hash).
    Untuk uji/draft pakai episode `draft-…` (audio tidak ikut git) dan simpan naskah di `drafts/`.
 3. Pratinjau still: `npx remotion still KusakaEpisode drafts/x.png --frame=N` (Shorts: `KusakaEpisodeShorts`).
 4. Setelah pemilik minta: `npm run render` / `npm run render:shorts` → kompres ke `releases/`.

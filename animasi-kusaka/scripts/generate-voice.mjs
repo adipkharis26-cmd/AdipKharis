@@ -1,5 +1,6 @@
 // Voice-over generator with LOCKED voices.
-//   node scripts/generate-voice.mjs [src/data/episodes/eps01.json] [--force]
+//   node scripts/generate-voice.mjs [src/data/episodes/eps01.json] [--force] [--estimate]
+// --estimate: validasi naskah + perkiraan durasi & karakter ElevenLabs yang dibutuhkan, tanpa memanggil API.
 // - Every character's voice comes ONLY from src/characters/canon.json (voice_id, model eleven_v4, language id, seed, settings).
 // - Voices are verified before use (account or public ElevenLabs library, matched by voice_id). No automatic fallback.
 // - Each line is stored as public/audio/<episode>/<line>.mp3 + .json (alignment + hash). Existing takes are reused as long
@@ -32,7 +33,7 @@ const fail = (msg) => { console.error(`✗ ${msg}`); process.exit(1); };
 const EMOTIONS = ["neutral", "smug", "suspicious", "shock", "laugh", "pleading", "deadpan", "surprised", "embarrassed", "defeated"];
 const SHOTS = editing.camera.shots;
 if (!script.episode) fail("script.json butuh field \"episode\" (mis. \"eps01\")");
-const ACTIONS = ["idle","gesture","pocket","chin","point","plead","crossed","shock","laugh","slump","wave","thumbsup","peace","facepalm","hips","phone","hold","carry","give","show","read","pull","salute","shoot","drink","eat","write","sweep","blow"];
+const ACTIONS = ["idle","gesture","pocket","chin","point","plead","crossed","shock","laugh","slump","wave","thumbsup","peace","facepalm","hips","phone","hold","carry","give","show","read","pull","salute","shoot","drink","eat","write","sweep","blow","reach","photo"];
 let ctaCount = 0;
 for (const sc of script.scenes) {
   const loc = locations.locations[sc.location];
@@ -143,6 +144,48 @@ function buildWords(a) {
 if (ctaCount > editing.shortsCta.maxPerShorts) fail(`Maksimal ${editing.shortsCta.maxPerShorts} baris CTA per Shorts (ada ${ctaCount})`);
 if (script.format === "shorts" && ctaCount === 0) console.warn("⚠ Shorts tanpa baris CTA cerita (\"cta\") — disarankan satu per Shorts.");
 
+const probe = (f) => parseFloat(execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", f]).toString());
+/* ---------------- durasi (editing.json → formats) ---------------- */
+const mmss = (x) => `${Math.floor(x / 60)}:${String(Math.floor(x % 60)).padStart(2, "0")}`;
+function durationLimits() {
+  const f = editing.formats?.[script.format ?? "long"];
+  if (!f) fail(`format "${script.format}" tidak dikenal (pakai "long" atau "shorts")`);
+  if (f.legacy?.episodes?.includes(script.episode)) return { minS: script.minSeconds ?? f.legacy.minSeconds, maxS: script.maxSeconds ?? null };
+  if (script.minSeconds !== undefined && script.minSeconds < f.minSeconds) fail(`minSeconds naskah (${script.minSeconds}) tidak boleh di bawah kanon ${f.minSeconds} dtk`);
+  if (script.maxSeconds !== undefined && f.maxSeconds && script.maxSeconds > f.maxSeconds) fail(`maxSeconds naskah (${script.maxSeconds}) tidak boleh di atas kanon ${f.maxSeconds} dtk`);
+  return { minS: script.minSeconds ?? f.minSeconds, maxS: script.maxSeconds ?? f.maxSeconds ?? null };
+}
+
+/* ---------------- --estimate: cek durasi & biaya karakter TANPA memanggil ElevenLabs ---------------- */
+// Take yang sudah ada dipakai durasi aslinya; baris baru diperkirakan 0,083 dtk/karakter (rata-rata Eps. 1–4).
+if (process.argv.includes("--estimate")) {
+  const SEC_PER_CHAR = 0.083;
+  const dir = path.join(root, "public/audio", script.episode);
+  let cur = 0, newChars = 0, newLines = 0, allChars = 0;
+  if (script.intro && !script.intro.after) cur += script.intro.seconds ?? 6;
+  for (const sc of script.scenes) {
+    cur += script.sceneLead ?? script.leadIn ?? 0.6;
+    for (const l of sc.lines) {
+      allChars += l.text.length;
+      const h = crypto.createHash("sha256").update(l.text + "|" + voiceHash(l.speaker)).digest("hex").slice(0, 16);
+      const mp3 = path.join(dir, `${l.id}.mp3`), meta = path.join(dir, `${l.id}.json`);
+      const ok = fs.existsSync(mp3) && fs.existsSync(meta) && JSON.parse(fs.readFileSync(meta, "utf8")).hash === h;
+      if (!ok) { newChars += l.text.length; newLines++; }
+      cur += (ok ? probe(mp3) : l.text.length * SEC_PER_CHAR) + (l.surprise ? 0.15 : l.gapAfter ?? script.gapSeconds);
+    }
+    cur += script.sceneGap ?? 0;
+    if (script.intro?.after === sc.id) cur += script.intro.seconds ?? 6;
+  }
+  cur += script.tail ?? 2.5;
+  const { minS, maxS } = durationLimits();
+  const lines = script.lines.length;
+  console.log(`≈ ${script.episode}: ${script.scenes.length} adegan, ${lines} baris, ${allChars} karakter → perkiraan durasi ${mmss(cur)} (${cur.toFixed(0)} dtk)`);
+  console.log(`  Batas: ${mmss(minS)}${maxS ? `–${mmss(maxS)}` : "+"}  ·  baris perlu take baru: ${newLines}  ·  karakter ElevenLabs yang akan dipakai: ${newChars}`);
+  if (cur < minS || (maxS && cur > maxS)) fail(`Perkiraan durasi ${mmss(cur)} di luar batas ${mmss(minS)}${maxS ? `–${mmss(maxS)}` : "+"} — sesuaikan naskah sebelum generate suara.`);
+  console.log("✓ perkiraan durasi dalam batas (ElevenLabs tidak dipanggil)");
+  process.exit(0);
+}
+
 /* ---------------- TTS ---------------- */
 const audioDir = path.join(root, "public/audio", script.episode);
 fs.mkdirSync(audioDir, { recursive: true });
@@ -168,7 +211,6 @@ function tts(line) {
   fs.writeFileSync(meta, JSON.stringify(m));
   return m;
 }
-const probe = (f) => parseFloat(execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", f]).toString());
 
 /* ---------------- run ---------------- */
 // Only verify voices that actually need a new take.
@@ -207,13 +249,14 @@ for (const sc of script.scenes) {
 }
 timeline.scenes[timeline.scenes.length - 1].end = +(cursor + (script.tail ?? 2.5)).toFixed(3);
 timeline.totalSeconds = timeline.scenes[timeline.scenes.length - 1].end;
-// Duration rules (editing.json → formats). Owner may override the minimum per episode with "minSeconds".
+// Duration rules (editing.json → formats). Pemilik 20 Nov 2026: Long = 8:00–10:59 (480–659 dtk termasuk intro).
+// minSeconds/maxSeconds per naskah hanya boleh MEMPERKETAT. Episode lama (legacy) tetap aturan lama.
 const fmt = editing.formats?.[script.format ?? "long"];
 if (!fmt) fail(`format "${script.format}" tidak dikenal (pakai "long" atau "shorts")`);
 if (script.intro) { const ids = script.scenes.map((x) => x.id); if ((script.format ?? "long") !== "long") fail("intro hanya untuk video panjang (format long)"); if (script.intro.after !== undefined && (!ids.includes(script.intro.after) || script.intro.after === ids[ids.length - 1])) fail(`intro.after "${script.intro.after}" harus id adegan yang bukan adegan terakhir`); }
-const minS = script.minSeconds ?? fmt.minSeconds;
-if (timeline.totalSeconds < minS) fail(`Durasi ${timeline.totalSeconds.toFixed(1)} dtk < minimum ${minS} dtk untuk ${script.format ?? "long"} (${fmt.aspect}). Tambah adegan/dialog.`);
-if (fmt.maxSeconds && timeline.totalSeconds > fmt.maxSeconds) fail(`Durasi ${timeline.totalSeconds.toFixed(1)} dtk > maksimum ${fmt.maxSeconds} dtk untuk Shorts.`);
+const { minS, maxS } = durationLimits();
+if (timeline.totalSeconds < minS) fail(`Durasi ${mmss(timeline.totalSeconds)} (${timeline.totalSeconds.toFixed(1)} dtk) < minimum ${mmss(minS)} untuk ${script.format ?? "long"} (${fmt.aspect}). Tambah adegan/dialog.`);
+if (maxS && timeline.totalSeconds > maxS) fail(`Durasi ${mmss(timeline.totalSeconds)} (${timeline.totalSeconds.toFixed(1)} dtk) > maksimum ${mmss(maxS)} untuk ${script.format ?? "long"} (${fmt.aspect}). Pangkas dialog.`);
 timeline.format = script.format ?? "long";
 // Subtitle bisa dimatikan per naskah (mis. Shorts tanpa teks): "subtitles": false
 if (script.subtitles === false) timeline.subtitles = false;

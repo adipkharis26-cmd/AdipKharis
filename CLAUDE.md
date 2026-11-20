@@ -26,7 +26,12 @@ Aturan dari pemilik proyek, WAJIB diikuti di setiap sesi:
    pemilik bilang "cocok", pindahkan ke lokasi final, commit, lalu push ke branch kerja.
 8. Video final yang sudah disetujui disimpan di `animasi-kusaka/releases/` (dikompres < 100 MB agar muat di GitHub).
 9. **Durasi (dikunci di `editing.json` → `formats`, divalidasi saat `npm run voice`):**
-   - **Long 16:9:** minimal **6 menit**. Pemilik boleh mengatur minimum lain per episode lewat `"minSeconds"`.
+   - **Long 16:9 = 8–10 menit** (pemilik 20 Nov 2026, mulai Eps. 5, semua video panjang berikutnya). **DILARANG kurang dari 8:00.**
+     Boleh lebih dari 10 menit, tetapi **WAJIB di bawah 11:00** (maks 10:59, termasuk intro 6 dtk). `editing.json → formats.long`:
+     `minSeconds` 480 + `maxSeconds` 659, divalidasi saat `npm run voice`; cek dulu tanpa memakai kuota dengan
+     `node scripts/generate-voice.mjs <naskah> --estimate`. `"minSeconds"`/`"maxSeconds"` per naskah hanya boleh memperketat.
+     Naskah dirancang langsung untuk ±9–10 menit (**±130–160 baris, ±5.800–6.500 karakter**), jangan dipotong belakangan.
+     Eps. 1–4 (sudah rilis) tetap aturan lama ≥ 6 menit (`formats.long.legacy`).
    - **Shorts 9:16:** minimal **40 detik**, maksimal 3 menit, ideal 40–60 detik. Naskah Shorts dibuat sendiri
      (`"format": "shorts"`), bukan potongan acak dari episode panjang.
 10. **Brand terkunci** (`src/branding/brand.json`): nama channel **Kusaka Design**, logo resmi **Logo 2 (lencana)**,

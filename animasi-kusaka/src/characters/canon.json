@@ -1,5 +1,5 @@
 {
-  "version": "3.2.0",
+  "version": "3.3.0",
   "lockedAt": "2026-11-16",
   "style": {
     "name": "anime-drama",
@@ -18,7 +18,8 @@
     "Tangan selalu berjari (4 jari + jempol), bentuk hanya dari pustaka tangan.",
     "Seragam mengikuti jenjang: SMA putih–abu-abu, SMP putih–biru dongker, guru batik, satpam putih–navy.",
     "Ciri khas (signature) tidak boleh dihilangkan di adegan mana pun. Warna hanya dari palet.",
-    "SUARA TERKUNCI: tiap karakter punya satu voice ElevenLabs (model eleven_v4, bahasa id, seed & setting tetap). Hanya voice library publik/premade yang boleh dipakai (bukan kloning pribadi), sehingga tetap sama walaupun API key/akun diganti. Tidak ada fallback otomatis: kalau voice tidak ditemukan, proses berhenti."
+    "SUARA TERKUNCI: tiap karakter punya satu voice ElevenLabs (model eleven_v4, bahasa id, seed & setting tetap). Hanya voice library publik/premade yang boleh dipakai (bukan kloning pribadi), sehingga tetap sama walaupun API key/akun diganti. Tidak ada fallback otomatis: kalau voice tidak ditemukan, proses berhenti.",
+    "v3.3.0 (Eps. 5 'Satu Kelompok', 20 Nov 2026): aksi baru 'reach' (meraih benda/rak, lengan lurus ke depan) dan 'photo' (memotret dengan HP setinggi mata + kilatan blitz). Benda baru di Props.tsx: lotteryBox (kotak undian kertas kado), lotScroll / lotScrollRed (gulungan undian karet hitam / merah), lotSlip (kertas undian terbuka), libBook (buku perpustakaan hijau), phonePhoto (HP berisi foto viral), rubberBands (sebungkus karet merah warung). 'hold' boleh berupa daftar yang diterapkan berurutan. Desain karakter & suara tidak berubah."
   ],
   "characters": {
     "kusaka": {

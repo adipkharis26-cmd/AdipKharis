@@ -1,5 +1,5 @@
 {
-  "version": "2.9.0",
+  "version": "2.10.0",
   "rules": [
     "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card. Pengecualian: watermark channel resmi (brand.json) di pojok kiri atas, di Shorts dan video panjang, dan intro 6 detik (nama channel) khusus video panjang, serta CTA cerita resmi (shortsCta: teks ajakan besar + ikon like/kirim/ikuti) khusus Shorts.",
     "v2.3.0: Shorts memakai subtitle Poppins Bold putih di kotak gelap transparan (subtitleShorts), ukuran & posisi sama dengan subtitle lama; video panjang tetap Oswald (subtitle). Shorts juga memuat satu CTA cerita (shortsCta, v2.4.0).",
@@ -8,7 +8,7 @@
     "Flashback: filter sepia + vignette + bintik film, SFX flashback_harp saat masuk; caption FLASHBACK atau MASA LALU wajib dipakai di baris pertama flashback.",
     "Kamera: two-shot → single → push-in sebelum punchline → crash zoom (maks 1x per Shorts).",
     "Shorts mulai langsung di dialog pertama (tanpa intro), dialog pertama ≤ 0,5 detik.",
-    "Durasi: Long 16:9 minimal 6 menit (bisa diatur pemilik per episode lewat 'minSeconds'); Shorts 9:16 minimal 40 detik, maksimal 3 menit (ideal 40–60 detik)."
+    "Durasi (pemilik, 20 Nov 2026, mulai Eps. 5): Long 16:9 = 8–10 menit, DILARANG < 8:00 (480 dtk), boleh > 10 menit tetapi WAJIB < 11:00 (maks 10:59 = 659 dtk, termasuk intro 6 dtk). 'minSeconds'/'maxSeconds' per naskah hanya boleh memperketat, tidak melonggarkan. Eps. 1–4 & pilot (sudah rilis) memakai aturan lama (≥ 6 menit). Naskah dirancang langsung ±9–10 menit (±130–160 baris, ±5.800–6.500 karakter). Shorts 9:16 minimal 40 detik, maksimal 3 menit (ideal 40–60 detik)."
   ],
   "subtitle": {
     "font": "Baloo2",
@@ -48,8 +48,32 @@
       "aspect": "16:9",
       "width": 1920,
       "height": 1080,
-      "minSeconds": 360,
-      "note": "Minimal 6 menit; pemilik boleh mengatur minSeconds per episode."
+      "minSeconds": 480,
+      "maxSeconds": 659,
+      "idealSeconds": [
+        540,
+        600
+      ],
+      "designLines": [
+        130,
+        160
+      ],
+      "designChars": [
+        5800,
+        6500
+      ],
+      "legacy": {
+        "episodes": [
+          "pilot",
+          "eps01",
+          "eps02",
+          "eps03",
+          "eps04"
+        ],
+        "minSeconds": 360,
+        "note": "Episode yang sudah dirilis sebelum aturan 8–10 menit: minimal 6 menit, tanpa batas maksimum."
+      },
+      "note": "Pemilik 20 Nov 2026: 8:00–10:59 termasuk intro. Divalidasi saat npm run voice (dan diperkirakan sebelum TTS dengan --estimate). minSeconds/maxSeconds naskah hanya boleh memperketat."
     },
     "shorts": {
       "aspect": "9:16",

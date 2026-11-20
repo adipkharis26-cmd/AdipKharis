@@ -92,6 +92,9 @@ export const POSES: Record<Action, Pose> = {
   write:    { front: [34, 104],  back: [26, 90],    lean: 6,  head: 14,  crouch: 4,  look: [0.4, 0.9],  hands: ["fist", "open"] },
   sweep:    { front: [32, 62],   back: [38, 70],    lean: 8,  head: 8,   crouch: 6,  look: [0.5, 0.8],  hands: ["fist", "fist"] },
   blow:     { front: [60, 150],  back: [-6, 10],    lean: -2, head: -4,  crouch: 0,  look: [0.7, 0],    hands: ["fist", "relaxed"] },
+  // Eps. 5 "Satu Kelompok": meraih buku di rak atas; memotret dengan HP setinggi mata (+ kilatan blitz)
+  reach:    { front: [92, 4],    back: [-4, 12],    lean: 7,  head: -4,  crouch: 0,  look: [0.9, -0.1], hands: ["open", "relaxed"] },
+  photo:    { front: [110, 50],  back: [96, 62],    lean: -2, head: 2,   crouch: 0,  look: [0.9, 0],    hands: ["phone", "fist"] },
 };
 
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
@@ -132,7 +135,7 @@ function armPoints(sx: number, sy: number, [s, e]: ArmPose, upper = 100, fore = 
   return { ex, ey, hx, hy };
 }
 
-const Arm: React.FC<{ sx: number; sy: number; pose: ArmPose; look: Look; shade?: boolean; hand: HandShape; t: number; front?: boolean; item?: string }> = ({ sx, sy, pose, look, shade, hand, t, front, item }) => {
+const Arm: React.FC<{ sx: number; sy: number; pose: ArmPose; look: Look; shade?: boolean; hand: HandShape; t: number; front?: boolean; item?: string; flash?: number }> = ({ sx, sy, pose, look, shade, hand, t, front, item, flash = 0 }) => {
   const { ex, ey, hx, hy } = armPoints(sx, sy, pose);
   const skin = shade ? look.skinShade : look.skin;
   const cloth = shade ? look.shirtShade : look.shirt;
@@ -164,6 +167,12 @@ const Arm: React.FC<{ sx: number; sy: number; pose: ArmPose; look: Look; shade?:
       )}
       {item && <Item id={item} x={hx} y={hy} />}
       <g transform={`translate(${hx} ${hy}) rotate(${handAngle})`}><Hand shape={item ? "fist" : hand} skin={skin} /></g>
+      {flash > 0 && (
+        <g transform={`translate(${hx + 30} ${hy - 20})`} opacity={flash}>
+          <circle r={90} fill="#fffbe6" opacity={0.45} /><circle r={38} fill="#fff" />
+          {[0, 45, 90, 135].map((a) => <rect key={a} x={-150} y={-5} width={300} height={10} rx={5} fill="#fff" transform={`rotate(${a})`} />)}
+        </g>
+      )}
     </g>
   );
 };
@@ -794,7 +803,8 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
           {hat && look.hairStyle !== "hijab" && <UpacaraCap />}
           {!force?.noFx && <HeadFx emotion={st.emotion} t={t} since={force ? 0 : st.since} />}
         </g>
-        <Arm sx={frontShoulder[0]} sy={frontShoulder[1]} pose={pose.front} look={look} hand={pose.hands[0]} t={t} front item={held?.front} />
+        <Arm sx={frontShoulder[0]} sy={frontShoulder[1]} pose={pose.front} look={look} hand={pose.hands[0]} t={t} front item={held?.front}
+          flash={!force && st.action === "photo" && st.since > 0.35 && st.since < 0.6 ? 1 - (st.since - 0.35) / 0.25 : 0} />
       </g>
     </g>
   );

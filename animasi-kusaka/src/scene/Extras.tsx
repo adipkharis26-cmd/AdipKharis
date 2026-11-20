@@ -110,6 +110,7 @@ const PRESETS: Record<string, Omit<Spec, "seed">[]> = {
   ],
   perpustakaan: [
     { x: 330, y: 790, s: 0.58, kind: "sit", outfit: "hijab" }, { x: 1560, y: 790, s: 0.58, kind: "sit", outfit: "sma" }, { x: 1740, y: 790, s: 0.58, kind: "sit", outfit: "smaGirl" },
+    { x: 1385, y: 775, s: 0.6, kind: "stand", outfit: "guru", dir: -1 }, // penjaga perpustakaan (lokasi v3.7.0)
   ],
   warung: [{ x: 90, y: 905, s: 0.55, kind: "walk", outfit: "warga", dir: 1 }, { x: 1830, y: 905, s: 0.55, kind: "walk", outfit: "warga", dir: -1 }],
   ruangGuru: [

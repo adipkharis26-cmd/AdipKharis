@@ -6,7 +6,7 @@ const sc = JSON.parse(fs.readFileSync(file, "utf8"));
 const locs = JSON.parse(fs.readFileSync("src/scene/locations.json", "utf8")).locations;
 const RULES = [
   { re: /kertas|lembar|tanda tangan/i, label: "kertas", item: "paper", acts: ["read", "show", "give"] },
-  { re: /buku|halaman|\bPR\b/i, label: "buku/PR", item: "book|bookStack|ledger", acts: ["show"] },
+  { re: /buku|halaman|\bPR\b/i, label: "buku/PR", item: "book|bookStack|ledger|libBook", acts: ["show"] },
   { re: /berkas/i, label: "berkas", item: "folder|clipboard", acts: ["give"] },
   { re: /alarm|weker/i, label: "alarm", item: "alarm" },
   { re: /\bbaki\b/i, label: "baki", item: "tray" },
@@ -19,7 +19,13 @@ const RULES = [
   { re: /\bsapu\b|piket/i, label: "sapu/piket", item: "broom", acts: ["sweep"] },
   { re: /bakso|mangkuk|mi instan|makan\b/i, label: "makanan", item: "bowl", acts: ["eat"] },
   { re: /\btulis|catatan|mencatat/i, label: "menulis/catatan", item: "pen|paper", acts: ["write", "read"] },
-  { re: /\bhp\b|video|\blive\b|nonton|rekam|komentar/i, label: "HP/video", acts: ["phone"] },
+  { re: /\bhp\b|video|\blive\b|nonton|rekam|komentar|penonton/i, label: "HP/video", item: "phonePhoto", acts: ["phone", "photo"] },
+  // Eps. 5 "Satu Kelompok"
+  { re: /undian|diundi|\bkotak|gulungan|\bkaret\b|kertas kado/i, label: "undian", item: "lotteryBox|lotScroll|lotScrollRed|lotSlip|rubberBands" },
+  { re: /\bfoto|motret|memotret|\bklik\b/i, label: "foto", item: "phonePhoto", acts: ["photo"] },
+  { re: /\brak\b/i, label: "rak", acts: ["reach"], loc: "perpustakaan" },
+  { re: /penjaga perpus/i, label: "penjaga perpus", loc: "perpustakaan" },
+  { re: /lembar tugas|lembar jawab/i, label: "lembar tugas", item: "paper", acts: ["read", "write", "give"] },
   { re: /hormat/i, label: "hormat", acts: ["salute"], track: "salute" },
   { re: /bendera|tiang/i, label: "bendera", track: "flag", loc: "lapanganUpacara" },
   { re: /\btali\b/i, label: "tali", track: "flag|snag", loc: "lapanganUpacara" },
@@ -30,7 +36,8 @@ const RULES = [
 let issues = 0, total = 0;
 for (const s of sc.scenes) {
   const held = {};
-  const apply = (h) => { for (const [c, v] of Object.entries(h ?? {})) { if (v === null) delete held[c]; else held[c] = [...(held[c] ?? []), typeof v === "string" ? v : v.item]; } };
+  const put = (c, v) => { if (Array.isArray(v)) v.forEach((x) => put(c, x)); else if (v === null) delete held[c]; else held[c] = [...(held[c] ?? []), typeof v === "string" ? v : v.item]; };
+  const apply = (h) => { for (const [c, v] of Object.entries(h ?? {})) put(c, v); };
   apply(s.hold);
   const loc = locs[s.location] ?? {};
   const bagScene = s.bag === true || Array.isArray(s.bag) || (s.bag === undefined && loc.bag);

@@ -10,7 +10,8 @@ export type Emotion =
 export type Action =
   | "idle" | "gesture" | "pocket" | "chin" | "point" | "plead" | "crossed" | "shock" | "laugh" | "slump"
   | "wave" | "thumbsup" | "peace" | "facepalm" | "hips" | "phone"
-  | "hold" | "carry" | "give" | "show" | "read" | "pull" | "salute" | "shoot" | "drink" | "eat" | "write" | "sweep" | "blow";
+  | "hold" | "carry" | "give" | "show" | "read" | "pull" | "salute" | "shoot" | "drink" | "eat" | "write" | "sweep" | "blow"
+  | "reach" | "photo"; // Eps. 5: meraih rak atas, memotret dengan HP
 
 export interface Line {
   id: string; speaker: CharId; emotion: Emotion; listener: Emotion; shot: "two" | "speaker" | "medium" | "close" | "wide" | "push" | "crash";
@@ -90,13 +91,15 @@ export function stateAt(char: CharId, t: number): { emotion: Emotion; action: Ac
 void sceneLines;
 
 /* ---------- properti & benda adegan (kanon v3.2.0) ---------- */
-type HoldVal = string | { item: string; hand?: "front" | "back" } | null;
+type HoldVal = string | { item: string; hand?: "front" | "back" } | null | HoldVal[];
+/** Nilai hold boleh berupa daftar yang diterapkan berurutan, mis. [null, {"item":"lotteryBox","hand":"back"}, "lotSlip"]. */
 /** Benda yang dipegang tiap tangan karakter pada waktu t: awal dari scene.hold, lalu diubah oleh "hold" di baris naskah. */
 export function heldAt(char: CharId, t: number): { front?: string; back?: string } {
   const { scene, index } = beatAt(t);
   const out: { front?: string; back?: string } = {};
   const apply = (v: HoldVal | undefined) => {
     if (v === undefined) return;
+    if (Array.isArray(v)) { v.forEach(apply); return; }
     if (v === null) { delete out.front; delete out.back; return; }
     const item = typeof v === "string" ? v : v.item, hand = typeof v === "string" ? "front" : v.hand ?? "front";
     out[hand] = item;

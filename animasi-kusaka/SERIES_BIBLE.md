@@ -5,7 +5,7 @@
 > SMP, SMA, sampai mahasiswa.
 >
 > Semua kanon dikunci oleh kode. `npm run voice` / `render` **menolak jalan** kalau kanon berubah tanpa disengaja.
-> Versi saat ini: karakter **2.0.0**, lokasi **2.0.0**, editing **1.0.0**, SFX **1.1.0**.
+> Versi saat ini: lihat `characters.lock.json` (editing **2.10.0**: aturan durasi Long 8:00–10:59).
 
 ---
 
@@ -18,7 +18,7 @@
 | **Genre** | Komedi situasi sekolah & keluarga (school/family sitcom), slice of life |
 | **Target** | Utama 13–22 tahun (SMP, SMA, mahasiswa). Penonton dewasa ikut tertawa karena nostalgia dan karakter orang tua. |
 | **Nada** | Ringan, relate, receh tapi cerdas. Tanpa kekerasan realistis, tanpa konten dewasa. |
-| **Format** | Long 16:9 **minimal 6 menit** (watch time & monetisasi) + Shorts 9:16 **minimal 40 detik** (ideal 40–60 detik, mesin penemuan) |
+| **Format** | Long 16:9 **8–10 menit** (mulai Eps. 5: dilarang < 8:00, wajib < 11:00 termasuk intro; naskah ±130–160 baris / ±5.800–6.500 karakter) + Shorts 9:16 **minimal 40 detik** (ideal 40–60 detik, mesin penemuan) |
 
 ---
 
@@ -269,6 +269,9 @@ sinyal terpentingnya adalah **berapa banyak yang tidak menggeser video (swipe aw
 - **3–5 Shorts per minggu**, jam tayang konsisten (misalnya 16.00–19.00 WIB).
 
 ### Video panjang
+- **Durasi 8–10 menit** (pemilik, 20 Nov 2026, mulai Eps. 5): dilarang < 8:00, boleh > 10 menit tetapi wajib < 11:00
+  (maks 10:59 termasuk intro 6 dtk). Dirancang dari naskah (±130–160 baris, ±5.800–6.500 karakter, ±11–12 adegan),
+  bukan dipotong belakangan. Cek `--estimate` sebelum generate suara.
 - **Thumbnail** (di luar video, boleh ada teks): wajah karakter besar dengan ekspresi ekstrem, maksimal 3 kata,
   palet kuning #ffd23f + merah #e63946 + outline hitam, template sama tiap episode.
 - **Judul:** `[situasi relate + emosi] | KUSAKA` (hook di depan, **tanpa nomor episode** di judul dan thumbnail).
