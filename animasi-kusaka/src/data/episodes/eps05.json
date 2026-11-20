@@ -474,7 +474,10 @@
           "text": "Ini, Le. Bayar atau dicatat?",
           "hold": {
             "buIjah": "cup"
-          }
+          },
+          "ref": [
+            "papan tulis/catat"
+          ]
         },
         {
           "id": "l033",
@@ -487,7 +490,10 @@
           "hold": {
             "buIjah": "ledger",
             "ucok": "cup"
-          }
+          },
+          "ref": [
+            "papan tulis/catat"
+          ]
         },
         {
           "id": "l034",
@@ -1488,7 +1494,10 @@
           "listener": "neutral",
           "shot": "two",
           "action": "shock",
-          "text": "Jangan rekam! Din, hapus!"
+          "text": "Jangan rekam! Din, hapus!",
+          "ref": [
+            "hapus papan"
+          ]
         },
         {
           "id": "l111",
@@ -1497,7 +1506,10 @@
           "listener": "neutral",
           "shot": "two",
           "action": "hips",
-          "text": "Hapus videonya dua cilok. Atau aku aduin Ibu, ya!"
+          "text": "Hapus videonya dua cilok. Atau aku aduin Ibu, ya!",
+          "ref": [
+            "hapus papan"
+          ]
         },
         {
           "id": "l112",
@@ -1667,7 +1679,10 @@
           "listener": "neutral",
           "shot": "two",
           "action": "gesture",
-          "text": "Tiga kali. Tapi jangan dicatat."
+          "text": "Tiga kali. Tapi jangan dicatat.",
+          "ref": [
+            "papan tulis/catat"
+          ]
         },
         {
           "id": "l127",
@@ -1682,6 +1697,9 @@
               "id": "sparkle_love",
               "at": "end"
             }
+          ],
+          "ref": [
+            "papan tulis/catat"
           ]
         },
         {
@@ -1697,6 +1715,9 @@
               "id": "rimshot",
               "at": "end"
             }
+          ],
+          "ref": [
+            "papan tulis/catat"
           ]
         }
       ]
