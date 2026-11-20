@@ -632,5 +632,43 @@
       }
     ],
     "prop": null
+  },
+  "shorts08-A": {
+    "episode": 8,
+    "size": "9x16",
+    "bg": "warung",
+    "bgX": 900,
+    "burst": "#e8742a",
+    "pattern": "stripes",
+    "text": [
+      "MAKAN",
+      "BERAPA?!"
+    ],
+    "textX": 540,
+    "textY": 230,
+    "textSize": 200,
+    "textRot": 4,
+    "actors": [
+      {
+        "id": "buIjah",
+        "emotion": "suspicious",
+        "action": "point",
+        "x": 760,
+        "y": 1520,
+        "scale": 1.7,
+        "facing": -1
+      },
+      {
+        "id": "kusaka",
+        "emotion": "embarrassed",
+        "action": "plead",
+        "x": 340,
+        "y": 2860,
+        "scale": 2.5,
+        "facing": 1
+      }
+    ],
+    "prop": null,
+    "wear": "seragam"
   }
 }

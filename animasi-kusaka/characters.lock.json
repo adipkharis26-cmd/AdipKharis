@@ -1,5 +1,5 @@
 {
-  "version": "3.5.0+loc3.9.0+edit2.11.0+sfx1.2.0+brand1.11.0",
+  "version": "3.5.0+loc3.9.0+edit2.11.0+sfx1.2.0+brand1.12.0",
   "lockedAt": "2026-11-20",
   "files": {
     "src/characters/canon.json": "670f91b23fcd91ac01e68cd08af9953c0f2bb31c4f312b60c8feeecf9de9921d",
@@ -22,9 +22,9 @@
     "src/audio/beds.json": "6c390b6357d6cf4b05fa922086839657780c92a0cda7c4838c77acdac4415be3",
     "src/audio/beds-durations.json": "0e937c82960c8eb21471fea987f4000f7f82a44b29a148c16f14beee4c70ef88",
     "src/fx/Overlays.tsx": "af7e7ed8999c1a9124cf9037b26c065e1b3d93dbb6011462102242e91f6a0132",
-    "src/branding/brand.json": "57625d7b0fd9723ae08321fd3a6dbc91535405a6f636697d82b5eb76529a032c",
+    "src/branding/brand.json": "932a31ee7c541fb86e2b66323a7b25879525d4880e0b396b0b91f32c2aae5510",
     "src/branding/Brand.tsx": "a57f76b5a742822a20e4e35e94a515c7bf1e34bfeefb86e939bc616de1cdb2ed",
-    "src/branding/Thumbnail.tsx": "7d6d93c6f2bd84db8f8898bb4761081ffcc541d8eed94359454d5f52a8fdd052",
+    "src/branding/Thumbnail.tsx": "2fab4e0050e67daf47f812164022062ab8111456f9d1dd752689e813647c8d32",
     "src/branding/Watermark.tsx": "2b9c548c53a3d7921a9919f18df060f0edec4ad93dd9f0dee9526c8c09e76e0b",
     "src/branding/ThumbPro.tsx": "c254d2d71411b5db0d9380bb75b0b8fd88acb4d0fe9e794ddaa0b14d9727664c",
     "src/branding/Intro.tsx": "f2ee1b8987fd7b0df7183f39a048e817d00f797f025c17d5979f126a70788a4a",
