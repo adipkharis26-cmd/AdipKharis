@@ -211,3 +211,62 @@ export function park(f) {
   for (let i = -10; i < 14; i++) s += `<path d="M${i * 37 + 8},${430 + (i % 3) * 22} l3,-8 l3,8" fill="none" stroke="#3F7A30" stroke-width="2.5" stroke-linecap="round"/>`;
   return s;
 }
+
+// ===== EP07 Elevator Button: potongan samping gedung, lift naik melewati lantai, pintu sisi kiri =====
+export const liftDefs = `<defs><linearGradient id="liftW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F1E8D4"/><stop offset="1" stop-color="#D6C9AD"/></linearGradient>
+<linearGradient id="shaftG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3B3B46"/><stop offset=".5" stop-color="#4C4C58"/><stop offset="1" stop-color="#34343E"/></linearGradient>
+<linearGradient id="doorG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#B8C0C8"/><stop offset=".5" stop-color="#E2E7EC"/><stop offset="1" stop-color="#A9B2BB"/></linearGradient></defs>`;
+export const LIFT = {x0: 70, x1: 232, top: 206, H: 270};
+const FLOORS = [{c: '#FFE7A3', prop: 'bench'}, {c: '#C8F0D0', prop: 'plant'}, {c: '#CFE3FF', prop: 'mop'}, {c: '#E6D7FF', prop: ''}, {c: '#FFD6E5', prop: 'toilet'}];
+export const wcIcon = (x, y) => `<g transform="translate(${x},${y})"><rect x="-9" y="-9" width="18" height="18" rx="3" fill="#fff" stroke="${C.ink}" stroke-width="2"/><path d="M-5,-5 h6 v4 h3 q0,6 -5,6 l1,3 h-5 l1,-3 q-3,-1 -3,-4z" fill="${C.ink}"/></g>`;
+// GEDUNG: pos = posisi lift dalam satuan lantai (pecahan saat bergerak). Pola 5 lantai berulang -> loop mulus.
+export function building(pos, toilet: any = {open: false, busy: false}) {
+  const {x0, x1, H} = LIFT;
+  let s = `<rect x="${x0 - 4}" y="-400" width="${x1 - x0 + 8}" height="1300" fill="url(#shaftG)"/>` + L(x0 + 30, -400, x0 + 30, 900, 2, 'rgba(255,255,255,.15)') + L(x1 - 30, -400, x1 - 30, 900, 2, 'rgba(255,255,255,.15)');
+  const base = Math.floor(pos);
+  for (let n = base - 2; n <= base + 2; n++) {
+    const fl = FLOORS[((n % 5) + 5) % 5], y = 400 + (pos - n) * H;
+    // lorong kiri
+    s += `<rect x="-300" y="${y - H + 14}" width="${300 + x0 - 4}" height="${H - 14}" fill="${fl.c}"/><rect x="-300" y="${y - 34}" width="${300 + x0 - 4}" height="34" fill="#000" opacity=".1"/>`;
+    s += `<rect x="-300" y="${y - H + 14}" width="${300 + x0 - 4}" height="${H - 14}" fill="url(#vig)" opacity=".4"/>`;
+    if (fl.prop === 'plant') s += `<path d="M26,${y - 34} h18 l-3,20 h-12z" transform="translate(0,${14})" fill="#C8693F" stroke="${C.ink}" stroke-width="3" stroke-linejoin="round"/><path d="M35,${y - 20} q-16,-20 -6,-34 q4,14 6,20 q2,-22 12,-30 q4,18 -6,34 q14,-14 22,-12 q-8,14 -22,22z" fill="#5FAF4E" stroke="${C.ink}" stroke-width="3" stroke-linejoin="round"/>`;
+    if (fl.prop === 'mop') s += `<path d="M18,${y} l4,-26 h26 l4,26z" fill="#F4C430" stroke="${C.ink}" stroke-width="3" stroke-linejoin="round"/>${L(38, y - 26, 26, y - 90, 4)}<path d="M22,${y - 90} q-6,-6 -2,-12 M26,${y - 92} q-2,-8 4,-12 M30,${y - 90} q4,-8 10,-8" fill="none" stroke="#bbb" stroke-width="4" stroke-linecap="round"/>`;
+    if (fl.prop === 'bench') s += `<rect x="10" y="${y - 40}" width="56" height="8" rx="3" fill="#8FB46A" stroke="${C.ink}" stroke-width="3"/>${L(16, y - 32, 16, y, 3)}${L(60, y - 32, 60, y, 3)}`;
+    if (fl.prop === 'toilet') {
+      const op = n === 4 || ((n % 5) + 5) % 5 === 4 ? toilet : {open: false, busy: false};
+      s += `<rect x="14" y="${y - 120}" width="40" height="120" fill="${op.open ? '#2b2b33' : '#fff'}" stroke="${C.ink}" stroke-width="3"/>`;
+      if (!op.open) s += `<rect x="18" y="${y - 116}" width="32" height="112" fill="#F3F6F8"/><circle cx="46" cy="${y - 58}" r="2.6" fill="${C.ink}"/>`;
+      s += wcIcon(34, y - 138) + `<circle cx="58" cy="${y - 150}" r="4" fill="${op.busy ? '#FF3B3B' : '#3BE37A'}" stroke="${C.ink}" stroke-width="1.5"/>`;
+    }
+    // lantai beton + plafon
+    s += `<rect x="-300" y="${y}" width="${300 + x0 - 4}" height="14" fill="#9C8F80" stroke="${C.ink}" stroke-width="3"/><rect x="${x1 + 4}" y="${y}" width="300" height="14" fill="#9C8F80" stroke="${C.ink}" stroke-width="3"/>`;
+    s += `<rect x="${x1 + 4}" y="${y - H + 14}" width="300" height="${H - 14}" fill="${fl.c}" opacity=".85"/><rect x="${x1 + 4}" y="${y - H + 14}" width="300" height="${H - 14}" fill="#000" opacity=".08"/>`;
+  }
+  return s;
+}
+// KABIN LIFT (koordinat kabin tetap: lantai kabin y=400). open 0..1 pintu kiri (geser ke atas), lit = 10 tombol, inner = isi kabin
+export function liftCar(o: any = {}, inner = '') {
+  const {open = 0, lit = []} = o;
+  const {x0, x1, top} = LIFT;
+  let s = L((x0 + x1) / 2, -400, (x0 + x1) / 2, top - 12, 3, '#222');
+  s += `<rect x="${x0}" y="${top - 12}" width="${x1 - x0}" height="12" fill="#5A5A66" stroke="${C.ink}" stroke-width="3.5"/>`;
+  s += `<rect x="${x0}" y="${top}" width="${x1 - x0}" height="${400 - top}" fill="url(#liftW)"/>`;
+  for (let i = 1; i < 6; i++) s += `<rect x="${x0 + i * 23}" y="${top}" width="2" height="${400 - top}" fill="#000" opacity=".05"/>`;
+  s += `<rect x="${x0 + 30}" y="${top + 4}" width="${x1 - x0 - 60}" height="6" rx="3" fill="#FFF6D6" stroke="${C.ink}" stroke-width="2"/>`;
+  s += `<rect x="${x0 + 44}" y="318" width="${x1 - x0 - 44}" height="5" rx="2.5" fill="#B08A5A" stroke="${C.ink}" stroke-width="2"/>`;
+  // panel tombol di dinding belakang dekat pintu
+  s += `<rect x="${x0 + 10}" y="220" width="28" height="92" rx="4" fill="#C9CFD5" stroke="${C.ink}" stroke-width="3"/>`;
+  for (let i = 0; i < 10; i++) { const [bx, by] = liftBtn(i); s += (lit[i] ? `<circle cx="${bx}" cy="${by}" r="6.5" fill="#FFD23F" opacity=".4"/>` : '') + `<circle cx="${bx}" cy="${by}" r="4" fill="${lit[i] ? '#FFD23F' : '#F3F3F3'}" stroke="${C.ink}" stroke-width="1.8"/>`; }
+  const [cbx, cby] = liftBtn(10);
+  s += `<circle cx="${cbx}" cy="${cby}" r="5" fill="#F3F3F3" stroke="${C.ink}" stroke-width="1.8"/><path d="M${cbx - 3.5},${cby - 3} l2.6,3 l-2.6,3 M${cbx + 3.5},${cby - 3} l-2.6,3 l2.6,3" fill="none" stroke="${C.ink}" stroke-width="1.5"/>`;
+  s += inner;
+  // lantai kabin, dinding kanan, pintu kiri (geser ke atas)
+  s += `<rect x="${x0}" y="400" width="${x1 - x0}" height="14" fill="#7C6C5E" stroke="${C.ink}" stroke-width="3.5"/>`;
+  s += `<rect x="${x1 - 6}" y="${top}" width="8" height="${400 - top}" fill="#B9AE98" stroke="${C.ink}" stroke-width="3"/>`;
+  const dh = (400 - top) * (1 - open);
+  s += `<rect x="${x0 - 4}" y="${top}" width="9" height="${dh}" fill="url(#doorG)" stroke="${C.ink}" stroke-width="3"/>`;
+  s += `<rect x="${x0}" y="${top}" width="${x1 - x0}" height="${400 - top}" fill="none" stroke="${C.ink}" stroke-width="4"/>`;
+  return s;
+}
+// posisi tombol: 0..9 (2 kolom x 5 baris, dari bawah), 10 = tutup pintu
+export const liftBtn = (i) => i === 10 ? [LIFT.x0 + 24, 301] : [LIFT.x0 + 18 + (i % 2) * 12, 287 - Math.floor(i / 2) * 14];

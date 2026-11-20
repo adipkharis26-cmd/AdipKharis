@@ -44,4 +44,5 @@ OUTPUT (kerjakan sampai jadi tanpa menunggu perintah):
    **Komentar pin**, **Caption TikTok**, **Caption Reels**, **Tag**: masing-masing blok kode.
    Bahasa Inggris sederhana untuk penonton global.
 3. Commit & push ke branch `global-shorts` (pastikan tidak ada API key di repo).
-4. Laporan ke saya dalam bahasa Indonesia, ringkas, pakai tabel. Jujur bila ada yang belum dicek (mis. audio tidak bisa didengar).
+4. TANPA laporan. Di chat cukup kirim: MP4 final, 2 cover, dan paket upload (poin 2). Hanya beri tahu singkat bila ada masalah yang perlu keputusan saya
+   (mis. kuota ElevenLabs tidak cukup).
