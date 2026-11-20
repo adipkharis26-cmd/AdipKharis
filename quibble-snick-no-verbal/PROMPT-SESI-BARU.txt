@@ -6,8 +6,6 @@ BATAS KERJA (WAJIB): hanya baca & ubah file di dalam folder `quibble-snick-no-ve
 EPISODE YANG DIBUAT: [isi dari DAFTAR IDE di bawah, atau ide baru]
 
 DAFTAR IDE (judul — hook 1 kalimat):
-- Umbrella War ☂️ — Satu payung, dua kepala, hujan deras.
-- Elevator Button 🛗 — Seseorang menekan SEMUA tombol lantai.
 - Alarm Clock ⏰ — Alarm dilempar, memantul kembali.
 - Escalator 🔁 — Berlari di eskalator yang berjalan berlawanan.
 - Popcorn 🍿 — Satu biji jagung di microwave jadi gunung popcorn.
@@ -16,8 +14,7 @@ DAFTAR IDE (judul — hook 1 kalimat):
 - Snowman ☃️ — Hidung wortel boneka salju hilang, tersangka jelas.
 - Parking Spot 🚗 — Dua mobil mini mengincar satu tempat parkir.
 - Domino 🁢 — Satu sentuhan kecil, seluruh kota ambruk berantai.
-- Selfie Fail 📸 — Kamera menghitung mundur, pose masih terbalik.
-Sudah dibuat (jangan diulang): EP01 The Last Slice, EP02 Wet Paint, EP03 The Door, EP04 Vending Machine.
+Sudah dibuat (jangan diulang): EP01 The Last Slice, EP02 Wet Paint, EP03 The Door, EP04 Vending Machine, EP05 Umbrella War, EP06 Selfie Fail, EP07 Elevator Button.
 
 FORMULA 13–15 dtk: 0–1 hook (aksi/konflik) → setup → usaha meningkat + gagal → twist/punchline → payoff yang menyambung ke frame 0 (seamless loop).
 
