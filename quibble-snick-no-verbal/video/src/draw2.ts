@@ -1,5 +1,5 @@
 // Sistem visual v2: pemeran baru (Dot, Brick), bayangan, shading, latar berlapis, efek. Semua orisinal.
-import {C, L, eyes, brows, mouth} from './draw.js';
+import {C, L, P, eyes, brows, mouth} from './draw.js';
 export const C2 = {...C, dot: '#B48CF2', brick: '#F79D5C', machine: '#E4572E', shadow: 'rgba(30,30,36,.18)'};
 const sw = 5;
 let uid = 0;
@@ -314,3 +314,64 @@ export const bedFront = (bump = 0) => `<path d="M58,${336 - bump} Q137,${326 - b
   `<rect x="54" y="388" width="10" height="14" fill="#8C5A3C" stroke="${C.ink}" stroke-width="3"/><rect x="210" y="388" width="10" height="14" fill="#8C5A3C" stroke="${C.ink}" stroke-width="3"/>`;
 // gelembung dengkur (tanpa teks)
 export const snore = (x, y, f) => { const p = (f % 36) / 36, r = 3 + Math.sin(p * Math.PI) * 9; return `<circle cx="${x + r * 0.6}" cy="${y - r * 0.3}" r="${r}" fill="#E8F6FF" stroke="${C.ink}" stroke-width="2" opacity=".9"/><circle cx="${x + r * 0.3}" cy="${y - r * 0.7}" r="${r * 0.25}" fill="#fff"/>`; };
+
+// ===== EP09 Escalator: eskalator (tampak samping), mal dua lantai, panel tombol, gerobak es krim, kaki berlari =====
+export const ESC = {x0: 40, y0: 400, x1: 200, y1: 200};          // bawah-kiri -> atas-kanan
+export const escPt = (s) => [ESC.x0 + (ESC.x1 - ESC.x0) * s, ESC.y0 + (ESC.y1 - ESC.y0) * s];
+export const mallDefs = `<defs><linearGradient id="mallW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDF0E2"/><stop offset="1" stop-color="#F1D9C2"/></linearGradient>
+<linearGradient id="tileF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E7E2DA"/><stop offset="1" stop-color="#CBC4B8"/></linearGradient>
+<linearGradient id="escG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7C8794"/><stop offset="1" stop-color="#5B6570"/></linearGradient></defs>`;
+// MAL: dinding, etalase toko lantai bawah, lantai atas (pelat + pagar kaca) di kanan, lantai keramik
+export function mall() {
+  let s = `<rect x="-400" y="-400" width="1100" height="800" fill="url(#mallW)"/>`;
+  for (const [x, c] of [[-70, '#9ED8FF'], [96, '#FFB5C8']]) s += `<rect x="${x}" y="296" width="110" height="104" fill="${c}" opacity=".55" stroke="${C.ink}" stroke-width="3"/><rect x="${x}" y="282" width="110" height="16" fill="${c}" stroke="${C.ink}" stroke-width="3"/>` + L(x + 55, 298, x + 55, 400, 2, 'rgba(0,0,0,.25)');
+  s += `<rect x="196" y="-400" width="500" height="600" fill="#F6E3CC"/><rect x="196" y="40" width="500" height="160" fill="#FFF6EA" opacity=".6"/>`;
+  s += `<rect x="196" y="200" width="500" height="18" fill="#C9B9A6" stroke="${C.ink}" stroke-width="4"/>`;
+  s += `<rect x="-400" y="400" width="1100" height="400" fill="url(#tileF)"/>` + L(-400, 400, 700, 400, 4);
+  for (let i = -8; i < 12; i++) s += L(i * 46, 400, i * 80 - 70, 800, 2, 'rgba(0,0,0,.08)');
+  return s;
+}
+// ESKALATOR: phase = posisi anak tangga (satuan panjang lintasan); spark = panel rusak
+export function escalator(phase) {
+  const {x0, y0, x1, y1} = ESC;
+  const n = 18, gap = 1 / n;
+  let s = `<path d="M${x0 - 24},${y0} L${x0},${y0} L${x1},${y1} L${x1 + 12},${y1} L${x1 + 12},${y1 + 26} L${x0 + 30},${y0 + 4} Z" fill="url(#escG)" stroke="${C.ink}" stroke-width="4" stroke-linejoin="round"/>`;
+  // anak tangga (tapak datar) bergerak sepanjang lintasan
+  for (let k = -1; k <= n; k++) {
+    const t = ((k * gap + phase) % 1 + 1) % 1, [x, y] = escPt(t), w = (x1 - x0) * gap;
+    s += `<path d="M${x - w * 0.5},${y} h${w} v${(y1 - y0) * gap * -1}" fill="none" stroke="#D8DEE4" stroke-width="2.5"/>`;
+  }
+  s += L(x0, y0, x1, y1, 3);
+  // pegangan tangan (pita gelap) di atas lintasan, melingkar di kedua ujung
+  s += `<path d="M${x0 - 20},${y0 - 34} L${x1 - 6},${y1 - 34} q16,0 16,14" fill="none" stroke="#2b2b33" stroke-width="7" stroke-linecap="round"/><path d="M${x0 - 20},${y0 - 34} q-14,0 -14,16" fill="none" stroke="#2b2b33" stroke-width="7" stroke-linecap="round"/>`;
+  s += `<path d="M${x0 - 12},${y0 - 30} L${x1 - 4},${y1 - 30}" fill="none" stroke="#9AD0F5" stroke-width="10" opacity=".35"/>`;
+  return s;
+}
+// PANEL tombol arah (piktogram panah, tanpa teks). dir 1 = naik, -1 = turun; spark 0..1
+export function escPanel(x, y, o: any = {}) {
+  const {dir = -1, spark = 0, press = 0} = o;
+  let s = `<rect x="${x - 7}" y="${y}" width="14" height="${400 - y < 0 ? 30 : 30}" fill="#9AA3AF" stroke="${C.ink}" stroke-width="3"/>` +
+    `<rect x="${x - 11}" y="${y - 22}" width="22" height="22" rx="4" fill="#3A3A46" stroke="${C.ink}" stroke-width="3"/>` +
+    `<circle cx="${x}" cy="${y - 11 + press}" r="6" fill="${spark ? '#FFD23F' : '#FF5A5A'}" stroke="${C.ink}" stroke-width="2"/>` +
+    `<path d="M${x - 3},${y - 11 + dir * 2.5} l3,${-dir * 4} l3,${dir * 4}" fill="none" stroke="#fff" stroke-width="2"/>`;
+  if (spark) for (let i = 0; i < 6; i++) { const a = i * 1.05 + spark * 3, r = 8 + spark * 12; s += L(x + Math.cos(a) * r * 0.6, y - 11 + Math.sin(a) * r * 0.6, x + Math.cos(a) * r, y - 11 + Math.sin(a) * r, 2.5, '#FFB400'); }
+  return s;
+}
+// GEROBAK ES KRIM (berpayung garis)
+export function iceCart(x, y, cones = 1) {
+  let s = L(x - 26, y - 46, x - 26, y - 100, 3) + `<path d="M${x - 60},${y - 100} Q${x - 26},${y - 128} ${x + 8},${y - 100}Z" fill="#FF8FC7" stroke="${C.ink}" stroke-width="3"/><path d="M${x - 37},${y - 103} Q${x - 26},${y - 124} ${x - 15},${y - 103}Z" fill="#fff"/>`;
+  s += `<rect x="${x - 44}" y="${y - 46}" width="58" height="40" rx="4" fill="#fff" stroke="${C.ink}" stroke-width="3.5"/><rect x="${x - 44}" y="${y - 32}" width="58" height="8" fill="#FF8FC7"/>`;
+  s += `<circle cx="${x - 34}" cy="${y - 4}" r="6" fill="#555" stroke="${C.ink}" stroke-width="2.5"/><circle cx="${x + 4}" cy="${y - 4}" r="6" fill="#555" stroke="${C.ink}" stroke-width="2.5"/>`;
+  for (let i = 0; i < cones; i++) s += `<g transform="translate(${x - 26 + i * 12},${y - 58})">${P.cone(0.6)}</g>`;
+  return s;
+}
+// KAKI BERLARI (dipakai Quibble & Snick agar close-up identik). (x,y) = titik lantai; ph = fase langkah
+export function runLegs(x, y, ph, s = 1, amp = 1) {
+  let g = '';
+  for (const k of [0, 1]) {
+    const a = Math.sin(ph + k * Math.PI) * 0.7 * amp, lift = Math.max(0, Math.cos(ph + k * Math.PI)) * 6 * amp;
+    const hx = x + (k ? 5 : -5) * s, hy = y - 20 * s, fx = hx + Math.sin(a) * 18 * s, fy = y - lift * s;
+    g += L(hx, hy, fx, fy, 5 * s) + L(fx, fy, fx + 8 * s, fy, 5 * s);
+  }
+  return g;
+}
