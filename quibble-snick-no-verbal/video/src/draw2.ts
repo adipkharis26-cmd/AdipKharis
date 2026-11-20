@@ -270,3 +270,47 @@ export function liftCar(o: any = {}, inner = '') {
 }
 // posisi tombol: 0..9 (2 kolom x 5 baris, dari bawah), 10 = tutup pintu
 export const liftBtn = (i) => i === 10 ? [LIFT.x0 + 24, 301] : [LIFT.x0 + 18 + (i % 2) * 12, 287 - Math.floor(i / 2) * 14];
+
+// ===== EP08 Alarm Clock: jam weker, kamar tidur (tampak depan), ranjang =====
+// JAM WEKER: (x,y) = pusat badan. ring 0..1 = getaran + garis bunyi; f = frame (untuk getar)
+export function alarmClock(x, y, s = 1, o: any = {}) {
+  const {ring = 0, f = 0, rot = 0, sq = 1, hand = 0} = o;
+  const jit = ring ? Math.sin(f * 2.7) * 9 * ring : 0;
+  let g = L(-10, 14, -15, 22, 4) + L(10, 14, 15, 22, 4);
+  for (const bx of [-11, 11]) g += `<path d="M${bx - 9},-14 A9,9 0 0 1 ${bx + 9},-14 Z" transform="rotate(${bx < 0 ? -18 : 18},${bx},-14) translate(0,${ring ? Math.sin(f * 3.1 + bx) * 1.5 : 0})" fill="#FFD23F" stroke="${C.ink}" stroke-width="3" stroke-linejoin="round"/>`;
+  g += L(0, -18, 0, -24, 3) + `<rect x="-6" y="-27" width="12" height="5" rx="2" fill="#bbb" stroke="${C.ink}" stroke-width="2"/>`;
+  g += `<circle cx="0" cy="0" r="17" fill="#E63946" stroke="${C.ink}" stroke-width="4"/><circle cx="0" cy="0" r="12" fill="#fff" stroke="${C.ink}" stroke-width="2"/>`;
+  for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6; g += `<circle cx="${Math.cos(a) * 9.5}" cy="${Math.sin(a) * 9.5}" r="${i % 3 ? 0.7 : 1.2}" fill="${C.ink}"/>`; }
+  g += L(0, 0, Math.cos(hand - Math.PI / 2) * 5, Math.sin(hand - Math.PI / 2) * 5, 2.5) + L(0, 0, Math.cos(hand * 12 - Math.PI / 2) * 8, Math.sin(hand * 12 - Math.PI / 2) * 8, 1.8) + `<circle cx="0" cy="0" r="1.8" fill="${C.ink}"/>`;
+  g += `<path d="M-12,-8 A13,13 0 0 1 -4,-13" fill="none" stroke="#fff" stroke-width="2.5" opacity=".7"/>`;
+  let out = `<g transform="translate(${x},${y}) rotate(${rot + jit}) scale(${s / Math.sqrt(sq)},${s * sq})">${g}</g>`;
+  if (ring) for (const side of [-1, 1]) for (let k = 0; k < 2; k++) {
+    const r = (18 + k * 8 + ((f * 2) % 8)) * s;
+    out += `<path d="M${x + side * r * 0.75},${y - r * 0.85} q${side * r * 0.35},${r * 0.55} 0,${r * 1.1}" fill="none" stroke="${C.ink}" stroke-width="${2.5 * s}" stroke-linecap="round" opacity="${ring * (1 - k * 0.4)}"/>`;
+  }
+  return out;
+}
+export const bedDefs = `<defs><linearGradient id="roomW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9D7F2"/><stop offset="1" stop-color="#A9BBE0"/></linearGradient>
+<linearGradient id="woodF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B98A5C"/><stop offset="1" stop-color="#946A43"/></linearGradient>
+<linearGradient id="dawn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB37A"/><stop offset="1" stop-color="#FFE3A1"/></linearGradient>
+<linearGradient id="blanketG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FB3E6"/><stop offset="1" stop-color="#5E8FC8"/></linearGradient></defs>`;
+// KAMAR: dinding bergaris, jendela (subuh), lampu gantung, lantai kayu; meja kecil di kiri
+export function bedroom(f) {
+  let s = `<rect x="-400" y="-400" width="1100" height="800" fill="url(#roomW)"/>`;
+  for (let i = -6; i < 12; i++) s += `<rect x="${i * 30}" y="-400" width="12" height="800" fill="#fff" opacity=".12"/>`;
+  s += `<rect x="150" y="160" width="62" height="72" fill="url(#dawn)" stroke="${C.ink}" stroke-width="4"/><circle cx="192" cy="222" r="12" fill="#FFD23F"/>` + L(181, 160, 181, 232, 3) + L(150, 196, 212, 196, 3);
+  s += `<path d="M144,154 q10,40 0,88 l-10,0 q8,-44 0,-88z" fill="#E86A6A" stroke="${C.ink}" stroke-width="3"/><path d="M218,154 q-10,40 0,88 l10,0 q-8,-44 0,-88z" fill="#E86A6A" stroke="${C.ink}" stroke-width="3"/>` + L(136, 154, 226, 154, 4);
+  s += L(80, -400, 80, 138, 2) + `<path d="M64,152 q16,-24 32,0z" fill="#FFE27A" stroke="${C.ink}" stroke-width="3"/>`;
+  s += `<rect x="-400" y="400" width="1100" height="400" fill="url(#woodF)"/>` + L(-400, 400, 700, 400, 4);
+  for (let i = -6; i < 12; i++) s += L(i * 44, 400, i * 70 - 60, 800, 2, 'rgba(0,0,0,.12)');
+  s += `<rect x="6" y="334" width="46" height="66" rx="3" fill="#C98B3B" stroke="${C.ink}" stroke-width="4"/><rect x="12" y="350" width="34" height="18" rx="2" fill="#B37A30" stroke="${C.ink}" stroke-width="2.5"/><circle cx="29" cy="359" r="2" fill="${C.ink}"/>`;
+  return s;
+}
+// RANJANG: belakang (sandaran + bantal) dan depan (selimut) terpisah agar karakter bisa "di dalam"
+export const bedBack = (pillowY = 0) => `<rect x="62" y="232" width="150" height="120" rx="14" fill="#8C5A3C" stroke="${C.ink}" stroke-width="4"/><rect x="72" y="244" width="130" height="10" rx="5" fill="#000" opacity=".15"/>` +
+  `<rect x="96" y="${286 + pillowY}" width="82" height="40" rx="18" fill="#fff" stroke="${C.ink}" stroke-width="3.5"/><path d="M104,${300 + pillowY} q33,-8 66,0" fill="none" stroke="#ddd" stroke-width="3"/>`;
+export const bedFront = (bump = 0) => `<path d="M58,${336 - bump} Q137,${326 - bump * 1.6} 216,${336 - bump} L220,392 L54,392Z" fill="url(#blanketG)" stroke="${C.ink}" stroke-width="4" stroke-linejoin="round"/>` +
+  `<path d="M70,${348 - bump} q66,-8 136,0" fill="none" stroke="#fff" stroke-width="3" opacity=".5"/>` + [80, 120, 160, 196].map(x => `<circle cx="${x}" cy="${370 - bump * 0.3}" r="4" fill="#fff" opacity=".35"/>`).join('') +
+  `<rect x="54" y="388" width="10" height="14" fill="#8C5A3C" stroke="${C.ink}" stroke-width="3"/><rect x="210" y="388" width="10" height="14" fill="#8C5A3C" stroke="${C.ink}" stroke-width="3"/>`;
+// gelembung dengkur (tanpa teks)
+export const snore = (x, y, f) => { const p = (f % 36) / 36, r = 3 + Math.sin(p * Math.PI) * 9; return `<circle cx="${x + r * 0.6}" cy="${y - r * 0.3}" r="${r}" fill="#E8F6FF" stroke="${C.ink}" stroke-width="2" opacity=".9"/><circle cx="${x + r * 0.3}" cy="${y - r * 0.7}" r="${r * 0.25}" fill="#fff"/>`; };

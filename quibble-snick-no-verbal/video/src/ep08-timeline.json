@@ -1,0 +1,7 @@
+{"fps":30,"frames":420,
+ "cutWide":24,"swat":[30,40],"wall1":47,"bonk1":58,"land1":70,
+ "sitUp":[72,82],"grab2":[84,90],"wall2":96,"lamp1":104,"bonk2":112,"onHead":[112,124],
+ "stuff":[124,136],"calm":[136,148],"vibrate":[148,172],"sitUp2":[172,178],"throwWin":[180,188],"twinkle":194,
+ "dust":[188,204],"lieDown":[204,214],"dotIn":[236,256],"place":[256,264],"ring3":272,"wake":[272,278],"sitUp3":[278,284],
+ "punch":288,"pbWall":296,"pbLamp":304,"pbWin":312,"bonk3":320,"land3":330,"snooze":[332,342],"stare":[344,360],"sleep":[360,372],"dotOut":[364,384],
+ "loopCU":[390,420],"ringStartCU":400}
