@@ -1,5 +1,5 @@
 {
-  "version": "3.8.0",
+  "version": "3.9.0",
   "rules": [
     "v3.3.0: Pakaian per lokasi ('wear'): sekolah = seragam, rumah/kos = rumah (pakaian bebas + sandal), tempat lain di luar sekolah = bebas. Override per adegan dengan \"wear\" di naskah.",
     "v3.2.0: ruangTamu punya NPC latar — warga lewat di jalan depan rumah, hanya terlihat dari jendela (di balik semak & kusen). Tidak ada orang asing di dalam rumah.",
