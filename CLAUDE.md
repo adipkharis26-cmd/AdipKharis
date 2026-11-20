@@ -20,6 +20,8 @@ Aturan dari pemilik proyek, WAJIB diikuti di setiap sesi:
    "subscribe"), ditampilkan sebagai sisipan: latar diburamkan, teks ajakan besar di atas, ikon raksasa ditekan, lalu tokoh
    "korban" lelucon muncul dari tombol. Posisi bergantian: tengah (setelah punchline) atau akhir (sebelum kalimat loop).
    Video panjang tetap subtitle Oswald tanpa CTA.
+   **Teks hook Shorts** (pemilik 20 Nov 2026, `shortsHook`): setiap Shorts baru WAJIB punya 1–2 baris teks besar di 1–2 detik
+   pertama (premis/konflik, kata kunci kuning, maks 18 karakter per baris) lewat `"hook": {"lines": [...], "keywords": [...], "seconds": 1.6}`.
 6. **SFX hanya pelengkap**: volume rendah di bawah dialog (batas di `sfx.json`), satu SFX untuk satu makna.
 7. **Push ke GitHub hanya setelah pemilik bilang "cocok".** Hasil baru (thumbnail, branding, episode, dll.) dibuat
    dulu sebagai draft di `animasi-kusaka/drafts/` (tidak ikut git) dan dikirim sebagai gambar pratinjau. Setelah
@@ -32,8 +34,8 @@ Aturan dari pemilik proyek, WAJIB diikuti di setiap sesi:
      `node scripts/generate-voice.mjs <naskah> --estimate`. `"minSeconds"`/`"maxSeconds"` per naskah hanya boleh memperketat.
      Naskah dirancang langsung untuk ±9–10 menit (**±130–160 baris, ±5.800–6.500 karakter**), jangan dipotong belakangan.
      Eps. 1–4 (sudah rilis) tetap aturan lama ≥ 6 menit (`formats.long.legacy`).
-   - **Shorts 9:16:** minimal **40 detik**, maksimal 3 menit, ideal 40–60 detik. Naskah Shorts dibuat sendiri
-     (`"format": "shorts"`), bukan potongan acak dari episode panjang.
+   - **Shorts 9:16: durasi BEBAS 20 detik–3 menit** (pemilik 20 Nov 2026), ideal **25–45 detik**, sependek ceritanya butuh
+     (`formats.shorts.minSeconds` 20). Naskah Shorts dibuat sendiri (`"format": "shorts"`).
 10. **Brand terkunci** (`src/branding/brand.json`): nama channel **Kusaka Design**, logo resmi **Logo 2 (lencana)**,
     banner resmi **Banner 3 (Panel Komik)**. Thumbnail: teks hanya judul (tanpa nomor episode/lencana EPS),
     **dilarang memakai uang / mata uang (Rp)**. Aset di `animasi-kusaka/brand/` (`npm run brand`).
@@ -83,4 +85,9 @@ Panduan cerita dan strategi: `animasi-kusaka/SERIES_BIBLE.md`.
     tiga sudut psikologis berbeda (emosi wajah, konflik/relasi, kontras/penasaran), lalu (3) **judul, deskripsi (dengan chapters & hashtag), dan tag**
     di chat dalam blok kode siap salin. Konfigurasi `src/branding/thumbpro.json` (komponen `ThumbPro.tsx`); sumber per episode dicatat di `src/branding/rekomendasi.json` (gaya awal `Thumb-*` boleh dipakai — Eps. 3 memakai gaya awal atas pilihan pemilik); file `brand/thumbnails/rekomendasi/<id>-1..3.png`.
     Format Shorts tetap aturan 13 (tidak diubah), hanya thumbnail Shorts juga TANPA garis tepi.
-
+20. **Shorts = CERITA MANDIRI, TOPIK ACAK (pemilik 20 Nov 2026).** Shorts bukan turunan/potongan episode panjang dan tidak perlu
+    tahu cerita sebelumnya: satu premis → eskalasi → punchline → loop, selesai. Tokoh tetap tokoh KUSAKA (branding lewat karakter),
+    tetapi topik diacak dan dirotasi antar format: "Tipe-tipe …", "POV: …", Ekspektasi vs Realita, satu pertanyaan ke Bapak (dad joke),
+    "Zaman dulu vs sekarang", running gag (hitungan Mang Udin, buku utang Bu Ijah, live Dinda), dll. Jangan dua Shorts berurutan dengan
+    format atau tokoh utama yang sama. Sasaran penonton termasuk dewasa 25–34 yang bernostalgia masa sekolah (data Studio 20 Nov 2026).
+    Detik 0 = aksi/konflik + crash zoom + teks hook; tanpa adegan pengantar. Durasi bebas (aturan 9), ideal 25–45 dtk.

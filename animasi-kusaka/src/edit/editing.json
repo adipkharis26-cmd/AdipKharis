@@ -1,14 +1,14 @@
 {
-  "version": "2.10.0",
+  "version": "2.11.0",
   "rules": [
-    "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card. Pengecualian: watermark channel resmi (brand.json) di pojok kiri atas, di Shorts dan video panjang, dan intro 6 detik (nama channel) khusus video panjang, serta CTA cerita resmi (shortsCta: teks ajakan besar + ikon like/kirim/ikuti) khusus Shorts.",
+    "Teks di layar HANYA: (1) subtitle dialog, (2) caption keterangan waktu/adegan dari daftar 'captions' di bawah. Tidak ada nama karakter, judul, logo teks, atau end card. Pengecualian: watermark channel resmi (brand.json) di pojok kiri atas, di Shorts dan video panjang, dan intro 6 detik (nama channel) khusus video panjang, serta CTA cerita resmi (shortsCta: teks ajakan besar + ikon like/kirim/ikuti) khusus Shorts, serta TEKS HOOK Shorts (shortsHook: 1–2 baris besar di 1–2 detik pertama, v2.11.0).",
     "v2.3.0: Shorts memakai subtitle Poppins Bold putih di kotak gelap transparan (subtitleShorts), ukuran & posisi sama dengan subtitle lama; video panjang tetap Oswald (subtitle). Shorts juga memuat satu CTA cerita (shortsCta, v2.4.0).",
     "Subtitle: font Baloo 2 ExtraBold, putih dengan outline hitam, kata yang sedang diucapkan berwarna kuning (karaoke), posisi bawah.",
     "Caption: hanya teks dari daftar, huruf kapital, pojok kiri atas, kotak hitam transparan, muncul 0,3 detik dan bertahan selama baris tersebut.",
     "Flashback: filter sepia + vignette + bintik film, SFX flashback_harp saat masuk; caption FLASHBACK atau MASA LALU wajib dipakai di baris pertama flashback.",
     "Kamera: two-shot → single → push-in sebelum punchline → crash zoom (maks 1x per Shorts).",
     "Shorts mulai langsung di dialog pertama (tanpa intro), dialog pertama ≤ 0,5 detik.",
-    "Durasi (pemilik, 20 Nov 2026, mulai Eps. 5): Long 16:9 = 8–10 menit, DILARANG < 8:00 (480 dtk), boleh > 10 menit tetapi WAJIB < 11:00 (maks 10:59 = 659 dtk, termasuk intro 6 dtk). 'minSeconds'/'maxSeconds' per naskah hanya boleh memperketat, tidak melonggarkan. Eps. 1–4 & pilot (sudah rilis) memakai aturan lama (≥ 6 menit). Naskah dirancang langsung ±9–10 menit (±130–160 baris, ±5.800–6.500 karakter). Shorts 9:16 minimal 40 detik, maksimal 3 menit (ideal 40–60 detik)."
+    "Durasi (pemilik, 20 Nov 2026, mulai Eps. 5): Long 16:9 = 8–10 menit, DILARANG < 8:00 (480 dtk), boleh > 10 menit tetapi WAJIB < 11:00 (maks 10:59 = 659 dtk, termasuk intro 6 dtk). 'minSeconds'/'maxSeconds' per naskah hanya boleh memperketat, tidak melonggarkan. Eps. 1–4 & pilot (sudah rilis) memakai aturan lama (≥ 6 menit). Naskah dirancang langsung ±9–10 menit (±130–160 baris, ±5.800–6.500 karakter). Shorts 9:16 (pemilik 20 Nov 2026): durasi bebas 20 detik–3 menit, ideal 25–45 detik."
   ],
   "subtitle": {
     "font": "Baloo2",
@@ -79,13 +79,13 @@
       "aspect": "9:16",
       "width": 1080,
       "height": 1920,
-      "minSeconds": 40,
+      "minSeconds": 20,
       "maxSeconds": 180,
       "idealSeconds": [
-        40,
-        60
+        25,
+        45
       ],
-      "note": "Naskah Shorts sendiri: hook ≤1 detik, punchline sebelum akhir, ending loop."
+      "note": "Pemilik 20 Nov 2026: durasi Shorts BEBAS 20 dtk–3 menit (ideal 25–45 dtk, sependek ceritanya butuh). Cerita mandiri & topik acak, bukan turunan episode panjang. Hook ≤1 dtk + teks hook 1–2 dtk, punchline sebelum akhir, ending loop."
     }
   },
   "camera": {
@@ -168,5 +168,21 @@
     "placement": "SELALU di awal episode; naskah: \"intro\": {\"style\": \"D\"}",
     "transition": "tembus cahaya 0,5 dtk (INTRO_TRANSITION di Video.tsx)",
     "note": "Shorts tanpa intro. Teks di intro = nama channel resmi saja (pengecualian merek)."
+  },
+  "shortsHook": {
+    "font": "Baloo2",
+    "fontSize": 104,
+    "secondScale": 0.86,
+    "stroke": 12,
+    "top": 250,
+    "rot": -3,
+    "wordStep": 0.07,
+    "seconds": 1.6,
+    "minSeconds": 1.0,
+    "maxSeconds": 2.0,
+    "fadeOut": 0.18,
+    "maxLines": 2,
+    "maxLineChars": 18,
+    "note": "TEKS HOOK (pemilik 20 Nov 2026): wajib di setiap Shorts baru, 1–2 detik pertama, 1–2 baris (premis/konflik, bukan judul panjang), kata kunci kuning. Tidak menutupi wajah; tanpa angka episode, tanpa uang/Rp, tanpa kata 'subscribe'."
   }
 }

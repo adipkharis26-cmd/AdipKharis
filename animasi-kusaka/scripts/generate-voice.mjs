@@ -260,6 +260,18 @@ if (maxS && timeline.totalSeconds > maxS) fail(`Durasi ${mmss(timeline.totalSeco
 timeline.format = script.format ?? "long";
 // Subtitle bisa dimatikan per naskah (mis. Shorts tanpa teks): "subtitles": false
 if (script.subtitles === false) timeline.subtitles = false;
+// Teks hook Shorts (pemilik 20 Nov 2026, editing.json → shortsHook): 1–2 baris besar di 1–2 detik pertama.
+if (script.hook) {
+  const H = editing.shortsHook;
+  if (script.format !== "shorts") fail('"hook" hanya untuk Shorts');
+  const lines = script.hook.lines ?? [];
+  if (!lines.length || lines.length > H.maxLines) fail(`hook.lines wajib 1–${H.maxLines} baris`);
+  for (const ln of lines) if (ln.length > H.maxLineChars) fail(`hook "${ln}" terlalu panjang (maks ${H.maxLineChars} karakter per baris)`);
+  if (/subscribe|\brp\b|episode|eps\.?\s*\d/i.test(lines.join(" "))) fail("hook tidak boleh memuat subscribe, uang/Rp, atau nomor episode");
+  const sec = script.hook.seconds ?? H.seconds;
+  if (sec < H.minSeconds || sec > H.maxSeconds) fail(`hook.seconds harus ${H.minSeconds}–${H.maxSeconds} dtk`);
+  timeline.hook = { lines, keywords: script.hook.keywords ?? [], seconds: sec };
+} else if (script.format === "shorts") console.warn("⚠ Shorts tanpa teks hook (\"hook\") — wajib untuk Shorts baru (aturan pemilik 20 Nov 2026).");
 fs.writeFileSync(path.join(root, "src/data/timeline.json"), JSON.stringify(timeline));
 const mm = Math.floor(timeline.totalSeconds / 60), ss = Math.round(timeline.totalSeconds % 60);
 console.log(`✅ timeline.json — ${script.episode}: ${timeline.scenes.length} adegan, ${timeline.lines.length} baris, ${mm}:${String(ss).padStart(2, "0")} menit, suara terkunci ✓`);

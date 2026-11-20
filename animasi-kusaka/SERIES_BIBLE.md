@@ -252,16 +252,22 @@ YouTube merekomendasikan video yang **diklik**, **ditonton lama**, dan **membuat
 sinyal terpentingnya adalah **berapa banyak yang tidak menggeser video (swipe away)** dan **berapa yang menonton ulang**.
 
 ### Shorts
+- **Cerita mandiri, topik acak** (pemilik 20 Nov 2026): Shorts BUKAN turunan episode panjang. Satu premis yang berdiri sendiri;
+  format dirotasi: "Tipe-tipe …", "POV: …", Ekspektasi vs Realita, dad joke Bapak, Zaman dulu vs sekarang, running gag.
+  Data Studio (20 Nov 2026): "tetap menonton" 51% (target > 70%), retensi jatuh di 0–8 dtk, penonton terbanyak laki-laki 25–34 → hook harus
+  langsung dan humornya relatable untuk orang dewasa yang bernostalgia masa sekolah, tetap aman untuk remaja.
+- **Teks hook 1–2 dtk** di awal (`"hook"`, editing.json → shortsHook): 1–2 baris besar, premis/konflik, kata kunci kuning.
+- **Durasi bebas 20 dtk–3 menit**, ideal 25–45 dtk (pemilik 20 Nov 2026) — sependek ceritanya butuh.
 - **Detik pertama = segalanya.** Mulai dari konflik, ekspresi besar, kalimat pertama di 0,3 dtk.
 - **Full 9:16** (pemilik, 18 Nov 2026): video 1080×1920 + sampul 1080×1920. Subtitle Shorts = Poppins Bold putih di kotak gelap
   transparan (posisi & ukuran lama). Watermark Contoh 5.
 - **CTA cerita** (YouTube Shorts + Instagram Reels): satu baris tokoh yang memberi alasan lucu untuk like / kirim / ikuti,
   tampil sebagai sisipan (latar blur, teks ajakan besar, ikon raksasa ditekan, tokoh "korban" muncul dari tombol).
   Bergantian di tengah atau di akhir; tidak pernah memakai kata "subscribe" (tidak berlaku di Instagram).
-- **Durasi target 40–48 detik** (riset Shorts 2026: komedi kuat di durasi pendek; 40 dtk = batas minimal kanon).
+- ~~Durasi target 40–48 detik~~ → diganti aturan durasi bebas (lihat atas).
 - **Setiap Shorts memuat ≥1 kalimat khas** karakter (tabel pemeran) dan sifat inti tiap tokoh yang tampil
   (mis. Bapak membela Kusaka, Dinda ngadu) — branding lewat karakter, bukan teks.
-- **Minimal 40 detik** (ideal 40–60 detik), punchline di detik 30–45, tanpa jeda mati lebih dari 0,5 detik.
+- Punchline di ±70–85% durasi, tanpa jeda mati lebih dari 0,5 detik.
 - **Loop**: akhir menyambung ke awal.
 - **Branding lewat konsistensi**, bukan teks: desain karakter, suara, dan SFX yang sama membuat penonton
   langsung mengenali "ini Kusaka".

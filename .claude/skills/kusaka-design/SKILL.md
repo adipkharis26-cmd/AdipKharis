@@ -28,7 +28,12 @@ Branch kerja: `ccr-5483b159-l8zee8`.
 10. **Setiap MP4 rilis wajib punya `src/data/episodes/<id>-upload.md`** mengikuti `upload-template.md`
     (3 judul A/B, deskripsi, tag, hashtag kolom, konsep thumbnail, komentar pin, strategi algoritma).
 
-## Playbook Shorts (pemilik, 18 Nov 2026 — riset algoritma Shorts 2026)
+## Playbook Shorts (pemilik, 18 Nov 2026 — riset algoritma Shorts 2026; diperbarui 20 Nov 2026)
+**Pembaruan 20 Nov 2026 (mengalahkan poin lama di bawah bila bertentangan):** Shorts = **cerita mandiri, topik ACAK**, bukan turunan episode
+(aturan 20); **durasi bebas 20 dtk–3 menit, ideal 25–45 dtk**; **teks hook wajib** di 1–2 dtk pertama:
+`"hook": {"lines": ["TIPE TEMAN", "KERJA KELOMPOK"], "keywords": ["KERJA", "KELOMPOK"], "seconds": 1.6}` (maks 2 baris × 18 karakter,
+komponen `src/branding/ShortsHook.tsx`). Rotasi format: Tipe-tipe, POV, Ekspektasi vs Realita, dad joke Bapak, Zaman dulu vs sekarang,
+running gag. Target metrik Studio: "tetap menonton" > 70% (sebelumnya 51%), retensi datar di 0–8 dtk, suka 3–5%.
 Kamu ahli strategi Shorts: **riset dulu tiap Shorts** (WebSearch: sinyal algoritma terbaru + tren topik) lalu terapkan.
 - **Full 9:16**: video `KusakaEpisodeShorts` 1080×1920 **dan** sampul 1080×1920 (`thumbnails.json` → `"size": "9x16"`,
   `"bgX"` = titik tengah set). Render: `node scripts/render-brand.mjs shorts05`. Komposisi sampul beda dari Shorts sebelumnya.
@@ -41,7 +46,7 @@ Kamu ahli strategi Shorts: **riset dulu tiap Shorts** (WebSearch: sinyal algorit
   (untuk cerita bersambung); posisi bergantian tengah (setelah punchline) / akhir (sebelum kalimat loop). Jangan di 3 dtk pertama.
 - Sinyal utama: **swipe-away 0–2 dtk** (terkuat, negatif) → kalimat pertama = punchline/premis di 0,3 dtk, tanpa intro;
   **loop/rewatch** → kalimat terakhir menyambung ke kalimat pertama, `tail` 0,2; lalu retensi, share, komentar.
-- Durasi: komedi kuat di durasi pendek → target **40–48 dtk** (40 = batas kanon), buang baris pengisi, `gapSeconds` 0,2.
+- Durasi: bebas 20 dtk–3 menit, ideal **25–45 dtk** — buang baris pengisi, `gapSeconds` 0,2.
 - Satu crash zoom di titik balik (±tengah video). Lelucon harus jalan tanpa teks (ekspresi + suara).
 - Sampul custom diunggah lewat Studio desktop (bertahap, bisa butuh YPP); cadangan: frame crash zoom. Jangan tempel sampul
   di frame pertama (menunda hook). Shorts tidak punya A/B test sampul/judul.

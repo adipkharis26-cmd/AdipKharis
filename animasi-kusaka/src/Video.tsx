@@ -3,6 +3,8 @@ import { AbsoluteFill, Audio, Loop, Sequence, staticFile, useCurrentFrame, useVi
 import { useFonts } from "./lib/fonts";
 import { LongWatermark, ShortsWatermark } from "./branding/Watermark";
 import { ShortsCta, ctaLineOf } from "./branding/ShortsCta";
+import { ShortsHook, Hook } from "./branding/ShortsHook";
+import timelineData from "./data/timeline.json";
 import { Character, Wear } from "./characters/Character";
 import { LOCATIONS, LOCATION_META, LocId } from "./scene/Locations";
 import { Caption, FlashbackOverlay, SpeedLines, Subtitles } from "./fx/Overlays";
@@ -209,6 +211,7 @@ function buildCues(): Cue[] {
 }
 const CUES = buildCues();
 /** CTA cerita Shorts (baris naskah dengan "cta"; hanya dirender di 9:16). */
+const HOOK = (timelineData as unknown as { hook?: Hook }).hook;
 const CTA_LINE = ctaLineOf(LINES as unknown as Parameters<typeof ctaLineOf>[0]);
 
 /* -------------------------------- scene transition (no text) --------------- */
@@ -327,6 +330,7 @@ const KusakaMain: React.FC<{ vertical: boolean }> = ({ vertical }) => {
       {!vertical && <LongWatermark />}
       <Caption t={t} vertical={vertical} />
       {vertical && <ShortsCta t={t} line={CTA_LINE} fps={FPS} w={w} h={h} />}
+      {vertical && <ShortsHook t={t} start={LINES[0].start - 0.3} hook={HOOK} w={w} />}
       {SUBTITLES && <Subtitles t={t} vertical={vertical} w={w} />}
       {editing.transition !== "cut" && <Wipe t={t} w={w} h={h} />}
 
