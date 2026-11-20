@@ -1,6 +1,6 @@
 # Shorts 5 "Bayar Gorengan" (id `shorts08`): status produksi
 
-Naskah + storyboard disetujui pemilik ("cocok", 20 Nov 2026). Suara BELUM dibuat, render belum diperintahkan.
+Naskah + storyboard disetujui ("cocok"), suara dibuat (0:40), dirender atas perintah pemilik, dirilis 20 Nov 2026: `releases/Kusaka-Shorts5-Bayar-Gorengan.mp4`.
 
 - Format: Tipe-tipe (aturan 20). Tokoh utama Bu Ijah, Kusaka, Ujang, Nadia. Lokasi warung, seragam + tas (sepulang sekolah).
 - 13 baris, 418 karakter, perkiraan ±38 dtk. Hook "TIPE-TIPE MURID / BAYAR GORENGAN", crash zoom l001,
