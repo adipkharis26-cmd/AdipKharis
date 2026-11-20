@@ -1,5 +1,5 @@
 PROYEK: Quibble & Snick no verbal — kartun bisu (tanpa dialog/teks) untuk YouTube Shorts, TikTok, Reels, target internasional.
-Repo: adipkharis26-cmd/adipkharis, branch `global-shorts`, folder `quibble-snick-no-verbal/`.
+Repo: adipkharis26-cmd/adipkharis, branch `quibble-snick-no-verbal`, folder `quibble-snick-no-verbal/`.
 BATAS KERJA (WAJIB): hanya baca & ubah file di dalam folder `quibble-snick-no-verbal/`. JANGAN membaca, menjalankan, atau mengubah apa pun di luar folder itu
 (termasuk `global-shorts/` (arsip lama), `animasi-kusaka/`, app.py, api/, naskah/, workflow/, CLAUDE.md milik proyek lain, dan branch lain). Jangan riset ulang niche/strategi.
 
@@ -55,6 +55,6 @@ OUTPUT (kerjakan sampai jadi tanpa menunggu perintah):
    **Deskripsi YouTube Shorts:** blok kode (2–3 baris + pertanyaan + 5–6 hashtag)
    **Komentar pin**, **Caption TikTok**, **Caption Reels**, **Tag**: masing-masing blok kode.
    Bahasa Inggris sederhana untuk penonton global.
-3. Commit & push ke branch `global-shorts` (pastikan tidak ada API key di repo).
+3. Commit & push ke branch `quibble-snick-no-verbal` (BUKAN `global-shorts`) (pastikan tidak ada API key di repo).
 4. TANPA laporan. Di chat cukup kirim: MP4 final, 2 cover, dan paket upload (poin 2). Hanya beri tahu singkat bila ada masalah yang perlu keputusan saya
    (mis. kuota ElevenLabs tidak cukup).
