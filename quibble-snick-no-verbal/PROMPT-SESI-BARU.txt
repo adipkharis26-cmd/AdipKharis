@@ -3,7 +3,11 @@ Repo: adipkharis26-cmd/adipkharis, branch `quibble-snick-no-verbal`, folder `qui
 BATAS KERJA (WAJIB): hanya baca & ubah file di dalam folder `quibble-snick-no-verbal/`. JANGAN membaca, menjalankan, atau mengubah apa pun di luar folder itu
 (termasuk `global-shorts/` (arsip lama), `animasi-kusaka/`, app.py, api/, naskah/, workflow/, CLAUDE.md milik proyek lain, dan branch lain). Jangan riset ulang niche/strategi.
 
-EPISODE YANG DIBUAT: [isi dari DAFTAR IDE di bawah, atau ide baru]
+EPISODE YANG DIBUAT (episode berikutnya; langsung kerjakan sampai jadi tanpa bertanya):
+  EP11 "Snowman ☃️" — Hidung wortel boneka salju Quibble hilang; semua menuduh Snick, tapi petunjuk visual mengarah ke Dot
+  (ia memberikannya ke kelinci salju). STRUKTUR D · KAMERA tampak atas + POV karakter · HOOK wajah reaksi ekstrem
+  · LOOP siklus alami (malam→pagi). Pemeran Quibble + Snick + Dot. Pemenang: Snick (terbukti tak bersalah).
+  SETELAH SELESAI: isi blok ini dengan episode berikutnya (ide + variasi yang berbeda dari 3 episode terakhir), agar sesi baru cukup diberi prompt singkat.
 
 DAFTAR IDE (judul — hook 1 kalimat):
 - Tangled Earphones 🎧 — Terikat kabel dari kepala sampai kaki.
