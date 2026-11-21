@@ -6,30 +6,38 @@ BATAS KERJA (WAJIB): hanya baca & ubah file di dalam folder `quibble-snick-no-ve
 EPISODE YANG DIBUAT: [isi dari DAFTAR IDE di bawah, atau ide baru]
 
 DAFTAR IDE (judul — hook 1 kalimat):
-- Alarm Clock ⏰ — Alarm dilempar, memantul kembali.
-- Escalator 🔁 — Berlari di eskalator yang berjalan berlawanan.
 - Popcorn 🍿 — Satu biji jagung di microwave jadi gunung popcorn.
 - Tangled Earphones 🎧 — Terikat kabel dari kepala sampai kaki.
 - Balloon 🎈 — Terlalu banyak balon, mulai melayang.
 - Snowman ☃️ — Hidung wortel boneka salju hilang, tersangka jelas.
 - Parking Spot 🚗 — Dua mobil mini mengincar satu tempat parkir.
 - Domino 🁢 — Satu sentuhan kecil, seluruh kota ambruk berantai.
-Sudah dibuat (jangan diulang): EP01 The Last Slice, EP02 Wet Paint, EP03 The Door, EP04 Vending Machine, EP05 Umbrella War, EP06 Selfie Fail, EP07 Elevator Button.
+Sudah dibuat (jangan diulang): EP01 The Last Slice, EP02 Wet Paint, EP03 The Door, EP04 Vending Machine, EP05 Umbrella War, EP06 Selfie Fail, EP07 Elevator Button, EP08 Alarm Clock, EP09 Escalator.
+Pemeran & pemenang terakhir: EP07 Quibble/Snick/Brick (Snick menang), EP08 Brick/Dot (Dot menang), EP09 Quibble/Snick/Dot (Quibble menang).
 
 FORMULA 13–15 dtk: 0–1 hook (aksi/konflik) → setup → usaha meningkat + gagal → twist/punchline → payoff yang menyambung ke frame 0 (seamless loop).
 
-BACA DULU (jadikan acuan gaya, jangan dirombak):
-- quibble-snick-no-verbal/video/src/draw.js (Quibble, Snick, properti dasar) + draw2.ts (visual v2: Dot, Brick, bayangan, latar gradasi+vignette, kedip, efek)
-- quibble-snick-no-verbal/video/src/EP04.tsx + ep04-timeline.json (contoh TERBARU & acuan utama: pemeran bergiliran, visual v2, jeda benturan 2 frame, seamless loop)
-- quibble-snick-no-verbal/video/audio/el_ep04.py (contoh TERBARU: cue ElevenLabs dengan sinkron puncak bunyi ke frame kejadian)
-- quibble-snick-no-verbal/karakter/cast-v2.png (lembar pemeran)
+HEMAT KUOTA CLAUDE (wajib):
+- 1 episode = 1 sesi baru. Jangan lanjutkan episode berikutnya di sesi yang sudah panjang.
+- Jangan riset/web search. Ambil ide dari DAFTAR IDE.
+- Baca HANYA file di BACA DULU. Jangan buka draw.js/draw2.ts/EPxx.tsx lain secara utuh; bila perlu satu fungsi, grep nama fungsinya saja.
+- Mulai dari templat (salin, jangan tulis ulang kerangka). Tambah aset baru di akhir draw2.ts + 1 baris di API-RINGKAS.txt.
+- Pratinjau: render --scale=0.25 lalu 1 lembar kontak kecil (ffmpeg tile, mis. 9x4 tiap 12 frame); maksimal 2 putaran revisi.
+  Cek loop: 1 gambar frame 419 + 0. Cover: lihat 1 gambar gabungan 2 cover. Tambah --log=error pada render.
+- Audio: pakai ulang cue/musik yang sudah ada di el_cache (nama sama = 0 kredit), generate baru hanya bunyi khas episode.
+
+BACA DULU (cukup ini):
+- quibble-snick-no-verbal/API-RINGKAS.txt (semua fungsi gambar, ukuran karakter, kamera, safe zone)
+- quibble-snick-no-verbal/video/src/_TEMPLATE.tsx (kerangka episode: helper, close-up loop, jeda 2 frame)
+- quibble-snick-no-verbal/video/audio/_template_el.py (+ el_lib.py: kuota, cache, sinkron puncak, mix melingkar, verifikasi)
+- Contoh lengkap bila benar-benar perlu: video/src/EP09.tsx (+ ep09-timeline.json), video/audio/el_ep09.py
 
 ATURAN GAYA (wajib):
 - PEMERAN BERGILIR (jangan selalu fokus 2 karakter; pilih 2–3 per episode, variasikan):
   Quibble (kapsul toska, ekspresif, sering sial) · Snick (segitiga koral, licik) · Dot (bola lilac kecil, ceria, cepat, menggelinding) · Brick (balok oranye besar, unibrow, kuat, pemarah tapi kalem).
   Boleh menambah karakter baru di draw2.ts dengan bentuk geometris sederhana + warna unik + satu ciri khas.
 - VISUAL v2 wajib: bayangan di bawah karakter, latar gradasi + vignette (defs/vignette dari draw2.ts), kedip natural (blinkAt), gerak sekunder (squash/stretch, goyang), getar kamera & jeda 2 frame saat benturan, jejak gerak saat lari.
-- SINKRON: setiap SFX dipasang di frame kejadian dan PUNCAK bunyinya disejajarkan ke frame itu (lihat el_ep04.py). Verifikasi selisih < 40 ms untuk benturan utama.
+- SINKRON: setiap SFX dipasang di frame kejadian dan PUNCAK bunyinya disejajarkan ke frame itu (otomatis di el_lib.py). Verifikasi selisih < 40 ms untuk benturan utama.
 - Flat 2D, outline tebal. Tanpa dialog, tanpa teks di layar.
 - Durasi 13–15 dtk, 30 fps, 1080×1920.
 - Hook: frame 0 sudah bergerak, konflik terbaca < 1 dtk.

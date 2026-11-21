@@ -1,0 +1,33 @@
+API RINGKAS — Quibble & Snick no verbal (baca INI, bukan seluruh draw.js / draw2.ts)
+Koordinat dunia: kanvas 270x480 (viewBox), lantai biasanya y=400. Semua fungsi mengembalikan string SVG.
+Kamera: camG(inner, {k, fx, fy, sx:135, sy:236}) -> titik dunia (fx,fy) tampil di layar (sx,sy) dgn zoom k.
+  Lantai ~65% layar: sy + (400 - fy) * k ≈ 312.  Safe zone: aksi penting di layar x<226 (kolom kanan y 190–384 = tombol UI) dan y<384.
+
+=== draw.js ===
+C = {bg, ink:'#1E1E24', q:'#2EC4B6', s:'#FF6B6B', y:'#FFD23F', floor, wall, glass, white, paint}
+L(x1,y1,x2,y2, w=5, c=ink)                         garis outline bulat
+quibble(x,y,s,o)  (x,y)=kaki tengah, tinggi ≈138*s, lebar 74*s
+  o: look[dx,dy] brow(flat|angry|sad|up|smug) m(smile|grin|o|frown|teeth|wavy|flat) arms(down|up|reachR|pointL|hips|holdR|'x'=tanpa)
+     cross blink squash flip legs(stand|sit|run|'none') hold(svg di tangan kanan) stripes
+snick(x,y,s,o)    segitiga koral, tinggi ≈116*s; o: look brow m arms(down|wave|up|reachL|'x') flip hold blink
+P.{slice,table,plate,box,bench,sign,cone(s),door,hand,lines,burst(x,y,r),wind(x,y),drop(x,y,s,c),sweat(x,y),shine,sparkle(x,y)}
+
+=== draw2.ts (visual v2) ===
+UMUM  defs (WAJIB di awal svg) · vignette (WAJIB di akhir) · shadow(x,y,w,op) · trail(x,y,dir,n,c) jejak lari
+      impactLines(x,y,r) garis benturan · blinkAt(f,off) kedip · splash(x,y,p0..1,n,r,c)
+      runLegs(x,y,ph,s,amp) kaki berlari animasi (pakai dgn quibble legs:'none')
+dot(x,y,s,o)   bola lilac, tinggi ≈70*s; o: look brow m arms(down|up|reachR|wave) blink roll(deg) squash hold
+brick(x,y,s,o) balok oranye, tinggi ≈170*s, lebar 112*s; o: look brow(angry|sad|flat|up) m arms(down|cross|pokeL|up|umbL|rOnly) blink squash
+LATAR (+defs khusus bila ada; sisipkan setelah `defs`):
+  hall(), machine(x,y,{stuck,stuck2,empty,shakeRot,hideSlot}), can(x,y,s,rot,c)              [EP04 lorong/mesin minuman]
+  rainDefs; street(f), rain(f,dry[[x0,y0,x1]] layar), umbrella(x,y,s,{c,tilt,inv,open,water,hole,dart,st,R,stripes}), umbPt()   [EP05]
+  parkDefs; park(f), camera(x,y,{dir,leds,tripod,rot,flash}), photo(x,y,s,rot,inner)          [EP06]
+  liftDefs; building(pos,toilet), liftCar({open,lit[]},inner), liftBtn(i), LIFT, wcIcon        [EP07]
+  bedDefs; bedroom(f), bedBack(pillowY), bedFront(bump), alarmClock(x,y,s,{ring,f,rot,sq,hand}), snore(x,y,f)  [EP08]
+  mallDefs; mall(), escalator(phase), escPanel(x,y,{dir,spark,press}), iceCart(x,y,n), ESC, escPt(s)        [EP09]
+
+=== Pola episode (lihat video/src/_TEMPLATE.tsx) ===
+- Timeline di epXX-timeline.json (frame, 30fps, 420 frame). closeUp(f) untuk [0,cutWide) + loopCU (kontinu via runF).
+- Jeda 2 frame benturan: f = hold2(f, frameBenturan). Getar: shake(f, at, len, amp) ke fx/fy kamera.
+- Daftarkan di Root.tsx: <Composition id="EPxx" component={EPxx} durationInFrames={420} fps={30} width={1080} height={1920}/>
+- Audio: video/audio/_template_el.py + el_lib.py (cek kuota, cache, sinkron puncak, mix melingkar, verifikasi).
