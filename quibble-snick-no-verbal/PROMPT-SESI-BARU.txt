@@ -18,8 +18,9 @@ Pemeran & pemenang terakhir: EP07 Quibble/Snick/Brick (Snick menang), EP08 Brick
 FORMULA 13–15 dtk: hook < 1 dtk → isi sesuai STRUKTUR pilihan (lihat VARIASI) → punchline → payoff yang menyambung ke frame 0 (seamless loop).
 
 VARIASI (wajib, anti monoton & anti konten berpola pabrik):
-- Sebelum menulis, baca EPISODE-LOG.txt. Episode baru harus BERBEDA dari 3 episode terakhir di minimal 4 kolom
-  (lokasi, pemeran, pemenang, STRUKTUR, KAMERA, HOOK, LOOP, mekanik, musik). Setelah selesai, tambahkan 1 baris ke log.
+- Episode baru harus BERBEDA dari 3 episode terakhir (lihat baris "Pemeran & pemenang terakhir") dalam lokasi, pemeran, pemenang, STRUKTUR, KAMERA, HOOK, LOOP.
+  EP01–EP09 semuanya STRUKTUR A + kamera lebar statis + hook/loop close-up benda: EP10 wajib keluar dari pola itu.
+  Setelah selesai, perbarui baris "Sudah dibuat" dan "Pemeran & pemenang terakhir" di file ini.
 - STRUKTUR (rotasi; A maksimal 1 dari tiap 3 episode):
   A eskalasi 3 percobaan → payoff palsu → twist · B balas-membalas (ping-pong prank, saling meningkat) · C reaksi berantai (satu aksi kecil → bencana beruntun)
   D misteri/tersangka (petunjuk visual, penonton menebak) · E lomba/kompetisi dua pihak · F rencana vs kenyataan (bayangan rencana di gelembung, lalu hasil nyata)
@@ -48,7 +49,6 @@ HEMAT KUOTA CLAUDE (wajib):
 - Audio: pakai ulang cue/musik yang sudah ada di el_cache (nama sama = 0 kredit), generate baru hanya bunyi khas episode.
 
 BACA DULU (cukup ini):
-- quibble-snick-no-verbal/EPISODE-LOG.txt (pola yang sudah dipakai — wajib untuk aturan VARIASI)
 - quibble-snick-no-verbal/API-RINGKAS.txt (semua fungsi gambar, ukuran karakter, kamera, safe zone)
 - quibble-snick-no-verbal/video/src/_TEMPLATE.tsx (kerangka episode: helper, close-up loop, jeda 2 frame)
 - quibble-snick-no-verbal/video/audio/_template_el.py (+ el_lib.py: kuota, cache, sinkron puncak, mix melingkar, verifikasi)
