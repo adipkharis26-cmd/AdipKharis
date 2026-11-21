@@ -1,0 +1,59 @@
+{
+  "ep": "oh10",
+  "slug": "mi-instan-semenit",
+  "format": "abc", "alur": "hasil-dulu", "jawaban": "B",
+  "seri": "Ukur Pakai Barang Sehari-hari",
+  "judul": "Mi Instan Semenit se-Indonesia Ditumpuk, Lewat Eiffel? 🍜 | OHHIYAA!",
+  "objek": ["mi-instan"],
+  "patokan": ["menara-eiffel", "gunung-bromo"],
+  "vo": [
+    "Mi instan yang dimakan orang Indonesia dalam satu menit saja, kalau ditumpuk, tingginya lewat Menara Eiffel! Ohhiyaa!",
+    "Tapi kok bisa? Semenit itu berapa bungkus? A, dua ribu delapan ratus. B, dua puluh delapan ribu. C, dua ratus delapan puluh ribu. Ketik!",
+    "Satu bungkus tebalnya kira-kira tiga senti. Setahun, kita makan empat belas koma tujuh miliar bungkus.",
+    "Bagi semua menit setahun. Jawabannya B, hampir dua puluh delapan ribu bungkus! Ditumpuk, lewat Menara Eiffel, sampai delapan ratus empat puluh meter.",
+    "Tiga menit? Tumpukannya sudah melewati puncak Gunung Bromo.",
+    "Selama video ini saja, dua puluh ribu bungkus lebih sudah habis. Bayangkan, mi instan satu menit saja..."
+  ],
+  "layar": [
+    "Bungkus mi mainan → menara bungkus mi naik cepat melewati Menara Eiffel mainan; angka ±840 M; OHHIYAA!",
+    "Ohi di samping satu bungkus mi; 'Tapi kok bisa?' lalu tebak(opsi A/B/C) 3-2-1",
+    "Satu bungkus + penggaris (±3 cm); tumpukan kecil jatuh; angka 14,7 MILIAR / tahun (WINA)",
+    "Penghitung menit → jawab('Jawaban: B — ±27.900 bungkus'); menara naik, tangga: 1 bungkus · Eiffel 330 m · ±840 m",
+    "Menara tumbuh 3× melewati Gunung Bromo mainan (2.329 m); angka ±2,5 KM",
+    "Ohi menunjuk penonton; angka 20 RIBU+ selama video ini; loop ke 'satu menit saja'"
+  ],
+  "hitungan": [
+    "Menit per tahun: 365 × 24 × 60 = 525.600 menit",
+    "Bungkus per menit: 14.680.000.000 ÷ 525.600 = ±27.930 (≈ 28 ribu) → jawaban B",
+    "Tinggi tumpukan semenit: 27.930 × 3 cm = 83.790 cm ≈ 838 m (≈ 840 m) = 2,54 × Menara Eiffel (330 m)",
+    "Tiga menit: 3 × 838 m = ±2.514 m > puncak Gunung Bromo 2.329 mdpl",
+    "Selama video ±50 dtk: 27.930 × 50/60 = ±23.275 bungkus (disebut 'dua puluh ribu lebih')"
+  ],
+  "asumsi": [
+    "Tebal 1 bungkus mi instan ±3 cm (ukuran umum bungkus isi ±70–85 g; bukan data resmi)",
+    "1 porsi WINA dianggap 1 bungkus; konsumsi dianggap merata sepanjang tahun (rata-rata, bukan data per menit)"
+  ],
+  "keaslian": {
+    "sumber_primer": [
+      "World Instant Noodles Association (WINA) — Global Demand for Instant Noodles: Indonesia 14,68 miliar porsi (2024; instantnoodles.org, dikutip Kompas TV)",
+      "Société d'Exploitation de la Tour Eiffel (toureiffel.paris) — tinggi Menara Eiffel 330 m",
+      "Balai Besar Taman Nasional Bromo Tengger Semeru / Kemenpar — Gunung Bromo 2.329 mdpl"
+    ],
+    "sudut_baru": "Objek baru (mi instan, belum pernah dipakai) dan satuan waktu baru: konsumsi PER MENIT, bukan per hari/seumur hidup; patokan baru Menara Eiffel + Gunung Bromo dari kolam patokan; penutup mengaitkan angka dengan durasi video yang sedang ditonton.",
+    "web_cek": "WebSearch '\"mi instan\" \"per menit\" Indonesia ditumpuk lebih tinggi dari Menara Eiffel shorts' → hanya artikel data konsumsi umum (Kompas TV, CNBC, GNFI); tidak ada video/judul/visual identik."
+  },
+  "deskripsi": {
+    "pembuka": "Cuma satu menit, tapi mi instan yang dimakan orang Indonesia kalau ditumpuk bisa lewat Menara Eiffel 🍜🗼",
+    "hitungan": "14,68 miliar porsi setahun (WINA 2024) ÷ 525.600 menit ≈ 27.900 bungkus per menit × ±3 cm ≈ 840 m, 2,5× Menara Eiffel (330 m); 3 menit sudah lewat Gunung Bromo (2.329 mdpl).",
+    "cta": "Tadi kamu jawab A, B, atau C? 👇",
+    "hashtag": "#shorts #ohhiyaa #miinstan #faktaunik #indonesia #tahukahkamu"
+  },
+  "thumb": [
+    {"nama": "A", "alasan": "Menara bungkus mi menjulang di samping Menara Eiffel mainan; pertanyaan berapa bungkus semenit tanpa menyebut 28 ribu", "frame": 5.5, "zoom": 1.15, "fokus": [540, 1000],
+     "teks": [{"t": "MI INSTAN 1 MENIT", "warna": "putih"}, {"t": "BERAPA BUNGKUS?", "kotak": "pink"}],
+     "stiker": [{"e": "1f35c", "x": 880, "y": 1300, "s": 210, "rot": 0.15}]},
+    {"nama": "B", "alasan": "Varian cadangan: Ohi dengan satu bungkus mi, tantangan A/B/C", "frame": 9.5, "zoom": 1.05, "fokus": [540, 1000],
+     "teks": [{"t": "SEMENIT SE-INDONESIA", "warna": "putih"}, {"t": "A, B, ATAU C?", "kotak": "pink"}],
+     "stiker": [{"e": "1f914", "x": 880, "y": 1300, "s": 200, "rot": -0.12}]}
+  ]
+}

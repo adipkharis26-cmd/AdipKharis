@@ -1,0 +1,71 @@
+{
+  "ep": "oh10",
+  "catatan": "Thumbnail oh10. Jangan tampilkan jawaban.",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Menara bungkus mi menjulang di samping Menara Eiffel mainan; pertanyaan berapa bungkus semenit tanpa menyebut 28 ribu",
+      "latar": {
+        "frame": 5.5,
+        "zoom": 1.15,
+        "fokus": [
+          540,
+          1000
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "MI INSTAN 1 MENIT",
+          "warna": "putih"
+        },
+        {
+          "t": "BERAPA BUNGKUS?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1f35c",
+          "x": 880,
+          "y": 1300,
+          "s": 210,
+          "rot": 0.15
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Varian cadangan: Ohi dengan satu bungkus mi, tantangan A/B/C",
+      "latar": {
+        "frame": 9.5,
+        "zoom": 1.05,
+        "fokus": [
+          540,
+          1000
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "SEMENIT SE-INDONESIA",
+          "warna": "putih"
+        },
+        {
+          "t": "A, B, ATAU C?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1f914",
+          "x": 880,
+          "y": 1300,
+          "s": 200,
+          "rot": -0.12
+        }
+      ]
+    }
+  ],
+  "thumbPilihan": "A"
+}

@@ -206,6 +206,12 @@
       "format": "benar-bohong",
       "alur": "tangga",
       "jawaban": "BENAR"
+    },
+    {
+      "ep": "oh10",
+      "format": "abc",
+      "alur": "hasil-dulu",
+      "jawaban": "B"
     }
   ]
 }

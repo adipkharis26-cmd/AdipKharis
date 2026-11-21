@@ -6,16 +6,160 @@
     "objek_maks_dalam_6_episode_terakhir": 2,
     "patokan_maks_dalam_5_episode_terakhir": 2
   },
-  "kolam_patokan_baru": ["Candi Borobudur", "Jembatan Suramadu", "Gunung Bromo", "Danau Toba", "Pulau Bali", "Selat Sunda", "Stadion Gelora Bung Karno", "Kereta Cepat Whoosh", "Menara Eiffel", "Gunung Semeru", "Kapal Phinisi", "Lapangan sepak bola"],
+  "kolam_patokan_baru": [
+    "Candi Borobudur",
+    "Jembatan Suramadu",
+    "Gunung Bromo",
+    "Danau Toba",
+    "Pulau Bali",
+    "Selat Sunda",
+    "Stadion Gelora Bung Karno",
+    "Kereta Cepat Whoosh",
+    "Menara Eiffel",
+    "Gunung Semeru",
+    "Kapal Phinisi",
+    "Lapangan sepak bola"
+  ],
   "episode": [
-    {"ep": "oh01", "judul": "Rp1 Triliun Pecahan 100 Ribu Ditumpuk, Setinggi Apa?", "objek": ["uang-100rb"], "patokan": ["rumah", "monas", "autograph-tower"], "format": "abc", "alur": "tangga"},
-    {"ep": "oh02", "judul": "Semua Motor di Indonesia Dijejer, Sepanjang Apa?", "objek": ["motor"], "patokan": ["jakarta-surabaya", "sabang-merauke", "keliling-bumi"], "format": "abc", "alur": "tangga"},
-    {"ep": "oh03", "judul": "Semua Nasi Bungkus Orang Indonesia Sehari, Ditumpuk Setinggi Apa?", "objek": ["nasi-bungkus"], "patokan": ["monas", "everest", "pesawat", "stasiun-angkasa", "lebar-bumi"], "format": "abc", "alur": "tangga"},
-    {"ep": "oh04", "judul": "Semua Motor vs Semua Mobil di Indonesia Dijejer, Siapa Lebih Panjang?", "objek": ["motor", "mobil"], "patokan": [], "format": "duel", "alur": "duel"},
-    {"ep": "oh05", "judul": "Air Seumur Hidup Jadi Galon, Setinggi Apa?", "objek": ["galon"], "patokan": ["monas", "autograph-tower", "burj-khalifa"], "format": "tebak-angka", "alur": "hasil-dulu"},
-    {"ep": "oh06", "judul": "Semua Orang RI Gandengan Tangan, Cuma Keliling Bumi 1×?", "objek": ["orang"], "patokan": ["jakarta-surabaya", "sabang-merauke", "keliling-bumi", "bulan"], "format": "benar-bohong", "alur": "tangga"},
-    {"ep": "oh07", "judul": "1 Juta Galon vs Nasi Bungkus vs Uang 100 Ribu: Urutkan!", "objek": ["galon", "nasi-bungkus", "uang-100rb"], "patokan": ["monas", "pesawat", "stasiun-angkasa"], "format": "urutkan", "alur": "urut"},
-    {"ep": "oh08", "judul": "Motor Jakarta Dijejer Lebih Panjang dari Sabang–Merauke?", "objek": ["motor"], "patokan": ["sabang-merauke"], "format": "kurang-lebih", "alur": "duel"},
-    {"ep": "oh09", "judul": "Kertas Dilipat 42 Kali Sampai Bulan, Benar atau Bohong?", "objek": ["kertas"], "patokan": ["monas", "pesawat", "stasiun-angkasa", "bulan"], "format": "benar-bohong", "alur": "tangga"}
+    {
+      "ep": "oh01",
+      "judul": "Rp1 Triliun Pecahan 100 Ribu Ditumpuk, Setinggi Apa?",
+      "objek": [
+        "uang-100rb"
+      ],
+      "patokan": [
+        "rumah",
+        "monas",
+        "autograph-tower"
+      ],
+      "format": "abc",
+      "alur": "tangga"
+    },
+    {
+      "ep": "oh02",
+      "judul": "Semua Motor di Indonesia Dijejer, Sepanjang Apa?",
+      "objek": [
+        "motor"
+      ],
+      "patokan": [
+        "jakarta-surabaya",
+        "sabang-merauke",
+        "keliling-bumi"
+      ],
+      "format": "abc",
+      "alur": "tangga"
+    },
+    {
+      "ep": "oh03",
+      "judul": "Semua Nasi Bungkus Orang Indonesia Sehari, Ditumpuk Setinggi Apa?",
+      "objek": [
+        "nasi-bungkus"
+      ],
+      "patokan": [
+        "monas",
+        "everest",
+        "pesawat",
+        "stasiun-angkasa",
+        "lebar-bumi"
+      ],
+      "format": "abc",
+      "alur": "tangga"
+    },
+    {
+      "ep": "oh04",
+      "judul": "Semua Motor vs Semua Mobil di Indonesia Dijejer, Siapa Lebih Panjang?",
+      "objek": [
+        "motor",
+        "mobil"
+      ],
+      "patokan": [],
+      "format": "duel",
+      "alur": "duel"
+    },
+    {
+      "ep": "oh05",
+      "judul": "Air Seumur Hidup Jadi Galon, Setinggi Apa?",
+      "objek": [
+        "galon"
+      ],
+      "patokan": [
+        "monas",
+        "autograph-tower",
+        "burj-khalifa"
+      ],
+      "format": "tebak-angka",
+      "alur": "hasil-dulu"
+    },
+    {
+      "ep": "oh06",
+      "judul": "Semua Orang RI Gandengan Tangan, Cuma Keliling Bumi 1×?",
+      "objek": [
+        "orang"
+      ],
+      "patokan": [
+        "jakarta-surabaya",
+        "sabang-merauke",
+        "keliling-bumi",
+        "bulan"
+      ],
+      "format": "benar-bohong",
+      "alur": "tangga"
+    },
+    {
+      "ep": "oh07",
+      "judul": "1 Juta Galon vs Nasi Bungkus vs Uang 100 Ribu: Urutkan!",
+      "objek": [
+        "galon",
+        "nasi-bungkus",
+        "uang-100rb"
+      ],
+      "patokan": [
+        "monas",
+        "pesawat",
+        "stasiun-angkasa"
+      ],
+      "format": "urutkan",
+      "alur": "urut"
+    },
+    {
+      "ep": "oh08",
+      "judul": "Motor Jakarta Dijejer Lebih Panjang dari Sabang–Merauke?",
+      "objek": [
+        "motor"
+      ],
+      "patokan": [
+        "sabang-merauke"
+      ],
+      "format": "kurang-lebih",
+      "alur": "duel"
+    },
+    {
+      "ep": "oh09",
+      "judul": "Kertas Dilipat 42 Kali Sampai Bulan, Benar atau Bohong?",
+      "objek": [
+        "kertas"
+      ],
+      "patokan": [
+        "monas",
+        "pesawat",
+        "stasiun-angkasa",
+        "bulan"
+      ],
+      "format": "benar-bohong",
+      "alur": "tangga"
+    },
+    {
+      "ep": "oh10",
+      "judul": "Mi Instan Semenit se-Indonesia Ditumpuk, Lewat Eiffel? 🍜",
+      "objek": [
+        "mi-instan"
+      ],
+      "patokan": [
+        "gunung-bromo",
+        "menara-eiffel"
+      ],
+      "format": "abc",
+      "alur": "hasil-dulu"
+    }
   ]
 }
