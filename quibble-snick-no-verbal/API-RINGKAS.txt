@@ -31,3 +31,5 @@ LATAR (+defs khusus bila ada; sisipkan setelah `defs`):
 - Jeda 2 frame benturan: f = hold2(f, frameBenturan). Getar: shake(f, at, len, amp) ke fx/fy kamera.
 - Daftarkan di Root.tsx: <Composition id="EPxx" component={EPxx} durationInFrames={420} fps={30} width={1080} height={1920}/>
 - Audio: video/audio/_template_el.py + el_lib.py (cek kuota, cache, sinkron puncak, mix melingkar, verifikasi).
+  kitDefs; kitchen() (konter x-40..560 atas y=296, lemari bawah), MW + microwave({dial,fill,door,on,shk,n,f,bulge}), pop(x,y,s,rot), kernel(x,y,s),
+  popMass(x0,x1,yTop,yBot,f,seed,amp) gunungan popcorn, panK(x,y,rot,c,s) panci, toaster(x,y,{lever,toast}), fridge(x,y,{sq})   [EP10]

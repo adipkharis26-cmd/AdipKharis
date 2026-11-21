@@ -6,14 +6,13 @@ BATAS KERJA (WAJIB): hanya baca & ubah file di dalam folder `quibble-snick-no-ve
 EPISODE YANG DIBUAT: [isi dari DAFTAR IDE di bawah, atau ide baru]
 
 DAFTAR IDE (judul — hook 1 kalimat):
-- Popcorn 🍿 — Satu biji jagung di microwave jadi gunung popcorn.
 - Tangled Earphones 🎧 — Terikat kabel dari kepala sampai kaki.
 - Balloon 🎈 — Terlalu banyak balon, mulai melayang.
 - Snowman ☃️ — Hidung wortel boneka salju hilang, tersangka jelas.
 - Parking Spot 🚗 — Dua mobil mini mengincar satu tempat parkir.
 - Domino 🁢 — Satu sentuhan kecil, seluruh kota ambruk berantai.
-Sudah dibuat (jangan diulang): EP01 The Last Slice, EP02 Wet Paint, EP03 The Door, EP04 Vending Machine, EP05 Umbrella War, EP06 Selfie Fail, EP07 Elevator Button, EP08 Alarm Clock, EP09 Escalator.
-Pemeran & pemenang terakhir: EP07 Quibble/Snick/Brick (Snick menang), EP08 Brick/Dot (Dot menang), EP09 Quibble/Snick/Dot (Quibble menang).
+Sudah dibuat (jangan diulang): EP01 The Last Slice, EP02 Wet Paint, EP03 The Door, EP04 Vending Machine, EP05 Umbrella War, EP06 Selfie Fail, EP07 Elevator Button, EP08 Alarm Clock, EP09 Escalator, EP10 Popcorn.
+Pemeran & pemenang terakhir: EP08 Brick/Dot (Dot menang), EP09 Quibble/Snick/Dot (Quibble menang), EP10 Brick/Snick (Brick menang; STRUKTUR C, tracking samping + potongan cepat, hook layar gelap+pop, loop match-cut, musik e4_music).
 
 FORMULA 13–15 dtk: hook < 1 dtk → isi sesuai STRUKTUR pilihan (lihat VARIASI) → punchline → payoff yang menyambung ke frame 0 (seamless loop).
 

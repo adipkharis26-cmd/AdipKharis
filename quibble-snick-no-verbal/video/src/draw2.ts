@@ -375,3 +375,66 @@ export function runLegs(x, y, ph, s = 1, amp = 1) {
   }
   return g;
 }
+
+// ===== EP10 Popcorn: dapur, microwave, popcorn, panci, pemanggang roti, kulkas =====
+export const kitDefs = `<defs><linearGradient id="kitW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D8F0E4"/><stop offset="1" stop-color="#B5DCC9"/></linearGradient>
+<linearGradient id="kitF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9C9A3"/><stop offset="1" stop-color="#CFA67A"/></linearGradient>
+<radialGradient id="mwGlow" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#FFD98A"/><stop offset="1" stop-color="#E8A23A"/></radialGradient></defs>`;
+const rnd = (i) => { const v = Math.sin(i * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
+// satu popcorn: gumpalan putih bergerigi + sedikit kuning
+export const pop = (x, y, s = 1, rot = 0) => `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})"><path d="M-7,2 a5,5 0 0 1 2,-8 a5,5 0 0 1 8,-2 a5,5 0 0 1 6,6 a5,5 0 0 1 -2,8 a5,5 0 0 1 -8,2 a5,5 0 0 1 -6,-6Z" fill="#FFFDF4" stroke="${C.ink}" stroke-width="2"/><circle cx="1" cy="2" r="2.4" fill="#F6C445"/></g>`;
+export const kernel = (x, y, s = 1) => `<g transform="translate(${x},${y}) scale(${s})"><path d="M0,-5 Q5,-2 3,4 Q0,6 -3,4 Q-5,-2 0,-5Z" fill="#F2B632" stroke="${C.ink}" stroke-width="1.6"/></g>`;
+// massa popcorn: dari x0..x1, permukaan atas di yTop (gelombang), dasar yBot
+export function popMass(x0, x1, yTop, yBot, f = 0, seed = 0, amp = 6) {
+  if (x1 - x0 < 2 || yBot - yTop < 1) return '';
+  let d = `M${x0},${yBot}`; const n = Math.max(2, Math.round((x1 - x0) / 12));
+  for (let i = 0; i <= n; i++) { const x = x0 + (x1 - x0) * i / n; d += ` L${x},${yTop + Math.sin(i * 1.7 + f * 0.25 + seed) * amp * 0.5}`; }
+  let g = `<path d="${d} L${x1},${yBot}Z" fill="#FFF6DC" stroke="${C.ink}" stroke-width="3" stroke-linejoin="round"/>`;
+  for (let i = 0; i <= n; i++) { const x = x0 + (x1 - x0) * i / n; g += pop(x + (rnd(i + seed) - 0.5) * 6, yTop + Math.sin(i * 1.7 + f * 0.25 + seed) * amp * 0.5, 1 + rnd(i + seed + 9) * 0.5, rnd(i + seed + 3) * 360); }
+  const m = Math.min(40, Math.round((x1 - x0) * (yBot - yTop) / 500));
+  for (let i = 0; i < m; i++) g += pop(x0 + 6 + rnd(i * 3 + seed) * (x1 - x0 - 12), yTop + 10 + rnd(i * 5 + seed + 1) * (yBot - yTop - 12), 0.9, rnd(i + seed + 7) * 360);
+  return g;
+}
+export const MW = {x: 50, y: 236, w: 100, h: 56, dial: [136, 262]};
+// microwave: dial(deg) · fill(0..1 popcorn dalam jendela) · door(0..1 terlempar) · on(lampu dalam) · shk(goyang) · n(popcorn tunggal di piring)
+export function microwave(o: any = {}) {
+  const {dial = 30, fill = 0, door = 0, on = true, shk = 0, n = 0, f = 0, bulge = 0} = o; const {x, y, w, h} = MW;
+  let g = `<rect x="${x - bulge}" y="${y - bulge}" width="${w + bulge * 2}" height="${h + bulge}" rx="8" fill="#E9EEF2" stroke="${C.ink}" stroke-width="4"/>` +
+    `<rect x="${x + 8}" y="${y + 8}" width="62" height="40" rx="4" fill="${on ? 'url(#mwGlow)' : '#3A3440'}" stroke="${C.ink}" stroke-width="3"/>`;
+  if (n && fill < 0.2) g += pop(x + 39, y + 40 - Math.abs(Math.sin(f * 0.35)) * 8, 1, f * 9);
+  if (fill > 0) { const ft = y + 48 - 40 * Math.min(1, fill); g += `<clipPath id="mwc"><rect x="${x + 8}" y="${y + 8}" width="62" height="40" rx="4"/></clipPath><g clip-path="url(#mwc)">${popMass(x + 6, x + 72, ft, y + 50, f, 2, 5)}</g>`; }
+  g += `<rect x="${x + 76}" y="${y + 8}" width="18" height="40" rx="3" fill="#CFD8DF" stroke="${C.ink}" stroke-width="2.5"/>` +
+    `<g transform="translate(${MW.dial[0]},${MW.dial[1]}) rotate(${dial})"><circle r="7" fill="#fff" stroke="${C.ink}" stroke-width="2.5"/>${L(0, 0, 0, -6, 3, '#E4572E')}</g>` +
+    `<circle cx="${x + 85}" cy="${y + 40}" r="3.5" fill="#7BD389" stroke="${C.ink}" stroke-width="2"/>`;
+  if (door > 0) { // pintu terlempar ke kanan-depan sambil berputar
+    const dx = door * 160, dy = -Math.sin(door * Math.PI) * 60 + door * 90;
+    g += `<rect x="${x + 8}" y="${y + 8}" width="62" height="40" rx="4" fill="#2A2530" stroke="${C.ink}" stroke-width="3"/>` +
+      `<g transform="translate(${x + 39 + dx},${y + 28 + dy}) rotate(${door * 540})"><rect x="-34" y="-22" width="68" height="44" rx="5" fill="#E9EEF2" stroke="${C.ink}" stroke-width="3.5"/><rect x="-28" y="-16" width="56" height="32" rx="3" fill="#A9D8EA" stroke="${C.ink}" stroke-width="2"/></g>`;
+  }
+  return `<g transform="translate(${shk},${-Math.abs(shk) * 0.4})">${g}</g>`;
+}
+export const panK = (x, y, rot = 0, c = '#5B7DB1', s = 1) => `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})"><path d="M-18,-16 L18,-16 L15,0 L-15,0Z" fill="${c}" stroke="${C.ink}" stroke-width="3" stroke-linejoin="round"/>${L(18, -12, 28, -14, 4)}${L(-18, -12, -28, -14, 4)}<rect x="-20" y="-19" width="40" height="4" rx="2" fill="${C.ink}"/></g>`;
+export function toaster(x, y, o: any = {}) {
+  const {lever = 0, toast = 0} = o; // toast: 0 di dalam .. 1 terbang tinggi
+  const ty = -Math.sin(Math.min(1, toast) * Math.PI) * 140 - toast * 10;
+  const tst = (dx, r) => `<g transform="translate(${x + dx + toast * dx * 3},${y - 30 + (toast ? ty : 0)}) rotate(${toast * r})"><rect x="-8" y="-11" width="16" height="20" rx="5" fill="#E7B26A" stroke="${C.ink}" stroke-width="2.5"/><rect x="-5" y="-8" width="10" height="14" rx="3" fill="#F6D59A"/></g>`;
+  return tst(-9, -300) + tst(9, 340) + `<rect x="${x - 26}" y="${y - 34}" width="52" height="34" rx="10" fill="#E4572E" stroke="${C.ink}" stroke-width="3.5"/>` +
+    `<rect x="${x - 18}" y="${y - 30}" width="36" height="6" rx="3" fill="#fff" opacity=".35"/>${L(x + 26, y - 20 + lever * 10, x + 33, y - 20 + lever * 10, 4)}`;
+}
+export function fridge(x, y, o: any = {}) {
+  const {sq = 0} = o;
+  return `<g transform="translate(${x},${y}) scale(${1 + sq * 0.04},${1 - sq * 0.03}) translate(${-x},${-y})"><rect x="${x - 42}" y="${y - 210}" width="84" height="210" rx="12" fill="#F4F7FA" stroke="${C.ink}" stroke-width="4"/>` +
+    `<rect x="${x + 20}" y="${y - 210}" width="22" height="210" rx="0" fill="#000" opacity=".06"/>${L(x - 42, y - 140, x + 42, y - 140, 3)}${L(x - 30, y - 186, x - 30, y - 160, 5)}${L(x - 30, y - 124, x - 30, y - 80, 5)}` +
+    `<circle cx="${x + 14}" cy="${y - 180}" r="6" fill="#FFD23F" stroke="${C.ink}" stroke-width="2"/><rect x="${x + 6}" y="${y - 120}" width="14" height="18" rx="2" fill="#FF8FA3" stroke="${C.ink}" stroke-width="2"/></g>`;
+}
+export function kitchen() {
+  let g = `<rect x="-400" y="-300" width="1600" height="1100" fill="url(#kitW)"/>`;
+  for (let i = 0; i < 40; i++) for (let j = 0; j < 3; j++) g += `<rect x="${-80 + i * 22}" y="${226 + j * 22 - (i % 2) * 0}" width="20" height="20" rx="3" fill="#fff" opacity=".35"/>`;
+  g += `<rect x="-400" y="400" width="1600" height="400" fill="url(#kitF)"/>${L(-400, 400, 1200, 400, 4)}`;
+  for (const cx of [210, 330, 450]) g += `<rect x="${cx - 54}" y="118" width="108" height="78" rx="8" fill="#F2A65A" stroke="${C.ink}" stroke-width="4"/><rect x="${cx - 6}" y="150" width="12" height="4" rx="2" fill="${C.ink}"/>`;
+  g += `<rect x="-60" y="60" width="90" height="120" rx="8" fill="#9ED8FF" stroke="${C.ink}" stroke-width="4"/>${L(-15, 60, -15, 180, 3)}${L(-60, 120, 30, 120, 3)}`;
+  g += `<rect x="-40" y="300" width="600" height="100" fill="#F2A65A" stroke="${C.ink}" stroke-width="4"/>`;
+  for (let i = 0; i < 6; i++) g += `<rect x="${-34 + i * 98}" y="310" width="88" height="82" rx="6" fill="#F7B977" stroke="${C.ink}" stroke-width="3"/><rect x="${-34 + i * 98 + 38}" y="318" width="12" height="4" rx="2" fill="${C.ink}"/>`;
+  g += `<rect x="-46" y="290" width="612" height="12" rx="4" fill="#FFF7EA" stroke="${C.ink}" stroke-width="4"/>`;
+  return g;
+}
