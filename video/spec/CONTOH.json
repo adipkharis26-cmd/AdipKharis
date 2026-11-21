@@ -1,0 +1,28 @@
+{
+  "ep": "ohNN",
+  "slug": "judul-singkat",
+  "format": "<dari oh_format.py>", "alur": "<dari oh_format.py>", "jawaban": "<dari oh_format.py>",
+  "seri": "Ukur Pakai Barang Sehari-hari",
+  "judul": "Judul Maks 70 Karakter 🤯 | OHHIYAA!",
+  "objek": ["barang-utama"],
+  "patokan": ["landmark-1", "landmark-2"],
+  "vo": ["paragraf 1 hook", "paragraf 2 interaksi", "paragraf 3 satuan", "paragraf 4 hitung/tangga", "paragraf 5 OHHIYAA!", "paragraf 6 personal+loop"],
+  "layar": ["opsional: 1 baris per bagian (catatan visual)", "", "", "", "", ""],
+  "hitungan": ["rumus + hasil tiap angka (wajib bisa dicek ulang)"],
+  "asumsi": ["asumsi yang BUKAN data resmi"],
+  "keaslian": {
+    "sumber_primer": ["BPS — Statistik/tabel X (tahun)", "NASA — fakta Y"],
+    "sudut_baru": "apa yang berbeda dari episode lain: objek/pertanyaan/data baru, bukan sekadar ganti angka",
+    "web_cek": "WebSearch '<judul>' + '<angka kunci>' → tidak ada video/judul/visual identik (tulis hasil singkat)"
+  },
+  "deskripsi": {
+    "pembuka": "1–2 kalimat santai + emoji",
+    "hitungan": "ringkasan hitungan + sumber, 1–2 kalimat",
+    "cta": "Ajakan komentar sesuai format 👇",
+    "hashtag": "#shorts #ohhiyaa #faktaunik #indonesia #tahukahkamu"
+  },
+  "thumb": [
+    {"nama": "A", "alasan": "kenapa diklik (tanpa bocorkan jawaban)", "frame": 8.0, "zoom": 1.2, "fokus": [540, 1100], "teks": [{"t": "BARIS 1", "warna": "putih"}, {"t": "BARIS 2?", "kotak": "pink"}], "stiker": [{"e": "2753", "x": 905, "y": 1290, "s": 200, "rot": 0.15}]},
+    {"nama": "B", "alasan": "varian cadangan", "frame": 20.0, "zoom": 1.0, "fokus": [540, 900], "teks": [{"t": "BARIS 1", "warna": "putih"}, {"t": "BARIS 2?", "kotak": "pink"}]}
+  ]
+}

@@ -169,12 +169,35 @@ Satu episode dianggap SELESAI hanya kalau paketnya persis ini, tidak kurang dan 
 - Perintah pengemas dan pemeriksa: `python3 video/src/siap.py ohNN`. Hasil berkas di `video/out/siap/ohNN/` (MP4 + 2 PNG saja), dan perintah itu **mencetak judul + deskripsi dalam kotak kode**: tempel apa adanya ke balasan chat bersama pengiriman MP4 dan thumbnail. Kalau perintah itu gagal, episode belum siap dan tidak boleh dilaporkan selesai.
 - Berkas lain (naskah, VO, mix, spesifikasi thumbnail) tetap disimpan di repo sebagai bahan, tetapi yang diserahkan ke owner hanya MP4, 2 thumbnail, 1 judul, 1 deskripsi.
 
+## 10. HEMAT KUOTA + KEASLIAN (TERKUNCI, owner 21 Nov 2026) — gaya visual TIDAK berubah
+**Keaslian (mengurangi risiko dianggap konten massal/berulang/tidak autentik; tidak ada jaminan, keputusan akhir ada di platform):**
+1. Topik **riset sendiri** dari **sumber primer** (BPS, NASA, Kemenkes, BI, Guinness, dst.), minimal 2 sumber bernama; hitungan ditulis sendiri dan bisa dicek ulang. Angka tanpa sumber = ganti topik.
+2. **Anti-duplikat:** semua topik tercatat di `workflow/oh-topik.json`. `python3 video/src/ohspec.py ohNN` menolak spec bila judul terlalu mirip, objek+patokan hampir sama, **objek dipakai ≥2× di 6 episode terakhir**, atau **patokan (Monas, Sabang–Merauke, dst.) dipakai ≥2× di 5 episode terakhir**. Pakai patokan baru dari `kolam_patokan_baru` (angkanya wajib diriset dulu).
+3. Setiap spec wajib memuat `keaslian.sudut_baru` (apa yang benar-benar baru, bukan sekadar ganti angka) dan `keaslian.web_cek` (pencarian web yang dijalankan untuk memastikan tak ada judul/visual identik; maks 1 pencarian).
+4. Jangan meniru judul, gaya, atau visual kreator lain (mis. @geserdikitaja). Semua aset dibuat sendiri (mainan 3D, musik/SFX sintesis, VO akun sendiri). Dilarang memakai klip/gambar pihak lain.
+5. Format interaksi, alur, dan posisi jawaban diacak (bagian 4); jangan menukar hasil `oh_format.py`.
+6. VO memakai suara sintetis (ElevenLabs): di YouTube Studio jawab pertanyaan pengungkapan konten sintetis/AI dengan jujur; keputusan ada pada owner.
+
+**Hemat kuota (token + waktu):**
+1. **Satu spec saja:** tulis `video/spec/ohNN.json` (lihat `video/spec/CONTOH.json`), lalu `python3 video/src/ohspec.py ohNN --simpan` menghasilkan `video/vo/ohNN.txt`, `naskah/ohNN-*.md`, `video/thumb/ohNN.json`, dan mencatat registri. **Dilarang menulis naskah/VO/thumb JSON manual.**
+2. **TTS sekali:** pastikan VO 85–115 kata (≈2 kata/dtk; target total ≤ 53 dtk) sebelum `tts_elevenlabs.py`; jangan generate ulang kecuali durasi >55 dtk.
+3. **Scene ringkas:** episode baru memuat `ohlib.js` (setelah `ohhiyaa3d.js`): `hOf`, `towerOf`, `follow`, `lane`, `counterUI`. Tulis hanya bagian khas episode (pola `oh05/oh07/oh09`).
+4. **Preview 1 lembar:** `python3 video/src/ohsheet.py ohNN` (8 frame, 1 gambar, keluaran 1 baris). Read sekali; revisi terarah dengan detik tertentu (`ohsheet.py ohNN 6 20 36.5`); maks 2 putaran. Dilarang render video penuh untuk preview (CLAUDE.md §1).
+5. **Render sekali, tanpa polling:** `python3 video/src/ohrun.py ohNN` dijalankan `run_in_background` (lint → mix → render → thumbnail → siap; tiap tahap dilewati jika hasilnya sudah mutakhir). Jangan memakai Monitor/sleep berulang; tunggu satu notifikasi selesai. `ohrun.py ohNN --rencana` untuk melihat apa yang akan dikerjakan tanpa menjalankan.
+6. **Lint sebelum render:** `ohlint.js` (otomatis di `ohrun.py`) menangkap error, durasi di luar 40–55, dan OHHIYAA! ≠ 1× sebelum render ±15 menit. Perbaiki dulu, baru render.
+7. **Riset hemat:** maks 3 `WebSearch` mode standard per episode (data inti, kebenaran klaim, cek duplikat). Jangan mode extended.
+8. **Verifikasi MP4:** cukup `ffprobe` (sudah di `siap.py`). Cek frame MP4 hanya bila scene berubah setelah preview. Thumbnail: 1 putaran, baca `ohNN-cek.png` sekali.
+9. **Keluaran alat dikecilkan:** gunakan `| tail -n`, jangan `cat` berkas besar, jangan baca ulang gambar yang tidak berubah.
+- Catatan teknis (terukur 21 Nov 2026): waktu render didominasi menggambar frame (±0,7 dtk/frame, perender perangkat lunak); enkode PNG hanya ±32 ms dan 3 proses paralel hanya +33% throughput, jadi tidak dipakai. Penghematan datang dari **tidak merender sia-sia** dan **menulis lebih sedikit**, bukan dari mengubah tampilan.
+
 ## 8. Larangan
 - Angka karangan atau hitungan yang tidak bisa dicek.
 - Jawaban di thumbnail.
 - Meniru judul atau gaya peta Geser Dikit.
 - Durasi di luar 40–55 detik.
 - Momen OHHIYAA! lebih dari sekali.
+- Topik tanpa sumber primer, tanpa `ohspec.py` lolos, atau mengulang objek/patokan yang ditolak registri.
+- Render ulang video penuh tanpa perubahan scene/mesin, memantau render dengan polling, atau menulis naskah/VO/thumb JSON manual.
 - Menyerahkan paket yang tidak lolos `siap.py` (mis. 2 judul, 3 thumbnail, tanpa deskripsi), atau menyerahkan judul/deskripsi sebagai berkas .txt.
 - Memakai format A/B/C terus-menerus, atau jawaban benar yang sama berurutan, atau menukar hasil `oh_format.py` secara manual.
 - Alur yang sama persis dengan episode sebelumnya (hook → tebak → tangga → jawaban) tanpa mengikuti hasil acak.
