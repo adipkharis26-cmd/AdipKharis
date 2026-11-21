@@ -36,7 +36,7 @@ export function brick(x, y, s = 1, o: any = {}) {
     rOnly: L(w / 2, top + h * 0.45, w / 2 + 14, top + h * 0.8, 10),
     // memegang gagang payung di (-w/2-14, top-6) (lokal); lengan kanan turun
     umbL: L(w / 2, top + h * 0.45, w / 2 + 14, top + h * 0.8, 10) + L(-w / 2, top + h * 0.42, -w / 2 - 14, top - 6, 10)};
-  g += ar[arms] || ar.down;
+  g += arms === 'none' ? '' : (ar[arms] || ar.down);
   g += `<defs><clipPath id="${id}"><rect x="${-w / 2}" y="${top}" width="${w}" height="${h}" rx="20"/></clipPath></defs>` +
     `<rect x="${-w / 2}" y="${top}" width="${w}" height="${h}" rx="20" fill="${C2.brick}"/>` +
     `<g clip-path="url(#${id})"><rect x="${w / 2 - 34}" y="${top}" width="40" height="${h}" fill="#000" opacity=".12"/>` +
@@ -554,3 +554,84 @@ export const magnifier = (cx, cy, r) => `<path fill-rule="evenodd" d="M-20,-20 H
 <line x1="${cx - r * 0.42}" y1="${cy + r * 0.92}" x2="${cx - r * 0.75}" y2="${cy + r * 1.9}" stroke="${C.ink}" stroke-width="24" stroke-linecap="round"/><line x1="${cx - r * 0.42}" y1="${cy + r * 0.92}" x2="${cx - r * 0.75}" y2="${cy + r * 1.9}" stroke="#8A5A2B" stroke-width="16" stroke-linecap="round"/>
 <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${C.ink}" stroke-width="16"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#D9A93A" stroke-width="9"/><path d="M${cx - r * 0.7},${cy - r * 0.35} q${r * 0.2},${-r * 0.4} ${r * 0.55},${-r * 0.5}" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".55"/>`;
 export const note = (x, y, s = 1, rot = 0) => `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})"><ellipse cx="0" cy="0" rx="4.5" ry="3.5" fill="${C.ink}" transform="rotate(-20)"/><path d="M4,-1 V-16 q5,2 7,7" fill="none" stroke="${C.ink}" stroke-width="2.2" stroke-linecap="round"/></g>`;
+
+// ===== EP12 Balloon: taman pasar malam siang hari, palet pastel kuning-pink =====
+export const BAL = ['#FF8FB8', '#FFD54F', '#8FE3C8', '#B9A2F5', '#FFB38A', '#8CCBF2', '#FF6F91', '#C5E86C', '#FFC6E0', '#7FD1E8'];
+// posisi balon relatif titik genggam G (urutan isi; dipecahkan dari indeks terbesar)
+export const BSLOT = [[0, -56], [-19, -50], [19, -50], [0, -78], [-34, -66], [34, -66], [-17, -84], [17, -84], [-38, -44], [38, -44]];
+export const balloon = (x, y, c, sq = 1, rot = 0) => `<g transform="translate(${x},${y}) rotate(${rot}) scale(${1 / Math.sqrt(sq)},${sq})"><path d="M0,12 l-3.5,5 h7z" fill="${c}" stroke="${C.ink}" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="0" cy="0" rx="11" ry="13" fill="${c}" stroke="${C.ink}" stroke-width="2.6"/><ellipse cx="-4.5" cy="-5" rx="2.4" ry="4.2" fill="#fff" opacity=".75" transform="rotate(20 -4.5 -5)"/></g>`;
+export const bstr = (x1, y1, x2, y2, wig = 0) => `<path d="M${x1},${y1} Q${(x1 + x2) / 2 + wig},${(y1 + y2) / 2} ${x2},${y2}" fill="none" stroke="${C.ink}" stroke-width="1.3" opacity=".85"/>`;
+// letusan balon p 0..1
+export const balPop = (x, y, c, p) => { const r = 10 + p * 16, o = 1 - p; let d = ''; for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6, rr = i % 2 ? r * 0.5 : r; d += (i ? 'L' : 'M') + (x + Math.cos(a) * rr).toFixed(1) + ',' + (y + Math.sin(a) * rr).toFixed(1); }
+  return `<g opacity="${o}"><path d="${d}Z" fill="#FFF7C2" stroke="${C.ink}" stroke-width="2.4" stroke-linejoin="round"/>` + [0, 1, 2, 3].map(i => { const a = i * 1.7 + 0.4, q = 8 + p * 22; return `<path d="M${x + Math.cos(a) * q},${y + Math.sin(a) * q + p * 8} q3,-3 6,0" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`; }).join('') + `</g>`; };
+export const heart = (x, y, s = 1, op = 1) => `<path transform="translate(${x},${y}) scale(${s})" opacity="${op}" d="M0,6 C-10,-2 -8,-10 -3,-10 C-1,-10 0,-8 0,-7 C0,-8 1,-10 3,-10 C8,-10 10,-2 0,6Z" fill="#FF6F91" stroke="${C.ink}" stroke-width="2" stroke-linejoin="round"/>`;
+export function cloud(x, y, s = 1) {
+  const cs = [[-22, 4, 12], [-8, -6, 16], [10, -4, 14], [24, 5, 10], [0, 8, 13]];
+  return `<g transform="translate(${x},${y}) scale(${s})">` + cs.map(([a, b, r]) => `<circle cx="${a}" cy="${b}" r="${r + 2.6}" fill="${C.ink}"/>`).join('') + cs.map(([a, b, r]) => `<circle cx="${a}" cy="${b}" r="${r}" fill="#fff"/>`).join('') + `<ellipse cx="2" cy="12" rx="26" ry="4" fill="#F9D3E3" opacity=".7"/></g>`;
+}
+export const birdie = (x, y, s = 1, flap = 0, flip = false) => `<g transform="translate(${x},${y}) scale(${flip ? -s : s},${s})"><path d="M6,-2 l8,2 l-8,3z" fill="#FFB347" stroke="${C.ink}" stroke-width="1.6" stroke-linejoin="round"/><ellipse cx="0" cy="0" rx="9" ry="7.5" fill="#8CCBF2" stroke="${C.ink}" stroke-width="2.4"/><path d="M-3,-1 q-8,${-10 * Math.cos(flap)} -12,${-2 - 6 * Math.cos(flap)} q6,6 12,4z" fill="#5FA8D8" stroke="${C.ink}" stroke-width="1.8" stroke-linejoin="round"/><circle cx="3" cy="-2.5" r="1.6" fill="${C.ink}"/>${L(-2, 7, -3, 10, 1.6)}${L(2, 7, 2, 10, 1.6)}</g>`;
+// arum manis: (x,y)=pangkal tongkat; eat 0..1 (habis)
+export const cotton = (x, y, s = 1, rot = 0, eat = 0) => { const r = 11 * (1 - eat); return `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})">${L(0, 0, 0, -26, 3, '#F4E3C1')}<line x1="0" y1="0" x2="0" y2="-26" stroke="${C.ink}" stroke-width="1" opacity=".5"/>${r > 1 ? `<circle cx="0" cy="-30" r="${r + 2.5}" fill="${C.ink}"/><circle cx="-4" cy="-33" r="${r * 0.7 + 2.5}" fill="${C.ink}"/><circle cx="0" cy="-30" r="${r}" fill="#FFB3D1"/><circle cx="-4" cy="-33" r="${r * 0.7}" fill="#FFC9E0"/><circle cx="3" cy="-28" r="${r * 0.35}" fill="#fff" opacity=".6"/>` : ''}</g>`; };
+export const fairDefs = `<defs><linearGradient id="skyF" gradientUnits="userSpaceOnUse" x1="0" y1="-300" x2="0" y2="420"><stop offset="0" stop-color="#F6A9CC"/><stop offset=".5" stop-color="#FFD0DF"/><stop offset="1" stop-color="#FFF2B3"/></linearGradient>
+<linearGradient id="grF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBE7A8"/><stop offset="1" stop-color="#F2CF86"/></linearGradient></defs>`;
+// lapisan jauh (paralaks): langit, matahari, bukit, awan jauh
+export function fairFar() {
+  let s = `<rect x="-900" y="-1600" width="2400" height="2600" fill="url(#skyF)"/><circle cx="40" cy="60" r="34" fill="#FFF7D6" opacity=".9"/><circle cx="40" cy="60" r="50" fill="#FFF7D6" opacity=".35"/>`;
+  for (const [x, y, k] of [[-60, 130, 0.8], [190, 40, 0.7], [380, 150, 0.9], [100, -120, 0.8], [300, -60, 0.6], [-20, -260, 0.9], [240, -300, 0.8], [520, -180, 0.7]]) s += `<g opacity=".55">${cloud(x, y, k)}</g>`;
+  s += `<path d="M-900,420 L-900,352 Q-700,300 -480,350 Q-300,318 -120,352 Q60,312 230,350 Q400,316 580,352 Q760,320 1000,350 L1500,352 L1500,420Z" fill="#FAD4B8" stroke="${C.ink}" stroke-width="3" opacity=".9"/>`;
+  return s;
+}
+export function ferris(cx, cy, R, rot, swing = 0, swingIdx = -1) {
+  let s = L(cx, cy, cx - 58, 400, 10) + L(cx, cy, cx - 58, 400, 5, '#F7B5CF') + L(cx, cy, cx + 58, 400, 10) + L(cx, cy, cx + 58, 400, 5, '#F7B5CF');
+  s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="8"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#FFE07A" stroke-width="4"/><circle cx="${cx}" cy="${cy}" r="${R * 0.62}" fill="none" stroke="#F7B5CF" stroke-width="2.5"/>`;
+  for (let i = 0; i < 8; i++) { const a = (rot + i * 45) * Math.PI / 180; s += L(cx, cy, cx + Math.cos(a) * R, cy + Math.sin(a) * R, 2.5, '#E59BB9'); }
+  s += `<circle cx="${cx}" cy="${cy}" r="9" fill="#FF8FB8" stroke="${C.ink}" stroke-width="3"/>`;
+  for (let i = 0; i < 8; i++) {
+    const a = (rot + i * 45) * Math.PI / 180, px = cx + Math.cos(a) * R, py = cy + Math.sin(a) * R;
+    s += `<g transform="rotate(${i === swingIdx ? swing : 0} ${px} ${py})">${L(px, py, px, py + 9, 2.5)}<path d="M${px - 12},${py + 9} h24 v6 q0,10 -12,10 q-12,0 -12,-10z" fill="${BAL[(i * 3) % BAL.length]}" stroke="${C.ink}" stroke-width="2.6" stroke-linejoin="round"/><rect x="${px - 12}" y="${py + 8}" width="24" height="3" fill="${C.ink}" opacity=".25"/></g>`;
+  }
+  return s;
+}
+// bendera segitiga di tali melengkung; flut(i) = sudut kibar per bendera
+export function bunting(x0, x1, y, sag, flut = (i) => 0) {
+  let s = `<path d="M${x0},${y} Q${(x0 + x1) / 2},${y + sag * 2} ${x1},${y}" fill="none" stroke="${C.ink}" stroke-width="2"/>`;
+  const n = Math.round((x1 - x0) / 18);
+  for (let i = 1; i < n; i++) { const u = i / n, x = x0 + (x1 - x0) * u, yy = y + sag * 4 * u * (1 - u); s += `<path transform="rotate(${flut(i)} ${x} ${yy})" d="M${x - 6},${yy} h12 l-6,13z" fill="${BAL[i % 4 === 0 ? 0 : i % 4 === 1 ? 1 : i % 4 === 2 ? 8 : 3]}" stroke="${C.ink}" stroke-width="1.8" stroke-linejoin="round"/>`; }
+  return s;
+}
+export const pole = (x, top = 230) => `<rect x="${x - 3}" y="${top}" width="6" height="${400 - top}" fill="#F7B5CF" stroke="${C.ink}" stroke-width="2.5"/><circle cx="${x}" cy="${top}" r="6" fill="#FFE07A" stroke="${C.ink}" stroke-width="2.5"/>`;
+export function tent(x, w, h, c1 = '#FF8FB8', c2 = '#FFF3C4') {
+  let s = `<rect x="${x}" y="${400 - h}" width="${w}" height="${h}" fill="${c2}" stroke="${C.ink}" stroke-width="3"/>`;
+  for (let i = 0; i < w / 14; i += 2) s += `<rect x="${x + i * 14}" y="${400 - h}" width="14" height="${h}" fill="${c1}" opacity=".85"/>`;
+  s += `<rect x="${x}" y="${400 - h}" width="${w}" height="${h}" fill="none" stroke="${C.ink}" stroke-width="3"/><path d="M${x - 6},${400 - h} L${x + w / 2},${400 - h - h * 0.6} L${x + w + 6},${400 - h}Z" fill="${c1}" stroke="${C.ink}" stroke-width="3" stroke-linejoin="round"/><path d="M${x + w * 0.3},${400 - h * 0.2} v${h * 0.2} M${x + w * 0.7},${400 - h * 0.2} v${h * 0.2}" stroke="${C.ink}" stroke-width="2"/><rect x="${x + w * 0.3}" y="${400 - h * 0.55}" width="${w * 0.4}" height="${h * 0.55}" fill="#5A3C55" opacity=".55"/>`;
+  return s;
+}
+// gerobak balon; titik ikat balon = CART_G(x)
+export const CART_G = (x) => [x + 22, 330];
+export function balloonCart(x) {
+  return L(x + 22, 330, x + 22, 362, 4) + `<rect x="${x - 6}" y="360" width="56" height="26" rx="5" fill="#FFE07A" stroke="${C.ink}" stroke-width="3.5"/><rect x="${x - 6}" y="360" width="56" height="7" fill="#FF8FB8" stroke="${C.ink}" stroke-width="2.5"/>` +
+    [0, 1, 2].map(i => `<circle cx="${x + 6 + i * 16}" cy="374" r="3" fill="#fff" stroke="${C.ink}" stroke-width="1.6"/>`).join('') + L(x - 6, 366, x - 18, 352, 4) +
+    [x + 2, x + 40].map(cx => `<circle cx="${cx}" cy="391" r="8" fill="#B9A2F5" stroke="${C.ink}" stroke-width="3"/><circle cx="${cx}" cy="391" r="2.5" fill="${C.ink}"/>`).join('');
+}
+// kastil balon tiup (x0..x0+140); lantai atas = 372 - dent; menara kanan ujung (x0+136, 246)
+export const CASTLE = {x0: 300, floor: 372, g: [436, 244]};
+export function castle(dent = 0, f = 0) {
+  const x0 = CASTLE.x0, fl = CASTLE.floor - dent;
+  let s = `<rect x="${x0 + 8}" y="${296 + dent * 0.3}" width="124" height="${fl - 292 - dent * 0.3}" rx="10" fill="#FFC6E0" stroke="${C.ink}" stroke-width="4"/>`;
+  for (let i = 0; i < 6; i++) s += `<rect x="${x0 + 14 + i * 20}" y="${300 + dent * 0.3}" width="9" height="${fl - 300 - dent * 0.3}" rx="4.5" fill="#FFE07A" opacity=".9"/>`;
+  for (let i = 0; i < 5; i++) s += `<circle cx="${x0 + 20 + i * 25}" cy="${296 + dent * 0.3}" r="9" fill="#FF8FB8" stroke="${C.ink}" stroke-width="3"/>`;
+  for (const tx of [x0 + 4, x0 + 136]) s += `<rect x="${tx - 13}" y="${256 + dent * 0.4}" width="26" height="${fl - 252 - dent * 0.4}" rx="10" fill="#FF8FB8" stroke="${C.ink}" stroke-width="4"/><rect x="${tx - 9}" y="${262 + dent * 0.4}" width="6" height="${fl - 270}" rx="3" fill="#fff" opacity=".45"/><circle cx="${tx}" cy="${252 + dent * 0.4}" r="10" fill="#FFE07A" stroke="${C.ink}" stroke-width="3.5"/>`;
+  s += `<rect x="${x0 - 8}" y="${fl - 2}" width="156" height="${402 - fl}" rx="12" fill="#B9A2F5" stroke="${C.ink}" stroke-width="4"/><rect x="${x0}" y="${fl + 3}" width="140" height="5" rx="2.5" fill="#fff" opacity=".45"/>`;
+  return s;
+}
+// efek rewind (koordinat layar): garis scan, pita tracking, ikon ◀◀ (bukan teks)
+export function rewindFx(f, p) {
+  if (p <= 0) return '';
+  let s = `<rect width="270" height="480" fill="#5B4B8A" opacity="${0.14 * p}"/>`;
+  for (let y = 0; y < 480; y += 6) s += `<rect x="0" y="${y}" width="270" height="2" fill="#000" opacity="${0.08 * p}"/>`;
+  const by = (f * 53) % 520 - 30;
+  s += `<rect x="0" y="${by}" width="270" height="16" fill="#fff" opacity="${0.28 * p}"/><rect x="0" y="${(by + 190) % 520 - 20}" width="270" height="7" fill="#fff" opacity="${0.18 * p}"/>`;
+  s += `<g opacity="${p}" transform="translate(26,40)"><path d="M0,10 L16,0 L16,20Z M16,10 L32,0 L32,20Z" fill="#fff" stroke="${C.ink}" stroke-width="2.5" stroke-linejoin="round"/></g>`;
+  return s;
+}
+export const speedLines = (f, p) => p <= 0 ? '' : Array.from({length: 14}, (_, i) => { const x = (i * 47 + 13) % 270, y = ((i * 131 + f * 90) % 700) - 110; return `<rect x="${x}" y="${y}" width="3" height="${60 + (i % 3) * 30}" rx="1.5" fill="#fff" opacity="${0.55 * p}"/>`; }).join('');

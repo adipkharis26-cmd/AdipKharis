@@ -11,6 +11,7 @@ import {EP08} from './EP08';
 import {EP09} from './EP09';
 import {EP10} from './EP10';
 import {EP11} from './EP11';
+import {EP12} from './EP12';
 export const Root: React.FC = () => (<>
   <Composition id="EP03v2" component={EP03v2} durationInFrames={405} fps={30} width={1080} height={1920} />
   <Composition id="EP01" component={EP01} durationInFrames={420} fps={30} width={1080} height={1920} />
@@ -23,5 +24,6 @@ export const Root: React.FC = () => (<>
   <Composition id="EP09" component={EP09} durationInFrames={420} fps={30} width={1080} height={1920} />
   <Composition id="EP10" component={EP10} durationInFrames={420} fps={30} width={1080} height={1920} />
   <Composition id="EP11" component={EP11} durationInFrames={420} fps={30} width={1080} height={1920} />
+  <Composition id="EP12" component={EP12} durationInFrames={420} fps={30} width={1080} height={1920} />
   <Composition id="CastSheet" component={CastSheet} durationInFrames={1} fps={30} width={2160} height={960} />
 </>);
