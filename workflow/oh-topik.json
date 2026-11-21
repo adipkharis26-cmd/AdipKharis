@@ -160,6 +160,19 @@
       ],
       "format": "abc",
       "alur": "hasil-dulu"
+    },
+    {
+      "ep": "oh11",
+      "judul": "Telur vs Pisang Setahun Dijejer, Mana Lebih Panjang? 🥚🍌",
+      "objek": [
+        "pisang",
+        "telur"
+      ],
+      "patokan": [
+        "keliling-bumi"
+      ],
+      "format": "duel",
+      "alur": "duel"
     }
   ]
 }

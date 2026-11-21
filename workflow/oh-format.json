@@ -212,6 +212,12 @@
       "format": "abc",
       "alur": "hasil-dulu",
       "jawaban": "B"
+    },
+    {
+      "ep": "oh11",
+      "format": "duel",
+      "alur": "duel",
+      "jawaban": "KANAN"
     }
   ]
 }

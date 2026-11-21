@@ -1,0 +1,58 @@
+{
+  "ep": "oh11",
+  "slug": "telur-vs-pisang",
+  "format": "duel", "alur": "duel", "jawaban": "KANAN",
+  "seri": "Tebak Dulu: Lebih Besar Mana?",
+  "judul": "Telur vs Pisang Setahun Dijejer, Mana Lebih Panjang? 🥚🍌 | OHHIYAA!",
+  "objek": ["telur", "pisang"],
+  "patokan": ["keliling-bumi"],
+  "vo": [
+    "Semua telur ayam dan semua pisang yang dipanen Indonesia setahun, dijejer ujung ke ujung. Mana lebih panjang?",
+    "Tim telur, ketik emoji telur. Tim pisang, ketik emoji pisang!",
+    "Telur dulu. Enam koma tiga juta ton setahun, kira-kira seratus lima miliar butir. Satu butir panjangnya lima setengah senti.",
+    "Pisang, sembilan koma tiga juta ton, sekitar tujuh puluh empat miliar buah. Jumlahnya kalah banyak, tapi satu pisang panjangnya delapan belas senti.",
+    "Dua barisan berlomba... telur keliling Bumi seratus empat puluh lima kali. Pisang? Tiga ratus tiga puluh tiga kali! Pisang menang! Ohhiyaa!",
+    "Jadi yang lebih banyak, belum tentu lebih panjang. Kamu tadi tim mana? Telur, atau pisang?"
+  ],
+  "layar": [
+    "Telur mainan (kiri) dan pisang mainan (kanan) berhadapan; chip 'Telur vs Pisang setahun' + 'Mana lebih panjang?'",
+    "duel(kiri: TELUR, kanan: PISANG) 3-2-1; Ohi melirik kiri-kanan",
+    "Kubu kiri: telur + penggaris (5,5 cm) → tumpukan telur jatuh; angka 105 MILIAR BUTIR (BPS 2024)",
+    "Kubu kanan: pisang + penggaris (18 cm) → tumpukan pisang; angka 74 MILIAR BUAH; chip 'kalah banyak, tapi...'",
+    "Dua barisan berlomba menjauh; angka 145× vs 333× keliling Bumi; jawab('Pisang menang!'); OHHIYAA!",
+    "Ohi di antara telur & pisang; chip 'Banyak ≠ panjang'; loop ke pertanyaan awal"
+  ],
+  "hitungan": [
+    "Telur: 6.342.705 ton ÷ 60 g = ±105,7 miliar butir × 5,5 cm = ±5.814.000 km ÷ 40.075 km = ±145 × keliling Bumi",
+    "Pisang: 9.260.000 ton ÷ 125 g = ±74,1 miliar buah × 18 cm = ±13.334.000 km ÷ 40.075 km = ±333 × keliling Bumi",
+    "Telur lebih banyak (105,7 vs 74,1 miliar) tapi pisang ±2,3× lebih panjang → pemenang PISANG (kubu KANAN)"
+  ],
+  "asumsi": [
+    "1 butir telur ayam ras ±60 g, panjang ±5,5 cm (perkiraan, bukan data resmi)",
+    "1 buah pisang ±125 g (dengan kulit), panjang ±18 cm (rata-rata kasar beragam jenis; bukan data resmi)",
+    "Produksi (panen) dipakai sebagai 'yang dipanen setahun', bukan konsumsi"
+  ],
+  "keaslian": {
+    "sumber_primer": [
+      "BPS — Produksi Telur Ayam Petelur menurut Provinsi 2024: 6.342.705 ton (bps.go.id, dikutip GoodStats/IDX Channel)",
+      "BPS — Produksi Tanaman Buah-buahan 2024: pisang 9,26 juta ton (bps.go.id, dikutip Databoks Katadata)",
+      "NASA — Earth Fact Sheet: keliling khatulistiwa ±40.075 km"
+    ],
+    "sudut_baru": "Dua objek baru (telur dan pisang, belum pernah dipakai) dan twist baru: kubu yang JUMLAHNYA lebih banyak (telur) justru kalah panjang — pelajaran 'banyak belum tentu panjang', bukan sekadar angka besar.",
+    "web_cek": "WebSearch 'telur vs pisang Indonesia setahun dijejer keliling bumi mana lebih panjang shorts' → hanya artikel mitos makanan & fakta bumi; tidak ada video/judul/visual identik."
+  },
+  "deskripsi": {
+    "pembuka": "Telur vs pisang hasil panen Indonesia setahun, dijejer ujung ke ujung — siapa lebih panjang? 🥚🍌",
+    "hitungan": "Telur 6,34 juta ton ≈ 105,7 miliar butir × 5,5 cm ≈ 145× keliling Bumi; pisang 9,26 juta ton ≈ 74 miliar buah × 18 cm ≈ 333× keliling Bumi (BPS 2024).",
+    "cta": "Kamu tadi tim 🥚 atau tim 🍌? 👇",
+    "hashtag": "#shorts #ohhiyaa #faktaunik #indonesia #tahukahkamu #telur #pisang"
+  },
+  "thumb": [
+    {"nama": "A", "alasan": "Telur dan pisang berhadapan seperti petarung; pertanyaan duel tanpa menyebut pemenang", "frame": 3.0, "zoom": 1.15, "fokus": [540, 1050],
+     "teks": [{"t": "TELUR vs PISANG", "warna": "putih"}, {"t": "MANA LEBIH PANJANG?", "kotak": "pink"}],
+     "stiker": [{"e": "1f94a", "x": 880, "y": 1320, "s": 200, "rot": 0.15}]},
+    {"nama": "B", "alasan": "Varian cadangan: tumpukan telur ratusan miliar, ajakan pilih tim", "frame": 20.5, "zoom": 1.05, "fokus": [540, 1000],
+     "teks": [{"t": "SETAHUN SE-INDONESIA", "warna": "putih"}, {"t": "PILIH TIM MANA?", "kotak": "pink"}],
+     "stiker": [{"e": "1f914", "x": 880, "y": 1320, "s": 200, "rot": -0.12}]}
+  ]
+}
