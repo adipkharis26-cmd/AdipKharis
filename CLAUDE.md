@@ -18,3 +18,4 @@ Jangan pernah menulis API key ElevenLabs di chat atau repo. Key hanya ada sebaga
 
 ## 4. Hemat kuota + keaslian Ohhiyaa! (owner, 21 Nov 2026)
 Aturan lengkap ada di `.claude/skills/ohhiyaa/SKILL.md` bagian 10. Ringkas: tulis satu spec (`video/spec/ohNN.json`) lalu `ohspec.py`; preview satu lembar (`ohsheet.py`); render sekali tanpa polling (`ohrun.py` di background); riset sendiri maks 3 pencarian; topik wajib lolos pemeriksa duplikat (`workflow/oh-topik.json`). Gaya visual tidak berubah.
+Perintah singkat **"Ohhiyaa next"** = ikuti persis `workflow/prompts/oh-sesi-hemat.md` (satu episode sampai paket siap, branch `claude/nifty-euler-rhvstj`).
