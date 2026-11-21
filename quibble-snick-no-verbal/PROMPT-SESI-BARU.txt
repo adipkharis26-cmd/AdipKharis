@@ -15,7 +15,28 @@ DAFTAR IDE (judul — hook 1 kalimat):
 Sudah dibuat (jangan diulang): EP01 The Last Slice, EP02 Wet Paint, EP03 The Door, EP04 Vending Machine, EP05 Umbrella War, EP06 Selfie Fail, EP07 Elevator Button, EP08 Alarm Clock, EP09 Escalator.
 Pemeran & pemenang terakhir: EP07 Quibble/Snick/Brick (Snick menang), EP08 Brick/Dot (Dot menang), EP09 Quibble/Snick/Dot (Quibble menang).
 
-FORMULA 13–15 dtk: 0–1 hook (aksi/konflik) → setup → usaha meningkat + gagal → twist/punchline → payoff yang menyambung ke frame 0 (seamless loop).
+FORMULA 13–15 dtk: hook < 1 dtk → isi sesuai STRUKTUR pilihan (lihat VARIASI) → punchline → payoff yang menyambung ke frame 0 (seamless loop).
+
+VARIASI (wajib, anti monoton & anti konten berpola pabrik):
+- Sebelum menulis, baca EPISODE-LOG.txt. Episode baru harus BERBEDA dari 3 episode terakhir di minimal 4 kolom
+  (lokasi, pemeran, pemenang, STRUKTUR, KAMERA, HOOK, LOOP, mekanik, musik). Setelah selesai, tambahkan 1 baris ke log.
+- STRUKTUR (rotasi; A maksimal 1 dari tiap 3 episode):
+  A eskalasi 3 percobaan → payoff palsu → twist · B balas-membalas (ping-pong prank, saling meningkat) · C reaksi berantai (satu aksi kecil → bencana beruntun)
+  D misteri/tersangka (petunjuk visual, penonton menebak) · E lomba/kompetisi dua pihak · F rencana vs kenyataan (bayangan rencana di gelembung, lalu hasil nyata)
+  G kerja sama / momen manis (semua menang atau semua kalah, ending hangat) · H satu kejadian dari 2 sudut pandang (ulang dengan info baru)
+- KAMERA (jangan selalu lebar statis): tracking samping mengikuti aksi · tampak atas · POV benda/karakter · 3–6 potongan shot cepat
+  · satu long take dengan zoom pelan · layar terbelah (split) · kamera bergerak turun/naik seperti EP07.
+- HOOK frame 0 (variasikan): aksi di tengah kejadian · flash-forward ending lalu mundur · layar gelap + bunyi dulu · wajah reaksi ekstrem · CU benda (sudah sering).
+- LOOP (variasikan): CU benda (sudah sering) · match-cut bentuk/warna · karakter keluar frame lalu masuk lagi dari sisi lain · siklus alami (hari→malam→hari)
+  · ending = kalimat visual pertama diulang oleh karakter lain.
+- Tiap episode wajib punya SATU unsur baru: mekanik/prop baru, lokasi baru, atau sifat karakter yang belum terlihat. Running gag lama boleh maksimal 1.
+- Rotasi juga: palet warna latar, musik (jangan pakai musik yang sama 2 episode berturut), siapa yang menang, emosi akhir (lucu/puas/manis/apes).
+
+AUTENTIK & AMAN KEBIJAKAN YOUTUBE (konten tidak autentik / produksi massal):
+- Cerita, karakter, aset gambar & bunyi orisinal untuk tiap episode; jangan pakai ulang potongan video antar-episode, jangan kompilasi tanpa nilai baru.
+- Judul, deskripsi, caption ditulis khusus per episode (jangan pola kalimat yang sama berulang). Cover = frame asli dari video, tidak menyesatkan.
+- Ritme unggah wajar (≤1–2/hari). Tanpa suara AI berbahasa; tanpa klaim palsu. Konten kartun tidak butuh label "altered/synthetic".
+- Keputusan kreatif dari pemilik channel: bila pemilik memberi premis/arah, ikuti; bila tidak, pilih ide dari daftar dan jelaskan premis 1 kalimat di chat.
 
 HEMAT KUOTA CLAUDE (wajib):
 - 1 episode = 1 sesi baru. Jangan lanjutkan episode berikutnya di sesi yang sudah panjang.
@@ -27,6 +48,7 @@ HEMAT KUOTA CLAUDE (wajib):
 - Audio: pakai ulang cue/musik yang sudah ada di el_cache (nama sama = 0 kredit), generate baru hanya bunyi khas episode.
 
 BACA DULU (cukup ini):
+- quibble-snick-no-verbal/EPISODE-LOG.txt (pola yang sudah dipakai — wajib untuk aturan VARIASI)
 - quibble-snick-no-verbal/API-RINGKAS.txt (semua fungsi gambar, ukuran karakter, kamera, safe zone)
 - quibble-snick-no-verbal/video/src/_TEMPLATE.tsx (kerangka episode: helper, close-up loop, jeda 2 frame)
 - quibble-snick-no-verbal/video/audio/_template_el.py (+ el_lib.py: kuota, cache, sinkron puncak, mix melingkar, verifikasi)
@@ -41,7 +63,7 @@ ATURAN GAYA (wajib):
 - Flat 2D, outline tebal. Tanpa dialog, tanpa teks di layar.
 - Durasi 13–15 dtk, 30 fps, 1080×1920.
 - Hook: frame 0 sudah bergerak, konflik terbaca < 1 dtk.
-- Retensi: ada gag/kejadian tiap 1–2 dtk, usaha makin meningkat, payoff palsu lalu twist. Variasikan siapa yang menang.
+- Retensi: ada gag/kejadian tiap 1–2 dtk dan tensi yang naik; bentuknya mengikuti STRUKTUR pilihan (tidak harus payoff palsu + twist). Variasikan siapa yang menang.
 - SEAMLESS LOOP: frame terakhir harus menyambung mulus ke frame 0 (gerakan, posisi, zoom, kecepatan, elemen latar berulang). Audio dimix melingkar supaya tidak ada jeda di titik loop. Cek frame (akhir-20…akhir) + (0…10) sebelum final.
 - Safe zone: aksi penting di luar 20% bawah dan kolom kanan bawah (UI Shorts); lantai di ~65% tinggi layar.
 

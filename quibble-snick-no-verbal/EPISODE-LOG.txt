@@ -1,0 +1,16 @@
+LOG EPISODE — isi 1 baris setiap episode selesai. Dipakai untuk aturan VARIASI di PROMPT-SESI-BARU.txt.
+(EP01–EP03 diringkas dari timeline/komentar kode; EP04–EP09 dari pengerjaan langsung.)
+
+EP | Lokasi | Pemeran | Pemenang | STRUKTUR | KAMERA | HOOK frame 0 | LOOP | Mekanik/gag khas | Musik/nuansa
+01 The Last Slice | meja makan | Quibble, Snick | Quibble (dugaan) | A eskalasi+twist | lebar statis + potongan | CU tangan bertabrakan | CU tangan | tarik-menarik, bersin, irisan plastik | riang
+02 Wet Paint | taman, bangku | Quibble, Snick | Quibble (Snick ikut lengket) | A eskalasi+twist | lebar statis | Quibble membeku setengah duduk | bangku identik | cat basah, es krim terbang | riang
+03 The Door | pintu kaca otomatis | Quibble, Snick | Snick | A eskalasi+twist | lebar statis | wajah gepeng di kaca | lari ke pintu | sensor pintu, penyamaran | riang
+04 Vending Machine | lorong, mesin minuman | Quibble, Dot, Brick | Dot | A eskalasi+twist | lebar statis + CU | CU kaleng tersangkut | CU kaleng | hujan kaleng, kaleng terkocok | determinasi
+05 Umbrella War | jalan hujan | Snick, Brick, Dot | Brick+Dot | A eskalasi+twist | lebar statis | CU Snick basah | CU Snick basah | payung terbalik jadi mangkuk air | licik
+06 Selfie Fail | taman | Quibble, Snick, Dot | Quibble | A eskalasi+twist | lebar statis | CU berdiri di kepala | CU berdiri di kepala | timer kamera, photobomb | riang
+07 Elevator Button | potongan gedung, lift | Quibble, Snick, Brick | Snick | A eskalasi+twist | tracking vertikal (gedung bergulir) | CU Quibble kebelet | CU Quibble kebelet | semua tombol ditekan, toilet | muzak lift
+08 Alarm Clock | kamar tidur (tampak depan) | Brick, Dot | Dot | A eskalasi+twist | lebar statis | CU weker berdering | CU weker | benda memantul (pinball), snooze | mengantuk
+09 Escalator | mal 2 lantai | Quibble, Snick, Dot | Quibble | A eskalasi+twist | lebar statis | CU anak tangga | CU anak tangga | treadmill terbalik, tombol arah | kejar-kejaran
+
+CATATAN POLA: 9 dari 9 memakai STRUKTUR A dan hampir semua KAMERA lebar statis + HOOK/LOOP close-up objek.
+EP berikutnya WAJIB keluar dari pola ini (lihat aturan VARIASI).
