@@ -136,7 +136,7 @@ Yang **wajib dipakai penulis episode** supaya "wow":
 - Setiap bagian minimal **satu gerakan besar** (jatuh/naik/pop/kamera meluncur); tidak boleh ada bagian dengan layar diam.
 
 ## 6. Audio
-- **VO:** ElevenLabs **Papa Gufron** (voice ID akun 2: `qAPGpZUUXbGAN8LW8h7f`; ID lama `CZ1zU0S6elSZD4eYUY6c` milik akun 1 dan tidak berlaku), **wajib Eleven v4**, Stabilitas 0.5, Kesamaan 0.75, Bahasa Auto.
+- **VO:** ElevenLabs **Papa Gufron** (voice ID clone akun 3: `CxNJK2WBZgE53UbPrdZK`, di-clone 21 Nov 2026 dari rekaman owner SUARA_GUFRON atas perintah owner; ID lama `qAPGpZUUXbGAN8LW8h7f` (akun 2) dan `CZ1zU0S6elSZD4eYUY6c` (akun 1) tidak berlaku), **wajib Eleven v4**, Stabilitas 0.5, Kesamaan 0.75, Bahasa Auto.
   - Mode **satu tarikan** (seluruh naskah sekali baca, jeda di-crossfade) + reverb ruang tipis. Semua diatur di `config.channels.ohhiyaa.elevenlabs`.
   - Efek UI ElevenLabs (kebisingan, ruang) tidak dipakai.
   - Preview suara ke owner cukup 10 detik, dan pakai rekaman yang ada bila bisa (hemat kredit).

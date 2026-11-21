@@ -14,7 +14,7 @@ TOY.mi = () => {
     x.fillStyle = '#D33A2C'; x.font = '900 26px Nunito'; x.fillText('INSTAN', 128, h - 22);
   });
   const side = PLASTIK('#FF8A1F', { rough: 0.35, coat: 0.6 }), top = PLASTIK('#ffffff', { map: tex, rough: 0.35, coat: 0.6 });
-  const b = rbox(0.6, 0.1, 0.42, [side, side, top, side, side, side], { ol: 0.006 }); b.position.y = 0.05;
+  const b = box(0.6, 0.1, 0.42, [side, side, top, side, side, side], { ol: 0.006 }); b.position.y = 0.05;
   const s1 = box(0.62, 0.02, 0.05, PLASTIK('#E9701A'), {}); s1.position.set(0, 0.05, 0.22);
   const s2 = s1.clone(); s2.position.z = -0.22; return grp(b, s1, s2);
 };
@@ -30,7 +30,7 @@ TOY.eiffel = () => {
 const RISE1 = () => [[at('ditumpuk') - 0.1, 0], [at('Eiffel'), EIF * 1.05], [at('Ohhiyaa') - 0.3, TOP]];
 const RISE2 = () => [[CUT[3], 0], [at('Ditumpuk', 1), 1], [at('Eiffel', 1), EIF * 1.05], [at('meter') + 0.3, TOP]];
 const mi = h => towerOf('mi', h, { w: 0.6, c1: '#FF9A3C', c2: '#C84E10' });
-function patok(t) { place(toy('eiffel'), -1.6, 0, -1.6, 0.3, EIF / 2); }
+function patok(t) { place(toy('eiffel'), -2.6, 0, -4.5, 0.3, EIF / 2); }
 
 function scene(t) {
   const k = beatOf(t);
