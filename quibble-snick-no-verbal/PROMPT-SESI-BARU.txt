@@ -4,19 +4,20 @@ BATAS KERJA (WAJIB): hanya baca & ubah file di dalam folder `quibble-snick-no-ve
 (termasuk `global-shorts/` (arsip lama), `animasi-kusaka/`, app.py, api/, naskah/, workflow/, CLAUDE.md milik proyek lain, dan branch lain). Jangan riset ulang niche/strategi.
 
 EPISODE YANG DIBUAT (episode berikutnya; langsung kerjakan sampai jadi tanpa bertanya):
-  EP11 "Snowman ☃️" — Hidung wortel boneka salju Quibble hilang; semua menuduh Snick, tapi petunjuk visual mengarah ke Dot
-  (ia memberikannya ke kelinci salju). STRUKTUR D · KAMERA tampak atas + POV karakter · HOOK wajah reaksi ekstrem
-  · LOOP siklus alami (malam→pagi). Pemeran Quibble + Snick + Dot. Pemenang: Snick (terbukti tak bersalah).
+  EP12 "Balloon 🎈" — Dot memegang terlalu banyak balon dan mulai melayang; Brick & Quibble bergantian menariknya turun
+  sampai semuanya ikut terangkat, lalu bekerja sama mendarat dengan meletuskan balon satu per satu. STRUKTUR G (kerja sama, ending hangat)
+  · KAMERA satu long take yang bergerak naik mengikuti mereka (crane naik) + zoom pelan · HOOK flash-forward (mereka bertiga melayang tinggi) lalu mundur
+  · LOOP karakter keluar frame atas lalu masuk lagi dari bawah. Pemeran Dot + Brick + Quibble (tanpa Snick). Pemenang: semua (momen manis).
+  Lokasi baru: taman pasar malam/festival siang hari, palet pastel kuning-pink. Musik: jangan e11_music/e4_music (mis. e6_music atau generate baru).
   SETELAH SELESAI: isi blok ini dengan episode berikutnya (ide + variasi yang berbeda dari 3 episode terakhir), agar sesi baru cukup diberi prompt singkat.
 
 DAFTAR IDE (judul — hook 1 kalimat):
 - Tangled Earphones 🎧 — Terikat kabel dari kepala sampai kaki.
 - Balloon 🎈 — Terlalu banyak balon, mulai melayang.
-- Snowman ☃️ — Hidung wortel boneka salju hilang, tersangka jelas.
 - Parking Spot 🚗 — Dua mobil mini mengincar satu tempat parkir.
 - Domino 🁢 — Satu sentuhan kecil, seluruh kota ambruk berantai.
-Sudah dibuat (jangan diulang): EP01 The Last Slice, EP02 Wet Paint, EP03 The Door, EP04 Vending Machine, EP05 Umbrella War, EP06 Selfie Fail, EP07 Elevator Button, EP08 Alarm Clock, EP09 Escalator, EP10 Popcorn.
-Pemeran & pemenang terakhir: EP08 Brick/Dot (Dot menang), EP09 Quibble/Snick/Dot (Quibble menang), EP10 Brick/Snick (Brick menang; STRUKTUR C, tracking samping + potongan cepat, hook layar gelap+pop, loop match-cut, musik e4_music).
+Sudah dibuat (jangan diulang): EP01 The Last Slice, EP02 Wet Paint, EP03 The Door, EP04 Vending Machine, EP05 Umbrella War, EP06 Selfie Fail, EP07 Elevator Button, EP08 Alarm Clock, EP09 Escalator, EP10 Popcorn, EP11 Snowman.
+Pemeran & pemenang terakhir: EP09 Quibble/Snick/Dot (Quibble menang; STRUKTUR A), EP10 Brick/Snick (Brick menang; STRUKTUR C, tracking samping + potongan cepat, hook layar gelap+pop, loop match-cut, musik e4_music), EP11 Quibble/Snick/Dot (Snick menang/terbukti tak bersalah; STRUKTUR D, tampak atas + POV kaca pembesar, hook wajah kaget ekstrem, loop malam→pagi, musik e11_music).
 
 FORMULA 13–15 dtk: hook < 1 dtk → isi sesuai STRUKTUR pilihan (lihat VARIASI) → punchline → payoff yang menyambung ke frame 0 (seamless loop).
 

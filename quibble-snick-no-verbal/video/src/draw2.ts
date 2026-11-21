@@ -438,3 +438,119 @@ export function kitchen() {
   g += `<rect x="-46" y="290" width="612" height="12" rx="4" fill="#FFF7EA" stroke="${C.ink}" stroke-width="4"/>`;
   return g;
 }
+
+// ===== EP11 Snowman: halaman bersalju (siang<->malam), boneka salju, wortel, es loli, kelinci salju, tampak atas, kaca pembesar =====
+export const lerpC = (a, b, t) => { const p = (h) => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); const A = p(a), B = p(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * Math.max(0, Math.min(1, t))).toString(16).padStart(2, '0')).join(''); };
+export const snowDefs = (n = 0) => `<defs><linearGradient id="skyS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${lerpC('#8CCBF2', '#10173A', n)}"/><stop offset="1" stop-color="${lerpC('#FFE1C4', '#33437A', n)}"/></linearGradient>
+<linearGradient id="snowG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D3E3F4"/></linearGradient>
+<radialGradient id="ballG" cx="38%" cy="32%" r="70%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".65" stop-color="#F2F7FD"/><stop offset="1" stop-color="#C6D8EE"/></radialGradient></defs>`;
+// salju turun: tepat 3 putaran vertikal per 420 frame (seamless)
+export const snowfall = (f, n = 34, op = 0.9) => Array.from({length: n}, (_, i) => {
+  const x = (rnd(i + 3) * 300 - 15) + Math.sin(f * Math.PI * 2 * (1 + (i % 3)) / 420 + i) * 6, y = ((rnd(i + 40) * 520 + f * 520 * 3 / 420) % 520) - 20;
+  return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${1 + rnd(i + 7) * 1.6}" fill="#fff" opacity="${op}"/>`;
+}).join('');
+// latar samping: langit (n=0 pagi, 1 malam), matahari/bulan, bintang, bukit salju, pinus. Panggil nightTint(n) setelah semua objek.
+export function winter(n = 0) {
+  let s = `<rect x="-600" y="-500" width="1600" height="900" fill="url(#skyS)"/>`;
+  const sy = 192 + n * 240;
+  s += `<circle cx="196" cy="${sy}" r="20" fill="#FFD66B" stroke="${C.ink}" stroke-width="4"/><circle cx="196" cy="${sy}" r="30" fill="#FFE9A8" opacity=".35"/>`;
+  s += `<path d="M-600,350 Q-150,282 70,330 T380,318 T1000,340 V420 H-600Z" fill="${lerpC('#E4EEF9', '#5C6C9E', n)}" stroke="${C.ink}" stroke-width="3"/>`;
+  for (const [tx, th, tw] of [[-14, 170, 46], [262, 150, 42], [300, 190, 50]]) {
+    s += `<rect x="${tx - 6}" y="${400 - 30}" width="12" height="30" fill="#7A5230" stroke="${C.ink}" stroke-width="4"/>`;
+    for (let k = 0; k < 3; k++) { const yy = 400 - 30 - k * th * 0.28, w = tw * (1 - k * 0.24); s += `<path d="M${tx - w},${yy} L${tx},${yy - th * 0.46} L${tx + w},${yy}Z" fill="#2F7D5B" stroke="${C.ink}" stroke-width="4" stroke-linejoin="round"/><path d="M${tx - w * 0.55},${yy - th * 0.2} L${tx},${yy - th * 0.46} L${tx + w * 0.55},${yy - th * 0.2} q-${w * 0.28},8 -${w * 0.55},0 q-${w * 0.28},8 -${w * 0.55},0Z" fill="#fff"/>`; }
+  }
+  s += `<path d="M-600,398 Q-200,392 60,399 T400,397 T1000,398 V800 H-600Z" fill="url(#snowG)"/>` + `<path d="M-600,398 Q-200,392 60,399 T400,397 T1000,398" fill="none" stroke="${C.ink}" stroke-width="4"/>`;
+  for (let i = -8; i < 14; i++) s += `<ellipse cx="${i * 41 + 12}" cy="${414 + (((i % 3) + 3) % 3) * 18}" rx="9" ry="2.4" fill="#BFD3EA" opacity=".8"/>`;
+  return s;
+}
+export function nightTint(n = 0) {
+  if (n <= 0.01) return '';
+  let s = `<rect x="-600" y="-500" width="1600" height="1400" fill="#26306B" opacity="${(n * 0.55).toFixed(3)}" style="mix-blend-mode:multiply"/>`;
+  for (let i = 0; i < 26; i++) { const x = rnd(i + 90) * 250, y = rnd(i + 130) * 160 + 120; s += `<circle cx="${x}" cy="${y}" r="${0.8 + rnd(i) * 1.3}" fill="#FFF6C8" opacity="${(n * (0.6 + 0.4 * rnd(i + 5))).toFixed(2)}"/>`; }
+  const my = 330 - n * 140;
+  s += `<g opacity="${Math.max(0, Math.min(1, (n - 0.2) * 1.6)).toFixed(2)}"><circle cx="64" cy="${my}" r="34" fill="#FFF8D6" opacity=".18"/><circle cx="64" cy="${my}" r="20" fill="#FFF3C0" stroke="${C.ink}" stroke-width="4"/><circle cx="72" cy="${my - 4}" r="17" fill="${lerpC('#33437A', '#10173A', 0.5)}"/></g>`;
+  return s;
+}
+export const carrot = (x, y, s = 1, rot = 0, bite = 0) => { const t = 26 * (1 - bite), w = 5 * (1 - bite * 0.6); return `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})">${bite < 1 ? `<path d="M0,-5 Q${t * 0.5},-4.5 ${t},${-w * 0.25} L${t},${w * 0.25} Q${t * 0.5},4.5 0,5Z" fill="#FF8C2B" stroke="${C.ink}" stroke-width="2.5" stroke-linejoin="round"/>` + L(7, -3, 9, -1, 1.6) + (t > 16 ? L(15, 1, 17, 3, 1.6) : '') : ''}<path d="M0,0 q-8,-10 -12,-6 M0,0 q-10,-2 -12,4 M0,0 q-6,6 -4,10" fill="none" stroke="#3FA34D" stroke-width="3" stroke-linecap="round"/></g>`; };
+export const popsicle = (x, y, s = 1, rot = 0, bite = 0) => { const h = 30 * (1 - bite); return `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})"><rect x="-2.5" y="-2" width="5" height="15" rx="2.5" fill="#E3B778" stroke="${C.ink}" stroke-width="2"/><rect x="-8" y="${-h}" width="16" height="${h}" rx="${Math.min(8, h / 2)}" fill="#FF9F43" stroke="${C.ink}" stroke-width="2.6"/><rect x="-5" y="${-h + 4}" width="3" height="${Math.max(0, h - 10)}" rx="1.5" fill="#fff" opacity=".5"/></g>`; };
+// boneka salju: (x,y)=dasar; nose: carrot|none|pop
+export function snowman(x, y, s = 1, o: any = {}) {
+  const {nose = 'carrot', tilt = 0, bite = 0} = o;
+  let g = `<ellipse cx="0" cy="-2" rx="44" ry="7" fill="${C2.shadow}"/>`;
+  g += L(-26, -98, -58, -122, 4, '#6B4423') + L(-46, -112, -54, -126, 3, '#6B4423') + L(26, -98, 58, -124, 4, '#6B4423') + L(48, -116, 58, -110, 3, '#6B4423');
+  for (const [cy, r] of [[-36, 40], [-98, 29], [-146, 21]]) g += `<circle cx="0" cy="${cy}" r="${r}" fill="url(#ballG)" stroke="${C.ink}" stroke-width="4.5"/>`;
+  g += [-108, -94, -80].map(cy => `<circle cx="0" cy="${cy}" r="3.2" fill="${C.ink}"/>`).join('');
+  g += `<path d="M-21,-128 Q0,-120 21,-128 L22,-120 Q0,-112 -22,-120Z" fill="#E63946" stroke="${C.ink}" stroke-width="3" stroke-linejoin="round"/><path d="M10,-122 l6,22 l-9,1 l-4,-21Z" fill="#E63946" stroke="${C.ink}" stroke-width="3" stroke-linejoin="round"/>`;
+  g += `<g transform="rotate(${tilt},0,-160)"><rect x="-22" y="-167" width="44" height="6" rx="3" fill="${C.ink}"/><rect x="-14" y="-192" width="28" height="27" rx="3" fill="#2A2A33" stroke="${C.ink}" stroke-width="3"/><rect x="-14" y="-172" width="28" height="5" fill="#3D7DD8"/></g>`;
+  g += `<circle cx="-8" cy="-151" r="3.2" fill="${C.ink}"/><circle cx="8" cy="-151" r="3.2" fill="${C.ink}"/>` + [-8, -4, 0, 4, 8].map((dx, i) => `<circle cx="${dx}" cy="${-136 + Math.abs(dx) * -0.25}" r="1.7" fill="${C.ink}"/>`).join('');
+  if (nose === 'carrot') g += carrot(2, -144, 0.8, 4, bite);
+  else if (nose === 'pop') g += popsicle(2, -144, 0.62, 90, bite);
+  else g += `<ellipse cx="2" cy="-144" rx="3" ry="2.6" fill="#8BA3C4" stroke="${C.ink}" stroke-width="1.6"/>`;
+  return `<g transform="translate(${x},${y}) scale(${s})">${g}</g>`;
+}
+// kelinci salju: putih, telinga panjang, pipi menggembung saat mengunyah. (x,y)=kaki, menghadap kanan
+export function bunny(x, y, s = 1, o: any = {}) {
+  const {chew = 0, ear = 0, blink = false, flip = false, hold = '', sq = 1} = o;
+  let g = `<ellipse cx="0" cy="1" rx="16" ry="3" fill="${C2.shadow}"/><circle cx="-16" cy="-16" r="6" fill="#fff" stroke="${C.ink}" stroke-width="3"/>`;
+  g += `<g transform="rotate(${-14 + ear * 10},8,-38)"><ellipse cx="6" cy="-52" rx="4.6" ry="13" fill="#fff" stroke="${C.ink}" stroke-width="3"/><ellipse cx="6" cy="-52" rx="2" ry="8.5" fill="#FFB3C6"/></g>`;
+  g += `<ellipse cx="0" cy="-14" rx="16" ry="13" fill="#fff" stroke="${C.ink}" stroke-width="3.2"/><ellipse cx="-6" cy="-1" rx="6" ry="3" fill="#fff" stroke="${C.ink}" stroke-width="2.6"/><ellipse cx="8" cy="-1" rx="6" ry="3" fill="#fff" stroke="${C.ink}" stroke-width="2.6"/>`;
+  g += `<g transform="rotate(${12 - ear * 12},14,-38)"><ellipse cx="16" cy="-52" rx="4.6" ry="13" fill="#fff" stroke="${C.ink}" stroke-width="3"/><ellipse cx="16" cy="-52" rx="2" ry="8.5" fill="#FFB3C6"/></g>`;
+  g += `<circle cx="11" cy="-30" r="11.5" fill="#fff" stroke="${C.ink}" stroke-width="3.2"/>`;
+  g += blink ? L(13, -33, 19, -33, 2.2) : `<circle cx="16" cy="-33" r="2.6" fill="${C.ink}"/><circle cx="16.8" cy="-34" r=".9" fill="#fff"/>`;
+  g += `<ellipse cx="17" cy="-25" rx="${3.6 + chew * 1.8}" ry="${2.6 + chew}" fill="#FFB3C6" opacity=".75"/><ellipse cx="22.5" cy="-29" rx="1.8" ry="1.5" fill="#FF6F91"/>`;
+  if (hold) g += `<g transform="translate(22,-25)">${hold}</g>`;
+  return `<g transform="translate(${x},${y}) scale(${flip ? -s : s},${s * sq})">${g}</g>`;
+}
+export function bush(x, y, s = 1, shk = 0) {
+  const r = Math.sin(shk * 2.2) * 6 * Math.min(1, shk / 4 + 0.001) * (shk > 0 ? 1 : 0);
+  return `<g transform="translate(${x},${y}) scale(${s}) rotate(${r.toFixed(2)},0,0)"><path d="M-34,0 q-8,-26 14,-30 q6,-22 28,-14 q22,-10 30,14 q16,4 6,30Z" fill="#3E8C5A" stroke="${C.ink}" stroke-width="4" stroke-linejoin="round"/><path d="M-22,-28 q8,-6 14,-4 q6,-16 22,-10 q14,-4 20,8 q-12,-4 -18,2 q-10,-6 -18,2 q-10,-4 -20,2Z" fill="#fff"/><circle cx="-12" cy="-12" r="3" fill="#E63946"/><circle cx="14" cy="-8" r="3" fill="#E63946"/></g>`;
+}
+// TAMPAK ATAS (koordinat dunia biasa 270x480 dilihat dari atas)
+export function topYard() {
+  let s = `<rect x="-400" y="-400" width="1100" height="1300" fill="#F3F8FE"/>`;
+  for (let i = 0; i < 70; i++) s += `<ellipse cx="${(rnd(i + 200) * 560 - 140).toFixed(1)}" cy="${(rnd(i + 300) * 760 - 140).toFixed(1)}" rx="${6 + rnd(i) * 10}" ry="${2 + rnd(i + 1) * 3}" fill="#D9E6F5" opacity=".9"/>`;
+  return s;
+}
+const SM = [135, 245];
+export function topTracks() {
+  let s = '';
+  // Quibble: jejak oval berpasangan dari kiri bawah
+  for (let i = 0; i < 6; i++) { const t = i / 5, x = 40 + (108 - 40) * t, y = 400 - (400 - 288) * t; s += `<ellipse cx="${x + (i % 2 ? 6 : -6)}" cy="${y}" rx="4.5" ry="7" fill="#C5D6EB" transform="rotate(${-30},${x},${y})"/>`; }
+  // Snick: jejak segitiga dari kanan, berhenti dekat boneka salju
+  for (let i = 0; i < 5; i++) { const t = i / 4, x = 262 - (262 - 178) * t, y = 318 - (318 - 270) * t + (i % 2 ? 5 : -5); s += `<path d="M${x - 5},${y + 4} L${x + 5},${y + 4} L${x},${y - 6}Z" fill="#C5D6EB" transform="rotate(-60,${x},${y})"/>`; }
+  // Dot: alur gelinding dari boneka salju ke semak + remah wortel
+  const d = `M118,224 C100,200 78,178 62,140`;
+  s += `<path d="${d}" fill="none" stroke="#B9CCE4" stroke-width="20" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#E2ECF8" stroke-width="10" stroke-linecap="round"/>`;
+  for (const [x, y] of [[112, 214], [96, 194], [82, 176], [70, 156]]) s += `<circle cx="${x}" cy="${y}" r="2.6" fill="#FF8C2B" stroke="${C.ink}" stroke-width="1.2"/>`;
+  // kelinci: jejak Y kecil dekat semak
+  for (const [x, y, r] of [[22, 92, -30], [10, 72, -20], [34, 76, -40]]) s += `<g transform="translate(${x},${y}) rotate(${r})"><ellipse cx="-3" cy="0" rx="2" ry="3" fill="#C5D6EB"/><ellipse cx="3" cy="0" rx="2" ry="3" fill="#C5D6EB"/><ellipse cx="0" cy="8" rx="2.2" ry="4.5" fill="#C5D6EB"/></g>`;
+  return s;
+}
+export function topSnowman() {
+  const [x, y] = SM;
+  return `<g transform="translate(${x},${y})"><ellipse cx="8" cy="8" rx="44" ry="42" fill="${C2.shadow}"/><line x1="-30" y1="0" x2="-64" y2="-8" stroke="#6B4423" stroke-width="4" stroke-linecap="round"/><line x1="30" y1="0" x2="64" y2="6" stroke="#6B4423" stroke-width="4" stroke-linecap="round"/>
+<circle r="40" fill="url(#ballG)" stroke="${C.ink}" stroke-width="4.5"/><circle r="29" fill="url(#ballG)" stroke="${C.ink}" stroke-width="3.5"/><circle r="23" fill="none" stroke="#E63946" stroke-width="6"/><circle r="19" fill="${C.ink}"/><circle r="13" fill="#2A2A33" stroke="#3D7DD8" stroke-width="3"/><circle cx="-4" cy="-4" r="3" fill="#fff" opacity=".35"/></g>`;
+}
+export const topBush = (x, y) => `<g transform="translate(${x},${y})"><ellipse cx="6" cy="6" rx="30" ry="26" fill="${C2.shadow}"/><path d="M-26,4 q-6,-22 14,-24 q10,-16 28,-4 q18,0 12,22 q4,18 -16,20 q-12,10 -26,0 q-16,2 -12,-14Z" fill="#3E8C5A" stroke="${C.ink}" stroke-width="4" stroke-linejoin="round"/><circle cx="-6" cy="-6" r="7" fill="#fff"/><circle cx="10" cy="4" r="5" fill="#fff"/><circle cx="-12" cy="8" r="2.6" fill="#E63946"/><circle cx="12" cy="-10" r="2.6" fill="#E63946"/></g>`;
+export const topPine = (x, y, r = 34) => `<g transform="translate(${x},${y})"><circle cx="8" cy="8" r="${r}" fill="${C2.shadow}"/><path d="${Array.from({length: 16}, (_, i) => { const a = i * Math.PI / 8, rr = i % 2 ? r * 0.62 : r; return (i ? 'L' : 'M') + (Math.cos(a) * rr).toFixed(1) + ',' + (Math.sin(a) * rr).toFixed(1); }).join('')}Z" fill="#2F7D5B" stroke="${C.ink}" stroke-width="4" stroke-linejoin="round"/><circle r="${r * 0.38}" fill="#fff"/><circle r="${r * 0.12}" fill="#7A5230"/></g>`;
+// karakter dilihat dari atas, wajah menengadah ke kamera. kind q|s|d
+export function topChar(kind, x, y, s = 1, o: any = {}) {
+  const {look = [0, 0], brow = 'flat', m = 'smile', blink = false, rot = 0, arm = 0} = o;
+  let g = '';
+  if (kind === 'q') {
+    g += `<ellipse cx="7" cy="9" rx="38" ry="36" fill="${C2.shadow}"/>` + L(-34, 6, -50, 18 - arm * 30, 6) + L(34, 6, 50 + arm * 6, 18 - arm * 10, 6);
+    g += `<circle r="37" fill="${C.q}" stroke="${C.ink}" stroke-width="5"/><ellipse cx="-16" cy="-18" rx="9" ry="6" fill="#fff" opacity=".45"/>` + eyes(0, -6, 14, 11, look, false, blink) + brows(0, -25, 14, 18, brow) + mouth(0, 16, m, 18);
+  } else if (kind === 's') {
+    g += `<path d="M7,-30 L43,40 L-29,40Z" fill="${C2.shadow}"/>` + L(-24, 14, -40 - arm * 6, 26 - arm * 26, 5) + L(24, 14, 40, 26, 5);
+    g += `<path d="M0,-40 L36,32 L-36,32Z" fill="${C.s}" stroke="${C.ink}" stroke-width="5" stroke-linejoin="round"/><path d="M0,-40 q-4,-12 6,-18 q-2,9 6,11" fill="none" stroke="${C.ink}" stroke-width="4" stroke-linecap="round"/>` + eyes(0, 4, 9, 8, look, false, blink) + brows(0, -10, 9, 12, brow) + mouth(0, 20, m, 14);
+  } else {
+    g += `<circle cx="6" cy="7" r="32" fill="${C2.shadow}"/><circle r="32" fill="${C2.dot}" stroke="${C.ink}" stroke-width="5"/><ellipse cx="-14" cy="-16" rx="6" ry="9" fill="#fff" opacity=".45"/>` + eyes(0, -6, 12, 10, look, false, blink) + brows(0, -24, 12, 12, brow) + mouth(0, 12, m, 14) + `<ellipse cx="-22" cy="8" rx="6" ry="3.5" fill="#FF8FA3" opacity=".8"/><ellipse cx="22" cy="8" rx="6" ry="3.5" fill="#FF8FA3" opacity=".8"/>`;
+  }
+  return `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})">${g}</g>`;
+}
+export const lensIcon = (s = 1) => `<g transform="scale(${s})"><line x1="6" y1="6" x2="16" y2="16" stroke="#6B4423" stroke-width="5" stroke-linecap="round"/><circle r="9" fill="#CFEFFF" fill-opacity=".7" stroke="${C.ink}" stroke-width="3.5"/><path d="M-5,-3 q2,-4 6,-5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>`;
+// POV kaca pembesar (koordinat LAYAR): gelap di luar lensa, bingkai + gagang
+export const magnifier = (cx, cy, r) => `<path fill-rule="evenodd" d="M-20,-20 H290 V500 H-20Z M${cx - r},${cy} a${r},${r} 0 1 0 ${2 * r},0 a${r},${r} 0 1 0 ${-2 * r},0Z" fill="#141826" opacity=".94"/>
+<line x1="${cx - r * 0.42}" y1="${cy + r * 0.92}" x2="${cx - r * 0.75}" y2="${cy + r * 1.9}" stroke="${C.ink}" stroke-width="24" stroke-linecap="round"/><line x1="${cx - r * 0.42}" y1="${cy + r * 0.92}" x2="${cx - r * 0.75}" y2="${cy + r * 1.9}" stroke="#8A5A2B" stroke-width="16" stroke-linecap="round"/>
+<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${C.ink}" stroke-width="16"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#D9A93A" stroke-width="9"/><path d="M${cx - r * 0.7},${cy - r * 0.35} q${r * 0.2},${-r * 0.4} ${r * 0.55},${-r * 0.5}" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".55"/>`;
+export const note = (x, y, s = 1, rot = 0) => `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})"><ellipse cx="0" cy="0" rx="4.5" ry="3.5" fill="${C.ink}" transform="rotate(-20)"/><path d="M4,-1 V-16 q5,2 7,7" fill="none" stroke="${C.ink}" stroke-width="2.2" stroke-linecap="round"/></g>`;

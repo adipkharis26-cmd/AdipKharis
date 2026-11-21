@@ -33,3 +33,7 @@ LATAR (+defs khusus bila ada; sisipkan setelah `defs`):
 - Audio: video/audio/_template_el.py + el_lib.py (cek kuota, cache, sinkron puncak, mix melingkar, verifikasi).
   kitDefs; kitchen() (konter x-40..560 atas y=296, lemari bawah), MW + microwave({dial,fill,door,on,shk,n,f,bulge}), pop(x,y,s,rot), kernel(x,y,s),
   popMass(x0,x1,yTop,yBot,f,seed,amp) gunungan popcorn, panK(x,y,rot,c,s) panci, toaster(x,y,{lever,toast}), fridge(x,y,{sq})   [EP10]
+  snowDefs(n) (pengganti defs khusus, n=0 pagi..1 malam); winter(n) halaman salju + pinus + matahari; nightTint(n) (panggil SETELAH objek: gelap+bintang+bulan);
+  snowfall(f,n,op) salju turun seamless 420; snowman(x,y,s,{nose:carrot|none|pop,bite}); carrot(x,y,s,rot,bite) popsicle(x,y,s,rot,bite);
+  bunny(x,y,s,{chew,ear,flip,hold,sq}) kelinci salju; bush(x,y,s,shk); TAMPAK ATAS: topYard() topTracks() topSnowman() topBush() topPine() topChar(q|s|d,x,y,s,o);
+  lensIcon(s); magnifier(cx,cy,r) overlay POV lensa (koordinat layar); note(x,y,s,rot) not musik; lerpC(a,b,t)   [EP11]
