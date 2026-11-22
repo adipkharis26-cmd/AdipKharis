@@ -145,7 +145,11 @@ def vignette(a, k=0.7):
 
 
 def save(a, path):
-    Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).save(path)
+    im = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+    if path.endswith(".jpg"):
+        im.save(path, quality=93, subsampling=0)     # banner: JPG agar < 6 MB (batas upload YouTube)
+    else:
+        im.save(path)
     print("->", path)
 
 
@@ -323,6 +327,141 @@ def banner(path, W=2560, H=1440):
     save(grain(vignette(a, 0.5), 4), path)
 
 
+def _screentone(W, H, per, angle=0.0):
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    c, s_ = math.cos(angle), math.sin(angle)
+    u, v = xx * c + yy * s_, -xx * s_ + yy * c
+    return (np.sin(u / per * math.pi) * np.sin(v / per * math.pi))
+
+
+def _ink_splash(size, center, r, seed, n=40):
+    """Cipratan tinta kuas: gumpalan tak beraturan + tetesan tersebar searah (bukan bentuk bulat berduri)."""
+    m = Image.new("L", size, 0)
+    d = ImageDraw.Draw(m)
+    rng = np.random.default_rng(seed)
+    ang0 = rng.uniform(0, 2 * math.pi)
+    for _ in range(12):                                   # gumpalan utama memanjang
+        t = rng.uniform(-1, 1)
+        cx = center[0] + math.cos(ang0) * t * r * 1.6 + rng.normal(0, r * 0.15)
+        cy = center[1] + math.sin(ang0) * t * r * 1.6 + rng.normal(0, r * 0.15)
+        rr = r * rng.uniform(0.25, 0.6) * (1 - abs(t) * 0.6)
+        d.ellipse([cx - rr, cy - rr * rng.uniform(0.6, 1.0), cx + rr, cy + rr * rng.uniform(0.6, 1.0)], fill=255)
+    for _ in range(n):                                    # tetesan searah lemparan
+        t = rng.uniform(1.2, 3.5) * rng.choice([-1, 1])
+        a = ang0 + rng.normal(0, 0.35)
+        cx, cy = center[0] + math.cos(a) * t * r, center[1] + math.sin(a) * t * r
+        rr = r * rng.uniform(0.03, 0.14) / (abs(t) * 0.6)
+        d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=255)
+    return m.filter(ImageFilter.GaussianBlur(1.5))
+
+
+def banner_manga_bw(path, W=2560, H=1440):
+    """MANGA HITAM-PUTIH: halaman manga - garis fokus, screentone bergradasi, panel miring, kotak dialog kuning."""
+    a = np.zeros((H, W, 3), np.float32) + np.array([246, 243, 234], np.float32)
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    r = np.sqrt((xx - W / 2) ** 2 + ((yy - H / 2) * 1.6) ** 2) / (W * 0.55)
+    tone = _screentone(W, H, 9.0, 0.6)
+    a = a * (1 - ((tone > 1 - 2 * np.clip(r - 0.25, 0, 0.9)) * 0.9)[..., None])
+    # garis fokus (speed lines) menuju tengah
+    fl = Image.new("L", (W, H), 0)
+    d = ImageDraw.Draw(fl)
+    rng = np.random.default_rng(31)
+    for _ in range(260):
+        ang = rng.uniform(0, 2 * math.pi)
+        r0 = rng.uniform(0.33, 0.5) * W
+        r0y = r0 * 0.42
+        x0, y0 = W / 2 + math.cos(ang) * r0, H / 2 + math.sin(ang) * r0y
+        d.polygon([(x0, y0), (W / 2 + math.cos(ang - 0.006) * W, H / 2 + math.sin(ang - 0.006) * W),
+                   (W / 2 + math.cos(ang + 0.006) * W, H / 2 + math.sin(ang + 0.006) * W)], fill=255)
+    a = comp(a, INK, fl, 0.95)
+    # panel miring kiri & kanan (bingkai manga, di luar area aman)
+    pm = Image.new("L", (W, H), 0)
+    pd = ImageDraw.Draw(pm)
+    pd.polygon([(0, 0), (W * 0.2, 0), (W * 0.12, H), (0, H)], fill=255)
+    pd.polygon([(W, 0), (W * 0.84, 0), (W * 0.9, H), (W, H)], fill=255)
+    side = _screentone(W, H, 6.0, 0.3)
+    panel = np.array([246, 243, 234], np.float32) * (1 - (side > 0.2)[..., None] * 0.85)
+    a = a * (1 - arr(pm)[..., None] / 255) + panel * (arr(pm)[..., None] / 255)
+    bm = Image.new("L", (W, H), 0)
+    bd = ImageDraw.Draw(bm)
+    bd.line([(W * 0.2, 0), (W * 0.12, H)], fill=255, width=26)
+    bd.line([(W * 0.84, 0), (W * 0.9, H)], fill=255, width=26)
+    a = comp(a, INK, bm)
+    for cx, cy, rr, sd in ((W * 0.08, H * 0.22, 70, 1), (W * 0.93, H * 0.78, 90, 2), (W * 0.06, H * 0.8, 40, 3)):
+        a = comp(a, INK, _ink_splash((W, H), (cx, cy), rr, sd))
+    # kotak dialog kuning (gaya mv2) berisi nama
+    box = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(box).rectangle([W * 0.26, H * 0.4, W * 0.74, H * 0.575], fill=255)
+    sh = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(sh).rectangle([W * 0.27, H * 0.42, W * 0.75, H * 0.595], fill=255)
+    a = comp(a, INK, sh)
+    a = comp(a, (255, 228, 20), box)
+    bo = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(bo).rectangle([W * 0.26, H * 0.4, W * 0.74, H * 0.575], outline=255, width=12)
+    a = comp(a, INK, bo)
+    m = mask_text((W, H), NAME.upper(), font("Bangers-Regular.ttf", 190), (W / 2, H * 0.488), tracking=0.06)
+    a = comp(a, INK, m)
+    # pita tagline hitam
+    rb = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(rb).polygon([(W * 0.29, H * 0.6), (W * 0.71, H * 0.6), (W * 0.695, H * 0.645),
+                                (W * 0.305, H * 0.645)], fill=255)
+    a = comp(a, INK, rb)
+    t = mask_text((W, H), "BLACK CLOVER MMV  •  MANGA x ANIME  •  NEW EDIT EVERY WEEK",
+                  font("Montserrat.ttf", 26, 700), (W / 2, H * 0.6225), tracking=0.08)
+    a = comp(a, (255, 255, 255), t)
+    sfx = mask_text((W, H), "BOOM!", font("Bangers-Regular.ttf", 120), (W * 0.67, H * 0.355))
+    a = comp(a, INK, sfx.filter(ImageFilter.MaxFilter(13)))
+    a = comp(a, RED, sfx)
+    save(grain(a, 4), path)
+
+
+def banner_manga_color(path, W=2560, H=1440):
+    """MANGA BERWARNA: kertas hangat, halftone merah-emas, sabetan tinta, grid panel diagonal, judul tinta + glow."""
+    paper = np.array([238, 222, 190], np.float32)
+    a = np.zeros((H, W, 3), np.float32) + paper
+    rng = np.random.default_rng(5)
+    fib = Image.fromarray((rng.uniform(0.9, 1.0, (H // 4, W // 4)) * 255).astype(np.uint8)).resize((W, H))
+    a = a * (arr(fib) / 255.0)[..., None]
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    # halftone merah besar dari kiri-bawah & emas dari kanan-atas
+    ht = _screentone(W, H, 14.0, 0.785)
+    gl = np.clip(1 - np.sqrt((xx / W) ** 2 + ((H - yy) / H) ** 2) * 1.1, 0, 1)
+    gr = np.clip(1 - np.sqrt(((W - xx) / W) ** 2 + (yy / H) ** 2) * 1.1, 0, 1)
+    a = a * (1 - ((ht > 1 - 2 * gl) * 0.75)[..., None]) + ((ht > 1 - 2 * gl) * 0.75)[..., None] * np.array(RED, np.float32)
+    a = a * (1 - ((ht > 1 - 2 * gr) * 0.6)[..., None]) + ((ht > 1 - 2 * gr) * 0.6)[..., None] * np.array(GOLD, np.float32)
+    # grid panel diagonal (garis tinta tebal)
+    pm = Image.new("L", (W, H), 0)
+    d = ImageDraw.Draw(pm)
+    for x0, x1 in ((W * 0.15, W * 0.24), (W * 0.82, W * 0.74)):
+        d.line([(x0, 0), (x1, H)], fill=255, width=22)
+    d.line([(0, H * 0.18), (W * 0.2, H * 0.12)], fill=255, width=18)
+    d.line([(W * 0.78, H * 0.88), (W, H * 0.82)], fill=255, width=18)
+    a = comp(a, INK, pm)
+    # sabetan kuas tinta di belakang judul
+    br = Image.new("L", (W, H), 0)
+    bd = ImageDraw.Draw(br)
+    for i in range(60):
+        y = H * 0.465 + rng.normal(0, 50)
+        x0 = W * 0.22 + rng.normal(0, 30)
+        x1 = W * 0.78 + rng.normal(0, 30)
+        bd.line([(x0, y), (x1, y + rng.normal(0, 10))], fill=int(rng.uniform(170, 255)), width=int(rng.uniform(14, 40)))
+    br = br.filter(ImageFilter.GaussianBlur(2))
+    a = comp(a, INK, br, 0.96)
+    for cx, cy, rr, sd in ((W * 0.24, H * 0.5, 55, 7), (W * 0.77, H * 0.44, 45, 8)):
+        a = comp(a, INK, _ink_splash((W, H), (cx, cy), rr, sd, n=25))
+    m = mask_text((W, H), NAME.upper(), font("Bangers-Regular.ttf", 190), (W / 2, H * 0.462), tracking=0.07)
+    a = glow(a, m, (255, 150, 30), 26, 1.1)
+    a = comp(a, gradient_v((W, H), GOLD_HI, (255, 170, 40), 0.42, 0.53), m)
+    t = mask_text((W, H), "BLACK CLOVER MMV  •  MANGA x ANIME  •  2K 60FPS", font("Montserrat.ttf", 32, 800),
+                  (W / 2, H * 0.565), tracking=0.14)
+    a = comp(a, INK, t.filter(ImageFilter.MaxFilter(7)))
+    a = comp(a, (255, 250, 240), t)
+    t2 = mask_text((W, H), "NEW EDIT EVERY WEEK", font("Bangers-Regular.ttf", 50), (W / 2, H * 0.608), tracking=0.12)
+    a = comp(a, (255, 250, 240), t2.filter(ImageFilter.MaxFilter(9)))
+    a = comp(a, RED, t2)
+    save(grain(vignette(a, 0.35), 5), path)
+
+
 def banner_guide(src, path, W=2560, H=1440):
     """Salinan banner dengan kotak area aman (TV / desktop / mobile) untuk pengecekan, jangan diupload."""
     im = Image.open(src).convert("RGB")
@@ -332,7 +471,7 @@ def banner_guide(src, path, W=2560, H=1440):
         x0, y0 = (W - w) / 2, (H - h) / 2
         d.rectangle([x0 + 2, y0 + 2, x0 + w - 3, y0 + h - 3], outline=c, width=4)
         d.text((x0 + 14, y0 + 10), lbl, fill=c, font=font("Inter-SemiBold.otf", 30))
-    im.save(path)
+    im.save(path, quality=88)
     print("->", path)
 
 
@@ -344,8 +483,12 @@ def main():
     logo3(os.path.join(out, "logo3_clean_minimal.png"))
     logo4(os.path.join(out, "logo4_flame_crest.png"))
     logo5(os.path.join(out, "logo5_manga_panel.png"))
-    banner(os.path.join(out, "banner_youtube_2560x1440.png"))
-    banner_guide(os.path.join(out, "banner_youtube_2560x1440.png"), os.path.join(out, "banner_safe_area_CEK.png"))
+    banner(os.path.join(out, "banner_youtube_2560x1440.jpg"))
+    banner_guide(os.path.join(out, "banner_youtube_2560x1440.jpg"), os.path.join(out, "banner_safe_area_CEK.jpg"))
+    banner_manga_bw(os.path.join(out, "banner_manga1_bw.jpg"))
+    banner_manga_color(os.path.join(out, "banner_manga2_color.jpg"))
+    banner_guide(os.path.join(out, "banner_manga1_bw.jpg"), os.path.join(out, "banner_manga1_CEK.jpg"))
+    banner_guide(os.path.join(out, "banner_manga2_color.jpg"), os.path.join(out, "banner_manga2_CEK.jpg"))
 
 
 if __name__ == "__main__":

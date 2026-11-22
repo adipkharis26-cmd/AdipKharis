@@ -74,11 +74,21 @@ Nama tampilan: **Charizchkun ⚡**
 
 **Rekomendasi:** pakai **logo 1 di ketiga platform** agar mudah dikenali, karena warnanya sama dengan grade emas mv2 dan monogram CK tetap terbaca saat foto profil sangat kecil. Logo 3 untuk cover highlight IG.
 
-## Banner YouTube (`banner_youtube_2560x1440.png`)
+## Banner YouTube (`banner_youtube_2560x1440.jpg`) — gaya glow emas
 
-- Ukuran 2560×1440 (rekomendasi YouTube), di bawah 6 MB.
-- Semua teks ada di **area aman 1546×423** sehingga tidak terpotong di HP, desktop, maupun TV. Cek dengan `banner_safe_area_CEK.png` (jangan diupload).
+- Ukuran 2560×1440 (rekomendasi YouTube), JPG di bawah 6 MB.
+- Semua teks ada di **area aman 1546×423** sehingga tidak terpotong di HP, desktop, maupun TV. Cek dengan `banner_safe_area_CEK.jpg` (jangan diupload).
 - Isi: nama CHARIZCHKUN emas bercahaya, tagline `BLACK CLOVER MMV • MANGA x ANIME • 2K 60FPS`, janji upload `NEW EDIT EVERY WEEK`, sinar cahaya, sabetan merah & petir di luar area aman.
+
+## 2 banner rekomendasi gaya manga
+
+| # | File | Tampilan | Cocok bila |
+|---|---|---|---|
+| M1 | `banner_manga1_bw.jpg` | Halaman manga hitam-putih: garis fokus ke tengah, screentone bergradasi, panel miring di kiri-kanan, cipratan tinta, **kotak dialog kuning** berisi nama (sama dengan kotak teks di edit mv2), SFX "BOOM!" merah, pita tagline hitam | **Rekomendasi** — paling "manga", kontras tinggi sehingga terbaca di HP; pasangan logo 5 (Manga Panel) atau logo 3 |
+| M2 | `banner_manga2_color.jpg` | Manga berwarna: kertas hangat, halftone merah (kiri-bawah) & emas (kanan-atas), grid panel diagonal, sapuan kuas tinta di belakang judul emas bercahaya | Ingin nuansa manga tapi tetap senada dengan grade emas mv2; pasangan logo 1 (Golden Story) |
+
+Teks pada kedua banner ada di area aman 1546×423 (cek: `banner_manga1_CEK.jpg`, `banner_manga2_CEK.jpg` — jangan diupload).
+Pasangan paling serasi: **M1 + logo 5** (identitas manga penuh) atau **M2 + logo 1** (manga + emas mv2).
 
 ## Konsistensi lintas platform
 
