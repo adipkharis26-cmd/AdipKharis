@@ -603,6 +603,66 @@ def face_acting(img, fx, ch, Mc, lt):
     return img
 
 
+# ------------------------------------------------------------------ grade akhir per style
+_post_noise = {}
+
+
+def post_style(frame, P, fr):
+    if not P:
+        return frame
+    f = frame
+    if P.get("bloom"):
+        f = bloom(f, P.get("bloom_thr", 185), P["bloom"])
+    lum = np.clip(f.mean(2, keepdims=True) / 255.0, 0, 1)
+    if P.get("mono"):
+        r, g, b = f[..., 0:1], f[..., 1:2], f[..., 2:3]
+        redness = np.clip((r - np.maximum(g, b)) / 90.0 - 0.25, 0, 1) * P.get("keep_red", 0.0)
+        paper = np.array(P.get("paper_tint", (245, 240, 230)), np.float32) / 255.0
+        gray = lum * 255.0 * paper
+        m = P["mono"] * (1 - redness)
+        f = f * (1 - m) + gray * m
+        lum = np.clip(f.mean(2, keepdims=True) / 255.0, 0, 1)
+    if P.get("duo"):
+        d, mcol, l = (np.array(c, np.float32) for c in P["duo"])
+        t = lum
+        lo = d + (mcol - d) * np.clip(t * 2, 0, 1)
+        hi = mcol + (l - mcol) * np.clip(t * 2 - 1, 0, 1)
+        g = np.where(t < 0.5, lo, hi)
+        f = f * (1 - P.get("duo_k", 1.0)) + g * P.get("duo_k", 1.0)
+    if P.get("split"):
+        sh, hi = (np.array(c, np.float32) for c in P["split"])
+        tint = sh * (1 - lum) + hi * lum
+        k = P.get("split_k", 0.3)
+        f = f * (1 - k) + (f * tint / 160.0) * k
+    if P.get("sat") is not None:
+        m_ = f.mean(2, keepdims=True)
+        f = m_ + (f - m_) * P["sat"]
+    if P.get("contrast"):
+        f = (f - 128) * P["contrast"] + 128
+    if P.get("gamma"):
+        f = 255.0 * np.clip(f / 255.0, 0, 1) ** P["gamma"]
+    if P.get("highlight_roll"):   # tekan highlight agar tidak gosong
+        k = P["highlight_roll"]
+        x = np.clip(f / 255.0, 0, None)
+        f = 255.0 * (x * (1 - k) + (1 - np.exp(-x * 1.6)) / (1 - math.exp(-1.6)) * k)
+    if P.get("lift"):
+        f = f * (1 - P["lift"] / 255.0) + P["lift"]
+    if P.get("scanlines"):
+        rows = ((np.arange(S) // max(1, S // 540)) % 2).astype(np.float32)[:, None, None]
+        f = f * (1 - rows * P["scanlines"])
+    if P.get("chroma"):
+        k = int(P["chroma"] * S / 1080)
+        f[..., 0] = np.roll(f[..., 0], k, axis=1)
+        f[..., 2] = np.roll(f[..., 2], -k, axis=1)
+    if P.get("grain"):
+        key = (S, int(P["grain"] * 10))
+        if key not in _post_noise:
+            rng = np.random.default_rng(9)
+            _post_noise[key] = [rng.normal(0, P["grain"], (S, S, 1)).astype(np.float32) for _ in range(3)]
+        f = f + _post_noise[key][(fr // 2) % 3]
+    return f
+
+
 # ------------------------------------------------------------------ transisi
 def whip(img, strength, direction=1):
     if strength <= 0:
@@ -757,6 +817,7 @@ def render_frame(job):
             if 0 <= d < 0.05:
                 a = (1 - d / 0.05) * 0.75
                 frame = frame * (1 - a) + 255 * a
+    frame = post_style(frame, getattr(EDIT, "POST", None), fr)
     pp = MT.paper(S, getattr(EDIT, "PAPER", 0.0))
     if pp is not None:
         frame = frame * pp
@@ -779,7 +840,9 @@ def render_frame(job):
             ap = (lt - t0) / 0.2
             pop = max(0.0, 1 - (lt - t0) / 0.25) if tx.get("pop") else 0.0
             if tx["kind"] == "title":
-                frame = typo.title(frame, tx.get("label", ""), tx["name"], tx.get("color", (255, 60, 40)), ap,
+                tcol = getattr(EDIT, "TEXT", {}).get("color", tx.get("color", (255, 60, 40))) \
+                    if tx.get("style", "name") == "name" else tx.get("color", (255, 60, 40))
+                frame = typo.title(frame, tx.get("label", ""), tx["name"], tcol, ap,
                                    tx.get("y", 0.83), tx.get("style", "name"), pop)
             else:
                 frame = typo.subtitle(frame, tx["text"], ap, tx.get("y", 0.885))
@@ -787,10 +850,27 @@ def render_frame(job):
     return np.clip(frame, 0, 255).astype(np.uint8).tobytes()
 
 
+def apply_style(edit, name):
+    """Timpa tampilan edit dengan preset style di edits/styles/<name>.py (tekstur, kertas, cahaya, grade akhir)."""
+    if not name:
+        return
+    path = os.path.join(os.path.dirname(os.path.abspath(args_edit_path(edit))), "styles", name + ".py")
+    st = load_edit(path)
+    for k in ("TEXTURE_CHAR", "TEXTURE_BG", "DAPPLED", "PAPER", "POST", "TEXT"):
+        if hasattr(st, k):
+            setattr(edit, k, getattr(st, k))
+    edit.STYLE_NAME = name
+
+
+def args_edit_path(edit):
+    return getattr(edit, "__file__", ARGS.edit)
+
+
 def init(args):
     global ARGS, EDIT, S, FPS
     ARGS = args
     EDIT = load_edit(args.edit)
+    apply_style(EDIT, getattr(args, "style", ""))
     S = args.size
     FPS = args.fps
     typo.S = S
@@ -812,6 +892,8 @@ def main():
     ap.add_argument("--only", default="")
     ap.add_argument("--prepare", action="store_true", help="hanya upscale + roto (cache), tanpa render")
     ap.add_argument("--stills", default="", help="preview: daftar detik, mis. 0.5,3,9.2 -> PNG + contact sheet")
+    ap.add_argument("--style", default="", help="preset di edits/styles: manga_color, ink_mono, neon_night, "
+                                               "cinematic, pastel_dream, red_phonk")
     a = ap.parse_args()
     init(a)
     only = {int(x) for x in a.only.split(",") if x.strip()}

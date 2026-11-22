@@ -76,3 +76,21 @@ Render (audio dipotong 0.5 dtk agar hentakan pertama = frame pertama):
 python3 motion/render_v3.py edits/funk_mandala_v3.py --chars images/ --bgs backgrounds/ --audio funk_mandala.mp3 --audio-start 0.5 --out out.mp4 --models models
 ```
 Preview cepat: tambahkan `--size 1024 --fps 30 --only 1,9`.
+
+## Variasi style (`--style`)
+
+Preset di `edits/styles/`. Style dipilih saat render, edit/shot list tidak berubah.
+
+| Style | Tampilan | Cocok untuk sound |
+|---|---|---|
+| `manga_color` | **STYLE LOCK v1** — manga berwarna hangat, tinta, screentone, kertas (default) | semua |
+| `ink_mono` | manga hitam-putih tinta pekat, hanya merah/api yang berwarna | phonk gelap, sedih |
+| `neon_night` | malam saturasi tinggi, cyan/magenta, scanline | hype, phonk cepat |
+| `cinematic` | anime bersih, grade teal-orange, grain film | pencapaian, epic |
+| `pastel_dream` | lembut, pastel pink-biru, highlight ditekan | lembut, girl/romance |
+| `red_phonk` | duotone hitam-merah kontras tinggi, grain kasar | drift phonk, villain |
+
+```bash
+python3 motion/render_v3.py edits/queens_v4.py --style pastel_dream --chars images/ --bgs backgrounds/ --audio sound.wav --out out.mp4 --models models
+```
+Versi terkunci: branch `black-clover-v1-locked` (snapshot, jangan diubah). Pengembangan: branch `black-clover`.
