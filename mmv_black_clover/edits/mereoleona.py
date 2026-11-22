@@ -8,7 +8,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from style_lock import *  # noqa: F401,F403,E402
 from style_lock import BLOOD, WARM  # noqa: E402
-from director import FIRE, cut, speak  # noqa: E402
+from director import FIRE, cut  # noqa: E402
 
 PARTICLE_COLOR = (255, 120, 40)
 GOLD = (255, 190, 60)
@@ -23,8 +23,13 @@ SHOTS = [
     cut(1.30, 2.72, "Fuegoleon_anime_profile.png", "capital", "rise", (0.5, 0.15), 2.2, pos=(0.5, 0.42), hits=(),
         glow=FIRE, who="mereo"),
     # ── VO 1: Mereoleona berbicara ──
-    cut(2.72, 3.98, "Mereoleona_anime_profile.png", "sun", "lean", (FACE[0], FACE[1] + 0.02), 4.2,
-        pos=(0.5, 0.42), hits=(), glow=FIRE, parts=speak(*FACE), bg_grade=dict(tint=(1.25, 0.75, 0.4), bright=0.62)),
+    # VO: Mereoleona diam menyeringai (intimidasi) - kamera mendekat pelan, rambut berkobar, aura api, kilat mata
+    cut(2.72, 3.98, "Mereoleona_anime_profile.png", "sun", "push_in", (FACE[0], FACE[1] + 0.02), 4.0,
+        pos=(0.5, 0.42), hits=(), glow=FIRE, bg_grade=dict(tint=(1.25, 0.75, 0.4), bright=0.62),
+        parts=[dict(type="wind", region=("box", 0.25, 0.0, 0.8, 0.13, 0.04), amp=0.012, freq=2.3, k=9.0, edge=True,
+                    dir=(0.5, 1.0))],
+        fx=dict(eyes=([(0.489, 0.132), (0.555, 0.131)], (255, 150, 40), [(0, 0.0), (0.5, 0.0), (0.8, 1.1), (1.26, 0.6)],
+                      3), back_glow=((255, 90, 10), 0.7), aura_osc=(0.6, 1.8), rim=((255, 140, 50), 0.7))),
     cut(3.98, 4.60, "Mereoleona_at_15.png", "sun", "push_in", (0.5, 0.3), 1.6),
     cut(4.60, 5.22, "Mereoleona_as_a_child.png", "silva", "reach", (0.33, 0.3), 1.6),
     # ── DROP: api ──
