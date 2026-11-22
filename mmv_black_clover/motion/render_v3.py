@@ -1104,6 +1104,66 @@ ACTING = {
 }
 
 
+def cutout_ok(path):
+    """Putuskan apakah gambar cocok dipotong (hapus bg) atau lebih baik dipakai utuh (mode gelombang).
+    Tidak cocok bila: karakter terpotong tepi gambar, gambar didominasi karakter/bingkai sampul,
+    atau penuh efek cahaya (sayap/aura bercahaya -> tepi potongan kotor)."""
+    a = analyze.cached(path, "alpha", analyze.segment, os.path.join(ARGS.models, "isnet-anime.onnx"))
+    img = cv2.imread(path, cv2.IMREAD_COLOR)
+    a = cv2.resize(a, (img.shape[1], img.shape[0]))
+    b = (a > 0.5).astype(np.float32)
+    border = np.concatenate([b[0], b[-1], b[:, 0], b[:, -1]]).mean()
+    cov = b.mean()
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV).astype(np.float32)
+    glow = (((hsv[..., 2] > 200) & (hsv[..., 1] > 90)) * b).sum() / max(1.0, b.sum())
+    ok = border <= 0.15 and cov <= 0.55 and glow <= 0.22
+    return ok, dict(border=round(float(border), 2), cov=round(float(cov), 2), glow=round(float(glow), 2))
+
+
+def auto_mode(edit):
+    for i, s in enumerate(edit.SHOTS):
+        C = s.get("char")
+        if not C or C.get("alpha") != "auto":
+            continue
+        path = os.path.join(ARGS.chars, C["img"])
+        ok, m = cutout_ok(path)
+        if ok:
+            C["alpha"] = "seg"
+            continue
+        # mode utuh: tanpa bg baru, gambar menutup frame, akting jadi gerak kamera halus + gelombang
+        h, w = cv2.imread(path, cv2.IMREAD_GRAYSCALE).shape
+        ax, ay = C.get("anchor", (0.5, 0.5))
+        ax, ay = min(max(ax, 0.2), 0.8), min(max(ay, 0.2), 0.8)
+        cover = max(h / (2 * min(ax, 1 - ax) * w), 1 / (2 * min(ay, 1 - ay))) * 1.06
+        sp = C.get("span", 1.0)
+        sp = sp[0][1] if isinstance(sp, (list, tuple)) else sp
+        base = max(cover, sp if sp < cover * 1.6 else cover)
+        dur = s["t1"] - s["t0"]
+        act_ = C.pop("acting", "push_in")
+        rot = {"turn": [(0, 1.2), (dur, -0.8)], "lean": [(0, 0.0), (dur, -1.2)], "float": [(0, -0.6), (dur, 0.6)]}
+        C.update(alpha="full", anchor=(ax, ay), pos=(0.5, 0.5),
+                 span=[(0, base * (1.10 if act_ in ("reach", "recoil") else 1.0)),
+                       (dur, base * (1.0 if act_ in ("reach", "recoil") else 1.10))],
+                 rot=rot.get(act_, 0.0), ease_act="out")
+        C["rig"] = dict(parts=[dict(type="wind", region=("box", 0, 0, 1, 1), amp=0.005, freq=1.0, k=6.0, edge=False,
+                                    dir=(1.0, 0.35)),
+                               dict(type="breathe", region=("box", 0, 0.25, 1, 1), osc=(0.004, 0.55),
+                                    pivot=(0.5, 1.0))])
+        s.pop("bg", None)
+        fx = s.setdefault("fx", {})
+        for k in ("rays", "back_glow", "rim", "aura_osc"):   # efek siluet tidak berlaku untuk gambar utuh
+            fx.pop(k, None)
+        g = s.setdefault("grade", {})
+        if m["glow"] > 0.2:                                   # gambar penuh cahaya: jaga highlight tidak gosong
+            g.update(bloom=0.06, bloom_thr=240, bright=0.8, contrast=1.15)
+        else:
+            g.setdefault("bloom", 0.2)
+        if s.get("particles_cfg") and s["particles_cfg"][2] in ("embers",) and m["glow"] > 0.2:
+            s["particles_cfg"] = (s["particles_cfg"][0], 0.25, "embers")
+        if __name__ == "__main__" and not getattr(ARGS, "_quiet", False):
+            print("shot %d: %s -> UTUH (gelombang) %s" % (i + 1, C["img"], m), flush=True)
+
+
 def expand_acting(edit):
     for s in edit.SHOTS:
         C = s.get("char")
@@ -1124,6 +1184,7 @@ def init(args):
     EDIT = load_edit(args.edit)
     apply_style(EDIT, getattr(args, "style", ""))
     apply_genre(EDIT, getattr(args, "genre", ""))
+    auto_mode(EDIT)
     expand_acting(EDIT)
     if getattr(args, "no_wm", False):
         EDIT.WATERMARK = ""

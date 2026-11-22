@@ -26,10 +26,37 @@ BG = dict(silva="Clover_Castle.png", mansion="King's_bedroom.png", water="Seabed
           circles="Magic_circles_of_Qliphoth_Advent_Ritual.png", chamber="Eleventh_chamber_in_Shadow_Palace.png")
 
 
+# ciri khas karakter (sihir & kepribadian) -> dipasang otomatis di setiap adegan karakter itu
+SIG = {
+    # Noelle: sihir air -> gelembung, aura biru berdenyut lembut
+    "noelle": dict(particles_cfg=BUBBLES, fx=dict(aura_osc=(0.25, 0.8))),
+    # Asta: anti-magic -> aura hitam-merah berkedip kasar, serpihan merah naik
+    "asta": dict(particles_cfg=((220, 30, 30), 0.6, "fire"),
+                 fx=dict(back_glow=((150, 0, 0), 0.55), aura_osc=(0.6, 2.2), rim=((255, 40, 30), 0.6))),
+    # Valkyrie: cahaya suci -> kilau + sinar
+    "valkyrie": dict(particles_cfg=SPARK, fx=dict(rays=((0.5, 0.25), ICE, 0.8), aura_osc=(0.3, 1.0))),
+    # momen berdua: hangat, kilau
+    "duo": dict(particles_cfg=SPARK),
+}
+
+
+def who_for(img):
+    """Tebak karakter utama dari nama gambar (bisa ditimpa dengan who=...)."""
+    if "Valkyrie" in img or "Undine" in img or "defeats_Vanica" in img:
+        return "valkyrie"
+    if img.startswith("Noelle") or "Acier" in img:
+        return "noelle"
+    if "catches" in img or "first_salary" in img or "Mimosa_react" in img:
+        return "duo"
+    if "Asta" in img:
+        return "asta"
+    return None
+
+
 def cut(t0, t1, img, bg, acting, anchor, span, pos=(0.5, 0.5), glow=ICE, hits=(0.0,), flash=(), tone=None,
-        bg_grade=None, parts=(), **kw):
+        bg_grade=None, parts=(), who=None, **kw):
     """Satu adegan: karakter dipotong di depan background baru, akting keyframe, parallax, rim & light wrap."""
-    char = dict(img=img, alpha="seg", upscale=2400, anchor=anchor, pos=pos, span=span, acting=acting,
+    char = dict(img=img, alpha="auto", upscale=2400, anchor=anchor, pos=pos, span=span, acting=acting,
                 rig=dict(parts=[dict(type="wind", region=("box", 0, 0, 1, 1), amp=0.004, freq=0.9, k=6.0, edge=True,
                                      dir=(1.0, 0.35))] + list(parts)))
     if tone:
@@ -40,6 +67,11 @@ def cut(t0, t1, img, bg, acting, anchor, span, pos=(0.5, 0.5), glow=ICE, hits=(0
                      grade=bg_grade or dict(bright=0.72, contrast=1.1)),
              cam=dict(ease="out"), hits=list(hits), flash=list(flash),
              fx=dict(rim=(glow, 0.55), back_glow=(glow, 0.3), wrap=0.4, shadow=0.45))
+    who = who or who_for(img)
+    if who:
+        sig = SIG[who]
+        s["particles_cfg"] = sig.get("particles_cfg", s.get("particles_cfg"))
+        s["fx"].update(sig.get("fx", {}))
     s.update(kw)
     return s
 
@@ -49,8 +81,10 @@ SHOTS = [
     cut(0.00, 1.30, "Asta_catches_Noelle.png", "beach", "push_in", (0.42, 0.45), 1.2, glow=WHITE,
         hits=(0.18,), particles_cfg=SPARK,
         text=[dict(kind="title", label="SEASON 2 - EPISODE 7", name="She Finally Said It", at=0.2, until=2.6)]),
-    cut(1.30, 2.72, "Noelle_Silva_anime_profile.png", "silva", "rise", (0.5, 0.2), 2.2, pos=(0.5, 0.42),
-        hits=()),
+    act(cut(1.30, 2.72, "Noelle_Silva_anime_profile.png", "silva", "rise", (0.5, 0.2), 2.2, pos=(0.5, 0.42),
+            hits=()),
+        parts=[head(("ellipse", 0.53, 0.12, 0.14, 0.075, 0.5), (0.53, 0.195), [(0, 0.0), (0.8, -3.0)], ease="out")],
+        blush=blush([(0.505, 0.165, 0.026, 0.008), (0.6, 0.162, 0.02, 0.008)], [(0, 0.0), (0.6, 0.9)])),
     # ── kilas balik (staccato 0.32 dtk) ──
     cut(2.72, 3.02, "Asta_Staria.png", "hage", "recoil", (0.5, 0.5), 1.25, tone=WARM, glow=WHITE),
     cut(3.02, 3.34, "Noelle_and_Mimosa_react_to_Sally_hugging_Asta.png", "bulls", "slide_r", (0.8, 0.62), 1.7,
@@ -84,7 +118,7 @@ SHOTS = [
     cut(11.60, 12.50, "Asta_accepts_Noelle_request_to_defeat_Mars.png", "dungeon", "push_in", (0.32, 0.42), 1.5,
         glow=(120, 255, 200), flash=(0.0,)),
     cut(12.50, 13.00, "Noelle_and_Undine_team_up.png", "water", "recoil", (0.32, 0.58), 2.2, particles_cfg=BUBBLES),
-    cut(13.00, 14.50, "Saint_Valkyrie_Dress.png", "church", "reach", (0.58, 0.35), 1.15, pos=(0.5, 0.5),
+    cut(13.00, 14.50, "Saint_Valkyrie_Dress.png", "church", "reach", (0.6, 0.27), 2.4, pos=(0.5, 0.5),
         particles_cfg=SPARK),
     cut(14.50, 15.46, "Asta_anime_profile.png", "bulls", "turn", (0.5, 0.15), 1.9, pos=(0.5, 0.4), glow=RED, hits=()),
     # ── break: inti emosi ──
@@ -97,7 +131,7 @@ SHOTS = [
     cut(17.90, 18.92, "Noelle_after_Heart_Kingdom_training.png", "garden", "float", (0.47, 0.25), 1.6,
         pos=(0.5, 0.45), hits=()),
     # ── bangun lagi -> klimaks ──
-    cut(18.92, 20.04, "Saint_Valkyrie_Dress.png", "sun", "rise", (0.6, 0.35), 1.4, flash=(0.0,), particles_cfg=SPARK,
+    cut(18.92, 20.04, "Saint_Noelle_stabs_Vanica.png", "sun", "rise", (0.5, 0.5), 1.1, flash=(0.0,), particles_cfg=SPARK,
         bg_grade=dict(tint=(1.15, 0.85, 0.7), bright=0.75)),
     cut(20.04, 20.96, "Noelle_defeats_Vanica.png", "circles", "reach", (0.45, 0.3), 1.2),
     cut(20.96, 21.98, "Asta_and_Noelle_first_salary.png", "bulls", "turn", (0.5, 0.45), 1.2, glow=WHITE,
