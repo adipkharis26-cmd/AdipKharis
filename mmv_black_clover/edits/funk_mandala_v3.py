@@ -5,6 +5,16 @@
 # ditempatkan di char.pos (0..1 frame); span = tinggi gambar relatif tinggi frame.
 
 WATERMARK = "Charizchkun"
+
+# Tekstur "manga berwarna" seperti referensi (motion/manga_texture.py). Ukuran dalam piksel output.
+# karakter: warna flat bersih + tinta tegas; screentone hanya di bayangan gelap
+TEXTURE_CHAR = dict(cel=0.55, levels=5, ink=0.8, ink_sigma=1.0, tone=0.30, tone_period=6.0, tone_lo=0.55,
+                    tone_hi=0.85, hatch=0.0, warm=0.35)
+# background: lebih "digambar": warna lebih rata, screentone luas, sedikit arsiran
+TEXTURE_BG = dict(cel=0.75, levels=4, ink=0.65, ink_sigma=1.3, tone=0.55, tone_period=7.0, tone_lo=0.2,
+                  tone_hi=0.75, hatch=0.15, warm=0.45)
+DAPPLED = 0.35   # bercak cahaya di karakter
+PAPER = 1.0      # serat kertas di seluruh frame
 PARTICLE_COLOR = (255, 95, 45)
 RED = (255, 45, 35)
 RED_SKY = dict(tint=(1.18, 0.55, 0.5), sat=0.9, bright=0.75, contrast=1.1)

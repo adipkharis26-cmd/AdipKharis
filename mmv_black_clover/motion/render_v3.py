@@ -21,6 +21,7 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import analyze  # noqa: E402
 import engine as E  # noqa: E402
+import manga_texture as MT  # noqa: E402
 import typo  # noqa: E402
 import upscale  # noqa: E402
 
@@ -122,6 +123,19 @@ class Layer:
             rgb = rgb * (1 - cfg["desat"]) + rgb.mean(2, keepdims=True) * cfg["desat"]
         self.rgb = np.clip(rgb, 0, 255).astype(np.uint8)
         self.h, self.w = self.rgb.shape[:2]
+        # tekstur manga berwarna (sekali di sumber, di-cache ke disk)
+        tex = cfg.get("texture", getattr(EDIT, "TEXTURE_CHAR" if is_char else "TEXTURE_BG", None))
+        if tex:
+            span0 = K(0, cfg.get("span", 1.0 if is_char else 1.15))
+            ps = self.h / (span0 * S)            # piksel sumber per piksel output
+            import hashlib
+            hkey = hashlib.md5((repr(sorted(tex.items())) + "%.3f%d" % (ps, S)).encode()).hexdigest()[:10]
+            cache = os.path.splitext(path)[0] + ".tex_%s.png" % hkey
+            if os.path.exists(cache):
+                self.rgb = cv2.cvtColor(cv2.imread(cache, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
+            else:
+                self.rgb = MT.apply(self.rgb, tex, ps)
+                cv2.imwrite(cache, cv2.cvtColor(self.rgb, cv2.COLOR_RGB2BGR))
         self.alpha = None
         mode = cfg.get("alpha", "full") if is_char else "full"
         if mode != "full":
@@ -453,6 +467,9 @@ def render_frame(job):
                 sh = up(cv2.GaussianBlur(lowres(ca), (0, 0), 10))
                 brgb = brgb * (1 - sh[..., None] * fx.get("shadow", 0.35))
             crgb = light_wrap(crgb, ca, brgb, fx.get("wrap", 0.35))
+            dap = s.get("dappled", getattr(EDIT, "DAPPLED", 0.0))
+            if dap:
+                crgb = crgb + crgb * MT.dappled(S, t, dap, seed=idx) * ca[..., None]
             a3 = ca[..., None]
             frame = brgb * (1 - a3) + crgb * a3
             if fx.get("rim"):
@@ -484,6 +501,9 @@ def render_frame(job):
             if 0 <= d < 0.05:
                 a = (1 - d / 0.05) * 0.75
                 frame = frame * (1 - a) + 255 * a
+    pp = MT.paper(S, getattr(EDIT, "PAPER", 0.0))
+    if pp is not None:
+        frame = frame * pp
     frame = frame * vignette() + grain(fr)
     # transisi masuk/keluar
     tr = s.get("trans_in")
@@ -535,6 +555,7 @@ def main():
     ap.add_argument("--workers", type=int, default=os.cpu_count() or 4)
     ap.add_argument("--only", default="")
     ap.add_argument("--prepare", action="store_true", help="hanya upscale + roto (cache), tanpa render")
+    ap.add_argument("--stills", default="", help="preview: daftar detik, mis. 0.5,3,9.2 -> PNG + contact sheet")
     a = ap.parse_args()
     init(a)
     only = {int(x) for x in a.only.split(",") if x.strip()}
@@ -552,6 +573,29 @@ def main():
                     analyze.cached(p, "alpha", analyze.segment, os.path.join(a.models, "isnet-anime.onnx"))
         print("siap shot %d" % (i + 1), flush=True)
     if a.prepare:
+        return
+    if a.stills:
+        ts = [float(x) for x in a.stills.split(",")]
+        jobs = []
+        for t in ts:
+            idx = next((i for i, s in enumerate(shots) if s["t0"] <= t < s["t1"]), len(shots) - 1)
+            jobs.append((int(round(t * FPS)), t, idx))
+        with Pool(a.workers, initializer=init, initargs=(a,)) as pool:
+            frames = pool.map(render_frame, jobs, chunksize=1)
+        base = os.path.splitext(a.out)[0]
+        tiles = []
+        for (fr, t, idx), buf in zip(jobs, frames):
+            img = np.frombuffer(buf, np.uint8).reshape(S, S, 3)
+            cv2.imwrite("%s_%05.2f.png" % (base, t), cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
+            th = cv2.resize(img, (512, 512), interpolation=cv2.INTER_AREA)
+            cv2.putText(th, "%.2fs  shot %d" % (t, idx + 1), (10, 24), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 2)
+            tiles.append(th)
+        cols = min(4, len(tiles))
+        while len(tiles) % cols:
+            tiles.append(np.zeros_like(tiles[0]))
+        rows = [np.hstack(tiles[i:i + cols]) for i in range(0, len(tiles), cols)]
+        cv2.imwrite(base + "_sheet.jpg", cv2.cvtColor(np.vstack(rows), cv2.COLOR_RGB2BGR), [cv2.IMWRITE_JPEG_QUALITY, 90])
+        print("->", base + "_sheet.jpg")
         return
     end = shots[-1]["t1"]
     n = int(round(end * FPS))
