@@ -1,0 +1,3 @@
+images/
+*.mp4
+!sounds/*_animatic.mp4

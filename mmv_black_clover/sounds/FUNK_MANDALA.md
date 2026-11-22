@@ -50,3 +50,16 @@ Ganti `17X` dengan nomor episode yang baru tayang / akan tayang saat upload.
 2. Jalankan `MMV_BlackClover_1x1.jsx` → pilih `funk_mandala_markers.txt`, file sound, folder panel. Karena ada marker CUT, skrip langsung memakai shot list ini (tidak bertanya ketukan).
 3. Di bagian `CFG` skrip: `labelText: "ASTA"`, `accent: [1, 0.18, 0.12]` (merah anti-magic).
 4. Shot 2, 10, dan 21 dibuat dengan micro-motion penuh (Wave Warp rambut, mask mata + Glow), sisanya cukup parallax + push-in.
+
+## Video jadi tanpa After Effects (render langsung)
+
+Edit lengkap dengan gambar resmi dari Black Clover Wiki ada di [`../edits/funk_mandala_asta.py`](../edits/funk_mandala_asta.py) (gambar, fokus wajah, zoom, label, flash, dan jeda hitam per shot).
+
+```bash
+python3 fetch_images.py edits/funk_mandala_asta.py images/
+```
+```bash
+python3 render_mmv.py edits/funk_mandala_asta.py images/ funk_mandala.mp3 BlackClover_AnimeOnly_1x1.mp4
+```
+
+Perubahan dari shot list awal: shot 6 = Nacht & 4 iblis (tidak ada gambar Yami dirantai di wiki), shot 9 = panel manga Asta vs Liebe, teks drop = label "DEVIL UNION / ASTA x LIEBE", penutup = "BLACK CLOVER SEASON 2 / UPCOMING EPISODES" (tanpa nomor episode supaya tidak salah).
