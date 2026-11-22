@@ -657,6 +657,27 @@ def post_style(frame, P, fr):
         k = int(P["chroma"] * S / 1080)
         f[..., 0] = np.roll(f[..., 0], k, axis=1)
         f[..., 2] = np.roll(f[..., 2], -k, axis=1)
+    if P.get("orton"):            # mv2: glow lembut seluruh frame (Orton) - tampilan anime 3D bercahaya referensi
+        sm = lowres(np.clip(f, 0, 255), 4)
+        soft = up(cv2.GaussianBlur(sm, (0, 0), 6)) ** 1.0
+        scr = 255 - (255 - f) * (255 - soft) / 255.0
+        f = f * (1 - P["orton"]) + scr * P["orton"]
+    if P.get("godrays"):          # mv2: sinar cahaya volumetrik dari sumber cahaya (jendela) di layar
+        (lx, ly), k = P["godrays"][0], P["godrays"][1]
+        sm = lowres(np.clip(f, 0, 255), 4)
+        hi = np.clip(sm - 170, 0, None) * 2.0
+        h = S // 4
+        acc = np.zeros_like(hi)
+        for i in range(10):
+            sc = 1 + 0.06 * i
+            M = np.float32([[sc, 0, lx * h * (1 - sc)], [0, sc, ly * h * (1 - sc)]])
+            acc += cv2.warpAffine(hi, M, (h, h), borderMode=cv2.BORDER_CONSTANT) * (1 - i / 10)
+        f = f + up(cv2.GaussianBlur(acc / 5.5, (0, 0), 2)) * np.array(P.get("godray_color", (255, 220, 160)),
+                                                                     np.float32) / 255.0 * k
+    if P.get("vignette"):         # mv2: vignette dalam (sudut hampir hitam)
+        yy, xx = grid()
+        r = np.sqrt(((xx - S / 2) / (S / 2)) ** 2 + ((yy - S / 2) / (S / 2)) ** 2) / 1.42
+        f = f * (1 - P["vignette"] * np.clip((r - 0.35) / 0.65, 0, 1) ** 1.6)[..., None]
     if P.get("grain"):
         key = (S, int(P["grain"] * 10))
         if key not in _post_noise:
@@ -1166,8 +1187,8 @@ def render_frame(job, raw=False):
                                    tx.get("y", 0.83), tx.get("style", "name"), pop)
             else:
                 frame = typo.subtitle(frame, tx["text"], ap, tx.get("y", 0.885))
-    if G:
-        frame = typo.genre_watermark(frame, getattr(EDIT, "WATERMARK", ""), G.WM, t)
+    if G or getattr(EDIT, "WM", None):
+        frame = typo.genre_watermark(frame, getattr(EDIT, "WATERMARK", ""), G.WM if G else EDIT.WM, t)
     else:
         frame = typo.watermark(frame, getattr(EDIT, "WATERMARK", ""))
     return np.clip(frame, 0, 255).astype(np.uint8).tobytes()

@@ -46,7 +46,7 @@ SHOTS = [
         tilt=tilt(2.14, (-1.5, 3.5), (1.0, -2.0)), text=[say("LEFT AT A CHURCH IN HAGE...", at=0.4)]),
     # 3 lamaran ke Sister Lily - manga diwarnai hangat (4.32 - 6.46)
     cut(4.32, 6.46, "Asta's_last_proposal_to_Lily.png", "hage", "turn", (0.72, 0.42), 1.0, hits=(), who="duo",
-        tone=WARM, grade=sepia(1.0, 0.8), particles_cfg=DUST, trans_in=("dark_focus", 0.45),
+        tone=WARM, grade=sepia(0.8, 0.8), particles_cfg=DUST, trans_in=("dark_focus", 0.45),
         tilt=tilt(2.14, (0.0, -4.0), (2.0, 1.0)), dof=[(0, 0.6), (0.6, 0.0)],
         text=[say("SISTER, PLEASE MARRY ME!", at=0.45, box=True, size=30, cps=26)]),
     # 4 tanpa sihir di antara anak-anak lain (6.46 - 8.57)
@@ -82,11 +82,11 @@ SHOTS = [
     cut(18.76, 20.90, "Asta_and_Yuno_prepared_to_aim_for_the_top.png", "capital", "push_in", (0.7, 0.4), 1.3,
         hits=(), who="duo", grade=sepia(1.0, 0.7), particles_cfg=DUST, trans_in=("burn", 0.35),
         tilt=tilt(2.14, (2.5, -3.0), (-0.5, 2.5)), text=[say("I WILL BE THE WIZARD KING!", at=0.35)]),
-    # 11 Wizard King (manga, spoiler) - label penutup gaya mv1 (20.90 - 22.50)
+    # 11 Wizard King (manga, spoiler) - dialog penutup bertanda spoiler (20.90 - 22.50)
     cut(20.90, 22.50, "Asta_as_Wizard_King.png", "capital", "rise", (0.5, 0.3), 1.35, hits=(0.0,), who="duo",
-        tone=WARM, grade=sepia(1.0, 0.9), particles_cfg=DUST, trans_in=("slash", 0.25),
+        tone=WARM, grade=sepia(0.8, 0.9), particles_cfg=DUST, trans_in=("slash", 0.25),
         tilt=tilt(1.6, (-3.0, 0.0), (1.5, -2.0)),
-        text=[dict(kind="title", label="SPOILER  -  MANGA ENDING", name="THE WIZARD KING", at=0.15)]),
+        text=[say("SPOILER: HE BECAME THE WIZARD KING.", at=0.15, size=28, box=True, cps=28)]),
     # 12 loop - kembali ke masa kecil (22.50 - 23.85)
     cut(22.50, 23.85, "Lily_heals_Asta.png", "hage_church", "push_in", (0.38, 0.5), 1.0, hits=(), who="duo",
         grade=sepia(0.95), particles_cfg=DUST, trans_in=("burn", 0.30), tilt=tilt(1.35, (1.5, -3.0), (0.5, -1.0))),
@@ -100,5 +100,15 @@ for _i, _s in enumerate(SHOTS[1:], 1):
 for _s in SHOTS:
     if _s.get("trans_out", 1) is None:
         _s.pop("trans_out")
+
+# ---- tampilan mv2 (bukan style_lock mv1): style story_glow
+import importlib.util as _ilu  # noqa: E402
+_sp = _ilu.spec_from_file_location("story_glow", os.path.join(os.path.dirname(os.path.abspath(__file__)), "styles",
+                                                              "story_glow.py"))
+_st = _ilu.module_from_spec(_sp)
+_sp.loader.exec_module(_st)
+TEXTURE_CHAR, TEXTURE_BG, DAPPLED, PAPER, POST, TEXT, WM = (_st.TEXTURE_CHAR, _st.TEXTURE_BG, _st.DAPPLED, _st.PAPER,
+                                                           _st.POST, _st.TEXT, _st.WM)
+STYLE_NAME = "story_glow"
 
 IMAGES = sorted({s[k]["img"] for s in SHOTS for k in ("char", "bg") if s.get(k)})
