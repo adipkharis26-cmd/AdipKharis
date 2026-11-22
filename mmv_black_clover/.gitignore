@@ -1,3 +1,6 @@
 images/
 *.mp4
 !sounds/*_animatic.mp4
+models/
+*.onnx
+__pycache__/
