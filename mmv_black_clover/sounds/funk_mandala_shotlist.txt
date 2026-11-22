@@ -1,0 +1,24 @@
+# FUNK MANDALA (Slowed) - Konsep A "Anime-only isn't ready" - 1:1, 30fps, 18.97 dtk
+# mulai|selesai|fx|adegan|teks di layar
+# fx: FLASH (flash+shake+zoom punch) | DROP | BLACK (layar hitam) | GATE:a-b (dip hitam a..b dtk) | SLOW | DESAT
+0.000|0.567|BLACK|Layar hitam, teks muncul langsung (hook)|ANIME-ONLY ISN'T READY...
+0.567|2.900|FLASH,SLOW|Close-up mata Asta tertutup bayangan, mata merah menyala di hentakan, rambut & jubah tertiup angin, bara melayang|ANIME-ONLY ISN'T READY...
+2.900|4.133|DESAT,SLOW|Bass hilang: siluet Liebe muncul di belakang punggung Asta (desaturasi 40%)|FOR WHAT'S COMING IN SEASON 2
+4.133|5.267|SLOW|Jabat tangan Asta & Liebe (panel manga diwarnai), push-in pelan|
+5.267|6.433|FLASH|Bass masuk lagi: Nacht menyeringai, bayangan 4 iblis di belakangnya|
+6.433|7.600||Yami dirantai di kastil Spade, wajah tertunduk|THEY TOOK YAMI.
+7.600|8.067|FLASH|Extreme close-up mata merah Asta|
+8.067|8.767|FLASH|Extreme close-up mata Liebe|
+8.767|9.367|FLASH|Halaman grimoire hitam 5 daun membuka|
+9.367|10.633|DROP|HERO SHOT: Asta Devil Union penuh (tanduk, sayap hitam, pedang merah-hitam). Glow puncak di 10.0 dtk|EPISODE 17X
+10.633|10.800|BLACK|Jeda sunyi - layar hitam 5 frame|
+10.800|11.367|FLASH,GATE:11.22-11.38|Asta menebas dengan Demon Slayer Sword|
+11.367|12.267|GATE:12.00-12.28|Yuno mode Spade (sihir bintang, mata emas)|
+12.267|13.133|GATE:12.96-13.14|Noelle Valkyrie Dress, tombak air|
+13.133|13.733|FLASH|Yami: tebasan kegelapan|
+13.733|14.633|GATE:14.52-14.63|Nacht Devil Union|
+14.633|15.467|GATE:15.32-15.47|Mereoleona, api meledak|
+15.467|16.067|GATE:15.90-16.07|Black Bulls menyerbu bersama|
+16.067|16.967|FLASH,GATE:16.68-16.97|Asta & Yuno punggung-ke-punggung (split 1:1 merah | hijau)|
+16.967|17.833|GATE:17.66-17.83|Asta dari belakang mengangkat pedang, bara naik|
+17.833|18.967|SLOW|Kembali ke mata Asta yang gelap (sama dengan shot 2 -> loop mulus)|UPCOMING EPISODES

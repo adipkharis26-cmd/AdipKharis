@@ -52,8 +52,12 @@
     var marks = readMarkers(markerFile);
     if (marks.length === 0) { alert("Marker kosong / format salah."); return; }
 
-    var bps = parseInt(prompt("Ganti shot tiap berapa ketukan? (phonk 1-2, achievement 4, sedih 8)", String(CFG.beatsPerShot)), 10);
-    if (!(bps > 0)) { bps = CFG.beatsPerShot; }
+    var bps = CFG.beatsPerShot, hasCut = false;
+    for (var q = 0; q < marks.length; q++) { if (marks[q].label === "CUT") { hasCut = true; } }
+    if (!hasCut) {
+        bps = parseInt(prompt("Ganti shot tiap berapa ketukan? (phonk 1-2, achievement 4, sedih 8)", String(CFG.beatsPerShot)), 10);
+        if (!(bps > 0)) { bps = CFG.beatsPerShot; }
+    }
     var audioFile = File.openDialog("Pilih file sound (Cancel = tanpa audio)");
     var folder = Folder.selectDialog("Pilih folder panel/klip (Cancel = hanya rig)");
 
@@ -61,9 +65,10 @@
     var proj = app.project || app.newProject();
 
     // durasi = marker terakhir + 1 ketukan, atau durasi audio
-    var beats = [], hits = [], lastT = 0, i;
+    var beats = [], hits = [], cutMarks = [], lastT = 0, i;
     for (i = 0; i < marks.length; i++) {
         if (marks[i].label === "BEAT") { beats.push(marks[i].t); }
+        if (marks[i].label === "CUT") { cutMarks.push(marks[i].t); }
         if (marks[i].label === "IMPACT" || marks[i].label === "DROP") { hits.push(marks[i]); }
         if (marks[i].t > lastT) { lastT = marks[i].t; }
     }
@@ -77,16 +82,21 @@
     var comp = proj.items.addComp(CFG.compName, S, S, 1.0, duration, CFG.fps);
     comp.bgColor = [0, 0, 0];
     for (i = 0; i < marks.length; i++) {
-        if (marks[i].label === "BEAT") { continue; } // beat banyak sekali; cukup impact/drop/quiet
+        if (marks[i].label === "BEAT" || marks[i].label === "HIT") { continue; }
         var mv = new MarkerValue(marks[i].label + (marks[i].note ? " " + marks[i].note : ""));
+        if (marks[i].label === "GAP") { mv.duration = Math.max(1 / CFG.fps, parseFloat(marks[i].note) - marks[i].t); }
         comp.markerProperty.setValueAtTime(marks[i].t, mv);
     }
     if (audioItem) { comp.layers.add(audioItem); }
 
-    // --- Cut list: tiap N beat + DROP ---
+    // --- Cut list: pakai marker CUT jika ada (hasil beat_sync.py / shot list manual), jika tidak tiap N beat + DROP ---
     var cuts = [0];
-    for (i = bps; i < beats.length; i += bps) { cuts.push(beats[i]); }
-    for (i = 0; i < hits.length; i++) { if (hits[i].label === "DROP") { cuts.push(hits[i].t); } }
+    if (cutMarks.length > 0) {
+        for (i = 0; i < cutMarks.length; i++) { cuts.push(cutMarks[i]); }
+    } else {
+        for (i = bps; i < beats.length; i += bps) { cuts.push(beats[i]); }
+        for (i = 0; i < hits.length; i++) { if (hits[i].label === "DROP") { cuts.push(hits[i].t); } }
+    }
     cuts.sort(function (a, b) { return a - b; });
     var clean = [];
     for (i = 0; i < cuts.length; i++) {
@@ -159,6 +169,14 @@
         flash.property("Transform").property("Opacity").expression =
             HIT_FN + "hitAmp(24, 0.18) * " + CFG.flashMax + ";";
     }
+
+    // --- GATE: dip hitam di marker GAP (jeda pada gated chop / layar hitam) ---
+    var gate = comp.layers.addSolid([0, 0, 0], "FX_GATE_BLACK", S, S, 1.0, duration);
+    gate.property("Transform").property("Opacity").expression =
+        "var m = thisComp.marker, o = 0;" +
+        " for (var k = 1; k <= m.numKeys; k++){ var mk = m.key(k);" +
+        "  if (mk.comment.indexOf('GAP') == 0 && time >= mk.time && time < mk.time + mk.duration){ o = 80; } }" +
+        " o;";
 
     // --- Partikel debu/bara ---
     var part = comp.layers.addSolid([0, 0, 0], "FX_PARTICLES_FG", S, S, 1.0, duration);

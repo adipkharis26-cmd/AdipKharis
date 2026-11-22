@@ -9,7 +9,7 @@ Contoh:
   python3 beat_sync.py sound.mp3 --mood sad     --length 20
 
 Output (di folder yang sama dengan file audio):
-  <nama>_markers.txt  -> dibaca oleh MMV_BlackClover_1x1.jsx (format: detik|LABEL|catatan)
+  <nama>_markers.txt  -> dibaca oleh MMV_BlackClover_1x1.jsx (format: detik|LABEL|catatan; CUT = titik ganti shot)
   <nama>_cutlist.txt  -> daftar shot siap edit (shot ke-n, mulai, durasi, tipe efek)
 """
 import argparse
@@ -105,6 +105,18 @@ def find_drop(rms, sec_per_frame):
     return None if best_i is None else best_i * sec_per_frame
 
 
+def find_hits(x, jump_db=9.0, min_gap=0.25):
+    """Hentakan nyata (lonjakan volume >= jump_db dalam 60 ms): stutter, gated chop, re-entry."""
+    h = int(SR * 0.02)
+    r = np.array([np.sqrt((x[i:i + h] ** 2).mean()) for i in range(0, len(x) - h, h)])
+    db = 20 * np.log10(r + 1e-9)
+    out = []
+    for i in range(3, len(db)):
+        if db[i] - db[i - 3] > jump_db and db[i] > db.max() - 30 and (not out or i * 0.02 - out[-1] > min_gap):
+            out.append(max(0.0, i * 0.02 - 0.04))
+    return np.array(out)
+
+
 def quiet_zones(rms, sec_per_frame, thr=0.25, min_len=0.6):
     """Bagian sepi (jeda/breath) -> tempat teks quote / slow-mo / freeze."""
     q = rms < thr
@@ -156,6 +168,7 @@ def main():
     n_imp = a.impacts or max(3, int(dur / (period * 4)))
     impacts = find_impacts(kick, rms, beats, n_imp)
     drop = find_drop(np.convolve(rms, np.ones(20) / 20, "same"), spf)
+    hits = find_hits(x)
     quiets = quiet_zones(np.convolve(rms, np.ones(10) / 10, "same"), spf)
 
     base = os.path.splitext(a.audio)[0]
@@ -167,13 +180,25 @@ def main():
             f.write("%.3f|IMPACT|%s\n" % (b, cfg["impact_fx"]))
         if drop is not None:
             f.write("%.3f|DROP|reveal karakter / judul\n" % drop)
+        for h in hits:
+            f.write("%.3f|HIT|hentakan nyata\n" % h)
         for s, e in quiets:
             f.write("%.3f|QUIET|sampai %.2f - teks quote / slow-mo\n" % (s, e))
 
-    cuts = list(beats[:: cfg["beats_per_shot"]])
-    if drop is not None:
-        cuts.append(drop)
-    cuts = sorted(set([0.0] + [round(c, 3) for c in cuts if c > 0.25]))
+    # Cut = tiap N ketukan, tapi hentakan nyata (HIT) & DROP menang atas ketukan terdekat (+-0.3 dtk)
+    cuts = [c for c in beats[:: cfg["beats_per_shot"]] if c > 0.25]
+    priority = list(hits) + ([drop] if drop is not None else [])
+    for p in priority:
+        cuts = [c for c in cuts if abs(c - p) > 0.3]
+    cuts = sorted([0.0] + cuts + [p for p in priority if p > 0.25])
+    merged = []
+    for c in cuts:
+        if not merged or c - merged[-1] > 0.3:
+            merged.append(round(c, 3))
+    cuts = merged
+    with open(base + "_markers.txt", "a") as f:
+        for c in cuts:
+            f.write("%.3f|CUT|otomatis\n" % c)
     with open(base + "_cutlist.txt", "w") as f:
         f.write("MOOD: %s | BPM ~%.1f | 1 ketukan = %.3f dtk = %d frame @30fps\n" % (a.mood, bpm, period, round(period * 30)))
         f.write("Catatan: %s\n\n" % cfg["note"])
@@ -184,13 +209,15 @@ def main():
                 tag.append("DROP -> shot terkuat")
             if any(abs(c - p) < 0.12 for p in impacts):
                 tag.append(cfg["impact_fx"])
+            if any(abs(c - h) < 0.05 for h in hits):
+                tag.append("HIT")
             if any(s <= c <= e for s, e in quiets):
                 tag.append("QUIET -> teks/slow-mo")
             f.write("Shot %02d  %6.2fs -> %6.2fs  (%.2fs, %3d fr)  %s\n"
                     % (i + 1, c, end, end - c, round((end - c) * 30), " | ".join(tag) or cfg["idle_fx"]))
 
-    print("BPM ~%.1f | beat %d | impact %d | drop %s | bagian sepi %d"
-          % (bpm, len(beats), len(impacts), "%.2fs" % drop if drop is not None else "-", len(quiets)))
+    print("BPM ~%.1f | beat %d | hentakan %d | impact %d | drop %s | bagian sepi %d | shot %d"
+          % (bpm, len(beats), len(hits), len(impacts), "%.2fs" % drop if drop is not None else "-", len(quiets), len(cuts)))
     print("->", base + "_markers.txt")
     print("->", base + "_cutlist.txt")
 

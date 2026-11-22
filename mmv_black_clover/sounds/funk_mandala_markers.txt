@@ -1,0 +1,40 @@
+# dibuat oleh make_animatic.py - detik|LABEL|catatan
+0.000|CUT|shot 1 Layar hitam, teks muncul langsung (hook)
+0.567|CUT|shot 2 Close-up mata Asta tertutup bayangan, ma
+0.567|IMPACT|shot 2
+2.900|CUT|shot 3 Bass hilang: siluet Liebe muncul di bela
+4.133|CUT|shot 4 Jabat tangan Asta & Liebe (panel manga d
+5.267|CUT|shot 5 Bass masuk lagi: Nacht menyeringai, baya
+5.267|IMPACT|shot 5
+6.433|CUT|shot 6 Yami dirantai di kastil Spade, wajah ter
+7.600|CUT|shot 7 Extreme close-up mata merah Asta
+7.600|IMPACT|shot 7
+8.067|CUT|shot 8 Extreme close-up mata Liebe
+8.067|IMPACT|shot 8
+8.767|CUT|shot 9 Halaman grimoire hitam 5 daun membuka
+8.767|IMPACT|shot 9
+9.367|CUT|shot 10 HERO SHOT: Asta Devil Union penuh (tandu
+9.367|DROP|shot 10
+10.633|CUT|shot 11 Jeda sunyi - layar hitam 5 frame
+10.633|GAP|10.800
+10.800|CUT|shot 12 Asta menebas dengan Demon Slayer Sword
+10.800|IMPACT|shot 12
+11.220|GAP|11.380
+11.367|CUT|shot 13 Yuno mode Spade (sihir bintang, mata ema
+12.000|GAP|12.280
+12.267|CUT|shot 14 Noelle Valkyrie Dress, tombak air
+12.960|GAP|13.140
+13.133|CUT|shot 15 Yami: tebasan kegelapan
+13.133|IMPACT|shot 15
+13.733|CUT|shot 16 Nacht Devil Union
+14.520|GAP|14.630
+14.633|CUT|shot 17 Mereoleona, api meledak
+15.320|GAP|15.470
+15.467|CUT|shot 18 Black Bulls menyerbu bersama
+15.900|GAP|16.070
+16.067|CUT|shot 19 Asta & Yuno punggung-ke-punggung (split 
+16.067|IMPACT|shot 19
+16.680|GAP|16.970
+16.967|CUT|shot 20 Asta dari belakang mengangkat pedang, ba
+17.660|GAP|17.830
+17.833|CUT|shot 21 Kembali ke mata Asta yang gelap (sama de
