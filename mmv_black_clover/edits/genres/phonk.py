@@ -11,3 +11,5 @@ TRANSITIONS = [("shake", 0.08), ("rgb", 0.06), ("flash_red", 0.05), ("glitch", 0
 SHAKE_K, PUNCH_K = 2.0, 1.8
 FLASH_K, FLASH_COLOR = 0.85, (255, 255, 255)
 PARTICLES = ((255, 40, 30), 0.7, "fire")
+ECHO = True
+FOCUS_LINES = 0.8

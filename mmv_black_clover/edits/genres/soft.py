@@ -7,7 +7,9 @@ TITLE = dict(font="GreatVibes-Regular.ttf", size=96, top=(255, 255, 255), bottom
 TITLE_END = dict(TITLE, size=104)
 WM = dict(font="CormorantGaramond-Italic.ttf", size=40, tracking=0.25, top=(255, 255, 255), bottom=(255, 215, 235),
           glow=(255, 150, 200), opacity=0.8, pulse=0.15)
-TRANSITIONS = [("white_dip", 0.18), ("defocus", 0.20), ("leak", 0.25), ("white_dip", 0.14), ("defocus", 0.16)]
+TRANSITIONS = [("ghost", 0.35), ("white_dip", 0.18), ("ghost", 0.30), ("leak", 0.25), ("defocus", 0.16)]
 SHAKE_K, PUNCH_K = 0.4, 0.4
 FLASH_K, FLASH_COLOR = 0.0, (255, 255, 255)
 PARTICLES = ((255, 225, 235), 0.45, "embers")
+ECHO = False
+FOCUS_LINES = 0.0

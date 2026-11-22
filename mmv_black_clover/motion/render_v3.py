@@ -663,6 +663,30 @@ def post_style(frame, P, fr):
     return f
 
 
+_fl_cache = {}
+
+
+def focus_lines(img, k, seed):
+    """Garis fokus manga (集中線) dari tepi ke tengah, muncul saat hentakan."""
+    key = (S, seed % 5)
+    if key not in _fl_cache:
+        rng = np.random.default_rng(seed % 5)
+        q = 2
+        L = np.zeros((S // q, S // q), np.float32)
+        c = S // q / 2
+        for _ in range(160):
+            a = rng.uniform(0, 2 * math.pi)
+            r0 = rng.uniform(0.42, 0.6) * S / q
+            w = rng.uniform(0.004, 0.012)
+            p1 = (c + math.cos(a) * r0, c + math.sin(a) * r0)
+            p2 = (c + math.cos(a - w) * S, c + math.sin(a - w) * S)
+            p3 = (c + math.cos(a + w) * S, c + math.sin(a + w) * S)
+            cv2.fillConvexPoly(L, np.array([p1, p2, p3], np.int32), 1.0, cv2.LINE_AA)
+        _fl_cache[key] = cv2.resize(L, (S, S))[..., None]
+    m = _fl_cache[key] * min(1.0, k)
+    return img * (1 - m * 0.85) + np.array([250, 245, 235], np.float32) * m * 0.85
+
+
 # ------------------------------------------------------------------ transisi
 def whip(img, strength, direction=1):
     if strength <= 0:
@@ -827,7 +851,10 @@ def get_layer(idx, which):
     return _layers[key]
 
 
-def render_frame(job):
+_prev_cache = {}
+
+
+def render_frame(job, raw=False):
     global _particles
     fr, t, idx = job
     s = EDIT.SHOTS[idx]
@@ -857,10 +884,19 @@ def render_frame(job):
             zoom *= 1 + s.get("punch", 0.03) * imp * (G.PUNCH_K if G else 1.0)
         C = s["char"]
         ch = get_layer(idx, "char")
-        Mc = camera(zoom, pan, rot, 1.0) @ affine(ch.w, ch.h, K(lt, C.get("anchor", (0.5, 0.5))),
-                                                 K(lt, C.get("pos", (0.5, 0.5))), K(lt, C.get("span", 1.0)),
-                                                 K(lt, C.get("rot", 0.0)))
+        ea = C.get("ease_act", "ease")
+
+        def char_M(tt):
+            return camera(zoom, pan, rot, 1.0) @ affine(ch.w, ch.h, K(tt, C.get("anchor", (0.5, 0.5))),
+                                                        K(tt, C.get("pos", (0.5, 0.5)), ea),
+                                                        K(tt, C.get("span", 1.0), ea), K(tt, C.get("rot", 0.0), ea))
+        Mc = char_M(lt)
         crgb, ca = ch.render(Mc, lt, 1.0 + 0.5 * imp)
+        echo_layers = []
+        if s.get("echo", getattr(getattr(EDIT, "GENRE", None), "ECHO", False)) and imp > 0.15 and ch.alpha is not None:
+            for k_, dt in ((0.45, 0.06), (0.25, 0.12)):          # Echo AE: jejak posisi sebelumnya
+                er, ea_ = ch.render(char_M(max(0.0, lt - dt)), lt)
+                echo_layers.append((er, ea_ * k_ * imp))
         crgb = grade(crgb, C.get("grade", {}), lt)
         crgb = face_acting(crgb, s.get("fx", {}), ch, Mc, lt)
         if s.get("bg"):
@@ -891,6 +927,12 @@ def render_frame(job):
             if fx.get("shadow", 0.35) > 0:   # bayangan lembut di belakang karakter (kedalaman)
                 sh = up(cv2.GaussianBlur(lowres(ca), (0, 0), 10))
                 brgb = brgb * (1 - sh[..., None] * fx.get("shadow", 0.35))
+            fl = fx.get("focus_lines", getattr(getattr(EDIT, "GENRE", None), "FOCUS_LINES", 0.0))
+            if fl and imp > 0.05:
+                brgb = focus_lines(brgb, fl * imp, idx)
+            for er, ea_ in echo_layers:
+                er = grade(er, C.get("grade", {}), lt)
+                brgb = brgb * (1 - ea_[..., None]) + er * ea_[..., None]
             crgb = light_wrap(crgb, ca, brgb, fx.get("wrap", 0.35))
             dap = s.get("dappled", getattr(EDIT, "DAPPLED", 0.0))
             if dap:
@@ -944,11 +986,23 @@ def render_frame(job):
     if pp is not None:
         frame = frame * pp
     frame = frame * vignette() + grain(fr)
+    if raw:
+        return frame
     # transisi masuk/keluar
     tr = s.get("trans_in")
     if tr and lt < tr[1]:
         st = 1 - lt / tr[1]
-        frame = apply_transition(frame, tr[0], st, fr, t, -1)
+        if tr[0] == "ghost" and idx > 0:            # double exposure: adegan sebelumnya memudar di atas
+            if idx not in _prev_cache:
+                _prev_cache.clear()
+                p = EDIT.SHOTS[idx - 1]
+                _prev_cache[idx] = render_frame((fr, max(p["t0"], p["t1"] - 1.0 / FPS), idx - 1), raw=True)
+            prev = _prev_cache[idx]
+            a = st * st * (3 - 2 * st)
+            frame = frame * (1 - a * 0.6) + np.maximum(frame, prev) * a * 0.6
+            frame = frame * (1 - a * 0.35) + prev * a * 0.35
+        else:
+            frame = apply_transition(frame, tr[0], st, fr, t, -1)
     tr = s.get("trans_out")
     if tr and dur - lt < tr[1]:
         st = 1 - (dur - lt) / tr[1]
@@ -1024,12 +1078,50 @@ def apply_genre(edit, name):
             s["flash"] = []
 
 
+# ------------------------------------------------------------------ mode sutradara: akting tubuh (keyframe rigid)
+ACTING = {
+    # nama: fungsi(dur, pos, span) -> (pos_keys, span_keys, rot_keys, ease)
+    "push_in": lambda d, p, s: ([(0, p), (d, (p[0], p[1] - 0.02))], [(0, s * 0.94), (d, s * 1.06)], 0.0, "out"),
+    "rise":    lambda d, p, s: ([(0, (p[0], p[1] + 0.09)), (d * 0.6, (p[0], p[1] - 0.005)), (d, p)], s, 0.0, "out"),
+    "slide_l": lambda d, p, s: ([(0, (p[0] - 0.16, p[1])), (d * 0.55, (p[0] + 0.008, p[1])), (d, p)],
+                                [(0, s * 1.02), (d, s)], [(0, -2.5), (d * 0.55, 0.4), (d, 0.0)], "out"),
+    "slide_r": lambda d, p, s: ([(0, (p[0] + 0.16, p[1])), (d * 0.55, (p[0] - 0.008, p[1])), (d, p)],
+                                [(0, s * 1.02), (d, s)], [(0, 2.5), (d * 0.55, -0.4), (d, 0.0)], "out"),
+    "lean":    lambda d, p, s: ([(0, p), (d, (p[0] + 0.015, p[1] + 0.01))], [(0, s), (d, s * 1.03)],
+                                [(0, 0.0), (d, -3.0)], "ease"),
+    "reach":   lambda d, p, s: ([(0, p), (d * 0.35, (p[0], p[1] + 0.03)), (d, (p[0], p[1] + 0.04))],
+                                [(0, s * 0.9), (d * 0.35, s * 1.18), (d, s * 1.22)], 0.0, "out"),
+    "float":   lambda d, p, s: ([(0, (p[0], p[1] + 0.02)), (d * 0.5, (p[0], p[1] - 0.015)), (d, (p[0], p[1] + 0.01))],
+                                [(0, s), (d, s * 1.04)], [(0, -0.8), (d, 0.8)], "ease"),
+    "turn":    lambda d, p, s: ([(0, (p[0] + 0.05, p[1])), (d, (p[0] - 0.03, p[1]))], [(0, s * 1.05), (d, s)],
+                                [(0, 2.0), (d, -1.5)], "ease"),
+    "recoil":  lambda d, p, s: ([(0, (p[0], p[1] - 0.02)), (d * 0.25, (p[0], p[1] + 0.015)), (d, p)],
+                                [(0, s * 1.12), (d * 0.25, s * 0.97), (d, s * 1.02)], [(0, 1.5), (d * 0.25, -1.0), (d, 0.0)],
+                                "out"),
+}
+
+
+def expand_acting(edit):
+    for s in edit.SHOTS:
+        C = s.get("char")
+        if not C or not C.get("acting"):
+            continue
+        dur = s["t1"] - s["t0"]
+        p = C.get("pos", (0.5, 0.5))
+        sp = C.get("span", 1.0)
+        sp = sp[0][1] if isinstance(sp, (list, tuple)) else sp
+        pk, sk, rk, ease = ACTING[C["acting"]](dur, p, sp)
+        C["pos"], C["span"], C["rot"] = pk, sk, rk
+        C["ease_act"] = ease
+
+
 def init(args):
     global ARGS, EDIT, S, FPS
     ARGS = args
     EDIT = load_edit(args.edit)
     apply_style(EDIT, getattr(args, "style", ""))
     apply_genre(EDIT, getattr(args, "genre", ""))
+    expand_acting(EDIT)
     if getattr(args, "no_wm", False):
         EDIT.WATERMARK = ""
     S = args.size

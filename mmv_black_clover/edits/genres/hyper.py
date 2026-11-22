@@ -11,3 +11,5 @@ TRANSITIONS = [("zoom", 0.08), ("spin", 0.09), ("rgb", 0.05), ("flash", 0.04), (
 SHAKE_K, PUNCH_K = 1.6, 2.2
 FLASH_K, FLASH_COLOR = 0.8, (180, 250, 255)
 PARTICLES = ((0, 230, 255), 0.6, "embers")
+ECHO = True
+FOCUS_LINES = 0.6
