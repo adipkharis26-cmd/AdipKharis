@@ -82,7 +82,7 @@ const bedsOf = (sc: Scene): { id: string; kind: BedKind }[] => {
 const wearOf = (sc: Scene): Wear => sc.wear ?? (schoolCommute(sc) ? "seragam" : ((metaOf(sc) as { wear?: Wear }).wear ?? "seragam"));
 /** Topi upacara: lokasi "hat": true (lapangan upacara) atau naskah scene "hat": true | false; hanya untuk berseragam. */
 export const hasHatScene = (sc: Scene) => (sc.hat ?? (metaOf(sc) as { hat?: boolean }).hat ?? false) === true;
-const hatOf = (sc: Scene, c: CharId) => hasHatScene(sc) && STUDENTS.includes(c) && wearOf(sc) === "seragam";
+const hatOf = (sc: Scene, c: CharId) => hasHatScene(sc) && STUDENTS.includes(c) && wearOf(sc) === "seragam" && !((sc as { noHat?: string[] }).noHat ?? []).includes(c); // "noHat": ["ucok"] = lupa bawa topi
 const faceOf = (sc: Scene, c: CharId) => ({ x: posOf(sc, c).x + 70 * posOf(sc, c).facing, y: metaOf(sc).floor - 468 - 130 });
 const otherOf = (sc: Scene, c: CharId) => castOf(sc).find((x) => x !== c) ?? c;
 const centerOf = (sc: Scene) => {

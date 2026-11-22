@@ -1,0 +1,277 @@
+{
+ "format": "shorts",
+ "episode": "shorts10",
+ "title": "Lupa Topi",
+ "fps": 30,
+ "voiceMode": "dialogue",
+ "gapSeconds": 0.2,
+ "sceneLead": 0.3,
+ "sceneGap": 0,
+ "tail": 0.2,
+ "hook": {
+  "lines": [
+   "POV: LUPA TOPI",
+   "PAS UPACARA SENIN"
+  ],
+  "keywords": [
+   "LUPA",
+   "TOPI"
+  ],
+  "seconds": 1.6
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "location": "lapanganUpacara",
+   "noHat": [
+    "ucok"
+   ],
+   "music": "music-ceremony-tension",
+   "cast": {
+    "ujang": {
+     "mark": "A",
+     "facing": 1
+    },
+    "ucok": {
+     "mark": "C",
+     "facing": -1
+    },
+    "pakDarto": {
+     "mark": "B",
+     "facing": -1
+    }
+   },
+   "hold": {
+    "pakDarto": [
+     "mic",
+     {
+      "item": "clipboard",
+      "hand": "back"
+     }
+    ]
+   },
+   "lines": [
+    {
+     "id": "l001",
+     "speaker": "ucok",
+     "emotion": "shock",
+     "listener": "deadpan",
+     "shot": "crash",
+     "action": "plead",
+     "to": "ujang",
+     "text": "Jang! Topiku ketinggalan!",
+     "say": "[panicked whisper] Jang! Topiku ketinggalan!"
+    },
+    {
+     "id": "l002",
+     "speaker": "ujang",
+     "emotion": "deadpan",
+     "listener": "pleading",
+     "shot": "medium",
+     "action": "idle",
+     "to": "ucok",
+     "caption": "SENIN PAGI",
+     "text": "Ya udah. Berdiri di belakang gue.",
+     "say": "[flat, not looking] Ya udah. Berdiri di belakang gue."
+    },
+    {
+     "id": "l003",
+     "speaker": "ucok",
+     "emotion": "pleading",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "plead",
+     "to": "ujang",
+     "text": "Kau tegak, ya. Jangan goyang.",
+     "say": "[whispering] Kau tegak, ya. Jangan goyang.",
+     "move": {
+      "who": "ucok",
+      "from": "C",
+      "to": "D",
+      "at": 0
+     }
+    },
+    {
+     "id": "l004",
+     "speaker": "pakDarto",
+     "emotion": "neutral",
+     "listener": "shock",
+     "shot": "wide",
+     "action": "hold",
+     "text": "Tes, tes. Pemeriksaan atribut. Yang nggak pakai topi, maju.",
+     "say": "[into microphone] Tes, tes. [stern, slow] Pemeriksaan atribut. Yang nggak pakai topi, maju.",
+     "sfx": [
+      {
+       "id": "mic_feedback",
+       "at": 0
+      },
+      {
+       "id": "gasp_crowd",
+       "at": "end"
+      }
+     ]
+    },
+    {
+     "id": "l005",
+     "speaker": "ujang",
+     "emotion": "deadpan",
+     "listener": "shock",
+     "shot": "two",
+     "action": "crossed",
+     "to": "ucok",
+     "text": "Tuh. Maju sana.",
+     "say": "[dry] Tuh. Maju sana."
+    },
+    {
+     "id": "l006",
+     "speaker": "ucok",
+     "emotion": "shock",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "plead",
+     "to": "ujang",
+     "text": "Macam mana pulak ini?! Pinjam topimu lah, Jang!",
+     "say": "[desperate whisper] Macam mana pulak ini?! Pinjam topimu lah, Jang!"
+    },
+    {
+     "id": "l007",
+     "speaker": "ujang",
+     "emotion": "deadpan",
+     "listener": "pleading",
+     "shot": "close",
+     "closeStyle": "single",
+     "action": "crossed",
+     "to": "ucok",
+     "text": "Terus gue yang maju? Nggak.",
+     "say": "[flat] Terus gue yang maju? Nggak."
+    },
+    {
+     "id": "l008",
+     "speaker": "pakDarto",
+     "emotion": "suspicious",
+     "listener": "shock",
+     "shot": "two",
+     "action": "hold",
+     "to": "ucok",
+     "text": "Ucok. Topimu mana?",
+     "say": "[calm, menacing] Ucok. Topimu mana?",
+     "move": {
+      "who": "pakDarto",
+      "from": "B",
+      "to": "C",
+      "at": 0
+     },
+     "sfx": [
+      {
+       "id": "footsteps_shoes",
+       "at": 0
+      }
+     ]
+    },
+    {
+     "id": "l009",
+     "speaker": "ucok",
+     "emotion": "embarrassed",
+     "listener": "suspicious",
+     "shot": "medium",
+     "action": "salute",
+     "to": "pakDarto",
+     "text": "Ini, Pak... topi alami. Asli Medan.",
+     "say": "[nervous, then proud] Ini, Pak... topi alami. Asli Medan."
+    },
+    {
+     "id": "l010",
+     "speaker": "pakDarto",
+     "emotion": "deadpan",
+     "listener": "surprised",
+     "shot": "two",
+     "action": "hold",
+     "to": "ucok",
+     "text": "...Oke. Kamu nggak perlu topi.",
+     "say": "[long pause, flat] ...Oke. Kamu nggak perlu topi."
+    },
+    {
+     "id": "l011",
+     "speaker": "ucok",
+     "emotion": "laugh",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "thumbsup",
+     "to": "pakDarto",
+     "text": "Mantap kali, Pak!",
+     "say": "[relieved, happy] Mantap kali, Pak!"
+    },
+    {
+     "id": "l012",
+     "speaker": "pakDarto",
+     "emotion": "smug",
+     "listener": "shock",
+     "shot": "close",
+     "closeStyle": "single",
+     "action": "point",
+     "to": "ucok",
+     "text": "Kamu perlu potong rambut. Besok. Dua senti.",
+     "say": "[calmly] Kamu perlu potong rambut. [beat] Besok. [firm] Dua senti.",
+     "sfx": [
+      {
+       "id": "scissors_snip",
+       "at": "end"
+      }
+     ]
+    },
+    {
+     "id": "l013",
+     "speaker": "ujang",
+     "emotion": "deadpan",
+     "listener": "defeated",
+     "shot": "two",
+     "action": "crossed",
+     "to": "ucok",
+     "text": "Udah gue duga. Topi alami lo tinggal kenangan, Cok.",
+     "say": "[deadpan] Udah gue duga. Topi alami lo tinggal kenangan, Cok.",
+     "sfx": [
+      {
+       "id": "rimshot",
+       "at": "end"
+      }
+     ]
+    },
+    {
+     "id": "l014",
+     "speaker": "ucok",
+     "emotion": "pleading",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "plead",
+     "text": "Kirim ke teman yang dulu juga kena razia rambut!",
+     "say": "[whining] Kirim ke teman yang dulu juga kena razia rambut!",
+     "cta": {
+      "kind": "kirim",
+      "text": "KIRIM ke KORBAN RAZIA!",
+      "keywords": [
+       "KIRIM",
+       "RAZIA!"
+      ],
+      "reveal": "pakDarto"
+     }
+    },
+    {
+     "id": "l015",
+     "speaker": "pakDarto",
+     "emotion": "neutral",
+     "listener": "shock",
+     "shot": "two",
+     "action": "hold",
+     "text": "Senin depan Bapak periksa lagi. Topi... dan rambut.",
+     "say": "[into microphone, slow] Senin depan Bapak periksa lagi. Topi... [ominous] dan rambut.",
+     "sfx": [
+      {
+       "id": "mic_feedback",
+       "at": 0
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

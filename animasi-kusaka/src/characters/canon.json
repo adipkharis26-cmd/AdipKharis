@@ -1,5 +1,5 @@
 {
-  "version": "3.7.0",
+  "version": "3.8.1",
   "lockedAt": "2026-11-16",
   "style": {
     "name": "anime-drama",
@@ -1335,6 +1335,13 @@
     "seed": 2211,
     "settings": {
       "stability": 0.5
+    },
+    "loudness": {
+      "note": "Penyamaan volume per karakter (pemilik 22 Nov 2026): tiap tokoh diukur (EBU R128) dan disamakan ke targetLufs; kompresor lembut meratakan teriakan/bisikan; limiter mencegah pecah. Selisih dinamika DI DALAM satu tokoh tetap (bisik tetap lebih pelan).",
+      "targetLufs": -18,
+      "maxGainDb": 14,
+      "compress": "highpass=f=70,acompressor=threshold=-26dB:ratio=2.5:attack=8:release=140:makeup=1",
+      "limit": "alimiter=limit=0.84:level=false"
     }
   }
 }

@@ -707,5 +707,42 @@
       }
     ],
     "prop": null
+  },
+  "shorts10-A": {
+    "episode": 10,
+    "size": "9x16",
+    "bg": "lapanganUpacara",
+    "bgX": 1000,
+    "burst": "#c0392b",
+    "pattern": "halftone",
+    "text": [
+      "TOPI",
+      "ALAMI?!"
+    ],
+    "textX": 540,
+    "textY": 230,
+    "textSize": 210,
+    "textRot": -5,
+    "actors": [
+      {
+        "id": "pakDarto",
+        "emotion": "suspicious",
+        "action": "crossed",
+        "x": 790,
+        "y": 1520,
+        "scale": 1.7,
+        "facing": -1
+      },
+      {
+        "id": "ucok",
+        "emotion": "smug",
+        "action": "thumbsup",
+        "x": 360,
+        "y": 2860,
+        "scale": 2.5,
+        "facing": 1
+      }
+    ],
+    "prop": null
   }
 }

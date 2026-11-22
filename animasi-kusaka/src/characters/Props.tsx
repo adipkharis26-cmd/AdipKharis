@@ -7,7 +7,7 @@ const OUT = "#1b1b1b";
 export const ITEMS = ["paper", "book", "kresek", "gorengan", "cup", "mug", "tray", "ball", "wallet", "bagTote", "whistle", "clipboard", "broom", "bowl", "tumbler", "pen", "helmet", "umbrella", "folder", "alarm", "ledger", "bookStack",
   "lotteryBox", "lotScroll", "lotScrollRed", "lotSlip", "libBook", "phonePhoto", "rubberBands",
   "boardEraser", "phoneGallery", "coins", "gorenganTiga",
-  "kresekBelanja", "tomatoBag", "kresekKosong"] as const;
+  "kresekBelanja", "tomatoBag", "kresekKosong", "mic"] as const;
 export type ItemId = (typeof ITEMS)[number];
 
 const sw = (w = 5) => ({ stroke: OUT, strokeWidth: w, strokeLinejoin: "round" as const, strokeLinecap: "round" as const });
@@ -287,10 +287,20 @@ const KresekKosong: React.FC = () => (
     <path d="M -10 -6 q -6 -14 4 -14 M 10 -6 q 6 -14 -4 -14" fill="none" {...sw(3.5)} />
   </g>
 );
+/** Mikrofon kabel upacara (Shorts "Lupa Topi"): kepala jaring perak, gagang hitam, kabel menjuntai. */
+const Mic: React.FC = () => (
+  <g transform="translate(0 -10)">
+    <path d="M 0 40 q 10 40 -14 70 q -18 24 6 46" fill="none" stroke="#2b2b2b" strokeWidth={4} strokeLinecap="round" />
+    <rect x={-8} y={-6} width={16} height={50} rx={6} fill="#2b2b2b" {...sw(4)} />
+    <rect x={-6} y={14} width={12} height={5} rx={2} fill="#9aa3ad" />
+    <circle cx={0} cy={-20} r={16} fill="#c9ced4" {...sw(4)} />
+    <path d="M -12 -26 l 24 0 M -14 -18 l 28 0 M -11 -10 l 22 0 M -6 -33 l 0 26 M 6 -33 l 0 26" stroke="#8d939c" strokeWidth={2} />
+  </g>
+);
 const MAP: Record<ItemId, React.FC> = { paper: Paper, book: Book, kresek: Kresek, gorengan: Gorengan, cup: Cup, mug: Mug, tray: Tray, ball: Ball, wallet: Wallet, bagTote: BagTote, whistle: Whistle, clipboard: Clipboard, broom: Broom, bowl: Bowl, tumbler: Tumbler, pen: Pen, helmet: Helmet, umbrella: Umbrella, folder: Folder, alarm: Alarm, ledger: Ledger, bookStack: BookStack,
   lotteryBox: LotteryBox, lotScroll: LotScroll, lotScrollRed: LotScrollRed, lotSlip: LotSlip, libBook: LibBook, phonePhoto: PhonePhoto, rubberBands: RubberBands,
   boardEraser: BoardEraser, phoneGallery: PhoneGallery, coins: Coins, gorenganTiga: GorenganTiga,
-  kresekBelanja: KresekBelanja, tomatoBag: TomatoBag, kresekKosong: KresekKosong };
+  kresekBelanja: KresekBelanja, tomatoBag: TomatoBag, kresekKosong: KresekKosong, mic: Mic };
 export const Item: React.FC<{ id: string; x: number; y: number }> = ({ id, x, y }) => {
   const C = MAP[id as ItemId];
   return C ? <g transform={`translate(${x} ${y})`}><C /></g> : null;

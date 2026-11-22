@@ -8,7 +8,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -293,6 +293,32 @@ function dialogueTake(sc, chunk) {
   return { total, cuts, reused };
 }
 
+
+/* ---------------- penyamaan volume per karakter (mode dialog) ---------------- */
+function lufsOf(files) {
+  const args = ["-hide_banner", "-nostats"]; files.forEach((f) => args.push("-i", f));
+  args.push("-filter_complex", files.map((_, i) => `[${i}:a]`).join("") + `concat=n=${files.length}:v=0:a=1,ebur128`, "-f", "null", "-");
+  const out = String(spawnSync("ffmpeg", args, { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }).stderr ?? "");
+  const m = [...out.matchAll(/I:\s+(-?[\d.]+) LUFS/g)];
+  return m.length ? parseFloat(m[m.length - 1][1]) : null;
+}
+function normalizeVoices(lines) {
+  const N = canon.dialogue?.loudness; if (!N) return;
+  const by = {}; for (const l of lines) (by[l.speaker] ??= []).push(path.join(root, "public", l.audio));
+  const ff = (f, af) => { const tmp = f.replace(/\.mp3$/, ".norm.mp3"); execFileSync("ffmpeg", ["-v", "error", "-y", "-i", f, "-af", af, "-c:a", "libmp3lame", "-b:a", "128k", tmp]); fs.renameSync(tmp, f); };
+  const clamp = (g) => Math.max(-N.maxGainDb, Math.min(N.maxGainDb, g));
+  for (const [sp, files] of Object.entries(by)) {
+    const I = lufsOf(files); if (I === null) fail(`gagal mengukur loudness ${sp}`);
+    const g1 = clamp(N.targetLufs - I);
+    files.forEach((f) => ff(f, `volume=${g1.toFixed(2)}dB,${N.compress}`));   // 1) ke target + kompresor lembut
+    const I2 = lufsOf(files);
+    const g2 = clamp(N.targetLufs - I2);
+    files.forEach((f) => ff(f, `volume=${g2.toFixed(2)}dB,${N.limit}`));      // 2) koreksi sisa + limiter
+    const after = lufsOf(files);
+    console.log(`🔈 ${canon.characters[sp].name}: ${I.toFixed(1)} → ${after?.toFixed(1)} LUFS`);
+  }
+}
+
 /* ---------------- run ---------------- */
 // Only verify voices that actually need a new take.
 const timeline = { episode: script.episode, title: script.title, fps: script.fps, scenes: [], lines: [], totalSeconds: 0 };
@@ -323,7 +349,7 @@ if (DIALOGUE) {
       cursor = chunkStart + r.total + (script.gapSeconds ?? 0.2);
     }
     cursor += script.sceneGap ?? 0;
-    timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), ...(sc.bag !== undefined ? { bag: sc.bag } : {}), ...(sc.hold ? { hold: sc.hold } : {}), ...(sc.tracks ? { tracks: sc.tracks } : {}), ...(sc.flagInverted ? { flagInverted: true } : {}), ...(sc.hat !== undefined ? { hat: sc.hat } : {}), ...(sc.music ? { music: sc.music } : {}), ...(sc.amb ? { amb: sc.amb } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
+    timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), ...(sc.bag !== undefined ? { bag: sc.bag } : {}), ...(sc.hold ? { hold: sc.hold } : {}), ...(sc.tracks ? { tracks: sc.tracks } : {}), ...(sc.flagInverted ? { flagInverted: true } : {}), ...(sc.hat !== undefined ? { hat: sc.hat } : {}), ...(sc.noHat ? { noHat: sc.noHat } : {}), ...(sc.music ? { music: sc.music } : {}), ...(sc.amb ? { amb: sc.amb } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
   }
 } else {
   for (const sc of script.scenes) {
@@ -350,9 +376,10 @@ if (DIALOGUE) {
     }
     cursor += script.sceneGap ?? 0;
     if (script.intro && script.intro.after === sc.id) { timeline.intro = { start: +cursor.toFixed(3), style: script.intro.style ?? "D", seconds: introSec(script.intro.style ?? "D") }; cursor += timeline.intro.seconds; }
-    timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), ...(sc.bag !== undefined ? { bag: sc.bag } : {}), ...(sc.hold ? { hold: sc.hold } : {}), ...(sc.tracks ? { tracks: sc.tracks } : {}), ...(sc.flagInverted ? { flagInverted: true } : {}), ...(sc.hat !== undefined ? { hat: sc.hat } : {}), ...(sc.music ? { music: sc.music } : {}), ...(sc.amb ? { amb: sc.amb } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
+    timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), ...(sc.bag !== undefined ? { bag: sc.bag } : {}), ...(sc.hold ? { hold: sc.hold } : {}), ...(sc.tracks ? { tracks: sc.tracks } : {}), ...(sc.flagInverted ? { flagInverted: true } : {}), ...(sc.hat !== undefined ? { hat: sc.hat } : {}), ...(sc.noHat ? { noHat: sc.noHat } : {}), ...(sc.music ? { music: sc.music } : {}), ...(sc.amb ? { amb: sc.amb } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
   }
 }
+if (DIALOGUE) normalizeVoices(timeline.lines);
 timeline.scenes[timeline.scenes.length - 1].end = +(cursor + (script.tail ?? 2.5)).toFixed(3);
 timeline.totalSeconds = timeline.scenes[timeline.scenes.length - 1].end;
 // Duration rules (editing.json → formats). Pemilik 20 Nov 2026: Long = 8:00–10:59 (480–659 dtk termasuk intro).

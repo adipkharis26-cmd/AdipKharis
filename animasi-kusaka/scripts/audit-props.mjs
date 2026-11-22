@@ -38,6 +38,9 @@ const RULES = [
   // Shorts "Ke Pasar": isi belanjaan pasar
   { re: /\btomat/i, label: "tomat", item: "tomatoBag" },
   { re: /\bcabai|bawang|beras|minyak|ayam\b/i, label: "isi belanjaan", item: "kresekBelanja|kresek" },
+  // Shorts "Lupa Topi": mikrofon upacara, topi
+  { re: /\btes\b|mikrofon|\bmic\b/i, label: "mikrofon", item: "mic" },
+  { re: /\btopi/i, label: "topi upacara", loc: "lapanganUpacara" },
   { re: /hormat/i, label: "hormat", acts: ["salute"], track: "salute" },
   { re: /bendera|tiang/i, label: "bendera", track: "flag", loc: "lapanganUpacara" },
   { re: /\btali\b/i, label: "tali", track: "flag|snag", loc: "lapanganUpacara" },

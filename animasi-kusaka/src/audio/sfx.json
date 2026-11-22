@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "rules": [
     "SFX hanya PELENGKAP agar cerita lebih hidup: selalu di bawah suara dialog. Batas volume one-shot 0.35, ambience 0.03 (divalidasi otomatis).",
     "Semua SFX orisinal, dibuat dengan ElevenLabs Sound Effects (royalty-free, aman untuk monetisasi). Tidak memakai klip meme berhak cipta.",
@@ -190,6 +190,24 @@
       "use": "Ambience: kos malam hari",
       "duration": 15,
       "prompt": "Night ambience in an Indonesian boarding house, crickets, distant traffic, small fan humming"
+    },
+    "mic_feedback": {
+      "prompt": "School ceremony loudspeaker microphone tap tap then short high pitched feedback squeal, outdoor PA system, comedic",
+      "duration": 1.6,
+      "volume": 0.18,
+      "use": "Mikrofon/pengeras suara upacara dites atau berdengung"
+    },
+    "footsteps_shoes": {
+      "prompt": "Leather dress shoes footsteps slowly approaching on concrete schoolyard, ominous, steady pace, outdoor",
+      "duration": 2.2,
+      "volume": 0.22,
+      "use": "Guru mendekat dengan langkah sepatu (tegang)"
+    },
+    "scissors_snip": {
+      "prompt": "Barber scissors snip snip two quick sharp cuts, close up, clean, comedic",
+      "duration": 1.0,
+      "volume": 0.25,
+      "use": "Gunting/potong rambut"
     }
   },
   "auto": {
