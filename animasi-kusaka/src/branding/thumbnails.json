@@ -670,5 +670,42 @@
     ],
     "prop": null,
     "wear": "seragam"
+  },
+  "shorts09-A": {
+    "episode": 9,
+    "size": "9x16",
+    "bg": "pasar",
+    "bgX": 960,
+    "burst": "#2f9e6a",
+    "pattern": "speed",
+    "text": [
+      "KATANYA",
+      "CUMA CABAI?!"
+    ],
+    "textX": 540,
+    "textY": 230,
+    "textSize": 170,
+    "textRot": -3,
+    "actors": [
+      {
+        "id": "ibu",
+        "emotion": "smug",
+        "action": "gesture",
+        "x": 800,
+        "y": 1520,
+        "scale": 1.7,
+        "facing": -1
+      },
+      {
+        "id": "dinda",
+        "emotion": "shock",
+        "action": "shock",
+        "x": 340,
+        "y": 2860,
+        "scale": 2.6,
+        "facing": 1
+      }
+    ],
+    "prop": null
   }
 }

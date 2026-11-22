@@ -1,8 +1,8 @@
 {
-  "version": "3.5.0+loc3.10.0+edit2.11.0+sfx1.2.0+brand1.12.0",
-  "lockedAt": "2026-11-20",
+  "version": "3.7.0+loc3.10.0+edit2.11.0+sfx1.2.0+brand1.12.0",
+  "lockedAt": "2026-11-22",
   "files": {
-    "src/characters/canon.json": "670f91b23fcd91ac01e68cd08af9953c0f2bb31c4f312b60c8feeecf9de9921d",
+    "src/characters/canon.json": "4e01199524f2cfd76af6f70fcdf32d73ef610ad60cb132f1e176a3575c53f62c",
     "src/characters/Character.tsx": "ce88098aa63b5c2449b89c67e949c8f4a91dbca883bf084b635eb19c82446f9f",
     "src/characters/Mouth.tsx": "9a59147e0acfce56ef7119100b9b2e75c3f7b120d70022163a13a32697cf1ba2",
     "src/characters/Eyes.tsx": "910d22db5612d9b80f3404d898a28ef0993d9f10ae9e66ec4b512035c4d81bbf",

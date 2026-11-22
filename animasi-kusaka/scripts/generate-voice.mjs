@@ -166,11 +166,11 @@ if (process.argv.includes("--estimate")) {
   for (const sc of script.scenes) {
     cur += script.sceneLead ?? script.leadIn ?? 0.6;
     for (const l of sc.lines) {
-      allChars += l.text.length;
+      allChars += (l.say ?? l.text).length;
       const h = crypto.createHash("sha256").update(l.text + "|" + voiceHash(l.speaker)).digest("hex").slice(0, 16);
       const mp3 = path.join(dir, `${l.id}.mp3`), meta = path.join(dir, `${l.id}.json`);
       const ok = fs.existsSync(mp3) && fs.existsSync(meta) && JSON.parse(fs.readFileSync(meta, "utf8")).hash === h;
-      if (!ok) { newChars += l.text.length; newLines++; }
+      if (!ok) { newChars += (l.say ?? l.text).length; newLines++; }
       cur += (ok ? probe(mp3) : l.text.length * SEC_PER_CHAR) + (l.surprise ? 0.15 : l.gapAfter ?? script.gapSeconds);
     }
     cur += script.sceneGap ?? 0;
@@ -212,6 +212,87 @@ function tts(line) {
   return m;
 }
 
+
+/* ---------------- mode dialog (ElevenLabs Text to Dialogue, eleven_v4) ---------------- */
+// "voiceMode": "dialogue" di naskah. Baris boleh punya "say" = text + tag nada ElevenLabs dalam [kurung siku] (mis. "[sighs] Iya, iya.").
+// Tag TIDAK tampil di subtitle dan tidak dihitung lip-sync. Tanpa "say", text dipakai apa adanya.
+const DIALOGUE = script.voiceMode === "dialogue";
+const TAG = /\[[^\]]*\]/g;
+const say = (l) => l.say ?? l.text;
+const clean = (x) => x.replace(TAG, " ").replace(/\s+/g, " ").trim();
+if (DIALOGUE) {
+  if (!canon.dialogue) fail("canon.json belum punya blok \"dialogue\" (model/seed/settings terkunci untuk mode dialog)");
+  if (canon.dialogue.model_id !== LOCKED_MODEL) fail(`dialogue.model_id harus ${LOCKED_MODEL}`);
+  for (const l of script.lines) {
+    if (l.say !== undefined && clean(l.say) !== clean(l.text)) fail(`${l.id}: "say" tanpa tag harus sama persis dengan "text" (subtitle). say="${clean(l.say)}" text="${clean(l.text)}"`);
+    if (TAG.test(l.text)) fail(`${l.id}: tag [..] hanya boleh di "say", bukan di "text" (subtitle)`);
+  }
+}
+const MAX_CHUNK = 1800;
+function chunksOf(lines) {
+  const out = []; let cur = [], n = 0;
+  for (const l of lines) { const k = say(l).length; if (cur.length && n + k > MAX_CHUNK) { out.push(cur); cur = []; n = 0; } cur.push(l); n += k; }
+  if (cur.length) out.push(cur);
+  return out;
+}
+const dlgDir = () => path.join(audioDir, "_dialogue");
+function dialogueBody(chunk) {
+  const D = canon.dialogue;
+  return { inputs: chunk.map((l) => ({ text: say(l), voice_id: canon.characters[l.speaker].voice.voice_id })), model_id: D.model_id, language_code: D.language_code, seed: D.seed, settings: D.settings };
+}
+const chunkHash = (chunk) => crypto.createHash("sha256").update(JSON.stringify(dialogueBody(chunk)) + "|" + chunk.map((l) => voiceHash(l.speaker)).join(",")).digest("hex").slice(0, 16);
+const needsDialogue = (chunk) => force || !fs.existsSync(path.join(dlgDir(), `${chunkHash(chunk)}.json`));
+function dialogueTake(sc, chunk) {
+  fs.mkdirSync(dlgDir(), { recursive: true });
+  const h = chunkHash(chunk), mp3 = path.join(dlgDir(), `${h}.mp3`), meta = path.join(dlgDir(), `${h}.json`);
+  let data, reused = false;
+  if (!force && fs.existsSync(mp3) && fs.existsSync(meta)) { data = JSON.parse(fs.readFileSync(meta, "utf8")); reused = true; }
+  else {
+    const args = ["-sS", "-X", "POST", "-w", "\n%{http_code}", "https://api.elevenlabs.io/v1/text-to-dialogue/with-timestamps?output_format=mp3_44100_128",
+      "-H", "Content-Type: application/json", "--data-binary", "@-"];
+    if (apiKey) args.push("-H", `xi-api-key: ${apiKey}`);
+    const raw = execFileSync("curl", args, { input: JSON.stringify(dialogueBody(chunk)), maxBuffer: 256 * 1024 * 1024 }).toString();
+    const nl = raw.lastIndexOf("\n"), status = raw.slice(nl + 1).trim();
+    if (status !== "200") fail(`ElevenLabs dialog ${status}: ${raw.slice(0, nl).slice(0, 400)}`);
+    const d = JSON.parse(raw.slice(0, nl));
+    fs.writeFileSync(mp3, Buffer.from(d.audio_base64, "base64"));
+    data = { hash: h, model_id: canon.dialogue.model_id, seed: canon.dialogue.seed, alignment: d.alignment, voice_segments: d.voice_segments };
+    fs.writeFileSync(meta, JSON.stringify(data));
+  }
+  const total = probe(mp3);
+  const A = data.alignment;
+  // posisi karakter yang berada di dalam tag [..] (tidak diucapkan)
+  const inTag = []; let depth = 0;
+  A.characters.forEach((c, i) => { if (c === "[") depth++; inTag[i] = depth > 0; if (c === "]") depth = Math.max(0, depth - 1); });
+  // tag yang BERBUNYI (desah, tawa, dengus: rentang > 0,2 dtk) ikut dipertahankan di potongan audio; tag arahan nada (≈0 dtk) tidak
+  const audible = [];
+  for (let i = 0; i < A.characters.length; i++) if (A.characters[i] === "[") {
+    let j = i; while (j < A.characters.length && A.characters[j] !== "]") j++;
+    const loud = A.character_end_times_seconds[Math.min(j, A.characters.length - 1)] - A.character_start_times_seconds[i] > 0.2;
+    for (let k = i; k <= j && k < A.characters.length; k++) audible[k] = loud;
+    i = j;
+  }
+  const cuts = chunk.map((l, i) => {
+    const segs = data.voice_segments.filter((s) => s.dialogue_input_index === i);
+    if (!segs.length) fail(`${l.id}: ElevenLabs tidak mengembalikan segmen untuk baris ini`);
+    const c0 = Math.min(...segs.map((s) => s.character_start_index)), c1 = Math.max(...segs.map((s) => s.character_end_index));
+    const idx = []; for (let k = c0; k < c1; k++) if ((!inTag[k] || audible[k]) && /\S/.test(A.characters[k])) idx.push(k);
+    const segStart = Math.min(...segs.map((s) => s.start_time_seconds)), segEnd = Math.max(...segs.map((s) => s.end_time_seconds));
+    const s0 = idx.length ? A.character_start_times_seconds[idx[0]] : segStart;
+    const s1 = idx.length ? A.character_end_times_seconds[idx[idx.length - 1]] : segEnd;
+    const from = Math.max(segStart, s0 - 0.06), to = Math.min(total, segEnd, Math.max(s1 + 0.15, from + 0.3)); // tidak melewati batas segmen (tanpa gema baris berikutnya)
+    // potong baris dari take dialog → public/audio/<ep>/<line>.mp3 (pipeline render tetap per baris)
+    execFileSync("ffmpeg", ["-v", "error", "-y", "-i", mp3, "-ss", from.toFixed(3), "-to", to.toFixed(3), "-c:a", "libmp3lame", "-b:a", "128k", path.join(audioDir, `${l.id}.mp3`)]);
+    const keep = []; for (let k = c0; k < c1; k++) if (!inTag[k]) keep.push(k);
+    const align = { characters: keep.map((k) => A.characters[k]), character_start_times_seconds: keep.map((k) => Math.max(0, A.character_start_times_seconds[k] - from)), character_end_times_seconds: keep.map((k) => Math.max(0, A.character_end_times_seconds[k] - from)) };
+    // rapikan spasi ganda bekas tag di awal
+    while (align.characters.length && align.characters[0] === " ") { align.characters.shift(); align.character_start_times_seconds.shift(); align.character_end_times_seconds.shift(); }
+    fs.writeFileSync(path.join(audioDir, `${l.id}.json`), JSON.stringify({ hash: h, dialogue: true, voice_id: canon.characters[l.speaker].voice.voice_id, model_id: canon.dialogue.model_id, seed: canon.dialogue.seed, alignment: align }));
+    return { from, dur: to - from, align };
+  });
+  return { total, cuts, reused };
+}
+
 /* ---------------- run ---------------- */
 // Only verify voices that actually need a new take.
 const timeline = { episode: script.episode, title: script.title, fps: script.fps, scenes: [], lines: [], totalSeconds: 0 };
@@ -221,31 +302,56 @@ const introSec = (st) => script.intro?.seconds ?? (st === "A" ? 10 : 6);
 if (script.intro && !script.intro.after) { const st = script.intro.style ?? "D"; timeline.intro = { start: 0, style: st, seconds: introSec(st) }; cursor = timeline.intro.seconds; }
 const verified = new Set();
 const lineHash = (l) => crypto.createHash("sha256").update(l.text + "|" + voiceHash(l.speaker)).digest("hex").slice(0, 16);
-for (const sc of script.scenes) {
-  const scStart = cursor;
-  cursor += script.sceneLead ?? script.leadIn ?? 0.6;
-  for (const raw of sc.lines) {
-    const line = { ...raw, scene: sc.id };
-    const ch = canon.characters[line.speaker];
-    const metaPath = path.join(audioDir, `${line.id}.json`);
-    const needsNew = force || !fs.existsSync(metaPath) || JSON.parse(fs.readFileSync(metaPath, "utf8")).hash !== lineHash(line);
-    if (needsNew && !verified.has(line.speaker)) {
-      const where = verifyVoice(line.speaker);
-      console.log(`🔒 Suara ${ch.name} terverifikasi (${ch.voice.name_check}, ${where})`);
-      verified.add(line.speaker);
+if (DIALOGUE) {
+  // Mode dialog (pemilik 22 Nov 2026): satu adegan = satu generate ElevenLabs Text to Dialogue (eleven_v4), suara kanon yang sama.
+  // Model mendengar seluruh percakapan → intonasi, jeda, dan emosi antar-baris natural. Hasil dipotong per baris (voice_segments).
+  const D = canon.dialogue;
+  for (const sc of script.scenes) {
+    const scStart = cursor;
+    cursor += script.sceneLead ?? script.leadIn ?? 0.6;
+    for (const chunk of chunksOf(sc.lines)) {
+      for (const l of chunk) if (!verified.has(l.speaker) && needsDialogue(chunk)) { const where = verifyVoice(l.speaker); console.log(`🔒 Suara ${canon.characters[l.speaker].name} terverifikasi (${canon.characters[l.speaker].voice.name_check}, ${where})`); verified.add(l.speaker); }
+      const r = dialogueTake(sc, chunk);
+      const chunkStart = cursor;
+      chunk.forEach((raw, i) => {
+        const line = { ...raw, scene: sc.id };
+        const cut = r.cuts[i];
+        console.log(`${r.reused ? "♻ " : "🎭 "} ${line.id} ${canon.characters[line.speaker].name}: ${say(line)}`);
+        timeline.lines.push({ ...line, audio: `audio/${script.episode}/${line.id}.mp3`, start: +(chunkStart + cut.from).toFixed(3), duration: +cut.dur.toFixed(3),
+          visemes: buildVisemes(cut.align), words: buildWords(cut.align) });
+      });
+      cursor = chunkStart + r.total + (script.gapSeconds ?? 0.2);
     }
-    const m = tts(line);
-    const duration = probe(path.join(audioDir, `${line.id}.mp3`));
-    console.log(`${m.reused ? "♻ " : "🎙 "} ${line.id} ${ch.name}: ${line.text}`);
-    timeline.lines.push({
-      ...line, audio: `audio/${script.episode}/${line.id}.mp3`, start: +cursor.toFixed(3), duration: +duration.toFixed(3),
-      visemes: buildVisemes(m.alignment), words: buildWords(m.alignment),
-    });
-    cursor += duration + (line.surprise ? 0.15 : line.gapAfter ?? script.gapSeconds);
+    cursor += script.sceneGap ?? 0;
+    timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), ...(sc.bag !== undefined ? { bag: sc.bag } : {}), ...(sc.hold ? { hold: sc.hold } : {}), ...(sc.tracks ? { tracks: sc.tracks } : {}), ...(sc.flagInverted ? { flagInverted: true } : {}), ...(sc.hat !== undefined ? { hat: sc.hat } : {}), ...(sc.music ? { music: sc.music } : {}), ...(sc.amb ? { amb: sc.amb } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
   }
-  cursor += script.sceneGap ?? 0;
-  if (script.intro && script.intro.after === sc.id) { timeline.intro = { start: +cursor.toFixed(3), style: script.intro.style ?? "D", seconds: introSec(script.intro.style ?? "D") }; cursor += timeline.intro.seconds; }
-  timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), ...(sc.bag !== undefined ? { bag: sc.bag } : {}), ...(sc.hold ? { hold: sc.hold } : {}), ...(sc.tracks ? { tracks: sc.tracks } : {}), ...(sc.flagInverted ? { flagInverted: true } : {}), ...(sc.hat !== undefined ? { hat: sc.hat } : {}), ...(sc.music ? { music: sc.music } : {}), ...(sc.amb ? { amb: sc.amb } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
+} else {
+  for (const sc of script.scenes) {
+    const scStart = cursor;
+    cursor += script.sceneLead ?? script.leadIn ?? 0.6;
+    for (const raw of sc.lines) {
+      const line = { ...raw, scene: sc.id };
+      const ch = canon.characters[line.speaker];
+      const metaPath = path.join(audioDir, `${line.id}.json`);
+      const needsNew = force || !fs.existsSync(metaPath) || JSON.parse(fs.readFileSync(metaPath, "utf8")).hash !== lineHash(line);
+      if (needsNew && !verified.has(line.speaker)) {
+        const where = verifyVoice(line.speaker);
+        console.log(`🔒 Suara ${ch.name} terverifikasi (${ch.voice.name_check}, ${where})`);
+        verified.add(line.speaker);
+      }
+      const m = tts(line);
+      const duration = probe(path.join(audioDir, `${line.id}.mp3`));
+      console.log(`${m.reused ? "♻ " : "🎙 "} ${line.id} ${ch.name}: ${line.text}`);
+      timeline.lines.push({
+        ...line, audio: `audio/${script.episode}/${line.id}.mp3`, start: +cursor.toFixed(3), duration: +duration.toFixed(3),
+        visemes: buildVisemes(m.alignment), words: buildWords(m.alignment),
+      });
+      cursor += duration + (line.surprise ? 0.15 : line.gapAfter ?? script.gapSeconds);
+    }
+    cursor += script.sceneGap ?? 0;
+    if (script.intro && script.intro.after === sc.id) { timeline.intro = { start: +cursor.toFixed(3), style: script.intro.style ?? "D", seconds: introSec(script.intro.style ?? "D") }; cursor += timeline.intro.seconds; }
+    timeline.scenes.push({ id: sc.id, location: sc.location, cast: sc.cast, ...(sc.extras ? { extras: sc.extras } : {}), ...(sc.wear ? { wear: sc.wear } : {}), ...(sc.bag !== undefined ? { bag: sc.bag } : {}), ...(sc.hold ? { hold: sc.hold } : {}), ...(sc.tracks ? { tracks: sc.tracks } : {}), ...(sc.flagInverted ? { flagInverted: true } : {}), ...(sc.hat !== undefined ? { hat: sc.hat } : {}), ...(sc.music ? { music: sc.music } : {}), ...(sc.amb ? { amb: sc.amb } : {}), start: +scStart.toFixed(3), end: +cursor.toFixed(3) });
+  }
 }
 timeline.scenes[timeline.scenes.length - 1].end = +(cursor + (script.tail ?? 2.5)).toFixed(3);
 timeline.totalSeconds = timeline.scenes[timeline.scenes.length - 1].end;

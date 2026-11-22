@@ -1,5 +1,5 @@
 {
-  "version": "3.5.0",
+  "version": "3.7.0",
   "lockedAt": "2026-11-16",
   "style": {
     "name": "anime-drama",
@@ -1326,6 +1326,15 @@
       "buWati": "rekan guru, sering adu argumen",
       "pakJoko": "rekan guru",
       "mangUdin": "partner razia"
+    }
+  },
+  "dialogue": {
+    "note": "Mode dialog (pemilik 22 Nov 2026): naskah dengan \"voiceMode\": \"dialogue\" dibuat per adegan lewat ElevenLabs Text to Dialogue (eleven_v4) memakai voice_id kanon yang sama. Model mendengar seluruh percakapan sehingga jeda, intonasi, dan emosi antar-baris natural. Tag nada [..] hanya di field \"say\".",
+    "model_id": "eleven_v4",
+    "language_code": "id",
+    "seed": 2211,
+    "settings": {
+      "stability": 0.5
     }
   }
 }

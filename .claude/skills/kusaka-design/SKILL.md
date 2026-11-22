@@ -28,6 +28,12 @@ Branch kerja: `ccr-5483b159-l8zee8`.
 10. **Setiap MP4 rilis wajib punya `src/data/episodes/<id>-upload.md`** mengikuti `upload-template.md`
     (3 judul A/B, deskripsi, tag, hashtag kolom, konsep thumbnail, komentar pin, strategi algoritma).
 
+## Cerita & dialog natural (pemilik 22 Nov 2026 — WAJIB untuk tiap Shorts)
+Baca `references/cerita-dialog-shorts.md` sebelum menulis naskah: satu keinginan + penghalang, eskalasi 3 langkah,
+punchline membalik harapan, button, loop; dialog pendek saling sambar, subteks, tidak menjelaskan yang terlihat,
+uji tukar antartokoh, partikel lisan. Suara: `"voiceMode": "dialogue"` (ElevenLabs Text to Dialogue eleven_v4, voice kanon,
+`canon.json → dialogue`), field `"say"` = text + tag nada [..] (tidak tampil di subtitle). Uji "writers room" 3 penonton sebelum pratinjau.
+
 ## Playbook Shorts (pemilik, 18 Nov 2026 — riset algoritma Shorts 2026; diperbarui 20 Nov 2026)
 **Pembaruan 20 Nov 2026 (mengalahkan poin lama di bawah bila bertentangan):** Shorts = **cerita mandiri, topik ACAK**, bukan turunan episode
 (aturan 20); **durasi bebas 20 dtk–3 menit, ideal 25–45 dtk**; **teks hook wajib** di 1–2 dtk pertama:

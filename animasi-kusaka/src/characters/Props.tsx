@@ -6,7 +6,8 @@ const OUT = "#1b1b1b";
 
 export const ITEMS = ["paper", "book", "kresek", "gorengan", "cup", "mug", "tray", "ball", "wallet", "bagTote", "whistle", "clipboard", "broom", "bowl", "tumbler", "pen", "helmet", "umbrella", "folder", "alarm", "ledger", "bookStack",
   "lotteryBox", "lotScroll", "lotScrollRed", "lotSlip", "libBook", "phonePhoto", "rubberBands",
-  "boardEraser", "phoneGallery", "coins", "gorenganTiga"] as const;
+  "boardEraser", "phoneGallery", "coins", "gorenganTiga",
+  "kresekBelanja", "tomatoBag", "kresekKosong"] as const;
 export type ItemId = (typeof ITEMS)[number];
 
 const sw = (w = 5) => ({ stroke: OUT, strokeWidth: w, strokeLinejoin: "round" as const, strokeLinecap: "round" as const });
@@ -255,9 +256,41 @@ const GorenganTiga: React.FC = () => (
     <path d="M 16 -38 q 26 -8 30 16 q 2 16 -10 22 q -14 2 -20 -14 Z" fill="#f0c25a" {...sw(4)} transform="rotate(22)" />
   </g>
 );
+/** Kresek belanjaan penuh (Shorts "Ke Pasar"): kresek hitam berat, menyembul botol minyak, daun bawang, paha ayam, karung beras kecil. */
+const KresekBelanja: React.FC = () => (
+  <g>
+    <path d="M -10 0 Q -26 22 -32 40 M 10 0 Q 26 22 32 40" fill="none" {...sw(4)} />
+    <rect x={14} y={4} width={16} height={46} rx={5} fill="#f2c94c" fillOpacity={0.9} {...sw(3.5)} transform="rotate(10 22 30)" />
+    <rect x={16} y={-2} width={10} height={8} rx={2} fill="#e85d3a" {...sw(3)} transform="rotate(10 22 30)" />
+    <path d="M -26 40 L -40 -6 M -20 40 L -28 -10 M -14 40 L -18 -2" stroke="#4fa64f" strokeWidth={7} strokeLinecap="round" />
+    <path d="M -2 34 q 6 -22 18 -18 q 8 6 -4 22 Z" fill="#f4d7a8" {...sw(3.5)} />
+    <rect x={-18} y={22} width={26} height={22} rx={4} fill="#efe6cf" {...sw(3.5)} />
+    <path d="M -48 40 Q -58 108 -36 130 Q 0 146 36 130 Q 58 108 48 40 Q 0 28 -48 40 Z" fill="#2b2b2b" fillOpacity={0.95} {...sw(5)} />
+    <path d="M -22 62 q 8 -14 18 -2" fill="none" stroke="#fff" strokeWidth={3} opacity={0.35} />
+  </g>
+);
+/** Plastik bening berisi tomat (Shorts "Ke Pasar"). */
+const TomatoBag: React.FC = () => (
+  <g>
+    <path d="M -6 0 Q -18 18 -22 32 M 6 0 Q 18 18 22 32" fill="none" {...sw(3.5)} />
+    <path d="M -34 32 Q -40 86 -24 104 Q 0 114 24 104 Q 40 86 34 32 Q 0 24 -34 32 Z" fill="#eaf6ff" fillOpacity={0.55} {...sw(4)} />
+    {[[-14, 86], [10, 90], [-2, 70], [-18, 62], [16, 64]].map(([x, y], i) => (
+      <g key={i}><circle cx={x} cy={y} r={11} fill="#e63946" stroke={OUT} strokeWidth={2.5} /><path d={`M ${x - 4} ${y - 10} l 4 3 l 4 -3`} fill="none" stroke="#2e8b57" strokeWidth={2.5} /></g>
+    ))}
+  </g>
+);
+/** Kresek kosong terlipat yang diserahkan Ibu (punchline "buat bawa tomatnya"). */
+const KresekKosong: React.FC = () => (
+  <g transform="translate(0 -6)">
+    <path d="M -26 -4 Q -30 30 -18 44 Q 0 52 18 44 Q 30 30 26 -4 Q 0 -12 -26 -4 Z" fill="#e85d75" fillOpacity={0.85} {...sw(4)} />
+    <path d="M -16 8 q 8 8 0 18 M 4 2 q 10 10 2 24" fill="none" stroke="#b83f57" strokeWidth={3} strokeLinecap="round" />
+    <path d="M -10 -6 q -6 -14 4 -14 M 10 -6 q 6 -14 -4 -14" fill="none" {...sw(3.5)} />
+  </g>
+);
 const MAP: Record<ItemId, React.FC> = { paper: Paper, book: Book, kresek: Kresek, gorengan: Gorengan, cup: Cup, mug: Mug, tray: Tray, ball: Ball, wallet: Wallet, bagTote: BagTote, whistle: Whistle, clipboard: Clipboard, broom: Broom, bowl: Bowl, tumbler: Tumbler, pen: Pen, helmet: Helmet, umbrella: Umbrella, folder: Folder, alarm: Alarm, ledger: Ledger, bookStack: BookStack,
   lotteryBox: LotteryBox, lotScroll: LotScroll, lotScrollRed: LotScrollRed, lotSlip: LotSlip, libBook: LibBook, phonePhoto: PhonePhoto, rubberBands: RubberBands,
-  boardEraser: BoardEraser, phoneGallery: PhoneGallery, coins: Coins, gorenganTiga: GorenganTiga };
+  boardEraser: BoardEraser, phoneGallery: PhoneGallery, coins: Coins, gorenganTiga: GorenganTiga,
+  kresekBelanja: KresekBelanja, tomatoBag: TomatoBag, kresekKosong: KresekKosong };
 export const Item: React.FC<{ id: string; x: number; y: number }> = ({ id, x, y }) => {
   const C = MAP[id as ItemId];
   return C ? <g transform={`translate(${x} ${y})`}><C /></g> : null;

@@ -91,3 +91,8 @@ Panduan cerita dan strategi: `animasi-kusaka/SERIES_BIBLE.md`.
     "Zaman dulu vs sekarang", running gag (hitungan Mang Udin, buku utang Bu Ijah, live Dinda), dll. Jangan dua Shorts berurutan dengan
     format atau tokoh utama yang sama. Sasaran penonton termasuk dewasa 25–34 yang bernostalgia masa sekolah (data Studio 20 Nov 2026).
     Detik 0 = aksi/konflik + crash zoom + teks hook; tanpa adegan pengantar. Durasi bebas (aturan 9), ideal 25–45 dtk.
+21. **Cerita & dialog natural (pemilik 22 Nov 2026).** Setiap Shorts mengikuti `.claude/skills/kusaka-design/references/cerita-dialog-shorts.md`
+    (diadaptasi dari zenstory-ai/drama-skills, MIT): satu keinginan + penghalang, eskalasi 3 langkah, punchline membalik harapan, button, loop;
+    dialog pendek dan saling sambar, subteks, tidak menjelaskan apa yang terlihat, tiap tokoh punya cara bicara sendiri. Suara dibuat per adegan
+    dengan `"voiceMode": "dialogue"` (ElevenLabs Text to Dialogue `eleven_v4`, voice_id kanon yang sama, `canon.json → dialogue`), tag nada
+    hanya di field `"say"` (tidak tampil di subtitle). Tetap: voice terkunci, tanpa suara cadangan, render hanya atas perintah, push setelah "cocok".

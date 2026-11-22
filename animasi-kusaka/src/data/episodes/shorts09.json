@@ -1,0 +1,270 @@
+{
+ "format": "shorts",
+ "episode": "shorts09",
+ "title": "Ke Pasar",
+ "fps": 30,
+ "voiceMode": "dialogue",
+ "gapSeconds": 0.2,
+ "sceneLead": 0.3,
+ "sceneGap": 0,
+ "tail": 0.2,
+ "hook": {
+  "lines": [
+   "IKUT IBU KE PASAR",
+   "HARAPAN vs REALITA"
+  ],
+  "keywords": [
+   "PASAR",
+   "REALITA"
+  ],
+  "seconds": 1.6
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "location": "pasar",
+   "music": "music-market-angklung",
+   "cast": {
+    "dinda": {
+     "mark": "A",
+     "facing": 1
+    },
+    "ibu": {
+     "mark": "C",
+     "facing": -1
+    },
+    "bapak": {
+     "mark": "B",
+     "facing": -1
+    }
+   },
+   "hold": {
+    "dinda": [
+     "kresekBelanja",
+     {
+      "item": "kresekBelanja",
+      "hand": "back"
+     }
+    ],
+    "bapak": [
+     "kresekBelanja",
+     {
+      "item": "bagTote",
+      "hand": "back"
+     }
+    ]
+   },
+   "lines": [
+    {
+     "id": "l001",
+     "speaker": "dinda",
+     "emotion": "shock",
+     "listener": "deadpan",
+     "shot": "crash",
+     "action": "carry",
+     "to": "ibu",
+     "text": "IBU! Katanya cuma beli cabai!",
+     "say": "[shouting, out of breath] IBU! Katanya cuma beli cabai!"
+    },
+    {
+     "id": "l002",
+     "speaker": "ibu",
+     "emotion": "smug",
+     "listener": "shock",
+     "shot": "medium",
+     "action": "gesture",
+     "to": "dinda",
+     "text": "Iya, cabai. Terus bawang... beras... minyak... ayam setengah kilo.",
+     "say": "[casually, counting] Iya, cabai. Terus bawang... beras... minyak... ayam setengah kilo."
+    },
+    {
+     "id": "l003",
+     "speaker": "dinda",
+     "emotion": "pleading",
+     "listener": "neutral",
+     "shot": "two",
+     "action": "carry",
+     "to": "ibu",
+     "text": "Tadi di rumah bilangnya, \"ikut yuk, nanti jajan.\"",
+     "say": "[whining] Tadi di rumah bilangnya, \"ikut yuk, nanti jajan.\""
+    },
+    {
+     "id": "l004",
+     "speaker": "ibu",
+     "emotion": "neutral",
+     "listener": "pleading",
+     "shot": "two",
+     "action": "hold",
+     "to": "dinda",
+     "text": "Iya, nanti. Bang, tomatnya kurangin dikit, ya?",
+     "say": "[distracted] Iya, nanti. [haggling, sweet voice] Bang, tomatnya kurangin dikit, ya?",
+     "hold": {
+      "ibu": "tomatoBag"
+     }
+    },
+    {
+     "id": "l005",
+     "speaker": "bapak",
+     "emotion": "defeated",
+     "listener": "suspicious",
+     "shot": "medium",
+     "action": "carry",
+     "to": "dinda",
+     "text": "Sabar, Dek. Bapak nungguin Ibu nawar dari jam tujuh.",
+     "say": "[sighs, tired] Sabar, Dek. Bapak nungguin Ibu nawar dari jam tujuh."
+    },
+    {
+     "id": "l006",
+     "speaker": "dinda",
+     "emotion": "suspicious",
+     "listener": "embarrassed",
+     "shot": "two",
+     "action": "carry",
+     "to": "bapak",
+     "text": "Pak. Aku aduin Ibu, ya.",
+     "say": "[threatening, quietly] Pak. Aku aduin Ibu, ya."
+    },
+    {
+     "id": "l007",
+     "speaker": "bapak",
+     "emotion": "embarrassed",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "carry",
+     "to": "dinda",
+     "text": "Dek... Ibunya di sebelah kamu.",
+     "say": "[whispering] Dek... Ibunya di sebelah kamu."
+    },
+    {
+     "id": "l008",
+     "speaker": "bapak",
+     "emotion": "smug",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "carry",
+     "to": "dinda",
+     "text": "Tenang. Bapak dulu juga gitu, Nak. Sampai sekarang malah.",
+     "say": "[wistful] Tenang. Bapak dulu juga gitu, Nak. [dry] Sampai sekarang malah."
+    },
+    {
+     "id": "l009",
+     "speaker": "ibu",
+     "emotion": "smug",
+     "listener": "surprised",
+     "shot": "two",
+     "action": "show",
+     "to": "dinda",
+     "text": "Nah! Tomat dapat. Sekarang... jajan.",
+     "say": "[cheerful] Nah! Tomat dapat. Sekarang... jajan."
+    },
+    {
+     "id": "l010",
+     "speaker": "dinda",
+     "emotion": "laugh",
+     "listener": "smug",
+     "shot": "two",
+     "action": "carry",
+     "to": "ibu",
+     "text": "Cilok! Aku mau cilok!",
+     "say": "[excited] Cilok! Aku mau cilok!",
+     "ref": [
+      "jajan"
+     ]
+    },
+    {
+     "id": "l011",
+     "speaker": "ibu",
+     "emotion": "smug",
+     "listener": "shock",
+     "shot": "close",
+     "closeStyle": "single",
+     "action": "give",
+     "to": "dinda",
+     "text": "Ini. Kantong plastik. Buat bawa tomatnya, Sayang.",
+     "say": "[sweetly] Ini. Kantong plastik. Buat bawa tomatnya, Sayang.",
+     "hold": {
+      "ibu": [
+       "kresekKosong",
+       {
+        "item": "tomatoBag",
+        "hand": "back"
+       }
+      ]
+     },
+     "sfx": [
+      {
+       "id": "rimshot",
+       "at": "end"
+      }
+     ]
+    },
+    {
+     "id": "l012",
+     "speaker": "dinda",
+     "emotion": "deadpan",
+     "listener": "smug",
+     "shot": "medium",
+     "action": "hold",
+     "to": "ibu",
+     "text": "Ini mah bukan jajan, Bu.",
+     "say": "[flat, betrayed] Ini mah bukan jajan, Bu.",
+     "hold": {
+      "dinda": [
+       "kresekKosong",
+       {
+        "item": "kresekBelanja",
+        "hand": "back"
+       }
+      ]
+     }
+    },
+    {
+     "id": "l013",
+     "speaker": "bapak",
+     "emotion": "pleading",
+     "listener": "laugh",
+     "shot": "two",
+     "action": "carry",
+     "text": "Yang kasihan sama Bapak... ikuti dulu, ya.",
+     "say": "[whispering, pleading] Yang kasihan sama Bapak... ikuti dulu, ya.",
+     "cta": {
+      "kind": "ikuti",
+      "text": "IKUTI biar BAPAK SELAMAT!",
+      "keywords": [
+       "IKUTI",
+       "SELAMAT!"
+      ],
+      "reveal": "bapak"
+     }
+    },
+    {
+     "id": "l014",
+     "speaker": "ibu",
+     "emotion": "surprised",
+     "listener": "shock",
+     "shot": "two",
+     "action": "point",
+     "to": "dinda",
+     "text": "Eh! Cabainya kelupaan. Ayo, balik lagi.",
+     "say": "[suddenly remembering] Eh! Cabainya kelupaan. [brightly] Ayo, balik lagi.",
+     "hold": {
+      "ibu": {
+       "item": "tomatoBag",
+       "hand": "back"
+      },
+      "dinda": [
+       "kresekBelanja",
+       "tomatoBag"
+      ]
+     },
+     "sfx": [
+      {
+       "id": "slide_whistle_down",
+       "at": "end"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
