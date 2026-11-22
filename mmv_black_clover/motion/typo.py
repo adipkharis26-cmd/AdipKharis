@@ -303,3 +303,82 @@ def genre_watermark(frame, text, W, t=0.0):
     if glow is not None:
         frame = frame + glow * 0.8 * op
     return _over(frame, col, m * op)
+
+
+# =====================================================================================================
+# mv2 - DIALOG gaya referensi "marjukanak": teks diketik huruf demi huruf (typewriter), italic tebal,
+# gradasi kuning-emas + glow, bayangan; varian box="yellow" = kotak kuning berteks hitam (catatan/pesan).
+# =====================================================================================================
+def _shear(mask, k, cy):
+    M = np.float32([[1, -k, k * cy], [0, 1, 0]])
+    return cv2.warpAffine(mask, M, (S, S), flags=cv2.INTER_LINEAR)
+
+
+def _wrap(text, font, max_w):
+    d = ImageDraw.Draw(Image.new("L", (8, 8)))
+    lines, cur = [], ""
+    for w in text.split(" "):
+        nxt = (cur + " " + w).strip()
+        if cur and d.textlength(nxt, font=font) > max_w:
+            lines.append(cur)
+            cur = w
+        else:
+            cur = nxt
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def dialog(frame, text, since, D=None, until=99.0):
+    """Typewriter: cps huruf/detik, fade keluar 0.15 dtk sebelum `until`. D: y, size, box, color, cps."""
+    D = D or {}
+    if since < 0 or not text:
+        return frame
+    cps = D.get("cps", 22.0)
+    n = int(since * cps) + 1
+    shown = text[:n]
+    a = min(1.0, (until - since) / 0.15) if until < 90 else 1.0
+    if a <= 0:
+        return frame
+    size = D.get("size", 34)
+    y = D.get("y", 0.80) * S
+    font = _gfont(D.get("font", "Montserrat.ttf"), size)
+    full_lines = _wrap(text, font, S * D.get("width", 0.62))
+    # pecah teks yang sudah tampil mengikuti baris teks penuh agar posisi tidak meloncat
+    lines, rest = [], shown
+    for ln in full_lines:
+        lines.append(rest[:len(ln)])
+        rest = rest[len(ln) + 1:]
+    lh = font.size * 1.18
+    y0 = y - lh * (len(full_lines) - 1) / 2
+    m = Image.new("L", (S, S), 0)
+    dr = ImageDraw.Draw(m)
+    for i, (ln, full) in enumerate(zip(lines, full_lines)):
+        if not ln:
+            continue
+        x = S / 2 - dr.textlength(full, font=font) / 2
+        dr.text((x, y0 + i * lh), ln, font=font, fill=255, anchor="lm")
+    mask = np.asarray(m, np.float32) / 255.0
+    if D.get("box"):
+        # kotak kuning (seperti catatan di referensi) - kotak penuh langsung, teks diketik di dalamnya
+        bw = max(dr.textlength(f, font=font) for f in full_lines) + font.size * 1.2
+        bh = lh * len(full_lines) + font.size * 0.8
+        box = np.zeros((S, S), np.float32)
+        cv2.rectangle(box, (int(S / 2 - bw / 2), int(y - bh / 2)), (int(S / 2 + bw / 2), int(y + bh / 2)), 1.0, -1)
+        pop = min(1.0, since / 0.12)
+        box = _scale_about(box, 0.85 + 0.15 * _ease_out_back(pop), S / 2, y)
+        sh = cv2.GaussianBlur(_shift(box, 0, 6 * S / 1080), (0, 0), 8 * S / 1080)
+        frame = _over(frame, np.zeros(3, np.float32), sh * 0.6 * a)
+        glow = cv2.GaussianBlur(box, (0, 0), 18 * S / 1080)
+        frame = frame + glow[..., None] * np.array([255, 230, 40], np.float32) * 0.35 * a
+        frame = _over(frame, np.array(D.get("box_color", (255, 232, 20)), np.float32), box * a)
+        return _over(frame, np.array([15, 12, 8], np.float32), mask * a)
+    mask = _shear(mask, 0.2, y)
+    k_ = S / 1080
+    sh = cv2.GaussianBlur(_shift(mask, 2 * k_, 3 * k_), (0, 0), 3 * k_)
+    frame = _over(frame, np.zeros(3, np.float32), sh * 0.85 * a)
+    col = D.get("color", (255, 200, 40))
+    g = cv2.GaussianBlur(mask, (0, 0), 10 * k_)
+    frame = frame + g[..., None] * np.array(col, np.float32) * 0.8 * a
+    top = tuple(min(255, c * 0.3 + 190) for c in col)
+    return _over(frame, _gradient(mask, top, col), mask * a)

@@ -795,6 +795,26 @@ def defocus(img, strength):
     return up(cv2.GaussianBlur(lowres(img, 2), (0, 0), 1 + 14 * strength)) * strength + img * (1 - strength)
 
 
+def tilt3d(img, ang):
+    """Perspektif 3D: putar bidang gambar (ax = angguk/pitch, ay = toleh/yaw, derajat) + overscan agar tepi aman."""
+    ax, ay = (ang, 0.0) if not isinstance(ang, (tuple, list, np.ndarray)) else (ang[0], ang[1])
+    if abs(ax) < 1e-3 and abs(ay) < 1e-3:
+        return img
+    f = S * 1.6
+    rx, ry = math.radians(ax), math.radians(ay)
+    R = np.array([[math.cos(ry), 0, math.sin(ry)], [0, 1, 0], [-math.sin(ry), 0, math.cos(ry)]]) @ \
+        np.array([[1, 0, 0], [0, math.cos(rx), -math.sin(rx)], [0, math.sin(rx), math.cos(rx)]])
+    over = 1.0 + 0.012 * (abs(ax) + abs(ay))
+    src = np.float32([[0, 0], [S, 0], [S, S], [0, S]])
+    dst = []
+    for x, y in src:
+        p = R @ np.array([(x - S / 2) * over, (y - S / 2) * over, 0.0])
+        z = f + p[2]
+        dst.append((S / 2 + p[0] * f / z, S / 2 + p[1] * f / z))
+    H = cv2.getPerspectiveTransform(src, np.float32(dst))
+    return cv2.warpPerspective(img, H, (S, S), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+
+
 def shake_cut(img, strength, fr):
     if strength <= 0:
         return img
@@ -804,7 +824,113 @@ def shake_cut(img, strength, fr):
     return cv2.warpAffine(img, M, (S, S), borderMode=cv2.BORDER_REFLECT)
 
 
+# ---- mv2: transisi gaya referensi "marjukanak" (storytelling: overexposure, dip gelap, rack focus, sabetan, kilat)
+def burn(img, strength):
+    """Overexposure putih: highlight meledak dulu lalu seluruh frame putih + blur (cahaya jendela menyilaukan)."""
+    if strength <= 0:
+        return img
+    s_ = strength * strength * (3 - 2 * strength)
+    sm = lowres(img, 2)
+    lum = sm.mean(2, keepdims=True) / 255.0
+    glow = cv2.GaussianBlur(np.clip(lum - (1 - s_) * 0.75, 0, 1)[..., 0], (0, 0), 6 + 30 * s_)[..., None]
+    b = cv2.GaussianBlur(sm, (0, 0), 0.5 + 10 * s_) * (1 + 1.6 * s_) + glow * 255 * 2.2 * s_
+    w = np.clip((s_ - 0.55) / 0.45, 0, 1)
+    b = b * (1 - w) + np.array([255, 250, 240], np.float32) * w
+    return up(b) * min(1.0, s_ * 1.6) + img * (1 - min(1.0, s_ * 1.6))
+
+
+def dark_focus(img, strength):
+    """Dip gelap: vignette menutup dari tepi + fokus kabur (adegan memudar ke hitam lalu muncul lagi)."""
+    if strength <= 0:
+        return img
+    s_ = strength * strength * (3 - 2 * strength)
+    yy, xx = grid()
+    r = np.sqrt(((xx - S / 2) / (S / 2)) ** 2 + ((yy - S / 2) / (S / 2)) ** 2) / 1.42
+    m = np.clip((r - (1 - s_) * 1.05) / 0.35, 0, 1)[..., None]
+    img = defocus(img, s_ * 0.8)
+    return img * (1 - m) * (1 - 0.85 * s_ ** 2)
+
+
+def rack_focus(img, strength):
+    """Rack focus: gambar mulai buram dan sedikit membesar lalu menajam (lensa mencari fokus)."""
+    if strength <= 0:
+        return img
+    s_ = strength * strength
+    sc = 1 + 0.06 * s_
+    M = np.float32([[sc, 0, S / 2 - sc * S / 2], [0, sc, S / 2 - sc * S / 2]])
+    img = cv2.warpAffine(img, M, (S, S), borderMode=cv2.BORDER_REFLECT)
+    return defocus(img, s_) * (1 + 0.25 * s_)
+
+
+_SLASH = {}
+
+
+def slash(img, strength, color=(235, 20, 25), seed=4):
+    """Sabetan merah diagonal: 2-3 goresan menyilang dengan motion blur + layar ternoda merah."""
+    if strength <= 0:
+        return img
+    if S not in _SLASH:
+        yy, xx = grid()
+        rng = np.random.default_rng(seed)
+        ms = []
+        for ang, off, w in ((-38, -0.1, 0.10), (34, 0.12, 0.07), (-30, 0.28, 0.05)):
+            a_ = math.radians(ang)
+            d = ((xx - S / 2) * math.sin(a_) + (yy - S / 2) * math.cos(a_)) / S - off
+            n = cv2.resize(rng.random((8, 64)).astype(np.float32), (S, S))
+            ms.append(np.clip(1 - np.abs(d) / (w * (0.6 + 0.6 * n)), 0, 1) ** 1.5)
+        _SLASH[S] = ms
+    s_ = strength
+    col = np.array(color, np.float32)
+    out = whip(img, s_ * 0.7, 1)
+    out = out * (1 - 0.55 * s_) + out * np.array([1.4, 0.25, 0.2], np.float32) * 0.55 * s_
+    for i, m in enumerate(_SLASH[S]):
+        k = np.clip(s_ * 1.6 - i * 0.25, 0, 1)
+        out = out * (1 - m[..., None] * k) + (col * (1 - 0.4 * m[..., None]) + 255 * 0.4 * m[..., None]) * m[..., None] * k
+    return out
+
+
+def lightning(img, strength, fr, seed=9):
+    """Kilat/petir putih: layar gelap, retakan petir bercabang + garis cahaya radial berkedip."""
+    if strength <= 0:
+        return img
+    rng = np.random.default_rng(seed + fr // 3)
+    h = S // 2
+    canvas = np.zeros((h, h), np.float32)
+
+    def bolt(p, ang, length, w, depth):
+        for _ in range(int(length / (h * 0.03))):
+            ang += rng.uniform(-0.6, 0.6)
+            q = (p[0] + math.cos(ang) * h * 0.03, p[1] + math.sin(ang) * h * 0.03)
+            cv2.line(canvas, (int(p[0]), int(p[1])), (int(q[0]), int(q[1])), 1.0, max(1, int(w)), cv2.LINE_AA)
+            if depth < 2 and rng.random() < 0.12:
+                bolt(q, ang + rng.choice([-1, 1]) * rng.uniform(0.5, 1.0), length * 0.4, w * 0.6, depth + 1)
+            p = q
+    c = (h * rng.uniform(0.4, 0.6), h * rng.uniform(0.4, 0.6))
+    for i in range(5):
+        bolt(c, rng.uniform(0, 6.283), h * rng.uniform(0.5, 0.9), 3 * S / 1080 + 1, 0)
+    for i in range(int(4 + 6 * strength)):          # garis cahaya radial (speed streaks)
+        a_ = rng.uniform(0, 6.283)
+        cv2.line(canvas, (int(c[0]), int(c[1])), (int(c[0] + math.cos(a_) * h), int(c[1] + math.sin(a_) * h)),
+                 0.5, 1, cv2.LINE_AA)
+    glow = cv2.GaussianBlur(canvas, (0, 0), 6) * 2.5 + cv2.GaussianBlur(canvas, (0, 0), 1.2)
+    glow = up(np.clip(glow, 0, 2))[..., None]
+    flick = 0.75 + 0.25 * math.sin(fr * 2.7)
+    base = defocus(img, strength * 0.6) * (1 - 0.8 * strength)
+    tint = np.array([235, 240, 255], np.float32)
+    return base + glow * tint * strength * flick
+
+
 def apply_transition(frame, kind, st, fr, t, direction=1):
+    if kind == "burn":
+        return burn(frame, st)
+    if kind == "dark_focus":
+        return dark_focus(frame, st)
+    if kind == "rack":
+        return rack_focus(frame, st)
+    if kind == "slash":
+        return slash(frame, st)
+    if kind == "lightning":
+        return lightning(frame, st, fr)
     if kind == "whip":
         return whip(frame, st, direction)
     if kind == "glitch":
@@ -984,6 +1110,11 @@ def render_frame(job, raw=False):
             if 0 <= d < 0.05 and fl_k > 0:
                 a = (1 - d / 0.05) * fl_k
                 frame = frame * (1 - a) + fl_col * a
+    # mv2: kamera 3D tilt (perspektif miring seperti kamera 2.5D referensi) + fokus lensa yang dikeyframe
+    if s.get("tilt") is not None:
+        frame = tilt3d(frame, K(lt, s["tilt"], "ease"))
+    if s.get("dof") is not None:
+        frame = defocus(frame, max(0.0, min(1.0, K(lt, s["dof"], "out"))))
     frame = post_style(frame, getattr(EDIT, "POST", None), fr)
     pp = MT.paper(S, getattr(EDIT, "PAPER", 0.0))
     if pp is not None:
@@ -1016,6 +1147,10 @@ def render_frame(job, raw=False):
     G = getattr(EDIT, "GENRE", None)
     for tx in s.get("text", []):
         t0 = tx.get("at", 0.0)
+        if tx["kind"] == "dialog":
+            if t0 <= lt < tx.get("until", 99):
+                frame = typo.dialog(frame, tx["text"], lt - t0, tx, until=tx.get("until", dur) - t0)
+            continue
         if G and tx["kind"] == "title" and t0 <= lt < tx.get("until", 99):
             T = dict(G.TITLE_END if tx.get("style") == "episode" or idx == len(EDIT.SHOTS) - 1 else G.TITLE)
             T.update(tx.get("T", {}))

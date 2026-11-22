@@ -110,3 +110,25 @@ Versi terkunci: branch `black-clover-v1-locked` (snapshot, jangan diubah). Penge
 ```bash
 python3 motion/render_v3.py edits/discipline_asta.py --genre phonk --chars images/ --bgs backgrounds/ --audio sound.wav --out out.mp4 --models models
 ```
+
+## mv2 — transisi & animasi storytelling (referensi "marjukanak")
+
+Snapshot gaya sebelumnya: branch **`black-clover-mv1`** (jangan diubah). Pengembangan mv2 di `black-clover`.
+Contoh lengkap: `edits/mereoleona_mv2.py` = salinan `mereoleona_ref.py` (mv1) + fitur di bawah, timing sama.
+
+| Kunci shot | Fungsi | Padanan di AE |
+|---|---|---|
+| `trans_in` / `trans_out` = `burn` | overexposure: highlight meledak → putih + blur, adegan baru muncul dari putih | Exposure + Glow + Fast Blur |
+| `dark_focus` | vignette menutup ke hitam + fokus kabur | Vignette mask + Camera Lens Blur |
+| `rack` | rack focus: buram & sedikit membesar → tajam | Camera Lens Blur keyframe |
+| `slash` | 3 sabetan merah diagonal menyilang + motion blur, layar ternoda merah | Shape stroke + Directional Blur |
+| `lightning` | petir putih bercabang + garis cahaya radial berkedip di atas layar gelap | Advanced Lightning + Glow |
+| `tilt=[(t, (pitch, yaw))]` | kamera 3D miring pelan (perspektif) | 3D layer + Camera orbit |
+| `dof=[(t, 0..1)]` | lensa mencari fokus di awal shot | Lens Blur keyframe |
+| `text=[dict(kind="dialog", text=..., cps=22, color=..., box=False)]` | subtitle diketik huruf demi huruf, italic kuning-emas + glow; `box=True` = kotak kuning teks hitam | Typewriter preset |
+
+Transisi dua sisi: beri `trans_out` yang sama pada shot sebelumnya (mis. `burn` keluar 0.2 dtk + `burn` masuk 0.4 dtk).
+Aturan: frame pertama hook tanpa `dof`/transisi; maksimal 1 dialog per adegan.
+```bash
+python3 motion/render_v3.py edits/mereoleona_mv2.py --chars images/ --bgs images/ --audio sound.mp3 --out mereoleona_mv2.mp4 --models models
+```
