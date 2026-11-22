@@ -1030,6 +1030,8 @@ def init(args):
     EDIT = load_edit(args.edit)
     apply_style(EDIT, getattr(args, "style", ""))
     apply_genre(EDIT, getattr(args, "genre", ""))
+    if getattr(args, "no_wm", False):
+        EDIT.WATERMARK = ""
     S = args.size
     FPS = args.fps
     typo.S = S
@@ -1051,6 +1053,7 @@ def main():
     ap.add_argument("--only", default="")
     ap.add_argument("--prepare", action="store_true", help="hanya upscale + roto (cache), tanpa render")
     ap.add_argument("--stills", default="", help="preview: daftar detik, mis. 0.5,3,9.2 -> PNG + contact sheet")
+    ap.add_argument("--no-wm", action="store_true", help="tanpa watermark (untuk frame thumbnail)")
     ap.add_argument("--genre", default="", help="genre pack di edits/genres: mmv, phonk, soft, villain, hyper")
     ap.add_argument("--style", default="", help="preset di edits/styles: manga_color, ink_mono, neon_night, "
                                                "cinematic, pastel_dream, red_phonk")
