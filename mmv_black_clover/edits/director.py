@@ -58,6 +58,9 @@ def speak(face_x, face_y, rx=0.12, ry=0.08, neck=0.07, amp=1.4, rate=3.2):
             head(("ellipse", face_x, face_y, rx, ry, 0.5), (face_x, face_y + neck), osc=(amp * 0.5, rate * 1.7, 1.3))]
 
 
+_BG_DIR = 1
+
+
 def cut(t0, t1, img, bg, acting, anchor, span, pos=(0.5, 0.5), glow=ICE, hits=(0.0,), flash=(), tone=None,
         bg_grade=None, parts=(), who=None, **kw):
     char = dict(img=img, alpha="auto", upscale=2400, anchor=anchor, pos=pos, span=span, acting=acting,
@@ -65,9 +68,16 @@ def cut(t0, t1, img, bg, acting, anchor, span, pos=(0.5, 0.5), glow=ICE, hits=(0
                                      dir=(1.0, 0.35))] + list(parts)))
     if tone:
         char.update(duotone=True, **tone)
+    # background hidup: bergeser berlawanan arah karakter + zoom + putar pelan + kabut mengalir
+    global _BG_DIR
+    _BG_DIR = -_BG_DIR
+    d = t1 - t0
+    dx = 0.05 * _BG_DIR
     s = dict(t0=t0, t1=t1, char=char,
-             bg=dict(img=BG[bg], upscale=1400, anchor=(0.5, 0.45), pos=(0.5, 0.45),
-                     span=[(0, 1.3), (t1 - t0, 1.22)], blur=1.6, parallax=0.35,
+             bg=dict(img=BG[bg], upscale=1400, anchor=(0.5, 0.45),
+                     pos=[(0, (0.5 + dx, 0.46)), (d, (0.5 - dx, 0.44))],
+                     span=[(0, 1.42), (d, 1.30)], rot=[(0, -1.2 * _BG_DIR), (d, 1.2 * _BG_DIR)],
+                     blur=1.6, parallax=0.35, fog=((40, 30, 30), 0.25),
                      grade=bg_grade or dict(bright=0.72, contrast=1.1)),
              cam=dict(ease="out"), hits=list(hits), flash=list(flash),
              fx=dict(rim=(glow, 0.55), back_glow=(glow, 0.3), wrap=0.4, shadow=0.45))

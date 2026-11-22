@@ -908,7 +908,7 @@ def render_frame(job, raw=False):
             par = B.get("parallax", 0.45)
             Mb = camera(zoom, pan, rot, par) @ affine(bl.w, bl.h, K(lt, B.get("anchor", (0.5, 0.5))),
                                                       K(lt, B.get("pos", (0.5, 0.5))), K(lt, B.get("span", 1.15)),
-                                                      0.0)
+                                                      K(lt, B.get("rot", 0.0)))
             brgb, _ = bl.render(Mb, lt)
             if B.get("blur", 0) > 0:
                 brgb = up(cv2.GaussianBlur(lowres(brgb, 2), (0, 0), B["blur"])) if B["blur"] > 1.5 else \
@@ -1119,9 +1119,27 @@ def cutout_ok(path):
     fire = ((hsv[..., 2] > 210) & (hsv[..., 1] > 110)).mean()          # efek cahaya/api di seluruh gambar
     s_ = cv2.resize(img, (128, 128))
     gray = (s_.max(2).astype(np.float32) - s_.min(2)).mean() < 14      # panel manga hitam-putih
-    ok = border <= 0.15 and cov <= 0.55 and glow <= 0.22 and fire <= 0.2 and not gray
-    return ok, dict(border=round(float(border), 2), cov=round(float(cov), 2), glow=round(float(glow), 2),
-                    fire=round(float(fire), 2), manga=bool(gray))
+    # kebersihan potongan: siluet utuh (1 bagian), tidak terpotong tepi gambar, tepi tegas (bukan abu-abu)
+    n_, lab, st, _ = cv2.connectedComponentsWithStats(b.astype(np.uint8), 8)
+    areas = sorted(st[1:, 4], reverse=True) if n_ > 1 else [0]
+    main = areas[0] / max(1, sum(areas))
+    soft = float(((a > 0.1) & (a < 0.9)).sum()) / max(1.0, float(b.sum()))
+    ok = (border <= 0.02 and main >= 0.97 and soft <= 0.4 and cov <= 0.55 and glow <= 0.22 and fire <= 0.2
+          and not gray)
+    return ok, dict(border=round(float(border), 3), cov=round(float(cov), 2), glow=round(float(glow), 2),
+                    fire=round(float(fire), 2), manga=bool(gray), main=round(main, 3), soft=round(soft, 2))
+
+
+def check_repeats(edit):
+    seen = {}
+    for i, s in enumerate(edit.SHOTS):
+        if s.get("char"):
+            seen.setdefault(s["char"]["img"], []).append(i + 1)
+    last = edit.SHOTS[-1].get("char", {}).get("img")
+    first = edit.SHOTS[0].get("char", {}).get("img")
+    for img, ix in seen.items():
+        if len(ix) > 1 and not (img == first == last and len(ix) == 2):
+            print("PERINGATAN adegan berulang: %s di shot %s" % (img, ix), flush=True)
 
 
 def auto_mode(edit):
@@ -1189,6 +1207,8 @@ def init(args):
     apply_style(EDIT, getattr(args, "style", ""))
     apply_genre(EDIT, getattr(args, "genre", ""))
     auto_mode(EDIT)
+    if __name__ == "__main__":
+        check_repeats(EDIT)
     expand_acting(EDIT)
     if getattr(args, "no_wm", False):
         EDIT.WATERMARK = ""

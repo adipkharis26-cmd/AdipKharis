@@ -15,48 +15,41 @@ GOLD = (255, 190, 60)
 FACE = (0.52, 0.105)                  # wajah di Mereoleona_anime_profile
 
 SHOTS = [
-    # ── HOOK: mata singa ──
+    # ── HOOK: mata singa (diulang di akhir untuk loop) ──
     cut(0.00, 1.30, "Mereoleona_as_Royal_Knight.png", "sun", "push_in", (0.47, 0.25), 1.0, hits=(0.18,),
         text=[dict(kind="title", label="BEST WOMEN?", name="Mereoleona Vermillion", at=0.2, until=2.6)],
         fx=dict(eyes=([(0.06, 0.13), (0.94, 0.13)], (255, 170, 40), [(0, 0.3), (0.4, 1.3)], 14))),
-    cut(1.30, 2.72, "Mereoleona_anime_profile.png", "sun", "rise", (0.5, 0.25), 1.25, pos=(0.5, 0.48), hits=(),
-        glow=FIRE, bg_grade=dict(tint=(1.25, 0.75, 0.4), sat=0.9, bright=0.72)),
+    # keluarga Vermillion (dipotong bersih, background istana bergerak)
+    cut(1.30, 2.72, "Fuegoleon_anime_profile.png", "capital", "rise", (0.5, 0.15), 2.2, pos=(0.5, 0.42), hits=(),
+        glow=FIRE, who="mereo"),
     # ── VO 1: Mereoleona berbicara ──
-    cut(2.72, 3.98, "Mereoleona_anime_profile.png", "spade", "lean", (FACE[0], FACE[1] + 0.02), 4.2,
-        pos=(0.5, 0.42), hits=(), glow=FIRE, parts=speak(*FACE), bg_grade=dict(bright=0.6, contrast=1.15)),
+    cut(2.72, 3.98, "Mereoleona_anime_profile.png", "sun", "lean", (FACE[0], FACE[1] + 0.02), 4.2,
+        pos=(0.5, 0.42), hits=(), glow=FIRE, parts=speak(*FACE), bg_grade=dict(tint=(1.25, 0.75, 0.4), bright=0.62)),
     cut(3.98, 4.60, "Mereoleona_at_15.png", "sun", "push_in", (0.5, 0.3), 1.6),
-    cut(4.60, 5.22, "Mereoleona_as_a_child.png", "silva", "reach", (0.33, 0.3), 1.6, glow=(255, 190, 60),
-        bg_grade=dict(bright=0.7, sat=0.85)),
+    cut(4.60, 5.22, "Mereoleona_as_a_child.png", "silva", "reach", (0.33, 0.3), 1.6),
     # ── DROP: api ──
-    cut(5.22, 5.86, "Mereoleona_erupts.png", "sun", "recoil", (0.45, 0.2), 1.6, flash=(0.0,)),
-    cut(5.86, 6.50, "Mereoleona_erupts.png", "sun", "push_in", (0.45, 0.45), 1.0),
-    cut(6.50, 7.12, "Mereoleona_burns_two_Astas.png", "sun", "push_in", (0.25, 0.4), 1.0),
-    cut(7.12, 7.76, "Mereoleona_fights_revived_demon.png", "sun", "reach", (0.5, 0.45), 1.0),
+    cut(5.22, 5.86, "Mereoleona_erupts.png", "sun", "recoil", (0.45, 0.25), 1.3, flash=(0.0,)),
+    cut(5.86, 6.50, "Mereoleona_burns_two_Astas.png", "sun", "push_in", (0.25, 0.4), 1.0),
+    cut(6.50, 7.12, "Mereoleona_fights_revived_demon.png", "sun", "reach", (0.5, 0.45), 1.0),
+    cut(7.12, 7.76, "Leopold_anime_profile.png", "capital", "slide_r", (0.5, 0.15), 2.2, pos=(0.5, 0.42),
+        glow=FIRE, who="mereo"),
     # ── VO 2 ──
-    cut(7.76, 8.72, "Mereoleona_anime_profile.png", "diamond", "lean", (FACE[0], FACE[1] + 0.02), 3.8,
-        pos=(0.5, 0.42), hits=(), glow=FIRE, parts=speak(*FACE), bg_grade=dict(tint=(1.2, 0.7, 0.5), bright=0.6)),
+    cut(7.76, 8.72, "Mereoleona_profile.png", "sun", "lean", (0.5, 0.18), 1.7, hits=()),
     cut(8.72, 9.10, "Mereoleona_punches_Vetto.png", "sun", "recoil", (0.5, 0.5), 1.0, tone=BLOOD),
     cut(9.10, 9.50, "Mereoleona_vs_Rhya.png", "sun", "recoil", (0.5, 0.45), 1.0, tone=WARM),
     cut(9.50, 9.76, "Mereoleona_punches_Asta.png", "sun", "recoil", (0.5, 0.5), 1.0, tone=WARM),
     # ── mentor galak ──
     cut(9.76, 11.60, "Mereoleona_grabs_Asta.png", "sun", "turn", (0.35, 0.4), 1.0, hits=()),
-    cut(11.60, 12.50, "Mereoleona_comes_for_Black_Bull.png", "sun", "push_in", (0.72, 0.4), 1.0, flash=(0.0,)),
-    cut(12.50, 13.00, "Mereoleona_fights_revived_demon.png", "sun", "recoil", (0.62, 0.35), 1.4),
+    cut(11.60, 13.00, "Mereoleona_comes_for_Black_Bull.png", "sun", "push_in", (0.72, 0.4), 1.0, flash=(0.0,),
+        hits=(0.0, 0.9)),
     cut(13.00, 14.50, "Calidus_Brachium_Purgatory_Flame_Burial.png", "sun", "reach", (0.5, 0.45), 1.0, tone=WARM),
-    cut(14.50, 15.46, "Mereoleona_grabs_Asta.png", "sun", "push_in", (0.3, 0.3), 1.5),
-    # ── VO 3 (break): masa kecil -> remaja -> sekarang ──
-    cut(15.46, 16.98, "Mereoleona_as_a_child.png", "silva", "float", (0.35, 0.3), 1.3, pos=(0.5, 0.48), hits=(),
-        glow=GOLD, bg_grade=dict(bright=0.75, sat=0.8)),
-    cut(16.98, 17.90, "Mereoleona_at_19.png", "silva", "lean", (0.5, 0.2), 1.0, hits=(), tone=WARM),
-    cut(17.90, 18.92, "Mereoleona_anime_profile.png", "sun", "lean", (FACE[0], FACE[1] + 0.02), 3.6,
-        pos=(0.5, 0.42), hits=(), glow=FIRE, parts=speak(*FACE, amp=1.1),
-        bg_grade=dict(tint=(1.25, 0.75, 0.4), bright=0.65)),
+    cut(14.50, 15.46, "Mereoleona_defeats_demon.png", "sun", "push_in", (0.5, 0.5), 1.0, tone=WARM),
+    # ── VO 3 (break) ──
+    cut(15.46, 17.20, "Mereoleona_after_timeskip.png", "sun", "lean", (0.5, 0.2), 1.3, hits=(), tone=WARM),
+    cut(17.20, 18.92, "Mereoleona_at_19.png", "silva", "float", (0.5, 0.2), 1.2, hits=(), tone=WARM),
     # ── bangun lagi ──
-    cut(18.92, 20.04, "Hot-Blooded_Tuesday.png", "sun", "push_in", (0.5, 0.5), 1.0, flash=(0.0,)),
-    cut(20.04, 20.96, "Mereoleona_anime_profile.png", "sun", "reach", (0.5, 0.3), 1.6, pos=(0.5, 0.5), glow=FIRE,
-        bg_grade=dict(tint=(1.25, 0.75, 0.4), sat=0.9, bright=0.7)),
-    cut(20.96, 21.98, "Mereoleona_comes_for_Black_Bull.png", "sun", "push_in", (0.75, 0.4), 1.25,
-        hits=(0.0, 0.44)),
+    cut(18.92, 20.04, "Fuegoleon_Leo_Rugiens.png", "sun", "push_in", (0.5, 0.4), 1.3, flash=(0.0,)),
+    cut(20.04, 21.98, "Hot-Blooded_Tuesday.png", "sun", "reach", (0.62, 0.72), 1.5, hits=(0.0, 0.92)),
     # ── penutup = hook ──
     cut(21.98, 22.83, "Mereoleona_as_Royal_Knight.png", "sun", "push_in", (0.47, 0.25), 1.0,
         text=[dict(kind="title", label="BLACK CLOVER", name="The Raging Lion", at=0.05)],
