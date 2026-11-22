@@ -693,6 +693,124 @@ def glitch(img, strength, seed):
     return out
 
 
+def zoom_blur(img, strength):
+    """Radial zoom blur (zoom-in transition AE: CC Radial Fast Blur + scale)."""
+    if strength <= 0:
+        return img
+    sm = lowres(img, 2)
+    h = S // 2
+    acc = np.zeros_like(sm)
+    n = 8
+    for i in range(n):
+        sc = 1 + strength * 0.35 * i / n
+        M = np.float32([[sc, 0, h / 2 - sc * h / 2], [0, sc, h / 2 - sc * h / 2]])
+        acc += cv2.warpAffine(sm, M, (h, h), borderMode=cv2.BORDER_REFLECT)
+    b = up(acc / n)
+    sc = 1 + 0.15 * strength
+    M = np.float32([[sc, 0, S / 2 - sc * S / 2], [0, sc, S / 2 - sc * S / 2]])
+    b = cv2.warpAffine(b, M, (S, S), borderMode=cv2.BORDER_REFLECT)
+    return b * strength + img * (1 - strength)
+
+
+def spin(img, strength, direction=1):
+    """Spin transition: rotasi + blur rotasi."""
+    if strength <= 0:
+        return img
+    sm = lowres(img, 2)
+    h = S // 2
+    acc = np.zeros_like(sm)
+    n = 7
+    for i in range(n):
+        ang = direction * strength * 40 * (i / n)
+        M = cv2.getRotationMatrix2D((h / 2, h / 2), ang, 1 + 0.25 * strength)
+        acc += cv2.warpAffine(sm, M, (h, h), borderMode=cv2.BORDER_REFLECT)
+    return up(acc / n) * strength + img * (1 - strength)
+
+
+def flash_t(img, strength, color=(255, 255, 255)):
+    return img * (1 - strength) + np.array(color, np.float32) * strength
+
+
+_ink_noise = {}
+
+
+def ink_wipe(img, strength, seed=2):
+    """Ink bleed: tinta hitam menyebar dari tepi (villain / manga)."""
+    if strength <= 0:
+        return img
+    if S not in _ink_noise:
+        rng = np.random.default_rng(seed)
+        n = cv2.resize(rng.random((16, 16)).astype(np.float32), (S, S), interpolation=cv2.INTER_CUBIC)
+        n2 = cv2.resize(rng.random((64, 64)).astype(np.float32), (S, S), interpolation=cv2.INTER_CUBIC)
+        yy, xx = grid()
+        r = np.sqrt(((xx - S / 2) / (S / 2)) ** 2 + ((yy - S / 2) / (S / 2)) ** 2) / 1.42
+        _ink_noise[S] = (1 - r) * 0.6 + n * 0.3 + n2 * 0.1
+    f = _ink_noise[S]
+    thr = 1 - strength * 1.15
+    m = np.clip((thr - f) / 0.03 + 0.5, 0, 1)[..., None]
+    return img * (1 - m) + np.array([6, 4, 6], np.float32) * m
+
+
+def light_leak(img, strength, t):
+    """Light leak hangat bergerak (soft / cinematic)."""
+    if strength <= 0:
+        return img
+    yy, xx = grid()
+    cx = S * (0.2 + 0.6 * ((t * 0.7) % 1))
+    g = np.exp(-(((xx - cx) / (S * 0.45)) ** 2 + ((yy - S * 0.3) / (S * 0.6)) ** 2))[..., None]
+    col = np.array([255, 170, 110], np.float32)
+    return img + g * col * strength * 1.3
+
+
+def defocus(img, strength):
+    if strength <= 0:
+        return img
+    return up(cv2.GaussianBlur(lowres(img, 2), (0, 0), 1 + 14 * strength)) * strength + img * (1 - strength)
+
+
+def shake_cut(img, strength, fr):
+    if strength <= 0:
+        return img
+    rng = np.random.default_rng(fr)
+    dx, dy = rng.uniform(-1, 1, 2) * S * 0.04 * strength
+    M = np.float32([[1 + 0.08 * strength, 0, dx - 0.04 * strength * S], [0, 1 + 0.08 * strength, dy - 0.04 * strength * S]])
+    return cv2.warpAffine(img, M, (S, S), borderMode=cv2.BORDER_REFLECT)
+
+
+def apply_transition(frame, kind, st, fr, t, direction=1):
+    if kind == "whip":
+        return whip(frame, st, direction)
+    if kind == "glitch":
+        return glitch(frame, st, fr)
+    if kind == "zoom":
+        return zoom_blur(frame, st)
+    if kind == "spin":
+        return spin(frame, st, direction)
+    if kind == "flash":
+        return flash_t(frame, st * 0.9)
+    if kind == "flash_red":
+        return flash_t(frame, st * 0.85, (220, 20, 30))
+    if kind == "white_dip":
+        return flash_t(frame, st * 0.7, (255, 245, 250))
+    if kind == "black_dip":
+        return flash_t(frame, st, (0, 0, 0))
+    if kind == "ink":
+        return ink_wipe(frame, st)
+    if kind == "leak":
+        return light_leak(frame, st, t)
+    if kind == "defocus":
+        return defocus(frame, st)
+    if kind == "shake":
+        return shake_cut(frame, st, fr)
+    if kind == "rgb":
+        k = int(24 * st * S / 1080)
+        f = frame.copy()
+        f[..., 0] = np.roll(f[..., 0], k, axis=1)
+        f[..., 2] = np.roll(f[..., 2], -k, axis=1)
+        return f
+    return frame
+
+
 # ------------------------------------------------------------------ frame
 _layers = {}
 _particles = None
@@ -733,9 +851,10 @@ def render_frame(job):
             if 0 <= d < 0.5:
                 imp = max(imp, math.exp(-d * 9))
         if imp:
-            k = s.get("shake", 0.008) * imp
+            G = getattr(EDIT, "GENRE", None)
+            k = s.get("shake", 0.008) * imp * (G.SHAKE_K if G else 1.0)
             pan = (pan[0] + k * E.smooth_noise(t, 7, 22), pan[1] + k * E.smooth_noise(t, 8, 19))
-            zoom *= 1 + s.get("punch", 0.03) * imp
+            zoom *= 1 + s.get("punch", 0.03) * imp * (G.PUNCH_K if G else 1.0)
         C = s["char"]
         ch = get_layer(idx, "char")
         Mc = camera(zoom, pan, rot, 1.0) @ affine(ch.w, ch.h, K(lt, C.get("anchor", (0.5, 0.5))),
@@ -812,11 +931,14 @@ def render_frame(job):
                 frame = frame * (1 - pr[1]) + pr[0] * pr[1]
             else:
                 frame = frame + pr
+        G = getattr(EDIT, "GENRE", None)
+        fl_col = np.array(G.FLASH_COLOR if G else (255, 255, 255), np.float32)
+        fl_k = G.FLASH_K if G else 0.75
         for ht in s.get("flash", []):
             d = lt - ht
-            if 0 <= d < 0.05:
-                a = (1 - d / 0.05) * 0.75
-                frame = frame * (1 - a) + 255 * a
+            if 0 <= d < 0.05 and fl_k > 0:
+                a = (1 - d / 0.05) * fl_k
+                frame = frame * (1 - a) + fl_col * a
     frame = post_style(frame, getattr(EDIT, "POST", None), fr)
     pp = MT.paper(S, getattr(EDIT, "PAPER", 0.0))
     if pp is not None:
@@ -826,16 +948,21 @@ def render_frame(job):
     tr = s.get("trans_in")
     if tr and lt < tr[1]:
         st = 1 - lt / tr[1]
-        frame = whip(frame, st, -1) if tr[0] == "whip" else glitch(frame, st, fr)
+        frame = apply_transition(frame, tr[0], st, fr, t, -1)
     tr = s.get("trans_out")
     if tr and dur - lt < tr[1]:
         st = 1 - (dur - lt) / tr[1]
-        frame = whip(frame, st, 1) if tr[0] == "whip" else glitch(frame, st, fr)
+        frame = apply_transition(frame, tr[0], st, fr, t, 1)
     for g0, g1 in s.get("gate", []):
         if g0 <= t < g1:
             frame = frame * 0.15
+    G = getattr(EDIT, "GENRE", None)
     for tx in s.get("text", []):
         t0 = tx.get("at", 0.0)
+        if G and tx["kind"] == "title" and t0 <= lt < tx.get("until", 99):
+            T = dict(G.TITLE_END if tx.get("style") == "episode" or idx == len(EDIT.SHOTS) - 1 else G.TITLE)
+            frame = typo.genre_title(frame, tx.get("label", ""), tx["name"], T, lt - max(0.0, t0), seed=idx)
+            continue
         if t0 <= lt < tx.get("until", 99):
             ap = (lt - t0) / 0.2
             pop = max(0.0, 1 - (lt - t0) / 0.25) if tx.get("pop") else 0.0
@@ -846,7 +973,10 @@ def render_frame(job):
                                    tx.get("y", 0.83), tx.get("style", "name"), pop)
             else:
                 frame = typo.subtitle(frame, tx["text"], ap, tx.get("y", 0.885))
-    frame = typo.watermark(frame, getattr(EDIT, "WATERMARK", ""))
+    if G:
+        frame = typo.genre_watermark(frame, getattr(EDIT, "WATERMARK", ""), G.WM, t)
+    else:
+        frame = typo.watermark(frame, getattr(EDIT, "WATERMARK", ""))
     return np.clip(frame, 0, 255).astype(np.uint8).tobytes()
 
 
@@ -866,11 +996,40 @@ def args_edit_path(edit):
     return getattr(edit, "__file__", ARGS.edit)
 
 
+def apply_genre(edit, name):
+    """Genre pack (edits/genres/<name>.py): style visual + font/teks + watermark + set transisi + energi kamera.
+    Transisi diberikan bergiliran ke setiap cut (tidak ada dua cut berurutan dengan transisi sama)."""
+    if not name:
+        return
+    path = os.path.join(os.path.dirname(os.path.abspath(args_edit_path(edit))), "genres", name + ".py")
+    G = load_edit(path)
+    edit.GENRE = G
+    apply_style(edit, G.STYLE)
+    if getattr(G, "PARTICLES", None):
+        edit.PARTICLE_COLOR = G.PARTICLES[0]
+    seq = list(G.TRANSITIONS)
+    j = 0
+    for i, s in enumerate(edit.SHOTS):
+        if i == 0:
+            s.pop("trans_in", None)                 # hook: frame pertama langsung bersih
+            continue
+        dur = s["t1"] - s["t0"]
+        kind, d = seq[j % len(seq)]
+        j += 1
+        s["trans_in"] = (kind, min(d, dur * 0.45))
+        s.pop("trans_out", None)
+        if getattr(G, "PARTICLES", None) and s.get("particles_cfg") is None and s.get("particles", True):
+            s["particles_cfg"] = G.PARTICLES
+        if G.FLASH_K <= 0:
+            s["flash"] = []
+
+
 def init(args):
     global ARGS, EDIT, S, FPS
     ARGS = args
     EDIT = load_edit(args.edit)
     apply_style(EDIT, getattr(args, "style", ""))
+    apply_genre(EDIT, getattr(args, "genre", ""))
     S = args.size
     FPS = args.fps
     typo.S = S
@@ -892,6 +1051,7 @@ def main():
     ap.add_argument("--only", default="")
     ap.add_argument("--prepare", action="store_true", help="hanya upscale + roto (cache), tanpa render")
     ap.add_argument("--stills", default="", help="preview: daftar detik, mis. 0.5,3,9.2 -> PNG + contact sheet")
+    ap.add_argument("--genre", default="", help="genre pack di edits/genres: mmv, phonk, soft, villain, hyper")
     ap.add_argument("--style", default="", help="preset di edits/styles: manga_color, ink_mono, neon_night, "
                                                "cinematic, pastel_dream, red_phonk")
     a = ap.parse_args()

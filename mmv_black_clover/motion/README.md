@@ -94,3 +94,19 @@ Preset di `edits/styles/`. Style dipilih saat render, edit/shot list tidak berub
 python3 motion/render_v3.py edits/queens_v4.py --style pastel_dream --chars images/ --bgs backgrounds/ --audio sound.wav --out out.mp4 --models models
 ```
 Versi terkunci: branch `black-clover-v1-locked` (snapshot, jangan diubah). Pengembangan: branch `black-clover`.
+
+## Genre pack (`--genre`) — tampilan tidak monoton antar topik
+
+`edits/genres/<nama>.py` = paket lengkap: style visual + font judul & label + warna + animasi teks + gaya watermark + set transisi (bergiliran per cut) + energi kamera/flash + partikel.
+
+| Genre | Style | Font judul / animasi | Watermark | Transisi | Energi |
+|---|---|---|---|---|---|
+| `mmv` | manga_color | Fjalla One gradasi + glow, naik pelan | Metal Mania grit | whip, flash, glitch, zoom | sedang |
+| `phonk` | red_phonk | Unifraktur gothic + stroke merah, glitch RGB | Anton tracking lebar | shake, RGB split, flash merah, glitch, zoom | sangat tinggi |
+| `soft` | pastel_dream | Great Vibes script, blur-in, garis ornamen | Cormorant italic, berdenyut | white dip, defocus, light leak | rendah, tanpa flash |
+| `villain` | ink_mono | Cinzel serif emas, huruf merapat / ketik | Unifraktur merah | ink bleed, flash merah, black dip, zoom | sedang-tinggi |
+| `hyper` | neon_night | Orbitron neon + HUD bracket, slide masuk | Orbitron neon glow | zoom blur, spin, RGB, flash, glitch, whip | tertinggi |
+
+```bash
+python3 motion/render_v3.py edits/discipline_asta.py --genre phonk --chars images/ --bgs backgrounds/ --audio sound.wav --out out.mp4 --models models
+```

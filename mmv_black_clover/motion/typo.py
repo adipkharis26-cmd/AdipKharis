@@ -117,3 +117,189 @@ def watermark(frame, text, y=0.935, opacity=0.92):
     m, col, sh = _wm_cache[text]
     frame = _over(frame, np.zeros(3, np.float32), sh * 0.75 * opacity)
     return _over(frame, col, m * opacity)
+
+
+# =====================================================================================================
+# GENRE TYPOGRAPHY: setiap genre punya font, warna, animasi masuk, dan watermark sendiri (tidak monoton)
+# =====================================================================================================
+_VAR_WEIGHT = {"Cinzel.ttf": 800, "Orbitron.ttf": 800, "Montserrat.ttf": 700, "PlayfairDisplay-Italic.ttf": 600,
+               "CormorantGaramond-Italic.ttf": 600}
+
+
+def _gfont(name, size):
+    size = max(6, int(round(size * S / 1080)))
+    k = ("g", name, size)
+    if k not in _cache:
+        f = _f(name, size)
+        if name in _VAR_WEIGHT:
+            try:
+                f.set_variation_by_axes([_VAR_WEIGHT[name]])
+            except Exception:
+                pass
+        _cache[k] = f
+    return _cache[k]
+
+
+def _tracked_mask(text, font, cx, cy, tracking=0.0, stroke=0):
+    """Teks dengan letter-spacing (tracking dalam em), di-center di (cx, cy)."""
+    m = Image.new("L", (S, S), 0)
+    d = ImageDraw.Draw(m)
+    if tracking == 0:
+        d.text((cx, cy), text, font=font, fill=255, anchor="mm", stroke_width=stroke, stroke_fill=255)
+        return np.asarray(m, np.float32) / 255.0
+    em = font.size
+    widths = [d.textlength(ch, font=font) for ch in text]
+    total = sum(widths) + tracking * em * (len(text) - 1)
+    x = cx - total / 2
+    for ch, w in zip(text, widths):
+        d.text((x, cy), ch, font=font, fill=255, anchor="lm", stroke_width=stroke, stroke_fill=255)
+        x += w + tracking * em
+    return np.asarray(m, np.float32) / 255.0
+
+
+def _ease_out_back(x):
+    c = 1.7
+    x = min(1.0, max(0.0, x)) - 1
+    return 1 + (c + 1) * x ** 3 + c * x ** 2
+
+
+def _shift(mask, dx, dy):
+    M = np.float32([[1, 0, dx], [0, 1, dy]])
+    return cv2.warpAffine(mask, M, (S, S))
+
+
+def _scale_about(mask, k, cx, cy):
+    M = np.float32([[k, 0, cx - k * cx], [0, k, cy - k * cy]])
+    return cv2.warpAffine(mask, M, (S, S), flags=cv2.INTER_LINEAR)
+
+
+def genre_title(frame, label, name, T, since, seed=0):
+    """T = gaya teks genre (font, warna, stroke, glow, animasi). since = detik sejak teks muncul."""
+    if since < 0:
+        return frame
+    k_ = S / 1080
+    anim = T.get("anim", "rise")
+    a = min(1.0, since / T.get("in_dur", 0.22))
+    text = name.upper() if T.get("upper") else name
+    if anim == "type":                                      # mesin ketik: huruf muncul satu per satu
+        n = max(1, int(len(text) * min(1.0, since / T.get("in_dur", 0.5))))
+        text_vis = text[:n]
+    else:
+        text_vis = text
+    cy = T.get("y", 0.83) * S
+    cx = S / 2
+    font = _gfont(T["font"], T.get("size", 70))
+    m = _tracked_mask(text_vis, font, cx, cy, T.get("tracking", 0.0))
+    mo = _tracked_mask(text_vis, font, cx, cy, T.get("tracking", 0.0), stroke=max(1, int(T.get("stroke", 3) * k_)))
+    # animasi masuk
+    alpha = a
+    if anim == "rise":
+        dy = (1 - a) * 18 * k_
+        m, mo = _shift(m, 0, dy), _shift(mo, 0, dy)
+    elif anim == "pop":
+        sc = 0.6 + 0.4 * _ease_out_back(a)
+        m, mo = _scale_about(m, sc, cx, cy), _scale_about(mo, sc, cx, cy)
+        alpha = min(1.0, a * 2)
+    elif anim == "slide":
+        dx = (1 - _ease_out_back(a)) * -S * 0.35
+        m, mo = _shift(m, dx, 0), _shift(mo, dx, 0)
+    elif anim == "spread":                                  # tracking merapat pelan (sinematik)
+        tr = T.get("tracking", 0.0) + (1 - a) * 0.6
+        m = _tracked_mask(text_vis, font, cx, cy, tr)
+        mo = _tracked_mask(text_vis, font, cx, cy, tr, stroke=max(1, int(T.get("stroke", 3) * k_)))
+    elif anim == "blur_in":
+        r = (1 - a) * 12 * k_ + 0.01
+        m, mo = cv2.GaussianBlur(m, (0, 0), r), cv2.GaussianBlur(mo, (0, 0), r)
+    glitch_k = 0.0
+    if anim == "glitch" or T.get("jitter"):
+        glitch_k = max(0.0, 1 - since / 0.35) if anim == "glitch" else T.get("jitter", 0)
+    # label
+    if label:
+        lab = label.upper() if T.get("label_upper", True) else label
+        lf = _gfont(T.get("label_font", "Inter-SemiBold.otf"), T.get("label_size", 22))
+        lm = _tracked_mask(lab, lf, cx, cy - T.get("size", 70) * T.get("label_gap", 0.8) * k_, T.get("label_tracking", 0.25))
+        frame = _over(frame, np.zeros(3, np.float32), cv2.GaussianBlur(lm, (0, 0), 2) * 0.6 * alpha)
+        frame = _over(frame, np.array(T.get("label_color", (235, 235, 235)), np.float32), lm * alpha)
+    # glow
+    if T.get("glow"):
+        g = cv2.GaussianBlur(mo, (0, 0), 9 * k_) * 0.9 + cv2.GaussianBlur(mo, (0, 0), 24 * k_) * 0.7
+        frame = frame + g[..., None] * np.array(T["glow"], np.float32) * T.get("glow_k", 0.55) * alpha
+    # bayangan
+    frame = _over(frame, np.zeros(3, np.float32),
+                  cv2.GaussianBlur(_shift(mo, 0, 3 * k_), (0, 0), 2.5) * T.get("shadow", 0.55) * alpha)
+    # stroke berwarna
+    if T.get("stroke_color"):
+        frame = _over(frame, np.array(T["stroke_color"], np.float32), np.clip(mo - m, 0, 1) * alpha)
+    fill = _gradient(m, T.get("top", (255, 255, 255)), T.get("bottom", T.get("top", (255, 255, 255))))
+    if glitch_k > 0:                                        # pemisahan RGB + potongan horizontal
+        rng = np.random.default_rng(seed + int(since * 60))
+        off = int(10 * glitch_k * k_) + 1
+        frame = _over(frame, np.array([255, 30, 60], np.float32), _shift(m, -off, 0) * 0.8 * alpha)
+        frame = _over(frame, np.array([30, 230, 255], np.float32), _shift(m, off, 0) * 0.8 * alpha)
+        for _ in range(3):
+            y0 = int(cy + rng.uniform(-0.5, 0.5) * T.get("size", 70) * k_)
+            h = int(rng.uniform(3, 10) * k_)
+            m[y0:y0 + h] = np.roll(m[y0:y0 + h], int(rng.uniform(-30, 30) * k_ * glitch_k), axis=1)
+    frame = _over(frame, fill, m * alpha)
+    # ornamen
+    orn = T.get("ornament")
+    if orn:
+        ys = np.where(m.max(1) > 0.5)[0]
+        xs = np.where(m.max(0) > 0.5)[0]
+        if len(xs):
+            x0, x1 = xs.min(), xs.max()
+            col = tuple(float(c) for c in T.get("ornament_color", T.get("bottom", (255, 255, 255))))
+            L = np.zeros((S, S, 3), np.float32)
+            th = max(1, int(2 * k_))
+            yb = int(ys.max() + 10 * k_)
+            if orn == "underline":
+                cv2.line(L, (int(x0), yb), (int(x0 + (x1 - x0) * a), yb), col, th, cv2.LINE_AA)
+            elif orn == "brackets":                         # HUD [ ] gaya hyper
+                yt = int(ys.min() - 10 * k_)
+                p = int(18 * k_)
+                for xx, sgn in ((int(x0 - p), 1), (int(x1 + p), -1)):
+                    cv2.line(L, (xx, yt), (xx, yb), col, th, cv2.LINE_AA)
+                    cv2.line(L, (xx, yt), (xx + sgn * p, yt), col, th, cv2.LINE_AA)
+                    cv2.line(L, (xx, yb), (xx + sgn * p, yb), col, th, cv2.LINE_AA)
+            elif orn == "lines":                            # garis di kiri-kanan (elegan)
+                w = int(60 * k_)
+                cv2.line(L, (int(x0 - w - 14 * k_), int(cy)), (int(x0 - 14 * k_), int(cy)), col, th, cv2.LINE_AA)
+                cv2.line(L, (int(x1 + 14 * k_), int(cy)), (int(x1 + w + 14 * k_), int(cy)), col, th, cv2.LINE_AA)
+            frame = frame + L * alpha
+    return frame
+
+
+_gwm_cache = {}
+
+
+def genre_watermark(frame, text, W, t=0.0):
+    """Watermark per genre: font, warna gradasi, tracking, grit/glow, posisi."""
+    if not text or not W:
+        return frame
+    key = (text, repr(sorted(W.items())), S)
+    if key not in _gwm_cache:
+        k_ = S / 1080
+        txt = text.upper() if W.get("upper") else text
+        font = _gfont(W["font"], W.get("size", 46))
+        x = W.get("x", 0.5) * S
+        y = W.get("y", 0.935) * S
+        m = _tracked_mask(txt, font, x, y, W.get("tracking", 0.0))
+        col = _gradient(m, W.get("top", (255, 255, 255)), W.get("bottom", (170, 170, 170)))
+        if W.get("grit"):
+            rng = np.random.default_rng(5)
+            grit = cv2.GaussianBlur(rng.uniform(1 - W["grit"], 1.0, (S, S)).astype(np.float32), (0, 0), 0.8)
+            col = col * grit[..., None]
+        sh = cv2.GaussianBlur(_shift(_tracked_mask(txt, font, x, y, W.get("tracking", 0.0), stroke=2), 0, 3 * k_),
+                              (0, 0), 3)
+        glow = None
+        if W.get("glow"):
+            glow = (cv2.GaussianBlur(m, (0, 0), 8 * k_)[..., None] * np.array(W["glow"], np.float32))
+        _gwm_cache[key] = (m, col, sh, glow)
+    m, col, sh, glow = _gwm_cache[key]
+    op = W.get("opacity", 0.9)
+    if W.get("pulse"):
+        op *= 1 - W["pulse"] * (0.5 + 0.5 * np.sin(t * 2.2))
+    frame = _over(frame, np.zeros(3, np.float32), sh * 0.7 * op)
+    if glow is not None:
+        frame = frame + glow * 0.8 * op
+    return _over(frame, col, m * op)
