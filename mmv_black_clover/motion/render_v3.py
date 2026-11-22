@@ -1116,8 +1116,12 @@ def cutout_ok(path):
     cov = b.mean()
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV).astype(np.float32)
     glow = (((hsv[..., 2] > 200) & (hsv[..., 1] > 90)) * b).sum() / max(1.0, b.sum())
-    ok = border <= 0.15 and cov <= 0.55 and glow <= 0.22
-    return ok, dict(border=round(float(border), 2), cov=round(float(cov), 2), glow=round(float(glow), 2))
+    fire = ((hsv[..., 2] > 210) & (hsv[..., 1] > 110)).mean()          # efek cahaya/api di seluruh gambar
+    s_ = cv2.resize(img, (128, 128))
+    gray = (s_.max(2).astype(np.float32) - s_.min(2)).mean() < 14      # panel manga hitam-putih
+    ok = border <= 0.15 and cov <= 0.55 and glow <= 0.22 and fire <= 0.2 and not gray
+    return ok, dict(border=round(float(border), 2), cov=round(float(cov), 2), glow=round(float(glow), 2),
+                    fire=round(float(fire), 2), manga=bool(gray))
 
 
 def auto_mode(edit):
@@ -1154,7 +1158,7 @@ def auto_mode(edit):
         for k in ("rays", "back_glow", "rim", "aura_osc"):   # efek siluet tidak berlaku untuk gambar utuh
             fx.pop(k, None)
         g = s.setdefault("grade", {})
-        if m["glow"] > 0.2:                                   # gambar penuh cahaya: jaga highlight tidak gosong
+        if m["glow"] > 0.2 or m.get("fire", 0) > 0.2:         # gambar penuh cahaya/api: jaga highlight tidak gosong
             g.update(bloom=0.06, bloom_thr=240, bright=0.8, contrast=1.15)
         else:
             g.setdefault("bloom", 0.2)
