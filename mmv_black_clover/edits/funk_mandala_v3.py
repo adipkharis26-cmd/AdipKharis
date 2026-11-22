@@ -106,7 +106,7 @@ SHOTS = [
     full(7.100, 7.567, "Black_Asta_overcome_with_rage.png", anchor=(0.45, 0.6), span=(1.5, 1.62), duotone=True,
          hits=[0.0]),
     full(7.567, 8.267, "Liebe_anime_profile.png", anchor=(0.5, 0.3), span=(1.5, 1.65), hits=[0.0],
-         fx=dict(rays=((0.5, 0.3), (255, 60, 40), 0.6))),
+         grade=dict(bloom=0.15, bloom_thr=230, contrast=1.15)),
     full(8.267, 8.867, "Asta_vs_Liebe.png", span=(1.0, 1.2), duotone=True, hits=[0.0], trans_out=("glitch", 0.06)),
 
     # 9 ─ DROP: Asta Devil Union (sayap ikut dipotong) di langit merah pegunungan Diamond
