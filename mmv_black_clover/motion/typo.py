@@ -35,7 +35,8 @@ def _font(name, size):
     return _cache[k]
 
 
-def _text_mask(text, font, y, x=S / 2, stroke=0):
+def _text_mask(text, font, y, x=None, stroke=0):
+    x = S / 2 if x is None else x
     m = Image.new("L", (S, S), 0)
     ImageDraw.Draw(m).text((x, y), text, font=font, fill=255, anchor="mm", stroke_width=stroke, stroke_fill=255)
     return np.asarray(m, np.float32) / 255.0
