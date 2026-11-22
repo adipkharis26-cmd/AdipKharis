@@ -3,9 +3,15 @@
 import copy
 
 
-def act(shot, parts=(), blink=None, blush=None, eyes=None):
-    """Tambahkan gerak/akting ke shot tanpa mengubah gaya terkunci."""
+def act(shot, parts=(), blink=None, blush=None, eyes=None, fx=None, particles=None):
+    """Tambahkan gerak/akting ke shot tanpa mengubah gaya terkunci.
+    fx: efek sihir khas (circle, threads, glint, aura_osc, back_glow, rays, ...); particles: (warna, kekuatan, jenis)."""
     s = copy.deepcopy(shot)
+    if particles:
+        s["particles_cfg"] = particles
+        s["particles"] = True
+    if fx:
+        s.setdefault("fx", {}).update(fx)
     rig = s["char"].setdefault("rig", {})
     rig.setdefault("parts", [])
     rig["parts"] = list(rig["parts"]) + list(parts)

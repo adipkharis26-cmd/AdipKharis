@@ -345,6 +345,14 @@ class Particles:
         self.ph, self.sp = r.uniform(0, 6.3, n), r.uniform(0.6, 1.4, n)
 
     def render(self, t, color, k, kind="embers"):
+        """Partikel per sihir: embers/snow (titik bercahaya), fire (bara api), bubbles (gelembung),
+        petals/leaves (kelopak bunga/daun buram berputar -> dikembalikan sebagai (rgb, alpha))."""
+        if kind in ("petals", "leaves"):
+            return self._petals(t, color, k, kind)
+        if kind == "bubbles":
+            return self._bubbles(t, color, k)
+        if kind == "fire":
+            return self._fire(t, color, k)
         q = 2
         outs = [np.zeros((S // q, S // q, 3), np.float32) for _ in range(3)]
         size = [1.6, 2.8, 7.0]
@@ -362,6 +370,128 @@ class Particles:
         res = outs[0] + cv2.GaussianBlur(outs[1], (0, 0), 1.0) * 1.2 + cv2.GaussianBlur(outs[2], (0, 0), 5) * 2.2
         res = res + cv2.GaussianBlur(res, (0, 0), 5) * 1.4
         return cv2.resize(res, (S, S)) * k
+
+
+    def _petals(self, t, color, k, kind):
+        q = 2
+        rgb = np.zeros((S // q, S // q, 3), np.float32)
+        al = np.zeros((S // q, S // q), np.float32)
+        cols = color if isinstance(color[0], (list, tuple)) else [color]
+        n = min(len(self.x), 34)
+        for i in range(n):
+            L = self.layer[i]
+            sp = self.sp[i]
+            y = (self.y[i] + (0.05 + 0.04 * L) * sp * t) % 1.2 - 0.1
+            x = (self.x[i] + 0.03 * t * sp + 0.03 * math.sin(t * 1.1 * sp + self.ph[i])) % 1.1 - 0.05
+            ang = (self.ph[i] * 57 + t * 90 * sp) % 360
+            flip = abs(math.cos(t * 2.0 * sp + self.ph[i]))           # kelopak berputar 3D
+            size = [22, 34, 62][L] * S / 2048
+            ax_, ay_ = int(size), max(1, int(size * (0.35 + 0.4 * flip) * (0.55 if kind == "leaves" else 0.7)))
+            c = np.array(cols[i % len(cols)], np.float32) * (0.75 + 0.25 * flip)
+            m = np.zeros_like(al)
+            cv2.ellipse(m, (int(x * S / q), int(y * S / q)), (max(1, ax_ // q * 2 // 2), max(1, ay_ // q * 2 // 2)),
+                        ang, 0, 360, 1.0, -1, cv2.LINE_AA)
+            if L == 2:
+                m = cv2.GaussianBlur(m, (0, 0), 3)            # kelopak depan: bokeh
+            a = m * (0.85 if L < 2 else 0.6)
+            rgb = rgb * (1 - a[..., None]) + c * a[..., None]
+            al = np.maximum(al, a)
+        return cv2.resize(rgb, (S, S)), cv2.resize(al * k, (S, S))[..., None]
+
+    def _bubbles(self, t, color, k):
+        q = 2
+        out = np.zeros((S // q, S // q, 3), np.float32)
+        for i in range(min(len(self.x), 30)):
+            L = self.layer[i]
+            y = (self.y[i] - (0.04 + 0.03 * L) * self.sp[i] * t) % 1.2 - 0.1
+            x = self.x[i] + 0.02 * math.sin(t * 1.6 * self.sp[i] + self.ph[i])
+            r = int([6, 10, 18][L] * S / 2048 * (0.8 + 0.4 * self.sp[i]))
+            c = (int(x * S / q), int(y * S / q))
+            cv2.circle(out, c, max(2, r), tuple(float(v) * 0.8 for v in color), max(1, r // 5), cv2.LINE_AA)
+            cv2.circle(out, (c[0] - r // 3, c[1] - r // 3), max(1, r // 4), (255, 255, 255), -1, cv2.LINE_AA)
+        out = out + cv2.GaussianBlur(out, (0, 0), 3) * 0.8
+        return cv2.resize(out, (S, S)) * k
+
+    def _fire(self, t, color, k):
+        q = 2
+        out = np.zeros((S // q, S // q, 3), np.float32)
+        for j in range(2):                              # 2x lebih banyak bara, naik cepat & berkedip
+            for i in range(len(self.x)):
+                L = self.layer[i]
+                ph = self.ph[i] + j * 2.1
+                y = ((self.y[i] + j * 0.5) - (0.09 + 0.06 * L) * self.sp[i] * t) % 1.2 - 0.1
+                x = (self.x[i] + j * 0.37) % 1.0 + 0.02 * math.sin(t * 3 * self.sp[i] + ph)
+                fl = 0.55 + 0.45 * abs(math.sin(t * 9 * self.sp[i] + ph))
+                r = max(1, int([2, 3.5, 8][L] * S / 2048 * 2 / q * fl * 1.3))
+                hot = np.array([255, 230, 150], np.float32) * (1 - fl) + np.array(color, np.float32) * fl
+                cv2.circle(out, (int(x * S / q), int(y * S / q)), r, tuple(float(v) * fl for v in hot), -1, cv2.LINE_AA)
+        out = out + cv2.GaussianBlur(out, (0, 0), 4) * 1.6
+        return cv2.resize(out, (S, S)) * k
+
+
+# ------------------------------------------------------------------ efek sihir khas karakter
+def magic_circle(center, radius, color, t, k, speed=18.0):
+    """Lingkaran segel (Sealing Magic Secre): cincin ganda, rune, bintang, berputar pelan."""
+    if k <= 0:
+        return 0
+    q = 2
+    L = np.zeros((S // q, S // q), np.float32)
+    cx, cy, R = center[0] * S / q, center[1] * S / q, radius * S / q
+    rot = t * speed
+    for rr, th in ((1.0, 3), (0.9, 2), (0.62, 2), (0.55, 1)):
+        cv2.circle(L, (int(cx), int(cy)), int(R * rr), 1.0, th, cv2.LINE_AA)
+    for i in range(48):                                  # rune / tick di antara cincin
+        a = math.radians(rot + i * 7.5)
+        r0, r1 = R * (0.91 if i % 3 else 0.86), R * 0.99
+        cv2.line(L, (int(cx + r0 * math.cos(a)), int(cy + r0 * math.sin(a))),
+                 (int(cx + r1 * math.cos(a)), int(cy + r1 * math.sin(a))), 1.0, 2, cv2.LINE_AA)
+    pts = []
+    for i in range(6):                                   # bintang segel berputar berlawanan
+        a = math.radians(-rot * 1.4 + i * 60)
+        pts.append((int(cx + R * 0.6 * math.cos(a)), int(cy + R * 0.6 * math.sin(a))))
+    for i in range(6):
+        cv2.line(L, pts[i], pts[(i + 2) % 6], 1.0, 2, cv2.LINE_AA)
+    L = L + cv2.GaussianBlur(L, (0, 0), 6) * 1.5
+    return cv2.resize(L, (S, S))[..., None] * np.array(color, np.float32) * k
+
+
+def red_threads(t, color, k, n=4, seed=3):
+    """Benang merah takdir (Thread Magic Vanessa): kurva bercahaya melayang pelan."""
+    if k <= 0:
+        return 0
+    q = 2
+    L = np.zeros((S // q, S // q), np.float32)
+    rng = np.random.default_rng(seed)
+    for j in range(n):
+        y0, a0, f0, ph = rng.uniform(0.15, 0.85), rng.uniform(0.05, 0.12), rng.uniform(1.5, 3.0), rng.uniform(0, 6)
+        pts = []
+        for xi in np.linspace(-0.05, 1.05, 60):
+            y = y0 + a0 * math.sin(f0 * xi * 3.1 + ph + t * 0.9) + 0.03 * math.sin(xi * 9 + t * 1.7 + j)
+            pts.append((int(xi * S / q), int(y * S / q)))
+        cv2.polylines(L, [np.array(pts, np.int32)], False, 1.0, 2, cv2.LINE_AA)
+    L = L + cv2.GaussianBlur(L, (0, 0), 4) * 1.8
+    return cv2.resize(L, (S, S))[..., None] * np.array(color, np.float32) * k
+
+
+def blade_glint(p0, p1, t0, dur, lt, k):
+    """Kilatan cahaya menyapu bilah pedang dari p0 ke p1 (koordinat frame 0..1)."""
+    ph = (lt - t0) / dur
+    if not (0 <= ph <= 1) or k <= 0:
+        return 0
+    q = 2
+    L = np.zeros((S // q, S // q), np.float32)
+    x = p0[0] + (p1[0] - p0[0]) * ph
+    y = p0[1] + (p1[1] - p0[1]) * ph
+    dx, dy = (p1[0] - p0[0]) * 0.06, (p1[1] - p0[1]) * 0.06
+    cv2.line(L, (int((x - dx) * S / q), int((y - dy) * S / q)), (int((x + dx) * S / q), int((y + dy) * S / q)),
+             1.0, 3, cv2.LINE_AA)
+    c = (int(x * S / q), int(y * S / q))
+    r = int(S / q * 0.03)
+    cv2.line(L, (c[0] - r, c[1]), (c[0] + r, c[1]), 1.0, 1, cv2.LINE_AA)   # bintang kilau
+    cv2.line(L, (c[0], c[1] - r), (c[0], c[1] + r), 1.0, 1, cv2.LINE_AA)
+    L = L + cv2.GaussianBlur(L, (0, 0), 3) * 2 + cv2.GaussianBlur(L, (0, 0), 10) * 1.5
+    env = math.sin(ph * math.pi)
+    return cv2.resize(L, (S, S))[..., None] * 255.0 * k * env
 
 
 # ------------------------------------------------------------------ akting wajah (kedip, wink, sayu, blush)
@@ -569,8 +699,14 @@ def render_frame(job):
             if B.get("fog"):
                 brgb = fog(brgb, B["fog"][0], K(lt, B["fog"][1]), t, idx)
             fx = s.get("fx", {})
+            if fx.get("circle"):
+                c_ = fx["circle"]
+                brgb = brgb + magic_circle(c_[0], c_[1], c_[2], lt, K(lt, c_[3]))
             if fx.get("back_glow"):
-                brgb = brgb + back_glow(ca, fx["back_glow"][0], K(lt, fx["back_glow"][1]))
+                osc = fx.get("aura_osc", (0.0, 1.0))
+                brgb = brgb + back_glow(ca, fx["back_glow"][0], K(lt, fx["back_glow"][1]) *
+                                        (1 + osc[0] * math.sin(lt * osc[1] * 6.283) +
+                                         osc[0] * 0.5 * math.sin(lt * osc[1] * 15.7)))
             if fx.get("rays"):
                 brgb = rays(brgb, ca, fx["rays"][0], fx["rays"][1], K(lt, fx["rays"][2]) * (1 + imp))
             if fx.get("shadow", 0.35) > 0:   # bayangan lembut di belakang karakter (kedalaman)
@@ -583,7 +719,8 @@ def render_frame(job):
             a3 = ca[..., None]
             frame = brgb * (1 - a3) + crgb * a3
             if fx.get("rim"):
-                frame = frame + rim(ca, fx["rim"][0], K(lt, fx["rim"][1]))
+                osc = fx.get("aura_osc", (0.0, 1.0))
+                frame = frame + rim(ca, fx["rim"][0], K(lt, fx["rim"][1]) * (1 + osc[0] * math.sin(lt * osc[1] * 6.283)))
         else:
             frame = crgb
             fx = s.get("fx", {})
@@ -603,9 +740,18 @@ def render_frame(job):
             scale = math.hypot(Mc[0, 0], Mc[1, 0]) * ch.h / 1000.0
             frame = eye_glow(frame, P, col, K(lt, inten) * (1 + 0.07 * math.sin(lt * 5)), rad * scale)
         frame = bloom(frame, g.get("bloom_thr", 190), K(lt, g.get("bloom", 0.4)) * (1 + imp))
+        if fx.get("threads"):
+            frame = frame + red_threads(t, fx["threads"][0], K(lt, fx["threads"][1]))
+        if fx.get("glint"):
+            g_ = fx["glint"]
+            frame = frame + blade_glint(g_[0], g_[1], g_[2], g_[3], lt, g_[4])
         if s.get("particles", True):
             p = s.get("particles_cfg", (EDIT.PARTICLE_COLOR, 0.55, "embers"))
-            frame = frame + _particles.render(t, p[0], p[1], p[2])
+            pr = _particles.render(t, p[0], p[1], p[2])
+            if isinstance(pr, tuple):
+                frame = frame * (1 - pr[1]) + pr[0] * pr[1]
+            else:
+                frame = frame + pr
         for ht in s.get("flash", []):
             d = lt - ht
             if 0 <= d < 0.05:
