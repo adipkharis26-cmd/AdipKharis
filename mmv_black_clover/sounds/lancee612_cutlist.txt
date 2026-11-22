@@ -1,0 +1,29 @@
+MOOD: phonk | BPM ~112.3 | 1 ketukan = 0.534 dtk = 16 frame @30fps
+Catatan: Potong tiap 1-2 ketukan. Cowbell/808 = flash putih 2 frame + shake. Drop = reveal karakter.
+
+Shot 01    0.00s ->   1.12s  (1.12s,  34 fr)  HIT
+Shot 02    1.12s ->   2.18s  (1.06s,  32 fr)  FLASH+SHAKE+ZOOM_PUNCH | HIT
+Shot 03    2.18s ->   3.23s  (1.05s,  31 fr)  HIT
+Shot 04    3.23s ->   4.32s  (1.09s,  33 fr)  velocity ramp / wiggle 4,6
+Shot 05    4.32s ->   5.40s  (1.08s,  32 fr)  HIT
+Shot 06    5.40s ->   6.46s  (1.06s,  32 fr)  FLASH+SHAKE+ZOOM_PUNCH | HIT
+Shot 07    6.46s ->   6.98s  (0.52s,  16 fr)  HIT
+Shot 08    6.98s ->   7.56s  (0.58s,  17 fr)  HIT
+Shot 09    7.56s ->   8.57s  (1.01s,  30 fr)  HIT
+Shot 10    8.57s ->   9.66s  (1.09s,  33 fr)  velocity ramp / wiggle 4,6
+Shot 11    9.66s ->  10.74s  (1.08s,  32 fr)  velocity ramp / wiggle 4,6
+Shot 12   10.74s ->  11.80s  (1.06s,  32 fr)  HIT
+Shot 13   11.80s ->  12.86s  (1.07s,  32 fr)  velocity ramp / wiggle 4,6
+Shot 14   12.86s ->  13.93s  (1.07s,  32 fr)  FLASH+SHAKE+ZOOM_PUNCH
+Shot 15   13.93s ->  15.02s  (1.09s,  33 fr)  velocity ramp / wiggle 4,6
+Shot 16   15.02s ->  15.56s  (0.54s,  16 fr)  velocity ramp / wiggle 4,6
+Shot 17   15.56s ->  16.09s  (0.53s,  16 fr)  HIT
+Shot 18   16.09s ->  16.49s  (0.39s,  12 fr)  velocity ramp / wiggle 4,6
+Shot 19   16.49s ->  17.16s  (0.67s,  20 fr)  DROP -> shot terkuat
+Shot 20   17.16s ->  18.23s  (1.07s,  32 fr)  velocity ramp / wiggle 4,6
+Shot 21   18.23s ->  19.32s  (1.09s,  33 fr)  velocity ramp / wiggle 4,6
+Shot 22   19.32s ->  20.38s  (1.06s,  32 fr)  HIT
+Shot 23   20.38s ->  21.43s  (1.05s,  32 fr)  HIT
+Shot 24   21.43s ->  22.50s  (1.07s,  32 fr)  FLASH+SHAKE+ZOOM_PUNCH
+Shot 25   22.50s ->  23.60s  (1.10s,  33 fr)  FLASH+SHAKE+ZOOM_PUNCH
+Shot 26   23.60s ->  23.85s  (0.25s,   7 fr)  HIT
