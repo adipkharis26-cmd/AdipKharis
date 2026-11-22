@@ -139,5 +139,21 @@ A = {
     14: dict(fx=dict(glint=((0.05, 0.885), (0.66, 0.872), 0.3, 0.45, 1.0))),
 }
 
+# ── Secre: ganti foto (permintaan) -> A = sampul manga berwarna (jubah Black Bulls), B = profil anime HD ──
+SECRE = os.environ.get("MMV_SECRE", "A")
+_SECRE_IMG = {
+    "A": dict(img="Secre_after_Heart_Kingdom_training.png", anchor=(0.48, 0.27), span=(1.65, 1.78),
+              face=(0.47, 0.22, 0.09, 0.05)),
+    "B": dict(img="Secre_profile.png", anchor=(0.6, 0.26), span=(1.9, 2.02), face=(0.62, 0.2, 0.1, 0.06)),
+}[SECRE]
+if SECRE == "A":   # sampul manga: latar sampulnya ramai -> roto gagal, dipakai sebagai panel penuh
+    _BASE[1] = full(1.540, 3.080, _SECRE_IMG["img"], anchor=(0.48, 0.27), span=(2.3, 2.45), ease="ease",
+                    particles_cfg=((215, 225, 255), 0.45, "snow"), trans_in=("whip", 0.08), **SOFT)
+else:
+    _BASE[1] = cutout(1.540, 3.080, _SECRE_IMG["img"], "Spade_Kingdom.png", anchor=_SECRE_IMG["anchor"],
+                      span=_SECRE_IMG["span"], pos=(0.5, 0.42), face=_SECRE_IMG["face"], glow=(150, 170, 255),
+                      bg_grade=dict(bright=0.8, contrast=1.1), particles_cfg=((215, 225, 255), 0.5, "snow"),
+                      trans_in=("whip", 0.08), **SOFT)
+
 SHOTS = [act(s, **A[i]) if i in A else s for i, s in enumerate(_BASE)]
-IMAGES = sorted({s[k]["img"] for s in _BASE for k in ("char", "bg") if s.get(k)})
+IMAGES = sorted({s[k]["img"] for s in _BASE for k in ("char", "bg") if s.get(k)} | {"Secre_after_Heart_Kingdom_training.png", "Secre_profile.png"})
