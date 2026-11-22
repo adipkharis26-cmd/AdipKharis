@@ -53,3 +53,26 @@ Kamera: `focus`, `zoom`, `pan`, `rot` semuanya bisa di-keyframe; `parallax_bg` (
 - Gerakan halus dan berarah: angin memakai gelombang + noise lembut, handheld wiggle 0.6 Hz, tanpa jitter acak.
 - Flash hanya 2–3 frame di 4 hentakan utama; tidak ada strobo.
 - Teks minimal: hook, nama di drop, penutup, satu subtitle, dan watermark.
+
+## v3 — 2K/60fps, karakter dipotong + background baru (`render_v3.py`)
+
+Mengikuti referensi kedua: karakter dipotong dari gambar aslinya lalu ditaruh di environment baru.
+
+| Tahap | Repo / teknik |
+|---|---|
+| Upscale anti-pecah (sisi pendek ≥ 2400 px) | [xinntao/Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN) `realesr-animevideov3` via `pip install ncnn` (CPU) |
+| Roto karakter | isnet-anime + `solidify()` (isi lubang abu-abu di dalam siluet) + erode tepi untuk membuang halo bg lama |
+| Sayap hitam ikut terpotong | `alpha="seg+dark"` + `dark_boxes` |
+| Integrasi ke bg baru | bg di-blur (depth of field), di-grade ke palet shot, kabut, bayangan lembut, back-glow, **light wrap**, rim light |
+| Transisi | `trans_in` / `trans_out`: `whip` (motion blur arah) atau `glitch` (slice + RGB split), 4–6 frame |
+| Output | 2048×2048, 60 fps, x264 CRF 15, audio 320 kbps; render paralel semua core |
+
+Model Real-ESRGAN:
+```bash
+curl -L -o resr.zip https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesrgan-ncnn-vulkan-20220424-ubuntu.zip && unzip resr.zip 'models/*' -d models/resr
+```
+Render (audio dipotong 0.5 dtk agar hentakan pertama = frame pertama):
+```bash
+python3 motion/render_v3.py edits/funk_mandala_v3.py --chars images/ --bgs backgrounds/ --audio funk_mandala.mp3 --audio-start 0.5 --out out.mp4 --models models
+```
+Preview cepat: tambahkan `--size 1024 --fps 30 --only 1,9`.

@@ -12,7 +12,7 @@ import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-S = 1080
+S = 1080          # diubah oleh renderer (mis. 2048); ukuran font diskalakan otomatis
 _HERE = os.path.dirname(os.path.abspath(__file__))
 FONT_DIR = os.environ.get("MMV_FONTS", os.path.join(_HERE, "fonts"))
 
@@ -28,6 +28,7 @@ _cache = {}
 
 
 def _font(name, size):
+    size = int(round(size * S / 1080))
     k = (name, size)
     if k not in _cache:
         _cache[k] = _f(name, size)
@@ -61,7 +62,7 @@ def title(frame, label, name, color, appear=1.0, y=0.83, style="name", pop=0.0):
     if appear <= 0:
         return frame
     a = min(1.0, appear)
-    dy = (1 - a) * 14
+    dy = (1 - a) * 14 * S / 1080
     if style == "episode":
         top, bot, glow, size = (255, 246, 205), (240, 196, 60), (255, 190, 40), 78
     else:
@@ -70,15 +71,16 @@ def title(frame, label, name, color, appear=1.0, y=0.83, style="name", pop=0.0):
     size = int(size * (1 + 0.08 * pop))
     fy = y * S + dy
     if label:
-        lm = _text_mask(label, _font("Inter-SemiBold.otf", 22), fy - size * 0.78)
+        lm = _text_mask(label, _font("Inter-SemiBold.otf", 22), fy - size * 0.78 * S / 1080)
         sh = cv2.GaussianBlur(lm, (0, 0), 2)
         frame = _over(frame, np.zeros(3, np.float32), sh * 0.6 * a)
         frame = _over(frame, np.array([235, 235, 235], np.float32), lm * a)
     font = _font("FjallaOne-Regular.ttf", size)
     m = _text_mask(name, font, fy)
     mo = _text_mask(name, font, fy, stroke=3)
-    g1 = cv2.GaussianBlur(mo, (0, 0), 9)
-    g2 = cv2.GaussianBlur(mo, (0, 0), 22)
+    k_ = S / 1080
+    g1 = cv2.GaussianBlur(mo, (0, 0), 9 * k_)
+    g2 = cv2.GaussianBlur(mo, (0, 0), 22 * k_)
     frame = frame + (g1 * 0.9 + g2 * 0.7)[..., None] * np.array(glow, np.float32) * 0.55 * a
     shadow = cv2.GaussianBlur(_text_mask(name, font, fy + 3, stroke=2), (0, 0), 2.5)
     frame = _over(frame, np.zeros(3, np.float32), shadow * 0.55 * a)
