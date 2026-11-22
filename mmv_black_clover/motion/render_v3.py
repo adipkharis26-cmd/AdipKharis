@@ -1018,6 +1018,7 @@ def render_frame(job, raw=False):
         t0 = tx.get("at", 0.0)
         if G and tx["kind"] == "title" and t0 <= lt < tx.get("until", 99):
             T = dict(G.TITLE_END if tx.get("style") == "episode" or idx == len(EDIT.SHOTS) - 1 else G.TITLE)
+            T.update(tx.get("T", {}))
             frame = typo.genre_title(frame, tx.get("label", ""), tx["name"], T, lt - max(0.0, t0), seed=idx)
             continue
         if t0 <= lt < tx.get("until", 99):
