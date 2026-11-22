@@ -171,6 +171,10 @@ class Rig:
                 off = A * unit * math.sin(2 * math.pi * f * t + phs)
                 ry_ += m * off
                 rx_ += m * off * 0.25 * math.cos(2 * math.pi * f * 0.5 * t + phs)
+            elif kind == "pin":      # Puppet Pin: geser titik (sudut bibir naik = senyum, dagu naik, dll.)
+                off = key(t, p["offset"], p.get("ease", "ease"))
+                rx_ += m * off[0] * unit
+                ry_ += m * off[1] * unit
             elif kind == "breathe":  # napas: skala vertikal dari pivot (bawah)
                 A, f = p.get("osc", (0.008, 0.4))
                 sc = A * math.sin(2 * math.pi * f * t)

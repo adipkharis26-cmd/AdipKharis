@@ -364,6 +364,115 @@ class Particles:
         return cv2.resize(res, (S, S)) * k
 
 
+# ------------------------------------------------------------------ akting wajah (kedip, wink, sayu, blush)
+def lid_amount(lt, blink):
+    """0 = mata terbuka, 1 = tertutup. Kedip: tutup cepat, tahan sebentar, buka lebih pelan."""
+    base = K(lt, blink.get("droop", 0.0))       # kelopak sayu (mis. Dorothy mengantuk)
+    dur = blink.get("dur", 0.16)
+    f = 0.0
+    for b in blink.get("times", []):
+        bt, who = (b, None) if not isinstance(b, (list, tuple)) else (b[0], b[1])
+        ph = (lt - bt) / dur
+        if 0 <= ph < 1:
+            v = ph / 0.35 if ph < 0.35 else (1.0 if ph < 0.5 else 1 - (ph - 0.5) / 0.5)
+            f = max(f, v * v * (3 - 2 * v)) if who is None else f
+    return base, f
+
+
+def _eye_out(ch, Mc, lt, x, y):
+    sx, sy = x * ch.w, y * ch.h
+    dx, dy = ch.point_disp(lt, sx, sy)
+    q = Mc @ np.array([sx + dx, sy + dy, 1.0])
+    return q[0], q[1]
+
+
+def face_acting(img, fx, ch, Mc, lt):
+    if not fx.get("blink") and not fx.get("blush"):
+        return img
+    sc = math.hypot(Mc[0, 0], Mc[1, 0])
+    ang = math.degrees(math.atan2(Mc[1, 0], Mc[0, 0]))
+    if fx.get("blush"):
+        pts, col, inten = fx["blush"]
+        a = K(lt, inten)
+        if a > 0:
+            layer = np.zeros((S // 2, S // 2), np.float32)
+            for (x, y, rx, ry) in pts:
+                cx, cy = _eye_out(ch, Mc, lt, x, y)
+                cv2.ellipse(layer, (int(cx / 2), int(cy / 2)),
+                            (max(1, int(rx * ch.w * sc / 2)), max(1, int(ry * ch.h * sc / 2))), ang, 0, 360, 1.0, -1,
+                            cv2.LINE_AA)
+            r = max(2.0, float(np.mean([p[2] for p in pts])) * ch.w * sc / 2 * 0.45)
+            m = cv2.resize(cv2.GaussianBlur(layer, (0, 0), r), (S, S))[..., None] * a
+            tint = np.array(col, np.float32)
+            img = img * (1 - m * 0.55) + (img * tint / 255.0) * m * 0.55
+    bl = fx.get("blink")
+    if bl:
+        base, f = lid_amount(lt, bl)
+        for i, (x, y, rx, ry) in enumerate(bl["eyes"]):
+            fi = f
+            for b in bl.get("times", []):         # wink: kedip hanya mata tertentu
+                if isinstance(b, (list, tuple)) and i in b[1]:
+                    ph = (lt - b[0]) / bl.get("dur", 0.16)
+                    if 0 <= ph < 1:
+                        v = ph / 0.35 if ph < 0.35 else (1.0 if ph < 0.5 else 1 - (ph - 0.5) / 0.5)
+                        fi = max(fi, v * v * (3 - 2 * v))
+            amt = min(1.0, base + (1 - base) * fi)
+            if amt <= 0.02:
+                continue
+            cx, cy = _eye_out(ch, Mc, lt, x, y)
+            ax = rx * ch.w * sc * bl.get("grow", 1.15)
+            ay = ry * ch.h * sc * bl.get("grow", 1.15) * 1.1
+            pad = int(ax * 1.6 + 8)
+            x0, y0 = int(max(0, cx - pad)), int(max(0, cy - pad))
+            x1, y1 = int(min(S, cx + pad)), int(min(S, cy + pad + ay * 3))
+            if x1 <= x0 or y1 <= y0:
+                continue
+            roi = img[y0:y1, x0:x1]
+            # warna kulit: median cincin di sekitar mata (kiri, kanan, bawah), abaikan piksel gelap (tinta/rambut)
+            ring = []
+            for ox, oy in ((-1.5, 0.3), (1.5, 0.3), (0.0, 1.9), (-0.8, 1.6), (0.8, 1.6)):
+                px_, py_ = int(cx + ox * ax), int(cy + oy * ay)
+                if 0 <= px_ < S and 0 <= py_ < S:
+                    pp = img[max(0, py_ - 2):py_ + 3, max(0, px_ - 2):px_ + 3].reshape(-1, 3)
+                    ring.append(pp)
+            ring = np.concatenate(ring) if ring else np.zeros((0, 3), np.float32)
+            ring = ring[ring.mean(1) > np.percentile(ring.mean(1), 40)] if len(ring) > 4 else ring
+            skin = np.median(ring, 0) if len(ring) else np.array([235, 205, 180], np.float32)
+            skin = np.array(bl.get("skin", skin), np.float32)
+            lc = (cx - x0, cy - y0)
+            eye_m = np.zeros(roi.shape[:2], np.float32)
+            cv2.ellipse(eye_m, (int(lc[0]), int(lc[1])), (int(ax), int(ay)), ang, 0, 360, 1.0, -1, cv2.LINE_AA)
+            eye_m = cv2.GaussianBlur(eye_m, (0, 0), max(1.0, ay * 0.35))
+            eye_m = np.clip(eye_m * 1.6, 0, 1)
+            lid_y = lc[1] - ay + 2 * ay * amt
+            yy = np.arange(roi.shape[0], dtype=np.float32)[:, None]
+            cover = np.clip((lid_y - yy) / 1.5 + 0.5, 0, 1) * eye_m
+            cover = cover[..., None]
+            roi = roi * (1 - cover) + skin * cover
+            # garis kelopak tertutup: lengkung tipis hitam + bulu mata di ujung luar
+            line = np.zeros(roi.shape[:2], np.float32)
+            th = max(2, int(ay * (0.16 + 0.12 * amt)))
+            side = bl.get("outer", [1, -1])[i] if i < len(bl.get("outer", [1, -1])) else 1
+            if amt > 0.85 and bl.get("style", "flat") == "happy":
+                cv2.ellipse(line, (int(lc[0]), int(lid_y - ay * 0.45)), (int(ax * 0.9), int(ay * 0.65)), ang, 200, 340,
+                            1.0, th, cv2.LINE_AA)   # mata tertutup senang (^ ^)
+            else:
+                half = ax * math.sqrt(max(0.0, 1 - ((lid_y - lc[1]) / ay) ** 2)) if amt < 0.98 else ax * 0.92
+                half = max(half, ax * 0.5)
+                sag = ay * 0.35 * amt
+                pts = [(lc[0] + k * half, lid_y + sag * (1 - k * k)) for k in np.linspace(-1, 1, 17)]
+                cv2.polylines(line, [np.array(pts, np.int32)], False, 1.0, th, cv2.LINE_AA)
+                if amt > 0.7:   # bulu mata kecil di ujung luar
+                    ex, ey = pts[-1] if side > 0 else pts[0]
+                    cv2.line(line, (int(ex), int(ey)), (int(ex + side * ax * 0.18), int(ey + ay * 0.35)), 1.0,
+                             max(1, th - 1), cv2.LINE_AA)
+            line = cv2.GaussianBlur(line, (0, 0), 0.5)[..., None]
+            ink = np.array(bl.get("ink", (8, 5, 6)), np.float32)
+            roi = roi * (1 - line) + ink * line
+            img[y0:y1, x0:x1] = roi
+    return img
+
+
 # ------------------------------------------------------------------ transisi
 def whip(img, strength, direction=1):
     if strength <= 0:
@@ -444,6 +553,7 @@ def render_frame(job):
                                                  K(lt, C.get("rot", 0.0)))
         crgb, ca = ch.render(Mc, lt, 1.0 + 0.5 * imp)
         crgb = grade(crgb, C.get("grade", {}), lt)
+        crgb = face_acting(crgb, s.get("fx", {}), ch, Mc, lt)
         if s.get("bg"):
             B = s["bg"]
             bl = get_layer(idx, "bg")
