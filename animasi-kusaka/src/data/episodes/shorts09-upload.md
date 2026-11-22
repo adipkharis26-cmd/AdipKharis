@@ -2,7 +2,7 @@
 
 (id internal `shorts09` · file `releases/Kusaka-Shorts6-Ke-Pasar.mp4`)
 
-Durasi: **0:42** · full 9:16 · format **Ekspektasi vs Realita** (cerita mandiri, aturan 20) · teks hook 1,6 dtk ·
+Durasi: **0:48** (v2: dialog natural, mode dialog + volume per karakter) · full 9:16 · format **Ekspektasi vs Realita** (cerita mandiri, aturan 20) · teks hook 1,6 dtk ·
 CTA cerita (ikuti, tengah) · 1 adegan · pasar tradisional akhir pekan (baju bebas) · Bu Ratna, Dinda, Pak Hendra
 
 ---
