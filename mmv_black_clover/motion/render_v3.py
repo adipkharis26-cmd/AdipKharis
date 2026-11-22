@@ -141,7 +141,13 @@ class Layer:
                 os.replace(tmp, cache)
         self.alpha = None
         mode = cfg.get("alpha", "full") if is_char else "full"
-        if mode != "full":
+        if mode == "png":            # mv2: transparansi asli PNG (art profil resmi) -> potongan paling bersih
+            raw = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+            a = cv2.resize(raw[..., 3].astype(np.float32) / 255.0, (self.w, self.h), interpolation=cv2.INTER_CUBIC)
+            k = max(1, int(min(self.h, self.w) / 1200))
+            a = cv2.GaussianBlur(cv2.erode(a, np.ones((2 * k + 1, 2 * k + 1), np.uint8)), (0, 0), 0.7 * k)
+            self.alpha = (np.clip(a, 0, 1) * 255).astype(np.uint8)
+        elif mode != "full":
             a = analyze.cached(path, "alpha", analyze.segment, os.path.join(ARGS.models, "isnet-anime.onnx"))
             if cfg.get("crop"):
                 x0, y0, x1, y1 = cfg["crop"]
