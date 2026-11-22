@@ -40,3 +40,5 @@ LATAR (+defs khusus bila ada; sisipkan setelah `defs`):
   fairDefs; fairFar() langit pastel kuning-pink+bukit (lapisan jauh/paralaks); BAL warna balon, BSLOT slot balon rel. titik genggam; balloon(x,y,c,sq,rot) bstr(x1,y1,x2,y2,wig) balPop(x,y,c,p) heart(x,y,s,op);
   cloud(x,y,s) birdie(x,y,s,flap,flip) cotton(x,y,s,rot,eat) arum manis; ferris(cx,cy,R,rot,swing,idx) bianglala; bunting(x0,x1,y,sag,flut) pole(x,top) tent(x,w,h,c1,c2);
   balloonCart(x)+CART_G(x); castle(dent) kastil balon (CASTLE.x0/floor/g); rewindFx(f,p) & speedLines(f,p) overlay layar; brick arms:'none'   [EP12]
+  cityDefs (+clipL/clipR panel belah); NEON {t,y,p,lane:410,park:382,gap:[72,178]}; cityFar(x0,x1) gedung+jendela/ikon neon (lapisan jauh); cityNear(x0,x1,f,gapGlow) trotoar+lampu jalan+mobil terparkir+celah kosong bercahaya;
+  parkedCar(x,y,c); miniCar(x,y,{c,flip,wh,sq,tilt,brake,turbo,drv}) mobil mini terbuka (drv = svg pengemudi, kaki di (0,-6)); trafficLight(cx,cy,r,'r'|'g') layar; speedBump(x,y); coneT(x,y,s,rot); hornRing(x,y,r,op); steam(x,y,f,op)   [EP13]

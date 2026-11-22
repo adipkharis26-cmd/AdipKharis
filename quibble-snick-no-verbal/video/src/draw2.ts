@@ -635,3 +635,82 @@ export function rewindFx(f, p) {
   return s;
 }
 export const speedLines = (f, p) => p <= 0 ? '' : Array.from({length: 14}, (_, i) => { const x = (i * 47 + 13) % 270, y = ((i * 131 + f * 90) % 700) - 110; return `<rect x="${x}" y="${y}" width="3" height="${60 + (i % 3) * 30}" rx="1.5" fill="#fff" opacity="${0.55 * p}"/>`; }).join('');
+
+// ===== EP13 Parking Spot: jalan kota malam, mobil mini terbuka, lampu lalu lintas, polisi tidur =====
+const hsh = (i) => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+export const NEON = {t: '#2EF2D0', y: '#FFE45E', p: '#FF5FA2', road: '#1A2140', lane: 410, park: 382, gap: [72, 178]};
+export const cityDefs = `<defs><linearGradient id="skyN" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070B26"/><stop offset=".7" stop-color="#1B2A63"/><stop offset="1" stop-color="#2C3F86"/></linearGradient>
+<radialGradient id="lampG" cx="50%" cy="0%" r="100%"><stop offset="0" stop-color="#FFE45E" stop-opacity=".45"/><stop offset="1" stop-color="#FFE45E" stop-opacity="0"/></radialGradient>
+<radialGradient id="redG"><stop offset="0" stop-color="#FF3B3B" stop-opacity=".75"/><stop offset="1" stop-color="#FF3B3B" stop-opacity="0"/></radialGradient>
+<radialGradient id="grnG"><stop offset="0" stop-color="#3BFF8A" stop-opacity=".75"/><stop offset="1" stop-color="#3BFF8A" stop-opacity="0"/></radialGradient>
+<clipPath id="clipL"><rect x="0" y="0" width="135" height="480"/></clipPath><clipPath id="clipR"><rect x="135" y="0" width="135" height="480"/></clipPath></defs>`;
+// lapisan jauh (gedung + jendela neon), koordinat dunia-jauh; x0..x1 rentang yang digambar
+export function cityFar(x0, x1) {
+  let g = '';
+  const i0 = Math.floor(x0 / 46) - 1, i1 = Math.ceil(x1 / 46) + 1;
+  for (let i = i0; i <= i1; i++) {
+    const x = i * 46, h = 90 + hsh(i) * 120, w = 40 + hsh(i + 9) * 12, top = 372 - h;
+    g += `<rect x="${x}" y="${top}" width="${w}" height="${h + 20}" fill="${hsh(i + 3) > 0.5 ? '#141C45' : '#18225A'}" stroke="#0B1030" stroke-width="2"/>`;
+    for (let r = 0; r < Math.floor(h / 22); r++) for (let c = 0; c < 3; c++) {
+      const v = hsh(i * 31 + r * 7 + c);
+      if (v > 0.55) g += `<rect x="${x + 6 + c * 12}" y="${top + 8 + r * 22}" width="7" height="10" rx="1" fill="${v > 0.85 ? NEON.t : NEON.y}" opacity="${0.35 + v * 0.4}"/>`;
+    }
+    const sg = hsh(i + 77);
+    if (sg > 0.72) { // papan neon tanpa teks: bentuk ikon
+      const c = [NEON.t, NEON.p, NEON.y][Math.floor(sg * 30) % 3], cx = x + w / 2, cy = top - 14;
+      g += `<g opacity=".95">${sg > 0.9 ? `<circle cx="${cx}" cy="${cy}" r="9" fill="none" stroke="${c}" stroke-width="3"/><path d="M${cx - 4},${cy} l3,3 l6,-7" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`
+        : sg > 0.8 ? `<path d="M${cx},${cy - 10} l3,7 l7,1 l-5,5 l1,7 l-6,-3 l-6,3 l1,-7 l-5,-5 l7,-1z" fill="none" stroke="${c}" stroke-width="2.6" stroke-linejoin="round"/>`
+        : `<path d="M${cx - 9},${cy + 6} h18 M${cx - 7},${cy + 6} v-10 h12 v10 M${cx + 5},${cy - 2} q6,0 4,5" fill="none" stroke="${c}" stroke-width="2.6" stroke-linecap="round"/>`}</g>`;
+    }
+  }
+  return g;
+}
+export const speedBump = (x, y = 410) => `<path d="M${x - 22},${y} Q${x},${y - 14} ${x + 22},${y}Z" fill="#FFD23F" stroke="${C.ink}" stroke-width="3" stroke-linejoin="round"/><path d="M${x - 12},${y - 6} l5,-3 v7z M${x},${y - 10} l5,0 v9 l-5,0z M${x + 9},${y - 7} l5,3 l-5,2z" fill="${C.ink}"/>`;
+const PCOL = ['#3A4A7A', '#5B4A8A', '#2F5D7C', '#6A3F5E', '#40506E', '#4D6B5E'];
+export function parkedCar(x, y, c) {
+  return `<ellipse cx="${x}" cy="${y + 2}" rx="40" ry="5" fill="#000" opacity=".3"/><path d="M${x - 38},${y - 8} Q${x - 38},${y - 26} ${x - 24},${y - 27} L${x - 14},${y - 44} Q${x},${y - 48} ${x + 14},${y - 44} L${x + 26},${y - 27} Q${x + 38},${y - 26} ${x + 38},${y - 8}Z" fill="${c}" stroke="${C.ink}" stroke-width="3.5" stroke-linejoin="round"/>
+<path d="M${x - 10},${y - 41} L${x - 18},${y - 28} H${x + 20} L${x + 12},${y - 41}Z" fill="#7E9BD6" opacity=".55"/><circle cx="${x - 22}" cy="${y - 6}" r="8" fill="#22242E" stroke="${C.ink}" stroke-width="3"/><circle cx="${x + 22}" cy="${y - 6}" r="8" fill="#22242E" stroke="${C.ink}" stroke-width="3"/><circle cx="${x - 22}" cy="${y - 6}" r="3" fill="#8C93A8"/><circle cx="${x + 22}" cy="${y - 6}" r="3" fill="#8C93A8"/>`;
+}
+// lapisan dekat: trotoar, lajur parkir (mobil terparkir), lampu jalan, jalan; celah parkir NEON.gap kosong
+export function cityNear(x0, x1, f = 0, gapGlow = 1) {
+  const L0 = NEON.lane, P0 = NEON.park;
+  let g = `<rect x="${x0}" y="${P0 - 70}" width="${x1 - x0}" height="40" fill="#222C5E"/><rect x="${x0}" y="${P0 - 32}" width="${x1 - x0}" height="8" fill="#39478A" stroke="${C.ink}" stroke-width="2"/>`;
+  g += `<rect x="${x0}" y="${P0 - 24}" width="${x1 - x0}" height="${L0 - P0 + 260}" fill="${NEON.road}"/>`;
+  for (let i = Math.floor(x0 / 160) - 1; i <= Math.ceil(x1 / 160); i++) { // lampu jalan
+    const x = i * 160 + 40;
+    g += `<path d="M${x - 50},${P0 + 30} L${x - 8},${P0 - 168} L${x + 8},${P0 - 168} L${x + 50},${P0 + 30}Z" fill="url(#lampG)"/><rect x="${x - 3}" y="${P0 - 170}" width="6" height="146" fill="#2B3160" stroke="${C.ink}" stroke-width="2"/><path d="M${x - 14},${P0 - 172} h28 l-5,7 h-18z" fill="#2B3160" stroke="${C.ink}" stroke-width="2"/><rect x="${x - 9}" y="${P0 - 166}" width="18" height="3" rx="1.5" fill="${NEON.y}"/>`;
+  }
+  for (let i = Math.floor(x0 / 30) - 1; i <= Math.ceil(x1 / 30); i++) g += `<rect x="${i * 30}" y="${L0 + 22}" width="16" height="3" fill="${NEON.y}" opacity=".7"/>`;
+  for (let i = Math.floor(x0 / 106) - 1; i <= Math.ceil(x1 / 106); i++) { // garis petak + mobil terparkir
+    const x = i * 106 + 19;
+    g += `<rect x="${x - 2}" y="${P0 - 20}" width="3" height="22" fill="${NEON.t}" opacity=".55"/>`;
+    const cx = x + 53;
+    if (cx > NEON.gap[0] && cx < NEON.gap[1]) continue;
+    g += parkedCar(cx, P0, PCOL[((i % 6) + 6) % 6]);
+  }
+  if (gapGlow > 0) { const [a, b] = NEON.gap, p = 0.6 + 0.4 * Math.sin(f * 0.35); g += `<rect x="${a + 4}" y="${P0 - 20}" width="${b - a - 8}" height="22" rx="3" fill="${NEON.t}" opacity="${0.18 * gapGlow * p}" stroke="${NEON.t}" stroke-width="2" stroke-opacity="${0.9 * gapGlow}"/>`; }
+  return g;
+}
+// mobil mini terbuka. (x,y)=tengah bawah roda; o: c, flip, wh (fase roda rad), sq, tilt(deg), brake(0..1), turbo(0..1), drv (svg pengemudi, dalam koord lokal: kaki di (0,-6)), shk
+export function miniCar(x, y, o: any = {}) {
+  const c = o.c || C.q, sx = o.flip ? -1 : 1, sq = o.sq || 1, wh = o.wh || 0, br = o.brake || 0;
+  const wheel = (cx) => `<g transform="translate(${cx},-9) rotate(${wh * 57.3})"><circle r="9.5" fill="#23252F" stroke="${C.ink}" stroke-width="3"/><circle r="4" fill="#C9CEDD"/><rect x="-1.2" y="-8" width="2.4" height="5" fill="#C9CEDD"/></g>`;
+  const body = `<path d="M-40,-12 Q-42,-30 -28,-31 L-14,-31 Q-10,-22 2,-22 L18,-22 L26,-34 L31,-33 L30,-24 Q42,-22 42,-12 Q42,-6 36,-6 L-36,-6 Q-40,-6 -40,-12Z" fill="${c}" stroke="${C.ink}" stroke-width="3.5" stroke-linejoin="round"/>`;
+  const shine = `<path d="M-34,-24 Q-30,-28 -22,-28" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".6"/><rect x="-6" y="-17" width="14" height="2.6" rx="1.3" fill="${C.ink}" opacity=".45"/>`;
+  const head = `<rect x="35" y="-21" width="6" height="6" rx="2" fill="#FFF6C4" stroke="${C.ink}" stroke-width="2"/>`;
+  const tail = `<circle cx="-39" cy="-21" r="4.2" fill="${br > 0 ? lerpC('#8E1F2B', '#FF3B3B', br) : '#8E1F2B'}" stroke="${C.ink}" stroke-width="2"/>` + (br > 0 ? `<circle cx="-39" cy="-21" r="${10 + 6 * br}" fill="url(#redG)" opacity="${br}"/>` : '');
+  const wind = `<path d="M22,-24 L29,-40" stroke="#BFE9FF" stroke-width="3" opacity=".8"/>${L(26, -34, 31, -44, 2.4)}`;
+  const flame = o.turbo ? `<g transform="translate(-42,-12) scale(${o.turbo})"><path d="M0,0 q-14,-8 -30,-2 q12,4 -2,8 q10,2 32,-1z" fill="#FF8C2B" stroke="${C.ink}" stroke-width="2" stroke-linejoin="round"/><path d="M0,0 q-8,-3 -16,0 q8,3 16,2z" fill="#FFE45E"/></g>` : '';
+  const seat = `<path d="M-24,-30 Q-26,-46 -16,-46 Q-10,-46 -10,-30Z" fill="${lerpC(c, '#000000', 0.35)}" stroke="${C.ink}" stroke-width="3" stroke-linejoin="round"/>`;
+  return `<g transform="translate(${x},${y}) rotate(${o.tilt || 0}) scale(${sx / Math.sqrt(sq)},${sq})">${flame}${seat}${o.drv || ''}${body}${shine}${head}${tail}${wind}<ellipse cx="13" cy="-33" rx="3" ry="8" fill="none" stroke="${C.ink}" stroke-width="3" transform="rotate(-20 13 -33)"/>${wheel(-24)}${wheel(26)}</g>`;
+}
+// lampu lalu lintas (koordinat layar), r = jari-jari lampu; on: 'r'|'g'
+export function trafficLight(cx, cy, r, on = 'r') {
+  const sp = r * 2.5, w = r * 2.7;
+  const lamp = (i, col, lit, glow) => `<circle cx="${cx}" cy="${cy + i * sp}" r="${r}" fill="${lit ? col : lerpC(col, '#101320', 0.75)}" stroke="${C.ink}" stroke-width="${r * 0.14}"/>` + (lit ? `<circle cx="${cx}" cy="${cy + i * sp}" r="${r * 1.9}" fill="url(#${glow})"/><ellipse cx="${cx - r * 0.35}" cy="${cy + i * sp - r * 0.4}" rx="${r * 0.28}" ry="${r * 0.18}" fill="#fff" opacity=".7"/>` : '');
+  return `<rect x="${cx - r * 0.25}" y="${cy - sp * 3}" width="${r * 0.5}" height="${sp * 2}" fill="#2B3160" stroke="${C.ink}" stroke-width="${r * 0.1}"/><rect x="${cx - w / 2}" y="${cy - r * 1.35}" width="${w}" height="${sp * 2 + r * 2.7}" rx="${r * 0.5}" fill="#262A3C" stroke="${C.ink}" stroke-width="${r * 0.16}"/>` +
+    lamp(0, '#FF3B3B', on === 'r', 'redG') + lamp(1, '#FFC23B', false, '') + lamp(2, '#3BFF8A', on === 'g', 'grnG');
+}
+export const coneT = (x, y, s = 1, rot = 0) => `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})"><path d="M-11,0 L-3,-26 h6 L11,0Z" fill="#FF8C2B" stroke="${C.ink}" stroke-width="2.6" stroke-linejoin="round"/><path d="M-7,-10 h14 l-1.6,-6 h-10.8z" fill="#fff"/><rect x="-14" y="-2" width="28" height="5" rx="2" fill="#FF8C2B" stroke="${C.ink}" stroke-width="2.6"/></g>`;
+export const hornRing = (x, y, r, op) => `<path d="M${x},${y - r} a${r},${r} 0 0 1 0,${2 * r}" fill="none" stroke="${NEON.y}" stroke-width="${3 + r * 0.06}" stroke-linecap="round" opacity="${op}"/>`;
+export const steam = (x, y, f, op = 1) => Array.from({length: 3}, (_, i) => { const p = ((f + i * 6) % 18) / 18; return `<circle cx="${x + (i - 1) * 6 + Math.sin(p * 6 + i) * 2}" cy="${y - p * 22}" r="${3 + p * 5}" fill="#E8EEF8" stroke="${C.ink}" stroke-width="1.6" opacity="${op * (1 - p)}"/>`; }).join('');

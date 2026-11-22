@@ -4,19 +4,21 @@ BATAS KERJA (WAJIB): hanya baca & ubah file di dalam folder `quibble-snick-no-ve
 (termasuk `global-shorts/` (arsip lama), `animasi-kusaka/`, app.py, api/, naskah/, workflow/, CLAUDE.md milik proyek lain, dan branch lain). Jangan riset ulang niche/strategi.
 
 EPISODE YANG DIBUAT (episode berikutnya; langsung kerjakan sampai jadi tanpa bertanya):
-  EP13 "Parking Spot 🚗" — Quibble dan Snick, masing-masing di mobil mini, mengincar satu-satunya tempat parkir kosong; saling menyalip,
-  memotong, dan mengakali sampai akhirnya Quibble (jarang menang) yang berhasil parkir dengan cara tak terduga. STRUKTUR E (lomba/kompetisi dua pihak)
-  · KAMERA layar terbelah (split kiri-kanan: wajah tiap pengemudi) yang menyatu jadi satu frame lebar saat klimaks · HOOK aksi di tengah kejadian (dua mobil sudah ngebut)
-  · LOOP match-cut bentuk/warna (mis. lampu rem merah -> lampu lalu lintas merah). Pemeran Quibble + Snick (tanpa Dot/Brick). Pemenang: Quibble (puas).
-  Lokasi baru: lapangan parkir kota malam hari, palet biru tua + neon toska/kuning. Musik: jangan e6_music/e11_music (mis. e9_music atau generate baru).
+  EP14 "Tangled Earphones 🎧" — Brick ingin dengar musik di halte bus pagi, Dot yang ceria ikut "membantu" mengurai kabel earphone kusut, sampai keduanya
+  terikat kabel dari kepala sampai kaki; kebenaran baru terlihat di putaran kedua: ternyata Dot yang tak sengaja makin mengikat (bukan Brick). STRUKTUR H
+  (satu kejadian dari 2 sudut pandang: pertama versi Brick, lalu "putar ulang" versi Dot dengan info baru) · KAMERA POV karakter (POV mata Brick di putaran 1,
+  POV Dot yang rendah di putaran 2) + 1 shot lebar penutup · HOOK layar gelap + bunyi dulu (dengung earphone/bunyi kusut) lalu terang · LOOP ending = kalimat
+  visual pertama diulang karakter lain (mis. Dot sekarang yang memegang earphone kusut seperti Brick di awal). Pemeran Brick + Dot (tanpa Quibble/Snick).
+  Pemenang: tidak ada—Brick apes tapi lucu, Dot ceria tak sadar. Lokasi baru: halte bus pagi hari, palet mint + peach terang. Musik: jangan e9_music/e6_music
+  (mis. e8_music atau generate baru).
   SETELAH SELESAI: isi blok ini dengan episode berikutnya (ide + variasi yang berbeda dari 3 episode terakhir), agar sesi baru cukup diberi prompt singkat.
 
 DAFTAR IDE (judul — hook 1 kalimat):
 - Tangled Earphones 🎧 — Terikat kabel dari kepala sampai kaki.
-- Parking Spot 🚗 — Dua mobil mini mengincar satu tempat parkir.
+- Paper Plane ✈️ — Satu pesawat kertas terbang melintasi seluruh kota.
 - Domino 🁢 — Satu sentuhan kecil, seluruh kota ambruk berantai.
-Sudah dibuat (jangan diulang): EP01 The Last Slice, EP02 Wet Paint, EP03 The Door, EP04 Vending Machine, EP05 Umbrella War, EP06 Selfie Fail, EP07 Elevator Button, EP08 Alarm Clock, EP09 Escalator, EP10 Popcorn, EP11 Snowman, EP12 Balloon.
-Pemeran & pemenang terakhir: EP10 Brick/Snick (Brick menang; STRUKTUR C, tracking samping + potongan cepat, hook layar gelap+pop, loop match-cut, musik e4_music), EP11 Quibble/Snick/Dot (Snick menang/terbukti tak bersalah; STRUKTUR D, tampak atas + POV kaca pembesar, hook wajah kaget ekstrem, loop malam→pagi, musik e11_music), EP12 Dot/Brick/Quibble (semua menang, ending manis; STRUKTUR G, long take crane naik-turun + zoom pelan, hook flash-forward + rewind, loop keluar atas→masuk bawah, pasar malam pastel siang, musik e6_music).
+Sudah dibuat (jangan diulang): EP01 The Last Slice, EP02 Wet Paint, EP03 The Door, EP04 Vending Machine, EP05 Umbrella War, EP06 Selfie Fail, EP07 Elevator Button, EP08 Alarm Clock, EP09 Escalator, EP10 Popcorn, EP11 Snowman, EP12 Balloon, EP13 Parking Spot.
+Pemeran & pemenang terakhir: EP11 Quibble/Snick/Dot (Snick menang/terbukti tak bersalah; STRUKTUR D, tampak atas + POV kaca pembesar, hook wajah kaget ekstrem, loop malam→pagi, musik e11_music), EP12 Dot/Brick/Quibble (semua menang, ending manis; STRUKTUR G, long take crane naik-turun + zoom pelan, hook flash-forward + rewind, loop keluar atas→masuk bawah, pasar malam pastel siang, musik e6_music), EP13 Quibble/Snick (Quibble menang, puas; STRUKTUR E, layar terbelah kiri-kanan menyatu jadi frame lebar, hook lampu merah→hijau saat mesin meraung, loop match-cut lampu rem merah→lampu lalu lintas merah, jalan kota malam biru tua + neon, musik e9_music).
 
 FORMULA 13–15 dtk: hook < 1 dtk → isi sesuai STRUKTUR pilihan (lihat VARIASI) → punchline → payoff yang menyambung ke frame 0 (seamless loop).
 
