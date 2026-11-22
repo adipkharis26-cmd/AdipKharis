@@ -56,8 +56,9 @@ def upscale_to(rgb, models, target):
 
 def cached(path, models, target):
     out = os.path.splitext(path)[0] + ".up%d.png" % target
-    if os.path.exists(out):
-        return cv2.cvtColor(cv2.imread(out, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
+    img = cv2.imread(out, cv2.IMREAD_COLOR) if os.path.exists(out) else None
+    if img is not None:
+        return cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     rgb = cv2.cvtColor(cv2.imread(path, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
     up = upscale_to(rgb, models, target)
     cv2.imwrite(out, cv2.cvtColor(up, cv2.COLOR_RGB2BGR))

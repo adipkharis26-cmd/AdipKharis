@@ -131,11 +131,14 @@ class Layer:
             import hashlib
             hkey = hashlib.md5((repr(sorted(tex.items())) + "%.3f%d" % (ps, S)).encode()).hexdigest()[:10]
             cache = os.path.splitext(path)[0] + ".tex_%s.png" % hkey
-            if os.path.exists(cache):
-                self.rgb = cv2.cvtColor(cv2.imread(cache, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
+            cached_img = cv2.imread(cache, cv2.IMREAD_COLOR) if os.path.exists(cache) else None
+            if cached_img is not None:
+                self.rgb = cv2.cvtColor(cached_img, cv2.COLOR_BGR2RGB)
             else:
                 self.rgb = MT.apply(self.rgb, tex, ps)
-                cv2.imwrite(cache, cv2.cvtColor(self.rgb, cv2.COLOR_RGB2BGR))
+                tmp = cache + ".%d.tmp.png" % os.getpid()      # tulis atomik (aman untuk banyak worker)
+                cv2.imwrite(tmp, cv2.cvtColor(self.rgb, cv2.COLOR_RGB2BGR))
+                os.replace(tmp, cache)
         self.alpha = None
         mode = cfg.get("alpha", "full") if is_char else "full"
         if mode != "full":
