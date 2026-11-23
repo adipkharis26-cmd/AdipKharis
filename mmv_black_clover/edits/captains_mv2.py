@@ -1,4 +1,4 @@
-# KAPTEN MAGIC KNIGHT - "Nine captains. One kingdom." | mv2 | sound: sound3 (dari video visualizer, 21.45 dtk)
+# KAPTEN MAGIC KNIGHT - "Nine captains. One kingdom." | mv2 | sound: sounds/sound3_loop.wav (20.06 dtk, loop)
 # Bedah sound: ~96 BPM (1 ketukan 0.63 dtk), build-up vokal 0-9.96 (adegan cerita 2.5 dtk), DROP 808 berat
 # 9.96-21.45 (1 kapten per 2 ketukan, nama diketik cepat), hening setelah 21.45 (dipotong).
 # Niche: ensemble para kapten - setiap kapten dapat panggung, bukan hanya MC.
@@ -120,6 +120,18 @@ SHOTS = [
         tilt=tilt(1.62, (1.5, -3.0), (0.5, -1.0)),
         text=[say("WHO'S THE STRONGEST CAPTAIN?", at=0.2, box=True, size=30, cps=30)]),
 ]
+
+# ---- LOOP MULUS: sound dipotong tepat 32 ketukan (0.395 -> 20.457 dtk, sfx TikTok di 21.4 dibuang) ->
+# sounds/sound3_loop.wav. Timeline digeser -0.395; shot 12 dibuang agar penutup cukup lama dibaca;
+# 0.4 dtk terakhir video di-blend ke frame pertama (LOOP_BLEND).
+SHIFT, END = 0.395, 20.062
+SHOTS.pop(11)
+SHOTS[-1]["t0"] = 18.67
+for _s in SHOTS:
+    _s["t0"] = max(0.0, round(_s["t0"] - SHIFT, 3))
+    _s["t1"] = round(_s["t1"] - SHIFT, 3)
+SHOTS[-1]["t1"] = END
+LOOP_BLEND = 0.4
 
 for _i, _s in enumerate(SHOTS[1:], 1):
     _k = _s.get("trans_in", ("", 0))[0]

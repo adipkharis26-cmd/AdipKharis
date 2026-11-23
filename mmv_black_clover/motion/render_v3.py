@@ -1149,7 +1149,7 @@ def render_frame(job, raw=False):
     if pp is not None:
         frame = frame * pp
     frame = frame * vignette() + grain(fr)
-    if raw:
+    if raw is True:
         return frame
     # transisi masuk/keluar
     tr = s.get("trans_in")
@@ -1201,6 +1201,16 @@ def render_frame(job, raw=False):
                                    tx.get("y", 0.83), tx.get("style", "name"), pop)
             else:
                 frame = typo.subtitle(frame, tx["text"], ap, tx.get("y", 0.885))
+    LB = getattr(EDIT, "LOOP_BLEND", 0)
+    if LB and raw != "first":                                  # mv2: akhir video menyatu ke frame pertama (loop mulus)
+        end = EDIT.SHOTS[-1]["t1"]
+        if t > end - LB:
+            if "first" not in _prev_cache:
+                _prev_cache["first"] = np.frombuffer(render_frame((0, 0.0, 0), raw="first"), np.uint8) \
+                    .reshape(S, S, 3).astype(np.float32)
+            w = (t - (end - LB)) / LB
+            w = w * w * (3 - 2 * w)
+            frame = frame * (1 - w) + _prev_cache["first"] * w
     if G or getattr(EDIT, "WM", None):
         frame = typo.genre_watermark(frame, getattr(EDIT, "WATERMARK", ""), G.WM if G else EDIT.WM, t)
     else:
