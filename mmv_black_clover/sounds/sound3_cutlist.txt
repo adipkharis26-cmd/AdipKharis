@@ -1,0 +1,43 @@
+MOOD: phonk | BPM ~95.7 | 1 ketukan = 0.627 dtk = 19 frame @30fps
+Catatan: Potong tiap 1-2 ketukan. Cowbell/808 = flash putih 2 frame + shake. Drop = reveal karakter.
+
+Shot 01    0.00s ->   0.42s  (0.42s,  13 fr)  HIT
+Shot 02    0.42s ->   1.06s  (0.64s,  19 fr)  FLASH+SHAKE+ZOOM_PUNCH | HIT
+Shot 03    1.06s ->   1.70s  (0.64s,  19 fr)  HIT
+Shot 04    1.70s ->   2.00s  (0.30s,   9 fr)  FLASH+SHAKE+ZOOM_PUNCH | HIT
+Shot 05    2.00s ->   2.34s  (0.34s,  10 fr)  HIT
+Shot 06    2.34s ->   2.96s  (0.62s,  19 fr)  HIT
+Shot 07    2.96s ->   3.60s  (0.64s,  19 fr)  FLASH+SHAKE+ZOOM_PUNCH | HIT
+Shot 08    3.60s ->   3.92s  (0.32s,  10 fr)  HIT
+Shot 09    3.92s ->   4.24s  (0.32s,  10 fr)  HIT
+Shot 10    4.24s ->   4.56s  (0.32s,  10 fr)  FLASH+SHAKE+ZOOM_PUNCH | HIT
+Shot 11    4.56s ->   4.86s  (0.30s,   9 fr)  HIT
+Shot 12    4.86s ->   5.48s  (0.62s,  19 fr)  FLASH+SHAKE+ZOOM_PUNCH | HIT
+Shot 13    5.48s ->   6.14s  (0.66s,  20 fr)  velocity ramp / wiggle 4,6
+Shot 14    6.14s ->   6.78s  (0.64s,  19 fr)  HIT
+Shot 15    6.78s ->   7.42s  (0.64s,  19 fr)  HIT
+Shot 16    7.42s ->   8.04s  (0.62s,  19 fr)  HIT
+Shot 17    8.04s ->   8.54s  (0.50s,  15 fr)  FLASH+SHAKE+ZOOM_PUNCH | HIT
+Shot 18    8.54s ->   9.00s  (0.46s,  14 fr)  HIT
+Shot 19    9.00s ->   9.96s  (0.96s,  29 fr)  HIT
+Shot 20    9.96s ->  10.43s  (0.46s,  14 fr)  DROP -> shot terkuat
+Shot 21   10.43s ->  11.56s  (1.13s,  34 fr)  velocity ramp / wiggle 4,6
+Shot 22   11.56s ->  12.16s  (0.60s,  18 fr)  HIT
+Shot 23   12.16s ->  13.12s  (0.96s,  29 fr)  HIT
+Shot 24   13.12s ->  14.08s  (0.96s,  29 fr)  HIT
+Shot 25   14.08s ->  14.72s  (0.64s,  19 fr)  HIT
+Shot 26   14.72s ->  15.04s  (0.32s,  10 fr)  HIT
+Shot 27   15.04s ->  15.36s  (0.32s,  10 fr)  HIT
+Shot 28   15.36s ->  15.68s  (0.32s,  10 fr)  HIT
+Shot 29   15.68s ->  16.64s  (0.96s,  29 fr)  HIT
+Shot 30   16.64s ->  17.26s  (0.62s,  19 fr)  HIT
+Shot 31   17.26s ->  18.22s  (0.96s,  29 fr)  HIT
+Shot 32   18.22s ->  19.16s  (0.94s,  28 fr)  HIT
+Shot 33   19.16s ->  19.84s  (0.68s,  20 fr)  HIT
+Shot 34   19.84s ->  20.14s  (0.30s,   9 fr)  HIT
+Shot 35   20.14s ->  20.46s  (0.32s,  10 fr)  HIT
+Shot 36   20.46s ->  20.76s  (0.30s,   9 fr)  HIT
+Shot 37   20.76s ->  21.42s  (0.66s,  20 fr)  HIT
+Shot 38   21.42s ->  22.96s  (1.54s,  46 fr)  HIT
+Shot 39   22.96s ->  24.22s  (1.25s,  38 fr)  QUIET -> teks/slow-mo
+Shot 40   24.22s ->  25.05s  (0.84s,  25 fr)  QUIET -> teks/slow-mo

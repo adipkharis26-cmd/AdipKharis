@@ -373,10 +373,14 @@ def dialog(frame, text, since, D=None, until=99.0):
         frame = frame + glow[..., None] * np.array([255, 230, 40], np.float32) * 0.35 * a
         frame = _over(frame, np.array(D.get("box_color", (255, 232, 20)), np.float32), box * a)
         return _over(frame, np.array([15, 12, 8], np.float32), mask * a)
-    mask = _shear(mask, 0.2, y)
+    if D.get("italic", True):
+        mask = _shear(mask, 0.2, y)
     k_ = S / 1080
     sh = cv2.GaussianBlur(_shift(mask, 2 * k_, 3 * k_), (0, 0), 3 * k_)
     frame = _over(frame, np.zeros(3, np.float32), sh * 0.85 * a)
+    # backing gelap tebal agar font tipis tetap terbaca di adegan terang
+    back = cv2.GaussianBlur(cv2.dilate(mask, np.ones((int(7 * k_) | 1, int(7 * k_) | 1), np.uint8)), (0, 0), 6 * k_)
+    frame = _over(frame, np.array([10, 6, 4], np.float32), np.clip(back * 1.4, 0, 1) * 0.7 * a)
     col = D.get("color", (255, 200, 40))
     g = cv2.GaussianBlur(mask, (0, 0), 10 * k_)
     frame = frame + g[..., None] * np.array(col, np.float32) * 0.8 * a

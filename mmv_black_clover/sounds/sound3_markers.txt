@@ -1,0 +1,128 @@
+# detik|LABEL|catatan   (mood=phonk, bpm=95.7, durasi=25.05)
+0.395|BEAT|1
+1.045|BEAT|2
+1.672|BEAT|3
+2.299|BEAT|4
+2.949|BEAT|5
+3.576|BEAT|6
+4.226|BEAT|7
+4.853|BEAT|8
+5.480|BEAT|9
+6.130|BEAT|10
+6.757|BEAT|11
+7.384|BEAT|12
+8.011|BEAT|13
+8.545|BEAT|14
+9.172|BEAT|15
+9.799|BEAT|16
+10.426|BEAT|17
+11.053|BEAT|18
+11.703|BEAT|19
+12.307|BEAT|20
+12.980|BEAT|21
+13.607|BEAT|22
+14.257|BEAT|23
+14.814|BEAT|24
+15.464|BEAT|25
+16.138|BEAT|26
+16.788|BEAT|27
+17.369|BEAT|28
+17.949|BEAT|29
+18.669|BEAT|30
+19.273|BEAT|31
+19.830|BEAT|32
+20.457|BEAT|33
+21.084|BEAT|34
+21.711|BEAT|35
+22.338|BEAT|36
+22.965|BEAT|37
+23.591|BEAT|38
+24.218|BEAT|39
+24.845|BEAT|40
+0.395|IMPACT|FLASH+SHAKE+ZOOM_PUNCH
+1.672|IMPACT|FLASH+SHAKE+ZOOM_PUNCH
+2.949|IMPACT|FLASH+SHAKE+ZOOM_PUNCH
+4.226|IMPACT|FLASH+SHAKE+ZOOM_PUNCH
+4.853|IMPACT|FLASH+SHAKE+ZOOM_PUNCH
+8.011|IMPACT|FLASH+SHAKE+ZOOM_PUNCH
+9.172|IMPACT|FLASH+SHAKE+ZOOM_PUNCH
+9.799|IMPACT|FLASH+SHAKE+ZOOM_PUNCH
+21.084|IMPACT|FLASH+SHAKE+ZOOM_PUNCH
+9.961|DROP|reveal karakter / judul
+0.020|HIT|hentakan nyata
+0.420|HIT|hentakan nyata
+1.060|HIT|hentakan nyata
+1.700|HIT|hentakan nyata
+2.000|HIT|hentakan nyata
+2.340|HIT|hentakan nyata
+2.960|HIT|hentakan nyata
+3.600|HIT|hentakan nyata
+3.920|HIT|hentakan nyata
+4.240|HIT|hentakan nyata
+4.560|HIT|hentakan nyata
+4.860|HIT|hentakan nyata
+6.140|HIT|hentakan nyata
+6.780|HIT|hentakan nyata
+7.420|HIT|hentakan nyata
+8.040|HIT|hentakan nyata
+8.540|HIT|hentakan nyata
+9.000|HIT|hentakan nyata
+11.560|HIT|hentakan nyata
+12.160|HIT|hentakan nyata
+13.120|HIT|hentakan nyata
+14.080|HIT|hentakan nyata
+14.720|HIT|hentakan nyata
+15.040|HIT|hentakan nyata
+15.360|HIT|hentakan nyata
+15.680|HIT|hentakan nyata
+16.640|HIT|hentakan nyata
+17.260|HIT|hentakan nyata
+18.220|HIT|hentakan nyata
+19.160|HIT|hentakan nyata
+19.840|HIT|hentakan nyata
+20.140|HIT|hentakan nyata
+20.460|HIT|hentakan nyata
+20.760|HIT|hentakan nyata
+21.040|HIT|hentakan nyata
+21.420|HIT|hentakan nyata
+21.711|QUIET|sampai 24.96 - teks quote / slow-mo
+0.000|CUT|otomatis
+0.420|CUT|otomatis
+1.060|CUT|otomatis
+1.700|CUT|otomatis
+2.000|CUT|otomatis
+2.340|CUT|otomatis
+2.960|CUT|otomatis
+3.600|CUT|otomatis
+3.920|CUT|otomatis
+4.240|CUT|otomatis
+4.560|CUT|otomatis
+4.860|CUT|otomatis
+5.480|CUT|otomatis
+6.140|CUT|otomatis
+6.780|CUT|otomatis
+7.420|CUT|otomatis
+8.040|CUT|otomatis
+8.540|CUT|otomatis
+9.000|CUT|otomatis
+9.961|CUT|otomatis
+10.426|CUT|otomatis
+11.560|CUT|otomatis
+12.160|CUT|otomatis
+13.120|CUT|otomatis
+14.080|CUT|otomatis
+14.720|CUT|otomatis
+15.040|CUT|otomatis
+15.360|CUT|otomatis
+15.680|CUT|otomatis
+16.640|CUT|otomatis
+17.260|CUT|otomatis
+18.220|CUT|otomatis
+19.160|CUT|otomatis
+19.840|CUT|otomatis
+20.140|CUT|otomatis
+20.460|CUT|otomatis
+20.760|CUT|otomatis
+21.420|CUT|otomatis
+22.965|CUT|otomatis
+24.218|CUT|otomatis

@@ -141,8 +141,10 @@ class Layer:
                 os.replace(tmp, cache)
         self.alpha = None
         mode = cfg.get("alpha", "full") if is_char else "full"
+        raw = cv2.imread(path, cv2.IMREAD_UNCHANGED) if mode == "png" else None
+        if mode == "png" and (raw.ndim < 3 or raw.shape[2] < 4):
+            mode = "seg"             # PNG tanpa transparansi -> potong dengan model isnet-anime
         if mode == "png":            # mv2: transparansi asli PNG (art profil resmi) -> potongan paling bersih
-            raw = cv2.imread(path, cv2.IMREAD_UNCHANGED)
             a = cv2.resize(raw[..., 3].astype(np.float32) / 255.0, (self.w, self.h), interpolation=cv2.INTER_CUBIC)
             k = max(1, int(min(self.h, self.w) / 1200))
             a = cv2.GaussianBlur(cv2.erode(a, np.ones((2 * k + 1, 2 * k + 1), np.uint8)), (0, 0), 0.7 * k)
@@ -1176,7 +1178,13 @@ def render_frame(job, raw=False):
         t0 = tx.get("at", 0.0)
         if tx["kind"] == "dialog":
             if t0 <= lt < tx.get("until", 99):
-                frame = typo.dialog(frame, tx["text"], lt - t0, tx, until=tx.get("until", dur) - t0)
+                D = tx
+                FL = getattr(EDIT, "FONT_LOCK", None)       # mv2: 1 font terkunci per video (edits/font_lock.py)
+                if FL and not tx.get("font"):
+                    D = dict(tx, font=FL[0], size=tx.get("size", 34) * FL[1], italic=FL[2])
+                    if tx.get("color") is None:
+                        D["color"] = FL[3]
+                frame = typo.dialog(frame, tx["text"], lt - t0, D, until=tx.get("until", dur) - t0)
             continue
         if G and tx["kind"] == "title" and t0 <= lt < tx.get("until", 99):
             T = dict(G.TITLE_END if tx.get("style") == "episode" or idx == len(EDIT.SHOTS) - 1 else G.TITLE)
