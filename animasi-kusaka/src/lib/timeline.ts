@@ -12,7 +12,8 @@ export type Action =
   | "wave" | "thumbsup" | "peace" | "facepalm" | "hips" | "phone"
   | "hold" | "carry" | "give" | "show" | "read" | "pull" | "salute" | "shoot" | "drink" | "eat" | "write" | "sweep" | "blow"
   | "reach" | "photo" // Eps. 5: meraih rak atas, memotret dengan HP
-  | "erase"; // Shorts "Papan Tulis": menghapus papan tulis dengan penghapus (tangan depan terangkat, gerak mengusap)
+  | "erase" // Shorts "Papan Tulis": menghapus papan tulis dengan penghapus (tangan depan terangkat, gerak mengusap)
+  | "pushup"; // Shorts "Sogok Gorengan": push-up hukuman telat (badan lurus miring bertumpu kaki, lengan menekan tanah, naik-turun)
 
 export interface Line {
   id: string; speaker: CharId; emotion: Emotion; listener: Emotion; shot: "two" | "speaker" | "medium" | "close" | "wide" | "push" | "crash";

@@ -33,7 +33,7 @@ const fail = (msg) => { console.error(`✗ ${msg}`); process.exit(1); };
 const EMOTIONS = ["neutral", "smug", "suspicious", "shock", "laugh", "pleading", "deadpan", "surprised", "embarrassed", "defeated"];
 const SHOTS = editing.camera.shots;
 if (!script.episode) fail("script.json butuh field \"episode\" (mis. \"eps01\")");
-const ACTIONS = ["idle","gesture","pocket","chin","point","plead","crossed","shock","laugh","slump","wave","thumbsup","peace","facepalm","hips","phone","hold","carry","give","show","read","pull","salute","shoot","drink","eat","write","sweep","blow","reach","photo","erase"];
+const ACTIONS = ["idle","gesture","pocket","chin","point","plead","crossed","shock","laugh","slump","wave","thumbsup","peace","facepalm","hips","phone","hold","carry","give","show","read","pull","salute","shoot","drink","eat","write","sweep","blow","reach","photo","erase","pushup"];
 let ctaCount = 0;
 for (const sc of script.scenes) {
   const loc = locations.locations[sc.location];

@@ -44,6 +44,9 @@ const RULES = [
   { re: /hormat/i, label: "hormat", acts: ["salute"], track: "salute" },
   { re: /bendera|tiang/i, label: "bendera", track: "flag", loc: "lapanganUpacara" },
   { re: /\btali\b/i, label: "tali", track: "flag|snag", loc: "lapanganUpacara" },
+  // Shorts "Sogok Gorengan": push-up hukuman telat, bakwan sogokan
+  { re: /push-?up/i, label: "push-up", acts: ["pushup"] },
+  { re: /bakwan|cabe rawit|cabai rawit/i, label: "bakwan", item: "gorengan|gorenganTiga" },
   { re: /gerbang/i, label: "gerbang", track: "gate", loc: "gerbang" },
   { re: /angkot|\bbus\b/i, label: "angkot", track: "angkot", loc: "halte" },
   { re: /\btas\b|ransel|berangkat|pulang sekolah/i, label: "tas", bag: true },

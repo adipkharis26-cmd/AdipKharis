@@ -1,0 +1,325 @@
+{
+ "format": "shorts",
+ "episode": "shorts11",
+ "title": "Sogok Gorengan",
+ "fps": 30,
+ "voiceMode": "dialogue",
+ "gapSeconds": 0.2,
+ "sceneLead": 0.3,
+ "sceneGap": 0,
+ "tail": 0.2,
+ "hook": {
+  "lines": [
+   "SOGOK SATPAM",
+   "PAKAI GORENGAN"
+  ],
+  "keywords": [
+   "SOGOK",
+   "GORENGAN"
+  ],
+  "seconds": 1.6
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "location": "gerbang",
+   "cast": {
+    "mangUdin": {
+     "mark": "A",
+     "facing": 1
+    },
+    "kusaka": {
+     "mark": "C",
+     "facing": -1
+    }
+   },
+   "tracks": {
+    "gate": [
+     [
+      "l001",
+      1
+     ],
+     [
+      "l010",
+      1
+     ],
+     [
+      "l010:end",
+      0
+     ]
+    ]
+   },
+   "lines": [
+    {
+     "id": "l001",
+     "speaker": "kusaka",
+     "emotion": "shock",
+     "listener": "deadpan",
+     "shot": "crash",
+     "action": "plead",
+     "to": "mangUdin",
+     "text": "Mang! Mang! Satu menit doang, Mang!",
+     "say": "[out of breath, panicked] Mang! Mang! Satu menit doang, Mang!",
+     "move": {
+      "who": "kusaka",
+      "from": "offR",
+      "to": "C",
+      "at": 0
+     },
+     "sfx": [
+      {
+       "id": "run_cartoon",
+       "at": 0
+      }
+     ]
+    },
+    {
+     "id": "l002",
+     "speaker": "mangUdin",
+     "emotion": "deadpan",
+     "listener": "pleading",
+     "shot": "medium",
+     "action": "crossed",
+     "to": "kusaka",
+     "text": "Telat lagi, Jang? Push-up dua puluh!",
+     "say": "[unimpressed, Sundanese accent] Telat lagi, Jang? Push-up dua puluh!",
+     "ref": [
+      "push-up"
+     ],
+     "caption": "SENIN PAGI"
+    },
+    {
+     "id": "l003",
+     "speaker": "kusaka",
+     "emotion": "pleading",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "plead",
+     "to": "mangUdin",
+     "text": "Sumpah, Mang. Ban bocor.",
+     "say": "[quickly] Sumpah, Mang. Ban bocor."
+    },
+    {
+     "id": "l004",
+     "speaker": "mangUdin",
+     "emotion": "suspicious",
+     "listener": "embarrassed",
+     "shot": "close",
+     "action": "chin",
+     "to": "kusaka",
+     "closeStyle": "ots",
+     "text": "Kamu kan jalan kaki, Jang.",
+     "say": "[flat] Kamu kan jalan kaki, Jang."
+    },
+    {
+     "id": "l005",
+     "speaker": "kusaka",
+     "emotion": "embarrassed",
+     "listener": "suspicious",
+     "shot": "two",
+     "action": "pocket",
+     "to": "mangUdin",
+     "text": "...Nenek sakit.",
+     "say": "[hesitant, quiet] ...Nenek sakit."
+    },
+    {
+     "id": "l006",
+     "speaker": "mangUdin",
+     "emotion": "deadpan",
+     "listener": "embarrassed",
+     "shot": "close",
+     "action": "crossed",
+     "to": "kusaka",
+     "closeStyle": "single",
+     "text": "Nenekmu sakit tiap Senin. Sehat tiap Sabtu.",
+     "say": "[dry] Nenekmu sakit tiap Senin. [beat] Sehat tiap Sabtu."
+    },
+    {
+     "id": "l007",
+     "speaker": "kusaka",
+     "emotion": "smug",
+     "listener": "surprised",
+     "shot": "medium",
+     "action": "show",
+     "to": "mangUdin",
+     "text": "Oke. Bakwan Bu Ijah. Masih anget.",
+     "say": "[lowered voice, smug] Oke. Bakwan Bu Ijah. Masih anget.",
+     "hold": {
+      "kusaka": "gorengan"
+     },
+     "sfx": [
+      {
+       "id": "sparkle_love",
+       "at": 0.3
+      }
+     ]
+    },
+    {
+     "id": "l008",
+     "speaker": "mangUdin",
+     "emotion": "surprised",
+     "listener": "smug",
+     "shot": "close",
+     "action": "chin",
+     "to": "kusaka",
+     "closeStyle": "single",
+     "text": "...Pakai cabe rawit?",
+     "say": "[long pause, tempted] ...Pakai cabe rawit?"
+    },
+    {
+     "id": "l009",
+     "speaker": "kusaka",
+     "emotion": "smug",
+     "listener": "laugh",
+     "shot": "two",
+     "action": "give",
+     "to": "mangUdin",
+     "text": "Tiga.",
+     "say": "[whispering] Tiga."
+    },
+    {
+     "id": "l010",
+     "speaker": "mangUdin",
+     "emotion": "smug",
+     "listener": "smug",
+     "shot": "wide",
+     "action": "pull",
+     "to": "kusaka",
+     "text": "Push-up sepuluh. Mulai.",
+     "say": "[clears throat, official] Push-up sepuluh. Mulai.",
+     "hold": {
+      "kusaka": null,
+      "mangUdin": "gorengan"
+     },
+     "reactions": {
+      "kusaka": [
+       "defeated",
+       "pushup"
+      ]
+     },
+     "move": {
+      "who": "kusaka",
+      "from": "C",
+      "to": "B",
+      "at": 0
+     }
+    },
+    {
+     "id": "l011",
+     "speaker": "mangUdin",
+     "emotion": "laugh",
+     "listener": "defeated",
+     "shot": "wide",
+     "action": "eat",
+     "text": "Satu... dua... tiga... empat...",
+     "say": "[counting slowly, chewing] Satu... dua... tiga... empat...",
+     "reactions": {
+      "kusaka": [
+       "defeated",
+       "pushup"
+      ]
+     }
+    },
+    {
+     "id": "l012",
+     "speaker": "mangUdin",
+     "emotion": "surprised",
+     "listener": "defeated",
+     "shot": "two",
+     "action": "eat",
+     "to": "kusaka",
+     "text": "Pedes, euy... Tadi sampai berapa, Jang?",
+     "say": "[mouth full, coughs] Pedes, euy... [confused] Tadi sampai berapa, Jang?",
+     "reactions": {
+      "kusaka": [
+       "defeated",
+       "pushup"
+      ]
+     }
+    },
+    {
+     "id": "l013",
+     "speaker": "kusaka",
+     "emotion": "pleading",
+     "listener": "neutral",
+     "shot": "wide",
+     "action": "pushup",
+     "to": "mangUdin",
+     "text": "Sepuluh, Mang! Udah sepuluh!",
+     "say": "[straining] Sepuluh, Mang! Udah sepuluh!"
+    },
+    {
+     "id": "l014",
+     "speaker": "mangUdin",
+     "emotion": "deadpan",
+     "listener": "shock",
+     "shot": "close",
+     "action": "eat",
+     "to": "kusaka",
+     "closeStyle": "single",
+     "text": "Mamang lupa. Mulai lagi. Satu.",
+     "say": "[chewing, flat] Mamang lupa. [beat] Mulai lagi. Satu.",
+     "sfx": [
+      {
+       "id": "record_scratch",
+       "at": "end"
+      }
+     ]
+    },
+    {
+     "id": "l015",
+     "speaker": "kusaka",
+     "emotion": "defeated",
+     "listener": "laugh",
+     "shot": "wide",
+     "action": "pushup",
+     "to": "mangUdin",
+     "text": "Mang... balikin bakwannya.",
+     "say": "[exhausted, whining] Mang... balikin bakwannya."
+    },
+    {
+     "id": "l016",
+     "speaker": "kusaka",
+     "emotion": "pleading",
+     "listener": "laugh",
+     "shot": "two",
+     "action": "pushup",
+     "text": "Like dong, biar Mamang nggak lupa hitungan!",
+     "say": "[desperate] Like dong, biar Mamang nggak lupa hitungan!",
+     "cta": {
+      "kind": "like",
+      "text": "LIKE biar NGGAK ULANG!",
+      "keywords": [
+       "LIKE",
+       "ULANG!"
+      ],
+      "reveal": "mangUdin"
+     }
+    },
+    {
+     "id": "l017",
+     "speaker": "mangUdin",
+     "emotion": "smug",
+     "listener": "defeated",
+     "shot": "two",
+     "action": "eat",
+     "to": "kusaka",
+     "text": "...Sepuluh. Tuh, pas dua puluh. Besok jangan telat, Jang.",
+     "say": "[satisfied, chewing] ...Sepuluh. [proud] Tuh, pas dua puluh. Besok jangan telat, Jang.",
+     "reactions": {
+      "kusaka": [
+       "defeated",
+       "slump"
+      ]
+     },
+     "sfx": [
+      {
+       "id": "rimshot",
+       "at": "end"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

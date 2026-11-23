@@ -80,7 +80,7 @@ Audit setiap naskah baris demi baris: kalau teks menyebut benda atau tindakan, t
 tangan lain `{"item": "wallet", "hand": "back"}`), aksi `hold|carry|give|show|read|pull|salute`, `scene.hold` untuk benda dari awal adegan,
 `scene.bag` (`true` | `["id"]` | `false`; gerbang/halte otomatis), `scene.tracks` (`gate`, `flag`, `snag`, `angkot`, `salute`; kunci `["l007", 0]`,
 `"l007:end"` = akhir baris), `flagInverted`. Benda: paper, book, kresek, gorengan, cup, mug, tray, ball, wallet, bagTote (tambah di `Props.tsx`).
-Pakai `"shot": "wide"` pada momen kunci agar bendanya tampak. Benda tambahan: whistle, clipboard, broom, bowl, tumbler, pen, helmet, umbrella; aksi: shoot, drink, eat, write, sweep, blow. Jalankan `npm run audit:props -- <naskah>` sampai 0. Pulang/berangkat sekolah tetap berseragam + tas; topi upacara di lapangan upacara; watermark kiri atas juga di video panjang. Tambahkan detail yang kurang tanpa menunggu perintah, tetapi render video tetap hanya atas perintah pemilik.
+Pakai `"shot": "wide"` pada momen kunci agar bendanya tampak. Benda tambahan: whistle, clipboard, broom, bowl, tumbler, pen, helmet, umbrella; aksi: shoot, drink, eat, write, sweep, blow, pushup (v3.9.0, hukuman telat). Jalankan `npm run audit:props -- <naskah>` sampai 0. Pulang/berangkat sekolah tetap berseragam + tas; topi upacara di lapangan upacara; watermark kiri atas juga di video panjang. Tambahkan detail yang kurang tanpa menunggu perintah, tetapi render video tetap hanya atas perintah pemilik.
 
 ## Visual sesuai kebutuhan episode (WAJIB)
 Pustaka benda/aksi/lokasi hanyalah titik awal. Tiap episode: daftar semua yang disebut/tersirat di naskah, riset dan buat sendiri yang belum ada

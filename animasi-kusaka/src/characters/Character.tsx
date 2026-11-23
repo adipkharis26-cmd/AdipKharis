@@ -97,6 +97,8 @@ export const POSES: Record<Action, Pose> = {
   photo:    { front: [110, 50],  back: [96, 62],    lean: -2, head: 2,   crouch: 0,  look: [0.9, 0],    hands: ["phone", "fist"] },
   // Shorts "Papan Tulis": menghapus papan tulis di belakang tanpa membelakangi murid (tangan depan terangkat + mengusap, tangan belakang di pinggang)
   erase:    { front: [122, -8],  back: [-41, 75],   lean: -3, head: -4,  crouch: 0,  look: [0.7, 0],    hands: ["fist", "fist"] },
+  // Shorts "Sogok Gorengan": push-up (badan papan miring bertumpu ujung kaki, telapak di tanah; gerak naik-turun di bawah)
+  pushup:   { front: [78, -36],  back: [78, -36],   lean: 58, head: -50, crouch: 0,  look: [0.9, -0.5], hands: ["open", "open"] },
 };
 
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
@@ -765,6 +767,13 @@ export const Character: React.FC<{ id: CharId; x: number; y: number; facing: 1 |
   if (st.action === "shoot") { const w = Math.max(0, Math.sin(t * 3)); pose = { ...pose, front: [pose.front[0] + w * 14, pose.front[1]], back: [pose.back[0] + w * 14, pose.back[1]] }; }
   if (st.action === "pull") { const w = Math.sin(t * 4.2); pose = { ...pose, front: [pose.front[0] + w * 16, pose.front[1] + w * 22], back: [pose.back[0] - w * 16, pose.back[1] - w * 22] }; }
   if (st.action === "wave") pose = { ...pose, front: [pose.front[0] + Math.sin(t * 10) * 8, pose.front[1]] };
+  if (st.action === "pushup" && st.since > 0.28) {
+    // turun (badan mendekati tanah, siku menekuk ke belakang) lalu naik lagi; ±0,9 dtk per hitungan
+    const d = (1 - Math.cos(((st.since - 0.28) / 0.9) * Math.PI * 2)) / 2;
+    // naik: lean 58 lengan hampir lurus; turun: lean 66 siku menekuk — telapak tetap di lantai (dihitung dari panjang lengan 100+96)
+    pose = { ...pose, lean: pose.lean + d * 8, head: pose.head - d * 6,
+      front: [pose.front[0] + d * 38, pose.front[1] - d * 60], back: [pose.back[0] + d * 38, pose.back[1] - d * 60] };
+  }
 
   const breathe = 1 + Math.sin(t * 2.3 + phase) * 0.012;
   const nod = Math.sin(t * 1.7 + phase) * 1.8 + (speaking ? -open * 4 + Math.sin(t * 9) * 1.2 : 0);
