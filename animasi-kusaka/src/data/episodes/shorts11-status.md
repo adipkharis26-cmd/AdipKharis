@@ -1,6 +1,6 @@
 # Shorts 8 "Sogok Gorengan" (id `shorts11`): status produksi
 
-Naskah + storyboard disetujui pemilik ("cocok", 23 Nov 2026). Suara mode dialog dibuat (0:46). BELUM dirender (render hanya atas perintah).
+Naskah + storyboard disetujui pemilik ("cocok", 23 Nov 2026). Suara mode dialog dibuat (0:46). Dirender atas perintah pemilik, dirilis 23 Nov 2026 (0:46, 4,7 MB): `releases/Kusaka-Shorts8-Sogok-Gorengan.mp4`.
 
 - Format: running gag hitungan Mang Udin (aturan 20; beda dari Shorts 7 POV). Tokoh: Kusaka, Mang Udin. Lokasi gerbang, Senin pagi, seragam + tas.
 - 17 baris, 859 karakter. Hook "SOGOK SATPAM / PAKAI GORENGAN", crash zoom l001, eskalasi alasan (ban bocor → nenek sakit → sogok bakwan),
