@@ -9,6 +9,7 @@ Naskah + storyboard disetujui pemilik ("cocok", 23 Nov 2026). Suara mode dialog 
 - Kanon v3.9.0: aksi baru `pushup` (badan papan miring, telapak di lantai, turun-naik ±0,9 dtk). Aturan audit push-up & bakwan.
 - Suara: Kusaka −18,4 LUFS, Mang Udin −18,5 LUFS; tidak ada jeda mati > 0,5 dtk.
 - Storyboard final (dengan suara): `storyboards/shorts11.png`.
+- Sampul 9:16 `brand/thumbnails/shorts11-A.png` dan paket upload `shorts11-upload.md` disetujui ("cocok", 23 Nov 2026).
 
 ## Langkah berikutnya
 1. Render HANYA atas perintah pemilik: `node scripts/generate-voice.mjs src/data/episodes/shorts11.json` (take dipakai ulang) → `npm run render:shorts`.

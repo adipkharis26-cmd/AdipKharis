@@ -744,5 +744,42 @@
       }
     ],
     "prop": null
+  },
+  "shorts11-A": {
+    "episode": 11,
+    "size": "9x16",
+    "bg": "gerbang",
+    "bgX": 900,
+    "burst": "#f0a020",
+    "pattern": "rays",
+    "text": [
+      "SOGOK",
+      "BAKWAN?!"
+    ],
+    "textX": 540,
+    "textY": 230,
+    "textSize": 200,
+    "textRot": 4,
+    "actors": [
+      {
+        "id": "mangUdin",
+        "emotion": "laugh",
+        "action": "eat",
+        "x": 330,
+        "y": 1430,
+        "scale": 1.35,
+        "facing": 1
+      },
+      {
+        "id": "kusaka",
+        "emotion": "defeated",
+        "action": "pushup",
+        "x": 1010,
+        "y": 1860,
+        "scale": 1.55,
+        "facing": -1
+      }
+    ],
+    "prop": null
   }
 }
