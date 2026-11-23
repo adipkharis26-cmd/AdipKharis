@@ -781,5 +781,79 @@
       }
     ],
     "prop": null
+  },
+  "shorts12-A": {
+    "episode": 12,
+    "size": "9x16",
+    "bg": "halte",
+    "bgX": 700,
+    "burst": "#7b5cd6",
+    "pattern": "stripes",
+    "text": [
+      "ANGKOT",
+      "TERAKHIR?!"
+    ],
+    "textX": 540,
+    "textY": 230,
+    "textSize": 190,
+    "textRot": -4,
+    "actors": [
+      {
+        "id": "bapak",
+        "emotion": "laugh",
+        "action": "thumbsup",
+        "x": 760,
+        "y": 1640,
+        "scale": 1.45,
+        "facing": -1
+      },
+      {
+        "id": "dinda",
+        "emotion": "shock",
+        "action": "point",
+        "x": 330,
+        "y": 2700,
+        "scale": 2.4,
+        "facing": 1
+      }
+    ],
+    "prop": null
+  },
+  "shorts13-A": {
+    "episode": 13,
+    "size": "9x16",
+    "bg": "kelasJendela",
+    "bgX": 900,
+    "burst": "#e8577e",
+    "pattern": "grid",
+    "text": [
+      "KOK CUMA",
+      "MUKA LO?!"
+    ],
+    "textX": 540,
+    "textY": 230,
+    "textSize": 180,
+    "textRot": 3,
+    "actors": [
+      {
+        "id": "nadia",
+        "emotion": "shock",
+        "action": "point",
+        "x": 330,
+        "y": 1560,
+        "scale": 1.5,
+        "facing": 1
+      },
+      {
+        "id": "sasa",
+        "emotion": "smug",
+        "action": "photo",
+        "x": 760,
+        "y": 2700,
+        "scale": 2.3,
+        "facing": -1
+      }
+    ],
+    "prop": null
   }
 }
