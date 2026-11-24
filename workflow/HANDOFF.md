@@ -1,5 +1,11 @@
 # Prompt pindah sesi — Charizch Agent
 
+**Perintah harian paling hemat (1 video per divisi aktif → paket rilis → worker upload YT/IG/TikTok):**
+```
+Jalankan workflow/prompts/1-video-per-divisi.md jam 22:00
+```
+Tiap divisi dikerjakan di sesi sendiri (konteks pendek). Detail: `workflow/prompts/1-video-per-divisi.md`, upload: `workflow/RILIS.md`.
+
 Salin blok di bawah ke sesi baru (repo `adipkharis26-cmd/AdipKharis`, branch `ccr-89b3a748-96svlz`). Perbarui bagian "Keadaan" setiap kali pindah sesi.
 
 ```
@@ -27,6 +33,8 @@ KEADAAN (24 Nov 2026):
 - Rilis otomatis: rilis_worker.py (jalan di VPS owner) + video/src/rilis_paket.py + workflow/RILIS.md.
   Keputusan owner: jeda veto 12 jam. Upload API dikunci (RILIS_API_TERAUDIT=0) sampai proyek
   Google lolos audit YouTube. VPS BELUM ADA.
+- Publisher Instagram Reels & TikTok multi-akun per divisi SUDAH ADA (publisher_sosmed.py, dipanggil rilis_worker.py;
+  belum diuji ke API sungguhan karena akun/VPS belum ada).
 - Rencana besar: publisher multi-platform (YouTube, Instagram Reels, TikTok) multi-akun per divisi
   + Analis (laporan harian, rapor mingguan, eksperimen). TikTok & YouTube wajib audit API;
   Instagram butuh akun Professional + Meta App.

@@ -94,6 +94,33 @@ Video yang diunggah lewat API dari proyek Google Cloud yang **belum lolos audit*
    ```
    `sudo systemctl daemon-reload && sudo systemctl enable --now rilis-worker`. Log: `journalctl -u rilis-worker -f`.
 
+## Instagram Reels & TikTok (publisher_sosmed.py)
+
+Worker yang sama juga memposting ke Instagram dan TikTok. Tiap paket mendapat jam tayang (slot pertama ≥ sekarang + jeda veto, maks `RILIS_MAKS_PER_HARI` per divisi per hari). Saat jamnya tiba, video diposting ke platform yang aktif, dengan maksimal 3 percobaan per platform. YouTube tidak wajib: kalau belum `auth`, worker tetap jalan untuk IG/TikTok.
+
+**Veto IG/TikTok:** hapus folder `rilis/<ep>` di branch `rilis-video` (bisa dari aplikasi GitHub di HP) sebelum jam tayang, atau `python rilis_worker.py veto <ep>` di VPS.
+
+Akun per divisi ada di `data/sosmed/<channel>.json` (di-ignore git, chmod 600). Satu divisi bisa punya akun IG dan TikTok sendiri.
+
+**Instagram** (akun harus Professional: Creator atau Bisnis):
+1. developers.facebook.com → buat App → tambahkan produk **Instagram** → *API setup with Instagram login*.
+2. Tambahkan akun IG divisi, lalu *Generate token* (izin `instagram_business_basic`, `instagram_business_content_publish`). Catat token dan IG user ID.
+3. Di VPS: `python publisher_sosmed.py ig-set ternyata-leluhur --token <TOKEN> --user-id <ID>`. Token diperpanjang otomatis tiap 30 hari.
+4. Untuk akun milik sendiri yang terdaftar sebagai tester di App, mode Development cukup. App Review Meta baru perlu kalau dipakai akun orang lain.
+
+**TikTok:**
+1. developers.tiktok.com → buat App → tambahkan **Login Kit** dan **Content Posting API** (aktifkan *Direct Post*), scope `video.publish`. Daftarkan redirect URI https (mis. halaman GitHub Pages kosong milik Anda).
+2. Di VPS: `python publisher_sosmed.py tt-set ternyata-leluhur --client-key … --client-secret … --redirect-uri https://…`, buka URL yang muncul, login akun TikTok divisi, lalu tempel URL setelah redirect.
+3. **Sebelum App lolos audit TikTok, video hanya bisa `SELF_ONLY` (private).** Ajukan audit di portal developer. Setelah disetujui, set `RILIS_TIKTOK_PRIVACY=PUBLIC_TO_EVERYONE`.
+
+Tambahkan ke `/etc/rilis-worker.env`:
+```
+RILIS_IG=1
+RILIS_TIKTOK=1
+RILIS_TIKTOK_PRIVACY=SELF_ONLY
+```
+Cek: `python publisher_sosmed.py status` dan `python rilis_worker.py once --dry-run`.
+
 ## Format paket (`rilis-video/rilis/<ep>/`)
 
 | File | Isi |

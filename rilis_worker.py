@@ -24,6 +24,11 @@ Konfigurasi lewat environment (lihat workflow/RILIS.md):
   RILIS_VETO_JAM (12), RILIS_MAKS_PER_HARI (1), RILIS_SLOT (11:30,17:30,19:30 WIB),
   RILIS_INTERVAL_MENIT (15), RILIS_PUSH_LAPORAN (1), RILIS_API_TERAUDIT (0),
   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+  RILIS_IG (0), RILIS_TIKTOK (0), RILIS_TIKTOK_PRIVACY (SELF_ONLY)  → publisher_sosmed.py
+
+Instagram & TikTok: tiap paket dapat jadwal tayang (slot pertama ≥ sekarang + jeda veto, maks
+RILIS_MAKS_PER_HARI per divisi per hari). Saat jamnya tiba, diposting ke platform yang aktif.
+Veto: hapus folder rilis/<ep> di branch rilis-video, atau `python rilis_worker.py veto <ep>`.
 """
 import argparse
 import json
@@ -345,15 +350,88 @@ def proses_rilis(paket, st, dry, yt=None, me=None, now=None):
     return st
 
 
+# ── Instagram & TikTok ──────────────────────────────────────────────────────
+def jadwal_sosmed(st, channel, now_utc):
+    """Slot pertama ≥ sekarang + jeda veto yang kuota hariannya (per divisi) masih ada."""
+    terpakai = {}
+    for r in st.get("sosmed", {}).values():
+        if r.get("channel") == channel and r.get("tayang"):
+            h = r["tayang"][:10]
+            terpakai[h] = terpakai.get(h, 0) + 1
+    t = jadwal_tayang(now_utc)
+    for _ in range(60):
+        hari = t.astimezone(WIB).date().isoformat()
+        if terpakai.get(hari, 0) < MAKS_PER_HARI:
+            return t
+        t = jadwal_tayang(t - timedelta(hours=VETO_JAM) + timedelta(minutes=1))
+    return t
+
+
+def proses_sosmed(paket, st, dry, now=None):
+    import publisher_sosmed as ps
+    now = now or datetime.now(timezone.utc)
+    sos = st.setdefault("sosmed", {})
+    for meta in paket:
+        ep, ch = meta["ep"], meta["channel"]
+        platform = ps.platform_aktif(ch)
+        if not platform or validasi(meta):
+            continue
+        ent = sos.setdefault(ep, {"channel": ch})
+        if ent.get("veto"):
+            continue
+        if not ent.get("tayang"):
+            t = jadwal_sosmed(st, ch, now)
+            ent["tayang"] = t.astimezone(WIB).isoformat()
+            jam = t.astimezone(WIB).strftime("%d %b %H:%M WIB")
+            log(f"{ep}: {', '.join(platform)} dijadwalkan {jam}")
+            if not dry:
+                save_state(st)
+                kabari(f"[{ch}] {ep} akan diposting ke {', '.join(platform)} pada {jam}.\n{meta['judul']}\n"
+                       f"Veto: hapus folder rilis/{ep} di branch {RILIS_BRANCH} sebelum jam itu.")
+        if now < datetime.fromisoformat(ent["tayang"]):
+            continue
+        for p in platform:
+            r = ent.get(p, {})
+            if r.get("ok") or r.get("coba", 0) >= 3:
+                continue
+            if dry:
+                log(f"[dry-run] {ep}: akan diposting ke {p}")
+                continue
+            try:
+                hasil = ps.posting(p, ch, meta)
+                ent[p] = {"ok": True, **hasil, "wib": datetime.now(WIB).isoformat()}
+                log(f"{ep}: terposting di {p} {hasil}")
+                kabari(f"[{ch}] {ep} terposting di {p}: {meta['judul']}")
+            except Exception as e:
+                ent[p] = {"ok": False, "coba": r.get("coba", 0) + 1, "error": str(e)[:300]}
+                log(f"{ep}: gagal posting ke {p} (percobaan {ent[p]['coba']}/3): {e}")
+                if ent[p]["coba"] >= 3:
+                    kabari(f"[{ch}] {ep} GAGAL diposting ke {p} 3x: {str(e)[:200]}")
+            save_state(st)
+    return st
+
+
+def cmd_veto(args):
+    st = load_state()
+    st.setdefault("sosmed", {}).setdefault(args.ep, {})["veto"] = True
+    save_state(st)
+    log(f"{args.ep}: diveto, tidak akan diposting ke Instagram/TikTok")
+
+
 def cmd_once(args):
     st = load_state()
     paket = tarik_paket()
     yt = ya = me = None
-    if not args.dry_run:
+    pakai_yt = TOKEN_FILE.exists() or args.dry_run
+    if not pakai_yt:
+        log("YouTube belum login (rilis_worker.py auth); YouTube dilewati, Instagram/TikTok tetap jalan.")
+    elif not args.dry_run:
         yt, ya = layanan()
         me = cek_channel(yt)
-    st = proses_rilis(paket, st, args.dry_run, yt, me)
-    if not args.dry_run:
+    if pakai_yt:
+        st = proses_rilis(paket, st, args.dry_run, yt, me)
+    st = proses_sosmed(paket, st, args.dry_run)
+    if not args.dry_run and yt:
         save_state(st)
         hari = datetime.now(WIB).date().isoformat()
         if st.get("laporanTerakhir") != hari and datetime.now(WIB).hour >= 6:
@@ -387,8 +465,9 @@ def main():
     p = sub.add_parser("once"); p.add_argument("--dry-run", action="store_true")
     sub.add_parser("report")
     p = sub.add_parser("loop"); p.add_argument("--dry-run", action="store_true")
+    p = sub.add_parser("veto"); p.add_argument("ep")
     args = ap.parse_args()
-    {"auth": cmd_auth, "once": cmd_once, "report": cmd_report, "loop": cmd_loop}[args.cmd](args)
+    {"auth": cmd_auth, "once": cmd_once, "report": cmd_report, "loop": cmd_loop, "veto": cmd_veto}[args.cmd](args)
 
 
 if __name__ == "__main__":
