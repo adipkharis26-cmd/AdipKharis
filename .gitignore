@@ -55,3 +55,13 @@ Desktop.ini
 
 # Rendered videos & voice samples (delivered directly, not versioned)
 video/out/
+
+# worktree paket rilis (branch rilis-video)
+.rilis-worktree/
+
+# rilis_worker.py (token OAuth, state, clone kerja) — JANGAN di-commit
+data/rilis_token.json
+data/rilis_state.json
+data/rilis-repo/
+data/laporan-repo/
+data/laporan/
