@@ -4,7 +4,8 @@
 ```
 Jalankan workflow/prompts/1-video-per-divisi.md jam 22:00
 ```
-Tiap divisi dikerjakan di sesi sendiri (konteks pendek). Detail: `workflow/prompts/1-video-per-divisi.md`, upload: `workflow/RILIS.md`.
+Tiap divisi dikerjakan di sesi sendiri (konteks pendek). Divisi aktif diatur lewat `"aktif"` di `workflow/config.json`.
+Upload jalan di GitHub Actions (`.github/workflows/rilis-upload.yml`, perlu ada di `main`), detail: `workflow/RILIS.md`.
 
 Salin blok di bawah ke sesi baru (repo `adipkharis26-cmd/AdipKharis`, branch `ccr-89b3a748-96svlz`). Perbarui bagian "Keadaan" setiap kali pindah sesi.
 

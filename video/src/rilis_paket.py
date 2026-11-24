@@ -22,8 +22,9 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-CHANNEL_BY_PREFIX = {"tl": ("ternyata-leluhur", "ternyata-leluhur"), "ep": ("mas-kharis", "mas-kharis"),
-                     "dm": ("dari-1-mnt", "dari-1-mnt"), "oh": ("ohhiyaa", "ohhiyaa")}
+# prefix episode → (channel, awalan nama MP4); divisi baru cukup ditambah di workflow/config.json
+CHANNEL_BY_PREFIX = {c["prefix"]: (cid, cid) for cid, c in
+                     json.loads((ROOT / "workflow" / "config.json").read_text(encoding="utf-8"))["channels"].items()}
 BATAS_SHORTS_DETIK = 180
 
 

@@ -14,6 +14,7 @@ Perintah setup (sekali per divisi):
   python publisher_sosmed.py ig-set ternyata-leluhur --token IGAA... --user-id 1784...
   python publisher_sosmed.py tt-set ternyata-leluhur --client-key ... --client-secret ... --redirect-uri https://...
   python publisher_sosmed.py status
+  python publisher_sosmed.py ekspor   # JSON semua akun → tempel ke GitHub Secret SOSMED_AKUN_JSON
 """
 import argparse
 import json
@@ -236,6 +237,15 @@ def cmd_status(_):
         print(f"{ch}: terisi={sorted(akun)} aktif={platform_aktif(ch)}")
 
 
+def cmd_ekspor(_):
+    """Cetak semua akun sebagai satu JSON untuk GitHub Secret SOSMED_AKUN_JSON."""
+    semua = {}
+    for p in sorted(AKUN_DIR.glob("*.json")) if AKUN_DIR.exists() else []:
+        semua[p.stem] = {pl: {k: v for k, v in ent.items() if not k.startswith("_")}
+                         for pl, ent in baca_akun(p.stem).items()}
+    print(json.dumps(semua, separators=(",", ":")))
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -244,8 +254,9 @@ def main():
     p = sub.add_parser("tt-set"); p.add_argument("channel"); p.add_argument("--client-key", required=True)
     p.add_argument("--client-secret", required=True); p.add_argument("--redirect-uri", required=True)
     sub.add_parser("status")
+    sub.add_parser("ekspor")
     a = ap.parse_args()
-    {"ig-set": cmd_ig_set, "tt-set": cmd_tt_set, "status": cmd_status}[a.cmd](a)
+    {"ig-set": cmd_ig_set, "tt-set": cmd_tt_set, "status": cmd_status, "ekspor": cmd_ekspor}[a.cmd](a)
 
 
 if __name__ == "__main__":

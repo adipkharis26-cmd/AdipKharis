@@ -13,7 +13,7 @@ Perintah ini dihitung sebagai ACC owner untuk judul yang dipilih dan untuk rende
 Kalau sekarang (WIB) belum jam itu: buat **satu** scheduled task dengan `create_trigger`: `run_once_at` = `<tanggal hari ini>T<jam>:00[Asia/Jakarta]`, `create_new_session_on_fire: true`, `initiation: "human_request"`, `name: "Charizch: 1 video/divisi"`, `prompt` = "Jalankan workflow/prompts/1-video-per-divisi.md (repo adipkharis26-cmd/AdipKharis, branch ccr-89b3a748-96svlz)". Jawab satu baris ("Dijadwalkan jam …") lalu **berhenti**. Jangan baca file lain.
 
 ## 1. Pilih SATU divisi (satu sesi = satu video)
-- Divisi aktif: `ternyata-leluhur` (tl) lalu `ohhiyaa` (oh), urut seperti ini.
+- Divisi aktif = channel di `workflow/config.json` dengan `"aktif": true`, urut seperti di file (cek cepat: `python3 -c "import json;print([(k,c['prefix']) for k,c in json.load(open('workflow/config.json'))['channels'].items() if c.get('aktif')])"`).
 - Divisi sudah selesai hari ini kalau di branch `rilis-video` ada `rilis/<prefix>NN/rilis.json` dengan `dibuat` bertanggal hari ini (WIB):
   `git fetch origin rilis-video 2>/dev/null && git ls-tree --name-only origin/rilis-video rilis/` lalu `git show origin/rilis-video:rilis/<ep>/rilis.json | head -c 600` untuk episode terbaru divisi itu saja.
 - Ambil divisi pertama yang belum selesai. Kalau semua sudah: jawab "Semua divisi sudah punya video hari ini" lalu berhenti.

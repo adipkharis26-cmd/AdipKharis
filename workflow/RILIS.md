@@ -94,6 +94,30 @@ Video yang diunggah lewat API dari proyek Google Cloud yang **belum lolos audit*
    ```
    `sudo systemctl daemon-reload && sudo systemctl enable --now rilis-worker`. Log: `journalctl -u rilis-worker -f`.
 
+## GitHub Actions (pengganti VPS, gratis)
+
+File `.github/workflows/rilis-upload.yml` menjalankan worker di server GitHub pada **11:30, 17:30, dan 19:30 WIB** (bisa telat beberapa menit), atau kapan saja lewat tab **Actions → Rilis upload → Run workflow**. Tiap jalan ±2–5 menit, jadi total ±100–300 menit per bulan (gratis 2.000 menit untuk repo private). Tidak memakai kuota Claude.
+
+- Jadwal hanya jalan kalau file workflow ada di branch **`main`** (aturan GitHub). Kode worker tetap diambil dari branch `ccr-89b3a748-96svlz`.
+- Jeda veto dihitung sejak paket dibuat. Contoh: paket jadi 23:40 → paling cepat 11:40 besok → tayang di slot 17:30.
+- State (video mana yang sudah diposting) dan token hasil perpanjangan disimpan di branch `rilis-state`. Token **dienkripsi** dengan `SOSMED_KEY`, jadi tidak pernah tersimpan terbuka di repo.
+
+**Setup sekali** (GitHub → repo → *Settings → Secrets and variables → Actions*):
+
+| Jenis | Nama | Isi |
+|---|---|---|
+| Secret | `SOSMED_KEY` | kata sandi acak panjang, buat sekali dan jangan diganti |
+| Secret | `SOSMED_AKUN_JSON` | hasil `python publisher_sosmed.py ekspor` (semua akun semua divisi dalam satu JSON) |
+| Secret | `YT_TOKEN_JSON` | isi `data/rilis_token.json` dari `python rilis_worker.py auth` (opsional) |
+| Secret | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | opsional, notifikasi |
+| Variable | `RILIS_IG`, `RILIS_TIKTOK` | `1` untuk menyalakan platform itu |
+| Variable | `RILIS_CHANNEL_ID`, `RILIS_API_TERAUDIT` | wajib kalau `YT_TOKEN_JSON` diisi |
+| Variable | `RILIS_MAKS_PER_HARI`, `RILIS_VETO_JAM`, `RILIS_SLOT`, `RILIS_TIKTOK_PRIVACY` | opsional (default 1, 12, 11:30/17:30/19:30, SELF_ONLY) |
+
+Kalau slot jam diubah, ubah juga baris `cron` di file workflow (jam UTC = WIB − 7).
+
+**Menambah atau mengganti akun divisi:** jalankan `ig-set` / `tt-set` di PC untuk divisi itu, lalu `ekspor`, lalu tempel ulang hasilnya ke Secret `SOSMED_AKUN_JSON`. Akun yang berubah langsung dipakai di jalan berikutnya.
+
 ## Instagram Reels & TikTok (publisher_sosmed.py)
 
 Worker yang sama juga memposting ke Instagram dan TikTok. Tiap paket mendapat jam tayang (slot pertama ≥ sekarang + jeda veto, maks `RILIS_MAKS_PER_HARI` per divisi per hari). Saat jamnya tiba, video diposting ke platform yang aktif, dengan maksimal 3 percobaan per platform. YouTube tidak wajib: kalau belum `auth`, worker tetap jalan untuk IG/TikTok.

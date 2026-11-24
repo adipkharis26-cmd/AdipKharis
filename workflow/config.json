@@ -6,6 +6,7 @@
   "channels": {
     "mas-kharis": {
       "nama": "Mas Kharis",
+      "aktif": false,
       "skill": ".claude/skills/mas-kharis/SKILL.md",
       "ide_per_hari": 1,
       "prefix": "ep",
@@ -30,6 +31,7 @@
     },
     "ternyata-leluhur": {
       "nama": "Ternyata Leluhur",
+      "aktif": true,
       "skill": ".claude/skills/ternyata-leluhur/SKILL.md",
       "ide_per_hari": 1,
       "prefix": "tl",
@@ -69,6 +71,7 @@
     },
     "dari-1-mnt": {
       "nama": "Dari 1 mnt",
+      "aktif": false,
       "skill": ".claude/skills/dari-1-mnt/SKILL.md",
       "ide_per_hari": 1,
       "prefix": "dm",
@@ -118,6 +121,7 @@
     },
     "ohhiyaa": {
       "nama": "Ohhiyaa!",
+      "aktif": true,
       "skill": ".claude/skills/ohhiyaa/SKILL.md",
       "ide_per_hari": 1,
       "prefix": "oh",

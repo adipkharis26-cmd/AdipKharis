@@ -380,7 +380,12 @@ def proses_sosmed(paket, st, dry, now=None):
         if ent.get("veto"):
             continue
         if not ent.get("tayang"):
-            t = jadwal_sosmed(st, ch, now)
+            dasar = now  # jeda veto dihitung sejak paket dibuat, jadi worker tidak perlu jalan tiap 15 menit
+            try:
+                dasar = min(now, datetime.fromisoformat(meta["dibuat"]).astimezone(timezone.utc))
+            except (KeyError, TypeError, ValueError):
+                pass
+            t = jadwal_sosmed(st, ch, dasar)
             ent["tayang"] = t.astimezone(WIB).isoformat()
             jam = t.astimezone(WIB).strftime("%d %b %H:%M WIB")
             log(f"{ep}: {', '.join(platform)} dijadwalkan {jam}")
