@@ -1,0 +1,58 @@
+{
+  "ep": "oh12",
+  "slug": "tempe-sehari-semeru",
+  "format": "benar-bohong", "alur": "tangga", "jawaban": "BOHONG",
+  "seri": "Kalau Semua Orang Indonesia…",
+  "judul": "Tempe Sehari se-Indonesia Cuma Setinggi Semeru, Benar? 🗻 | OHHIYAA!",
+  "objek": ["tempe"],
+  "patokan": ["candi-borobudur", "gunung-semeru", "everest", "garis-karman"],
+  "vo": [
+    "Katanya, semua tempe yang dimakan orang Indonesia dalam sehari, kalau ditumpuk, cuma setinggi Gunung Semeru.",
+    "Benar, atau bohong? Ketik di komentar!",
+    "Satu papan tempe kira-kira dua ratus lima puluh gram, tebalnya dua senti. Sehari, kita makan sekitar empat ribu ton tempe.",
+    "Tumpuk... lewat Candi Borobudur... lewat puncak Semeru... lewat Everest... lewat batas luar angkasa... dan terus naik...",
+    "Dan... bohong! Bukan setinggi Semeru, tapi hampir tiga ratus tiga puluh kilometer. Hampir sembilan puluh Semeru! Ohhiyaa!",
+    "Itu cuma sehari, dari enam belas juta papan tempe. Jadi kalau ada yang bilang, tempe sehari cuma setinggi Semeru, benar atau bohong?"
+  ],
+  "layar": [
+    "Papan tempe mainan + Gunung Semeru mainan; kartu klaim 'KATANYA… tempe sehari = setinggi Semeru'",
+    "tebak(BENAR / BOHONG?) 3-2-1",
+    "Satu papan tempe + penggaris (±2 cm, ±250 g); tumpukan papan jatuh; angka ±4.100 TON / HARI (BPS)",
+    "Menara tempe naik melewati Borobudur (35 m) → Semeru (3.676 m) → Everest (8.849 m) → garis Kármán 100 km",
+    "jawab('BOHONG!'); angka ±328 KM; ≈ 89× Semeru; OHHIYAA!",
+    "Ohi + papan tempe; angka 16,4 JUTA PAPAN; chip 'Benar atau bohong?' (loop ke klaim)"
+  ],
+  "hitungan": [
+    "Konsumsi tempe 0,102 kg/kapita/minggu (Susenas BPS) × 281,6 juta jiwa (BPS 2024) = 28.723.200 kg/minggu ÷ 7 = ±4.103.000 kg/hari (≈ 4.100 ton)",
+    "Papan: 4.103.000 kg ÷ 0,25 kg = ±16,4 juta papan/hari",
+    "Tinggi: 16.413.000 × 2 cm = 32.826.000 cm ≈ 328 km",
+    "Pembanding: ÷ Semeru 3.676 m = ±89×; Everest 8.849 m = ±37×; garis Kármán 100 km = ±3,3×; Borobudur 35,4 m"
+  ],
+  "asumsi": [
+    "1 papan tempe ±250 g, tebal ±2 cm (ukuran umum di pasar; bukan data resmi)",
+    "Konsumsi rata-rata mingguan dianggap merata per hari"
+  ],
+  "keaslian": {
+    "sumber_primer": [
+      "BPS — Susenas: rata-rata konsumsi per kapita seminggu bahan makanan penting, tempe ±0,102 kg (bps.go.id, dikutip CNBC Indonesia 2 Apr 2025)",
+      "BPS — Proyeksi jumlah penduduk Indonesia 2024: ±281,6 juta jiwa",
+      "Balai Besar TN Bromo Tengger Semeru — Gunung Semeru 3.676 mdpl; Indonesia Travel (Kemenpar) — Candi Borobudur tinggi 35,40 m; FAI — garis Kármán 100 km"
+    ],
+    "sudut_baru": "Objek baru (tempe, belum pernah dipakai), satuan papan tempe, dan tangga landmark baru (Borobudur → Semeru → Everest → garis Kármán) yang menggantikan Monas/pesawat/stasiun angkasa yang sudah jenuh; klaim BOHONG karena terlalu KECIL (kebalikan oh09).",
+    "web_cek": "WebSearch 'tempe sehari orang Indonesia ditumpuk setinggi gunung benar atau bohong' → hanya artikel umum tempe (Wikipedia, RRI, Antara); tidak ada video/judul/visual identik."
+  },
+  "deskripsi": {
+    "pembuka": "Katanya tempe yang dimakan orang Indonesia sehari, kalau ditumpuk, cuma setinggi Gunung Semeru. Benar? 🗻",
+    "hitungan": "0,102 kg/orang/minggu (Susenas BPS) × 281,6 juta ÷ 7 ≈ 4.100 ton sehari ≈ 16,4 juta papan × 2 cm ≈ 328 km — hampir 90× Semeru (3.676 mdpl).",
+    "cta": "Tadi kamu jawab BENAR atau BOHONG? 👇",
+    "hashtag": "#shorts #ohhiyaa #tempe #faktaunik #indonesia #tahukahkamu"
+  },
+  "thumb": [
+    {"nama": "A", "alasan": "Papan tempe raksasa di samping Gunung Semeru mainan; klaim sebagai pertanyaan tanpa jawaban", "frame": 3.0, "zoom": 1.15, "fokus": [540, 1050],
+     "teks": [{"t": "TEMPE SEHARI = SEMERU?", "warna": "putih"}, {"t": "BENAR ATAU BOHONG?", "kotak": "pink"}],
+     "stiker": [{"e": "1f5fb", "x": 880, "y": 1320, "s": 200, "rot": 0.15}]},
+    {"nama": "B", "alasan": "Varian cadangan: tumpukan papan tempe + angka 4.100 ton/hari, tanpa tinggi akhir", "frame": 19.0, "zoom": 1.05, "fokus": [540, 1000],
+     "teks": [{"t": "4.100 TON TEMPE SEHARI", "warna": "putih"}, {"t": "SETINGGI APA?", "kotak": "pink"}],
+     "stiker": [{"e": "1f914", "x": 880, "y": 1320, "s": 200, "rot": -0.12}]}
+  ]
+}

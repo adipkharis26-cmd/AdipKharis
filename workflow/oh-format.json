@@ -218,6 +218,12 @@
       "format": "duel",
       "alur": "duel",
       "jawaban": "KANAN"
+    },
+    {
+      "ep": "oh12",
+      "format": "benar-bohong",
+      "alur": "tangga",
+      "jawaban": "BOHONG"
     }
   ]
 }

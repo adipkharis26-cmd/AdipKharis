@@ -173,6 +173,21 @@
       ],
       "format": "duel",
       "alur": "duel"
+    },
+    {
+      "ep": "oh12",
+      "judul": "Tempe Sehari se-Indonesia Cuma Setinggi Semeru, Benar? 🗻",
+      "objek": [
+        "tempe"
+      ],
+      "patokan": [
+        "candi-borobudur",
+        "everest",
+        "garis-karman",
+        "gunung-semeru"
+      ],
+      "format": "benar-bohong",
+      "alur": "tangga"
     }
   ]
 }

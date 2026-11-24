@@ -1,0 +1,71 @@
+{
+  "ep": "oh12",
+  "catatan": "Thumbnail oh12. Jangan tampilkan jawaban.",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Papan tempe raksasa di samping Gunung Semeru mainan; klaim sebagai pertanyaan tanpa jawaban",
+      "latar": {
+        "frame": 3.0,
+        "zoom": 1.15,
+        "fokus": [
+          540,
+          1050
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "TEMPE SEHARI = SEMERU?",
+          "warna": "putih"
+        },
+        {
+          "t": "BENAR ATAU BOHONG?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1f5fb",
+          "x": 880,
+          "y": 1320,
+          "s": 200,
+          "rot": 0.15
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Varian cadangan: tumpukan papan tempe + angka 4.100 ton/hari, tanpa tinggi akhir",
+      "latar": {
+        "frame": 19.0,
+        "zoom": 1.05,
+        "fokus": [
+          540,
+          1000
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "4.100 TON TEMPE SEHARI",
+          "warna": "putih"
+        },
+        {
+          "t": "SETINGGI APA?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1f914",
+          "x": 880,
+          "y": 1320,
+          "s": 200,
+          "rot": -0.12
+        }
+      ]
+    }
+  ],
+  "thumbPilihan": "A"
+}
