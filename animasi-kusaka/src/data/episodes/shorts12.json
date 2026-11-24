@@ -38,7 +38,7 @@
     "angkot": [
      [
       "l001",
-      0
+      0.4
      ],
      [
       "l001:end",
@@ -71,6 +71,18 @@
      [
       "l014:end",
       2.6
+     ],
+     [
+      "l017:end",
+      2.6
+     ],
+     [
+      "l018",
+      0
+     ],
+     [
+      "l018:end",
+      0.4
      ]
     ]
    },
@@ -280,13 +292,37 @@
     },
     {
      "id": "l017",
+     "speaker": "dinda",
+     "emotion": "embarrassed",
+     "listener": "smug",
+     "shot": "two",
+     "action": "plead",
+     "to": "bapak",
+     "text": "Pak... ongkosnya di Bapak.",
+     "say": "[out of breath, embarrassed] Pak... ongkosnya di Bapak.",
+     "move": {
+      "who": "dinda",
+      "from": "offR",
+      "to": "A",
+      "at": 0
+     }
+    },
+    {
+     "id": "l018",
      "speaker": "bapak",
      "emotion": "smug",
-     "listener": "neutral",
+     "listener": "embarrassed",
      "shot": "two",
-     "action": "crossed",
-     "text": "Santai. Angkot itu kayak rezeki. Nggak ke mana.",
-     "say": "[sitting back, calm again] Santai. Angkot itu kayak rezeki. Nggak ke mana."
+     "action": "pocket",
+     "to": "dinda",
+     "text": "Tuh kan. Nggak ke mana.",
+     "say": "[smug, satisfied] Tuh kan. [beat] Nggak ke mana.",
+     "hold": {
+      "bapak": {
+       "item": "wallet",
+       "hand": "front"
+      }
+     }
     }
    ]
   }

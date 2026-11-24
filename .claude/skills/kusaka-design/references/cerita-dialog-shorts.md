@@ -78,3 +78,6 @@ Kesalahan v1 yang WAJIB dihindari (contoh nyata → perbaikan v2):
 - **Tanpa taruhan.** Beri alasan konkret kenapa keinginan itu penting ("Foto buat mading. Plis.").
 - **Button terbaik datang dari tokoh pinggiran** yang selama ini datar ("Gue senyum di situ, lho.") — bukan dari tokoh utama yang merangkum.
 - Tes cepat: bacakan keras-keras. Kalau ada kalimat yang tidak akan diucapkan orang Indonesia sungguhan di situasi itu, tulis ulang.
+- **Loop harus MULUS (pemilik 24 Nov 2026).** Frame terakhir = frame pertama: tokoh di mark yang sama, benda/track (angkot, gerbang, HP)
+  di posisi yang sama dengan detik 0, dan kalimat terakhir menyambung ke kalimat pertama. Kalau tokoh pergi di tengah cerita, beri sebab
+  ia kembali sebelum akhir (Shorts 9: "Pak... ongkosnya di Bapak."). Cek dengan still frame terakhir vs frame 0 sebelum render.

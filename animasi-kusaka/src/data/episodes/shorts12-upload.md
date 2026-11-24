@@ -2,7 +2,7 @@
 
 (id internal `shorts12` · file `releases/Kusaka-Shorts9-Angkot-Terakhir.mp4`)
 
-Durasi: **0:48** · full 9:16 · format **dad joke Bapak** (cerita mandiri, aturan 20) · teks hook 1,6 dtk · CTA cerita (kirim, akhir) ·
+Durasi: **0:51** · full 9:16 · format **dad joke Bapak** (cerita mandiri, aturan 20) · teks hook 1,6 dtk · CTA cerita (kirim, akhir) ·
 1 adegan · halte sore, sepulang sekolah (Dinda berseragam + tas) · Pak Hendra, Dinda · suara mode dialog (−18,5 LUFS) · angkot datang, pergi, dan datang lagi (loop)
 
 ## Judul (pilih satu; Shorts tidak punya A/B test)
@@ -46,7 +46,7 @@ Jujur 😭 Dad joke bapak kalian yang paling sering diulang apa? 👇
 | Retensi 0–8 dtk | Dad joke "bedanya angkot sama mantan" dipotong Dinda; angkot benar-benar pergi saat punchline-nya |
 | Penonton 25–34 | Dad joke bapak-bapak, angkot sore, "Bapak dulu juga gitu" (nostalgia + kini jadi orang tua) |
 | Sends | CTA kirim di akhir: "Kirim ke bapak kalian. Biar ada yang nemenin nunggu." |
-| Loop | Bapak sendirian: "Angkot itu kayak rezeki. Nggak ke mana." → "Pak! Angkotnya, Pak!" |
+| Loop (mulus) | Dinda balik lagi: "Pak... ongkosnya di Bapak." → Bapak: "Tuh kan. Nggak ke mana." sambil angkot berikutnya datang; frame akhir = frame awal (posisi tokoh & angkot sama) → "Pak! Angkotnya, Pak!" |
 | Komentar | Pertanyaan dad joke favorit di komentar sematan |
 
 ## Metrik cek (Studio, 48 jam)
