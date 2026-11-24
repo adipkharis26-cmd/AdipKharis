@@ -1,6 +1,6 @@
 # Tugas terjadwal: Produksi (satu jalan, tanpa Cek Suara)
 
-Kamu menjalankan tim produksi Kantor Konten milik Adip. Bekerjalah sendiri tanpa bertanya.
+Kamu menjalankan tim produksi Charizch Agent milik Adip. Bekerjalah sendiri tanpa bertanya.
 
 ```
 usulan ──owner ACC judul──► acc   (mode otomatis: Penggali menulis langsung acc, 1 per divisi per hari) ──TAHAP A (naskah, cek fakta, VO)──► TAHAP B (animasi, thumbnail, publish)──► selesai ──owner "Sudah di-post"──► diposting:true
@@ -10,7 +10,7 @@ usulan ──owner ACC judul──► acc   (mode otomatis: Penggali menulis lan
 
 ## 0. Persiapan (selalu)
 - Pastikan repo `adipkharis26-cmd/adipkharis` ada (kalau belum, clone), checkout `claude/stickmen-motion-graphics-kharis-ap44z0`, lalu `git pull`.
-- Baca `workflow/config.json` dan `workflow/README.md`. Muat `ArtifactData` (ToolSearch `select:ArtifactData`). Baca juga artifact Kantor Konten sekali dengan Artifact `action:"read"`, karena itu syarat sebelum bisa mengunggah aset.
+- Baca `workflow/config.json` dan `workflow/README.md`. Muat `ArtifactData` (ToolSearch `select:ArtifactData`). Baca juga artifact Charizch Agent sekali dengan Artifact `action:"read"`, karena itu syarat sebelum bisa mengunggah aset.
 - Query `ideas`, lalu buang ide yang punya `kunci.sampai` lebih besar dari waktu sekarang (sedang dikerjakan di sesi lain).
 - Pilih **satu** pekerjaan dengan prioritas: status lama `vo-ulang` / `vo-acc` / `cek-vo` (lanjutkan), lalu `acc`. Di status yang sama, ambil yang `accAt`-nya paling lama.
 - Baca `pengaturan/otomatis`. Ide dengan `otomatis:true` **dilewati** kalau `aktif` false atau `divisi.<channel>` false (owner mematikan produksi otomatis). Ide yang di-ACC owner sendiri tetap dikerjakan.
@@ -27,7 +27,7 @@ usulan ──owner ACC judul──► acc   (mode otomatis: Penggali menulis lan
 - Agen per divisi: Mas Kharis memakai `penulis`, `suara`, `animator`; Ternyata Leluhur memakai `tl-penulis`, `tl-suara`, `tl-animator`; Dari 1 mnt memakai `dm-penulis`, `dm-suara`, `dm-animator`; Ohhiyaa! memakai `oh-penulis`, `oh-suara`, `oh-animator`. `cekfakta`, `thumbnail` (Desainer Thumbnail), dan `publisher` dipakai bersama.
 - **Wajib**: setiap pindah langkah, update `agents/<id>` agen yang sedang bekerja menjadi `{status:"kerja", aktivitas:"<apa yang dikerjakan, mis. 'Animasi EP04'>", diubah:<ISO>}`. Saat langkahnya selesai, ubah ke `{status:"santai", aktivitas:"<hasil singkat>"}`. Update juga `progres` di ide. Owner memantau ini di peta kantor, jadi jangan dilewati. **Tulis juga field `tahap` di ide setiap pindah langkah**: `naskah` → `cekfakta` → `vo` → `animasi` → `thumbnail` → `publish` (owner melihatnya sebagai alur di tab "Alur produksi"). Saat selesai, `tahap` boleh dibiarkan. Selalu pakai `if_version` (baca dulu dengan `get`). Kalau dokumen agen belum ada (divisi baru), buat dengan `set` tanpa `if_version`.
 
-**Penyimpanan antarsesi.** Push git dari sesi terjadwal bisa gagal. Karena itu Kantor Konten adalah sumber kebenaran untuk berkas episode:
+**Penyimpanan antarsesi.** Push git dari sesi terjadwal bisa gagal. Karena itu Charizch Agent adalah sumber kebenaran untuk berkas episode:
 - `naskahMd` berisi isi file naskah lengkap.
 - `voText` berisi isi `video/vo/epNN.txt`.
 - `voJson` berisi isi `video/vo/epNN.json` sebagai string.
@@ -76,7 +76,7 @@ Di awal tahap B dan A2, kalau file episode tidak ada di repo, buat ulang dari fi
    - Kalau gagal, jangan hentikan produksi: tulis `progres` singkat dan lanjut ke Publisher tanpa thumbnail.
 3. **Publisher.**
    - Kalau MP4 lebih dari 14 MB, buat salinan untuk diunggah: `-c:v libx264 -crf 24 -c:a copy -movflags +faststart`.
-   - Unggah sebagai aset ke Kantor Konten.
+   - Unggah sebagai aset ke Charizch Agent.
    - Unggah juga `video/out/thumb/epNN-A.png` dan `epNN-B.png` sebagai aset (PNG, di bawah 20 MB).
    - Update ide: `{status:"selesai", videoAssetId, videoUrl, thumbs:[{nama:"A", assetId, url, teks:"<teks thumbnail>", alasan}, {nama:"B", ...}], thumbPilihan:"A", progres:"Selesai", upload:"Judul: … | Deskripsi: … | Tag: #…", kunci:{"__delete__":true}}`. Judul upload maksimal 70 karakter dan memakai hook. Tag 5–8 buah.
    - Simpan juga kode episode ke field `epJs` dan isi `video/thumb/epNN.json` ke field `thumbJson`, supaya tidak hilang kalau push gagal.

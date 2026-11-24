@@ -1,6 +1,6 @@
 ---
 name: dari-1-mnt
-description: Gaya terkunci channel "Dari 1 mnt": YouTube Shorts motion graphic 2D "Hybrid Kinetic Pop" (kinetic text Lilita One, stiker emoji Noto, bendera, infografis, latar ganti tiap potongan, maskot foto chibi biru yang jarang muncul), VO "Finn - Expressive & Ads Indonesian", durasi 60–90 detik. Pakai skill ini setiap kali membuat ide judul, naskah, VO, atau video MP4 untuk Dari 1 mnt, termasuk saat dijalankan jadwal otomatis Kantor Konten.
+description: Gaya terkunci channel "Dari 1 mnt": YouTube Shorts motion graphic 2D "Hybrid Kinetic Pop" (kinetic text Lilita One, stiker emoji Noto, bendera, infografis, latar ganti tiap potongan, maskot foto chibi biru yang jarang muncul), VO "Finn - Expressive & Ads Indonesian", durasi 60–90 detik. Pakai skill ini setiap kali membuat ide judul, naskah, VO, atau video MP4 untuk Dari 1 mnt, termasuk saat dijalankan jadwal otomatis Charizch Agent.
 ---
 
 # Dari 1 mnt: gaya terkunci

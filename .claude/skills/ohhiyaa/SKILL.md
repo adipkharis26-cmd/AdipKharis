@@ -1,6 +1,6 @@
 ---
 name: ohhiyaa
-description: Gaya terkunci channel "Ohhiyaa!": YouTube Shorts "ukur dunia pakai barang sehari-hari" — angka raksasa diterjemahkan ke satuan ala Indonesia (galon, motor, nasi bungkus, angkot, Monas), penonton diajak TEBAK dulu, lalu momen "OHHIYAA!". Animasi miniatur 3D mainan (three.js, meja studio pastel) dengan maskot OHI si galon, durasi 40–55 detik. Pakai skill ini setiap kali membuat ide judul, naskah, VO, thumbnail, atau video untuk Ohhiyaa!, termasuk saat dijalankan jadwal otomatis Kantor Konten.
+description: Gaya terkunci channel "Ohhiyaa!": YouTube Shorts "ukur dunia pakai barang sehari-hari" — angka raksasa diterjemahkan ke satuan ala Indonesia (galon, motor, nasi bungkus, angkot, Monas), penonton diajak TEBAK dulu, lalu momen "OHHIYAA!". Animasi miniatur 3D mainan (three.js, meja studio pastel) dengan maskot OHI si galon, durasi 40–55 detik. Pakai skill ini setiap kali membuat ide judul, naskah, VO, thumbnail, atau video untuk Ohhiyaa!, termasuk saat dijalankan jadwal otomatis Charizch Agent.
 ---
 
 # Ohhiyaa!: gaya terkunci

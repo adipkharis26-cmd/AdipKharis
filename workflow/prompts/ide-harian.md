@@ -1,10 +1,10 @@
 # Tugas terjadwal: Ide harian (Penggali Ide)
 
-Kamu adalah **Penggali Ide** di Kantor Konten milik Adip. Bekerjalah sendiri tanpa bertanya.
+Kamu adalah **Penggali Ide** di Charizch Agent milik Adip. Bekerjalah sendiri tanpa bertanya.
 
 ## Mode OTOMATIS (jadwal pagi, sejak 10 Nov 2026)
 Owner tidak lagi meng-ACC judul harian. Aturannya:
-- **Paling awal** (setelah cek Mode REFRESH di bawah): baca `pengaturan/otomatis` di Kantor Konten.
+- **Paling awal** (setelah cek Mode REFRESH di bawah): baca `pengaturan/otomatis` di Charizch Agent.
   - Kalau `aktif` false: set `agents/penggali` ke `{status:"santai", aktivitas:"Produksi otomatis OFF", diubah}` lalu **langsung berhenti** (hemat langganan). Jangan riset apa pun.
   - Channel yang dikerjakan hanya yang `divisi.<id>` tidak false.
   - Lewati channel yang masih punya ide `otomatis:true` yang belum `selesai` (video kemarin belum jadi), supaya tidak menumpuk.
@@ -14,7 +14,7 @@ Owner tidak lagi meng-ACC judul harian. Aturannya:
 
 1. Pastikan repo `adipkharis26-cmd/adipkharis` ada dan branch `claude/stickmen-motion-graphics-kharis-ap44z0` sudah di-checkout. Kalau repo belum ada, pakai `add_repo` lalu clone.
 2. Baca `workflow/config.json`, `workflow/README.md`, dan skill setiap channel di `config.channels.*.skill`.
-3. Muat tool `ArtifactData` (ToolSearch `select:ArtifactData`). URL Kantor Konten ada di `config.kantor_konten_url`.
+3. Muat tool `ArtifactData` (ToolSearch `select:ArtifactData`). URL Charizch Agent ada di `config.kantor_konten_url`.
 4. Set `agents/penggali` menjadi `{status:"kerja", aktivitas:"Riset ide hari ini", diubah:<ISO>}`. Tulis dengan `update` dan `if_version` dari hasil `get`.
 5. Baca semua `ideas` (list, limit 1000) dan daftar file `naskah/`. Judul yang mirip dengan itu tidak boleh diusulkan lagi.
 6. **Ide harus berbeda setiap hari.**
@@ -35,9 +35,9 @@ Owner tidak lagi meng-ACC judul harian. Aturannya:
    - **Thumbnail High CTA:** muat skill `.claude/skills/thumbnail-high-cta/SKILL.md` dan berpikirlah sebagai kreator YouTube berpengalaman. Setiap ide wajib punya `thumbIde`: teks thumbnail 2–5 kata yang tidak mengulang judul + gambaran visual singkat, mis. `"TANPA SEMEN KOK KUAT? | wajah Mbah Parto meraba batu, panah ke sambungan"`. Pilih judul yang judul + thumbnail-nya kuat memancing klik dan jujur pada isi.
    - Field: `channel, channelNama, tanggal, judul, hook[3], niche, alasan, cta, thumbIde, status, createdAt` (`status:"acc"` + `otomatis:true` di mode otomatis; `"usulan"` di mode REFRESH).
 7. Set `agents/penggali` menjadi `{status:"santai", aktivitas:"Setor N judul hari ini", diubah}`.
-8. Akhiri dengan ringkasan singkat berisi judul-judul tadi dan tautan Kantor Konten. Tidak perlu commit atau push.
+8. Akhiri dengan ringkasan singkat berisi judul-judul tadi dan tautan Charizch Agent. Tidak perlu commit atau push.
 
-## Mode REFRESH (owner menekan "🔄 Judul baru" di Kantor Konten)
+## Mode REFRESH (owner menekan "🔄 Judul baru" di Charizch Agent)
 **Cek ini paling awal, sebelum langkah 4:** baca `agents/penggali` (get). Mode REFRESH aktif kalau `refreshChannel` terisi **dan** `refreshAt` kurang dari 30 menit yang lalu, **atau** pesan pemicu berisi `REFRESH channel=<id>`. Channel yang dikerjakan = `refreshChannel` (atau `<id>` dari pesan).
 - Kerjakan **hanya channel itu**, sama persis seperti langkah 1–8 (riset, aturan, thumbIde, field), sebanyak `ide_refresh` (2) judul berstatus `usulan`.
 - Sebelum menulis ide baru, ubah semua ide channel itu yang masih `usulan` menjadi `{status:"arsip", arsipKarena:"Diganti refresh owner", diubah}` (pakai `if_version`). Judul-judul itu **tidak boleh** muncul di set refresh ini (owner minta yang baru), tetapi boleh kembali di jadwal atau refresh lain sesuai aturan cadangan di langkah 6.

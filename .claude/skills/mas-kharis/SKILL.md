@@ -1,13 +1,13 @@
 ---
 name: mas-kharis
-description: Gaya terkunci channel "Mas Kharis" — video motion graphic vertikal 1080×1920 ±60 detik dengan stikmen Mas Kharis (1 helai rambut), ruangan kartun 2.5D dinding kuning + lantai catur teal, caption kata per kata. Pakai skill ini setiap kali membuat ide judul, naskah, VO, atau video MP4 untuk Mas Kharis, termasuk saat dijalankan oleh jadwal otomatis Kantor Konten.
+description: Gaya terkunci channel "Mas Kharis" — video motion graphic vertikal 1080×1920 ±60 detik dengan stikmen Mas Kharis (1 helai rambut), ruangan kartun 2.5D dinding kuning + lantai catur teal, caption kata per kata. Pakai skill ini setiap kali membuat ide judul, naskah, VO, atau video MP4 untuk Mas Kharis, termasuk saat dijalankan oleh jadwal otomatis Charizch Agent.
 ---
 
 # Mas Kharis — gaya terkunci
 
 > **STATUS: TERKUNCI** (versi 10 Nov 2026, disetujui owner). Gaya, alur, durasi, suara, dan mesin di skill ini hanya boleh diubah atas perintah langsung owner. Sesi otomatis (ide harian/produksi) **dilarang mengubah file skill ini**.
 
-Gaya ini **terkunci**. Jangan mengubah karakter, palet, ruangan, font, ukuran judul, atau format naskah kecuali owner (Adip) memintanya langsung dengan kata-kata sendiri. Referensi gaya lain (misalnya kantor isometrik/pixel art) adalah untuk **Kantor Konten**, bukan untuk video Mas Kharis.
+Gaya ini **terkunci**. Jangan mengubah karakter, palet, ruangan, font, ukuran judul, atau format naskah kecuali owner (Adip) memintanya langsung dengan kata-kata sendiri. Referensi gaya lain (misalnya kantor isometrik/pixel art) adalah untuk **Charizch Agent**, bukan untuk video Mas Kharis.
 
 Contoh hidup yang menjadi patokan: `video/src/ep01.js`, `video/src/ep02.js`, `video/src/sample.js`, naskah di `naskah/`.
 
@@ -87,7 +87,7 @@ Aturan kode episode:
 Ide harian untuk Mas Kharis harus:
 - Bertema hidup sehari-hari pekerja muda Indonesia (kantor, gajian, psikologi kebiasaan, uang, relasi kerja) dengan CTA tinggi: mudah dikomentari atau memancing pilih kubu.
 - Hook ≤ 6 kata dengan pola konflik atau pertanyaan ("Baru gajian, kok udah habis?!").
-- Tidak mengulang judul yang sudah ada di `naskah/` atau di Kantor Konten.
+- Tidak mengulang judul yang sudah ada di `naskah/` atau di Charizch Agent.
 - Diisi lengkap: `judul`, `hook` (3 baris judul layar), `niche`, `alasan` (kenapa CTA tinggi), `cta`.
 
-Alur Kantor Konten (persetujuan owner) dan peran tiap agen ada di `workflow/README.md`.
+Alur Charizch Agent (persetujuan owner) dan peran tiap agen ada di `workflow/README.md`.

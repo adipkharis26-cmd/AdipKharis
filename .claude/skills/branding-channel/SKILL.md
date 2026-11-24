@@ -1,6 +1,6 @@
 ---
 name: branding-channel
-description: Branding channel YouTube untuk SEMUA divisi Kantor Konten (sekarang dan divisi baru) — 3 logo profil 800×800 (aman untuk potongan lingkaran), banner YouTube 2560×1440 dengan area aman 1546×423 (rapi di HP, komputer, TV), dan rekomendasi bio high CTA. Claude berperan sebagai kreator YouTube berpengalaman. Pakai saat divisi baru dibuat, saat owner minta logo/banner/bio, atau saat gaya channel berubah.
+description: Branding channel YouTube untuk SEMUA divisi Charizch Agent (sekarang dan divisi baru) — 3 logo profil 800×800 (aman untuk potongan lingkaran), banner YouTube 2560×1440 dengan area aman 1546×423 (rapi di HP, komputer, TV), dan rekomendasi bio high CTA. Claude berperan sebagai kreator YouTube berpengalaman. Pakai saat divisi baru dibuat, saat owner minta logo/banner/bio, atau saat gaya channel berubah.
 ---
 
 # Branding channel (semua divisi)
@@ -54,6 +54,6 @@ Kamu kreator YouTube berpengalaman. Logo dan banner adalah "kemasan" channel: or
    Contoh: `video/brand/mas-kharis.json`, `ternyata-leluhur.json`, `dari-1-mnt.json`.
 2. `cd video/src && node brand.js <channel-id>` → `video/out/brand/<id>/logo-A|B|C.png`, `banner.png`, `cek-logo.png` (lingkaran + ukuran kecil), `cek-banner.png` (TV/desktop/HP).
 3. Buka kedua file cek (Read). Pastikan wajah/ikon utuh di lingkaran, terbaca di 48 px, dan teks banner utuh di potongan HP. Perbaiki `crop` lalu ulangi.
-4. Unggah 4 PNG sebagai aset Kantor Konten, lalu `set` dokumen `brand/<channel-id>`:
+4. Unggah 4 PNG sebagai aset Charizch Agent, lalu `set` dokumen `brand/<channel-id>`:
    `{nama, tagline, logos:[{nama, assetId, url, catatan, rekom}], banner:{assetId, url}, bio:[...], diubah}`.
    Tombol **🎨 Branding** di meja divisi menampilkannya dengan tombol unduh dan salin bio.

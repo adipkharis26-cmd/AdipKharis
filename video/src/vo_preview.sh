@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Usage: video/src/vo_preview.sh epNN "Judul episode"
 # Wraps video/vo/epNN.mp3 into a small MP4 (still card + audio) so the owner can
-# listen to the VO inside Kantor Konten (the asset store accepts mp4, not mp3).
+# listen to the VO inside Charizch Agent (the asset store accepts mp4, not mp3).
 set -euo pipefail
 EP=$1; TITLE=${2:-$1}
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)

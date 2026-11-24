@@ -1,6 +1,6 @@
 ---
 name: ternyata-leluhur
-description: Gaya terkunci channel "Ternyata Leluhur": cerita kearifan lokal Indonesia berbasis sains, berupa animasi 3D sinematik bertekstur (three.js) 1080×1920 dengan tokoh cel-shaded berkepala besar bergaris tinta, baju motif Nusantara, close-up wajah, caption kata per kata Baloo 2, VO "DK - Documentary". Pakai skill ini setiap kali membuat ide judul, naskah, VO, atau video MP4 untuk Ternyata Leluhur, termasuk saat dijalankan oleh jadwal otomatis Kantor Konten.
+description: Gaya terkunci channel "Ternyata Leluhur": cerita kearifan lokal Indonesia berbasis sains, berupa animasi 3D sinematik bertekstur (three.js) 1080×1920 dengan tokoh cel-shaded berkepala besar bergaris tinta, baju motif Nusantara, close-up wajah, caption kata per kata Baloo 2, VO "DK - Documentary". Pakai skill ini setiap kali membuat ide judul, naskah, VO, atau video MP4 untuk Ternyata Leluhur, termasuk saat dijalankan oleh jadwal otomatis Charizch Agent.
 ---
 
 # Ternyata Leluhur: gaya terkunci
@@ -142,7 +142,7 @@ Contoh patokan alur v2: `naskah/tl01-candi-tanpa-semen.md` + `video/src/tl01.js`
   - Kenapa Nelayan Ini Melarang Orang Melaut?
   - Kenapa Petani Ini Melepas Bebek ke Sawahnya?
   - Kenapa Tiang Rumah Ini Dibuat Miring?
-  - Judul nomor 4–10 masih boleh diusulkan ke Kantor Konten **sekali**, sebagai ide awal seri.
+  - Judul nomor 4–10 masih boleh diusulkan ke Charizch Agent **sekali**, sebagai ide awal seri.
 - **Topik yang dihindari:**
   - Jamu, pengobatan tradisional, dan klaim kesehatan.
   - Tutorial mengolah singkong atau fermentasi.

@@ -1,29 +1,29 @@
-# Kantor Konten — workflow agen
+# Charizch Agent — workflow agen
 
 Owner: **Adip**. Halaman kantor (tempat ACC): https://claude.ai/artifact/TPrLXh4cwBMhXhnRKxp7DC
 
 ```
-06:40 WIB  Penggali Ide ──► setor N judul/channel ke Kantor Konten (status: usulan)
+06:40 WIB  Penggali Ide ──► setor N judul/channel ke Charizch Agent (status: usulan)
            Owner ──────────► tekan ACC 1 judul (+ catatan opsional) → tim jalan sampai selesai
 tiap jam   Penulis Naskah ─► naskah/epNN-*.md (format skill channel)
 07–22 WIB  Cek Fakta ──────► verifikasi "Dasar fakta", koreksi naskah
            Pengisi Suara ──► ElevenLabs (tts_elevenlabs.py) → mp3 + timestamp kata
            Animator ───────► epNN.js + render MP4 1080×1920 sinkron VO
-           Publisher ──────► unggah MP4 ke Kantor Konten, isi judul/deskripsi/tag,
+           Publisher ──────► unggah MP4 ke Charizch Agent, isi judul/deskripsi/tag,
                              commit sumber ke repo, kirim MP4 ke owner (status: selesai)
            Owner ──────────► setelah upload ke YouTube, tekan "Sudah di-post"
 ```
 
 ## Peta kantor
 
-Halaman Kantor Konten menampilkan satu lantai isometrik dengan beberapa ruangan. Tab di atas peta memindahkan kamera ke ruangan itu.
+Halaman Charizch Agent menampilkan satu lantai isometrik dengan beberapa ruangan. Tab di atas peta memindahkan kamera ke ruangan itu.
 
 - **Ruang Rapat**: agen yang menunggu keputusan owner duduk di sini dengan tanda **!** merah. Penggali Ide membawa judul baru, Pengisi Suara membawa VO untuk dicek, Animator membawa render yang gagal. Klik agennya untuk membuka panel ACC.
 - **Divisi Mas Kharis**: meja tiap agen dan booth VO. Agen yang statusnya `kerja` duduk di mejanya dengan bubble aktivitas.
 - **Studio Publish**: meja Publisher dan Desainer Thumbnail. Layarnya menampilkan video terakhir yang siap tayang.
 - **Lounge**: tempat agen yang sedang santai.
 
-Saat menambah channel baru, tambahkan juga ruangan divisinya di `ROOMS`/`DESKS` pada `workflow/kantor-konten.html`.
+Saat menambah channel baru, tambahkan juga ruangan divisinya di `ROOMS`/`DESKS` pada `workflow/charizch-agent.html`.
 
 ## Peran (karyawan)
 
@@ -39,7 +39,7 @@ Saat menambah channel baru, tambahkan juga ruangan divisinya di `ROOMS`/`DESKS` 
 
 Setiap agen memperbarui dokumen `agents/<id>` saat mulai (`status: "kerja"`, `aktivitas: "…"`) dan saat selesai (`status: "santai"`), supaya kantor di halaman ikut bergerak.
 
-## Database Kantor Konten
+## Database Charizch Agent
 
 `ideas/<channel-prefix>-YYYYMMDD-n`:
 
@@ -90,4 +90,4 @@ Dua tugas terjadwal menjalankan sesi Claude baru di environment `adipkharis` (ya
 | Dari 1 mnt | `dm` / `dm` | `.claude/skills/dari-1-mnt` (Hybrid Kinetic Pop 2D, 60–90 dtk) | Finn | `video/src/kinetic.js` + `leluhur_mix.py` (SFX, tanpa musik) | `dm-penulis`, `dm-suara`, `dm-animator` |
 | Ohhiyaa! | `oh` / `oh` | `.claude/skills/ohhiyaa` (miniatur 3D mainan, ukur pakai barang sehari-hari, 40–55 dtk) | Papa Gufron (satu tarikan + reverb tipis) | `video/src/ohhiyaa3d.js` + `leluhur_mix.py` (musik + SFX) | `oh-penulis`, `oh-suara`, `oh-animator` |
 
-Agen bersama: `penggali` (ide semua divisi), `cekfakta`, `thumbnail`, dan `publisher`. Suara dipilih otomatis oleh `tts_elevenlabs.py` dari prefix episode (`config.channels.<id>.elevenlabs`). Divisi baru ditambahkan dengan: skill gaya → entri di `config.channels` (termasuk `thumbnail` untuk gaya thumbnail-nya) → branding channel (skill `branding-channel`: `video/brand/<id>.json` + `node video/src/brand.js <id>`, unggah ke dokumen `brand/<id>`) → agen + ruang di `kantor-konten.html`.
+Agen bersama: `penggali` (ide semua divisi), `cekfakta`, `thumbnail`, dan `publisher`. Suara dipilih otomatis oleh `tts_elevenlabs.py` dari prefix episode (`config.channels.<id>.elevenlabs`). Divisi baru ditambahkan dengan: skill gaya → entri di `config.channels` (termasuk `thumbnail` untuk gaya thumbnail-nya) → branding channel (skill `branding-channel`: `video/brand/<id>.json` + `node video/src/brand.js <id>`, unggah ke dokumen `brand/<id>`) → agen + ruang di `workflow/charizch-agent.html`.

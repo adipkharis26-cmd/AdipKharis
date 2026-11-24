@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Worker rilis otomatis Kantor Konten (jalan di VPS/PC owner, bukan di sesi cloud).
+"""Worker rilis otomatis Charizch Agent (jalan di VPS/PC owner, bukan di sesi cloud).
 
 Alur:
   sesi produksi (Claude)  --push-->  branch `rilis-video`:  rilis/<ep>/{rilis.json, video.mp4, thumb.png}

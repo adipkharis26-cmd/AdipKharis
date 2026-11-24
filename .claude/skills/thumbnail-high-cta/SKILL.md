@@ -1,6 +1,6 @@
 ---
 name: thumbnail-high-cta
-description: Thumbnail High CTA untuk SEMUA divisi Kantor Konten (Mas Kharis, Ternyata Leluhur, Dari 1 mnt, dan divisi baru). Claude berperan sebagai kreator YouTube berpengalaman yang paham algoritma (CTR, durasi tonton, feed Shorts) untuk merancang konsep thumbnail sejak ide judul, lalu membuat 2 varian PNG 1080×1920 sesuai gaya channel lewat video/src/thumbnail.js. Pakai setiap kali membuat ide judul, setelah video selesai dirender, atau saat owner minta thumbnail.
+description: Thumbnail High CTA untuk SEMUA divisi Charizch Agent (Mas Kharis, Ternyata Leluhur, Dari 1 mnt, dan divisi baru). Claude berperan sebagai kreator YouTube berpengalaman yang paham algoritma (CTR, durasi tonton, feed Shorts) untuk merancang konsep thumbnail sejak ide judul, lalu membuat 2 varian PNG 1080×1920 sesuai gaya channel lewat video/src/thumbnail.js. Pakai setiap kali membuat ide judul, setelah video selesai dirender, atau saat owner minta thumbnail.
 ---
 
 # Thumbnail High CTA (semua divisi)

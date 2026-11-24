@@ -1,4 +1,4 @@
-<title>Kantor Konten</title>
+<title>Charizch Agent</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -1140,7 +1140,7 @@ document.querySelectorAll('.tab').forEach(b => b.onclick = () => { filter = b.da
 
 const MSG = { acc: 'Judul di-ACC. Tim langsung bekerja sampai video selesai (tanpa cek suara). Pantau tahapnya di tab Alur produksi.', 'vo-acc': 'Suara di-ACC. Animator dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', 'vo-ulang': 'VO diulang sesuai catatan. Tim dipanggil (±5 menit), atau tekan ▶ Mulai sekarang.', tolak: 'Ditolak' };
 const MSG_LATE = { acc: 'Judul di-ACC. Tim mulai di jadwal berikutnya (menit ke-13) dan langsung sampai selesai.', 'vo-acc': 'Suara di-ACC. Animator mulai di jadwal berikutnya (menit ke-13).', 'vo-ulang': 'VO akan diulang di jadwal berikutnya (menit ke-13).' };
-// "🔄 Judul baru": run the daily idea scout now for one division (scheduled task "Kantor Konten: ide harian")
+// "🔄 Judul baru": run the daily idea scout now for one division (scheduled task "Charizch Agent: ide harian")
 const IDEA_TRIGGER = 'trig_01KVzAaEsV3BWHPtsjKX9pUs';
 const penggali = () => agents.find(a => a.id === 'penggali') || {};
 function refreshBusy(ch) { const pg = penggali(); return pg.status === 'kerja' && pg.refreshChannel === ch && Date.now() - (Date.parse(pg.refreshAt || '') || 0) < 30 * 60000; }
@@ -1164,7 +1164,7 @@ async function refreshIdeas(ch, b) {
   } else toast('Panggilan langsung tidak tersedia di tampilan ini. Judul baru datang besok ±06:40.');
   renderDesks();
 }
-// start the production run right away (scheduled task "Kantor Konten: produksi"), through the
+// start the production run right away (scheduled task "Charizch Agent: produksi"), through the
 // viewer's Claude Code Remote connector; without it the hourly :13 schedule still picks the job up
 const PROD_TRIGGER = 'trig_01KW7689zngdSs8YW1jcG7qu';
 async function kickTeam(i, status) {

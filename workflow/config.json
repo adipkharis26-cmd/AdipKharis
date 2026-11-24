@@ -197,7 +197,7 @@
   },
   "ide_refresh": 2,
   "otomatis": {
-    "catatan": "Saklar ON/OFF ada di Kantor Konten (db pengaturan/otomatis). ON: tiap pagi 1 judul per divisi langsung status acc tanpa ACC owner, produksi mulai ±07:00. OFF: tidak ada judul/produksi otomatis.",
+    "catatan": "Saklar ON/OFF ada di Charizch Agent (db pengaturan/otomatis). ON: tiap pagi 1 judul per divisi langsung status acc tanpa ACC owner, produksi mulai ±07:00. OFF: tidak ada judul/produksi otomatis.",
     "video_per_divisi_per_hari": 1
   }
 }

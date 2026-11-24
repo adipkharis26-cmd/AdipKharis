@@ -80,7 +80,7 @@ Video yang diunggah lewat API dari proyek Google Cloud yang **belum lolos audit*
 8. **Service 24/7** `/etc/systemd/system/rilis-worker.service`:
    ```ini
    [Unit]
-   Description=Kantor Konten rilis worker
+   Description=Charizch Agent rilis worker
    After=network-online.target
    [Service]
    User=USER
