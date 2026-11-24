@@ -5,9 +5,7 @@ name: Rilis upload
 
 on:
   schedule:
-    - cron: "30 4 * * *"    # 11:30 WIB
-    - cron: "30 10 * * *"   # 17:30 WIB
-    - cron: "30 12 * * *"   # 19:30 WIB
+    - cron: "17 */2 * * *"  # cek stok tiap 2 jam; posting hanya kalau jeda per divisi (12 jam) sudah lewat
   workflow_dispatch: {}     # tombol "Run workflow" di tab Actions
 
 concurrency:
@@ -29,8 +27,8 @@ jobs:
       RILIS_API_TERAUDIT: ${{ vars.RILIS_API_TERAUDIT || '0' }}
       RILIS_CHANNEL_ID: ${{ vars.RILIS_CHANNEL_ID }}
       RILIS_VETO_JAM: ${{ vars.RILIS_VETO_JAM || '12' }}
-      RILIS_MAKS_PER_HARI: ${{ vars.RILIS_MAKS_PER_HARI || '1' }}
-      RILIS_SLOT: ${{ vars.RILIS_SLOT || '11:30,17:30,19:30' }}
+      RILIS_JEDA_JAM: ${{ vars.RILIS_JEDA_JAM || '12' }}
+      RILIS_YT_DIVISI: ${{ vars.RILIS_YT_DIVISI || 'ternyata-leluhur' }}
       RILIS_PUSH_LAPORAN: "0"
       RILIS_REPO_DIR: ${{ github.workspace }}/data/rilis-repo
       SOSMED_KEY: ${{ secrets.SOSMED_KEY }}
@@ -56,6 +54,10 @@ jobs:
           ref: rilis-video
           path: data/rilis-repo
           fetch-depth: 1
+          filter: blob:none            # video tidak diunduh semua; hanya yang terpilih
+          sparse-checkout: |
+            rilis/*/rilis.json
+          sparse-checkout-cone-mode: false
 
       - name: Ambil state
         if: steps.cek.outputs.ada == '1'
