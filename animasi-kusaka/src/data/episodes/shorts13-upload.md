@@ -2,7 +2,7 @@
 
 (id internal `shorts13` · file `releases/Kusaka-Shorts10-Foto-Kelas.mp4`)
 
-Durasi: **0:49** · full 9:16 · format **Tipe-tipe** (cerita mandiri, aturan 20) · teks hook 1,6 dtk · CTA cerita (ikuti, tengah) ·
+Durasi: **0:48** · full 9:16 · format **Tipe-tipe** (cerita mandiri, aturan 20) · teks hook 1,6 dtk · CTA cerita (ikuti, tengah) ·
 1 adegan · kelas sisi jendela (seragam, jam istirahat) · Nadia, Sasa, Ucok, Ujang · suara mode dialog (−18,4 LUFS) · HP + kilatan foto
 
 ## Judul (pilih satu; Shorts tidak punya A/B test)
