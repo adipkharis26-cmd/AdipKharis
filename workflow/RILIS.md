@@ -116,6 +116,8 @@ File `.github/workflows/rilis-upload.yml` menjalankan worker di server GitHub pa
 
 Kalau slot jam diubah, ubah juga baris `cron` di file workflow (jam UTC = WIB − 7).
 
+**Lebih dari 1 video per divisi per hari:** set Variable `RILIS_MAKS_PER_HARI` = N (mis. 3). Dengan 3 slot default, tiap divisi tayang 1 video per slot (11:30, 17:30, 19:30). Untuk N > 3, tambahkan jam di `RILIS_SLOT` **dan** baris `cron`-nya.
+
 **Menambah atau mengganti akun divisi:** jalankan `ig-set` / `tt-set` di PC untuk divisi itu, lalu `ekspor`, lalu tempel ulang hasilnya ke Secret `SOSMED_AKUN_JSON`. Akun yang berubah langsung dipakai di jalan berikutnya.
 
 ## Instagram Reels & TikTok (publisher_sosmed.py)
