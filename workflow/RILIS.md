@@ -96,11 +96,17 @@ Video yang diunggah lewat API dari proyek Google Cloud yang **belum lolos audit*
 
 ## GitHub Actions (pengganti VPS, gratis)
 
-File `.github/workflows/rilis-upload.yml` menjalankan worker di server GitHub pada **11:30, 17:30, dan 19:30 WIB** (bisa telat beberapa menit), atau kapan saja lewat tab **Actions → Rilis upload → Run workflow**. Tiap jalan ±2–5 menit, jadi total ±100–300 menit per bulan (gratis 2.000 menit untuk repo private). Tidak memakai kuota Claude.
+File `.github/workflows/rilis-upload.yml` menjalankan worker di server GitHub **tiap 2 jam** (menit ke-17), atau kapan saja lewat tab **Actions → Rilis upload → Run workflow**. Tidak memakai kuota Claude. Kalau tidak ada yang perlu diposting, jalannya ±1 menit.
 
-- Jadwal hanya jalan kalau file workflow ada di branch **`main`** (aturan GitHub). Kode worker tetap diambil dari branch `ccr-89b3a748-96svlz`.
-- Jeda veto dihitung sejak paket dibuat. Contoh: paket jadi 23:40 → paling cepat 11:40 besok → tayang di slot 17:30.
-- State (video mana yang sudah diposting) dan token hasil perpanjangan disimpan di branch `rilis-state`. Token **dienkripsi** dengan `SOSMED_KEY`, jadi tidak pernah tersimpan terbuka di repo.
+**Mode stok (acak, jeda 12 jam):**
+- Semua paket di branch `rilis-video` = stok, dikelompokkan per divisi.
+- Paket baru boleh diposting setelah berumur `RILIS_VETO_JAM` (12) jam sejak dibuat. Itu waktu veto.
+- Tiap divisi: kalau posting terakhirnya sudah ≥ `RILIS_JEDA_JAM` (12) jam lalu, worker mengambil **satu paket acak** dari stok siap dan memposting ke YouTube/Instagram/TikTok divisi itu. Sisanya menunggu giliran 12 jam berikutnya, begitu seterusnya sampai stok habis.
+- Contoh: buat 2 video TL malam ini → video acak pertama tayang ±12 jam kemudian, yang kedua ≥12 jam setelahnya.
+- Hanya video yang terpilih yang diunduh dari repo, jadi stok besar tidak memperlambat.
+- State (video yang sudah diposting) dan token hasil perpanjangan disimpan di branch `rilis-state`. Token **dienkripsi** dengan `SOSMED_KEY`.
+- Jadwal hanya jalan kalau file workflow ada di branch **`main`** (aturan GitHub). Kode worker diambil dari branch `ccr-89b3a748-96svlz`.
+- YouTube (kalau diisi) mengikuti video terpilih yang sama: diunggah private dan tayang 40 menit kemudian. Token YouTube milik divisi `RILIS_YT_DIVISI`.
 
 **Setup sekali** (GitHub → repo → *Settings → Secrets and variables → Actions*):
 
@@ -112,11 +118,8 @@ File `.github/workflows/rilis-upload.yml` menjalankan worker di server GitHub pa
 | Secret | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | opsional, notifikasi |
 | Variable | `RILIS_IG`, `RILIS_TIKTOK` | `1` untuk menyalakan platform itu |
 | Variable | `RILIS_CHANNEL_ID`, `RILIS_API_TERAUDIT` | wajib kalau `YT_TOKEN_JSON` diisi |
-| Variable | `RILIS_MAKS_PER_HARI`, `RILIS_VETO_JAM`, `RILIS_SLOT`, `RILIS_TIKTOK_PRIVACY` | opsional (default 1, 12, 11:30/17:30/19:30, SELF_ONLY) |
+| Variable | `RILIS_JEDA_JAM`, `RILIS_VETO_JAM`, `RILIS_YT_DIVISI`, `RILIS_TIKTOK_PRIVACY` | opsional (default 12, 12, ternyata-leluhur, SELF_ONLY) |
 
-Kalau slot jam diubah, ubah juga baris `cron` di file workflow (jam UTC = WIB − 7).
-
-**Lebih dari 1 video per divisi per hari:** set Variable `RILIS_MAKS_PER_HARI` = N (mis. 3). Dengan 3 slot default, tiap divisi tayang 1 video per slot (11:30, 17:30, 19:30). Untuk N > 3, tambahkan jam di `RILIS_SLOT` **dan** baris `cron`-nya.
 
 **Menambah atau mengganti akun divisi:** jalankan `ig-set` / `tt-set` di PC untuk divisi itu, lalu `ekspor`, lalu tempel ulang hasilnya ke Secret `SOSMED_AKUN_JSON`. Akun yang berubah langsung dipakai di jalan berikutnya.
 

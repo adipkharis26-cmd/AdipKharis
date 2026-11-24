@@ -4,7 +4,8 @@
 ```
 Jalankan workflow/prompts/1-video-per-divisi.md jam 22:00 3 video
 ```
-(`3 video` opsional, default 1 per divisi.)
+(`3 video` opsional, default 1 per divisi; bisa sebut divisi, mis. `ternyata leluhur 2 video`.)
+Video jadi = stok; GitHub Actions memposting 1 video acak per divisi minimal 12 jam sekali.
 Tiap divisi dikerjakan di sesi sendiri (konteks pendek). Divisi aktif diatur lewat `"aktif"` di `workflow/config.json`.
 Upload jalan di GitHub Actions (`.github/workflows/rilis-upload.yml`, perlu ada di `main`), detail: `workflow/RILIS.md`.
 

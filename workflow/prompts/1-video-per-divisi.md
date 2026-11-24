@@ -7,7 +7,9 @@ Jalankan workflow/prompts/1-video-per-divisi.md
 ```
 atau dengan jam mulai dan jumlah: `Jalankan workflow/prompts/1-video-per-divisi.md jam 22:00 3 video`
 
-**N** = jumlah video per divisi hari ini (default 1 kalau tidak disebut). Setiap video dikerjakan di sesi sendiri.
+**N** = jumlah video per divisi hari ini (default 1 kalau tidak disebut). Owner juga boleh menyebut divisi, mis. `ternyata leluhur 2 video`: hanya divisi itu yang dikerjakan. Setiap video dikerjakan di sesi sendiri, dan perintah berikutnya meneruskan divisi + N yang sama.
+
+Video yang jadi menjadi **stok** di branch `rilis-video`. GitHub Actions memposting satu video acak per divisi, minimal 12 jam sekali (lihat `workflow/RILIS.md`).
 
 Perintah ini dihitung sebagai ACC owner untuk judul yang dipilih dan untuk render penuh. Bekerjalah sendiri tanpa bertanya. Patuhi `CLAUDE.md` (terutama aturan 4 hemat kuota).
 
@@ -18,7 +20,7 @@ Kalau sekarang (WIB) belum jam itu: buat **satu** scheduled task dengan `create_
 - Divisi aktif = channel di `workflow/config.json` dengan `"aktif": true`, urut seperti di file (cek cepat: `python3 -c "import json;print([(k,c['prefix']) for k,c in json.load(open('workflow/config.json'))['channels'].items() if c.get('aktif')])"`).
 - Divisi sudah selesai hari ini kalau di branch `rilis-video` sudah ada **N** paket `rilis/<prefix>NN/rilis.json` dengan `dibuat` bertanggal hari ini (WIB):
   `git fetch origin rilis-video 2>/dev/null && git ls-tree --name-only origin/rilis-video rilis/` lalu `git show origin/rilis-video:rilis/<ep>/rilis.json | head -c 600` hanya untuk N episode terbaru divisi itu.
-- Ambil divisi pertama yang belum mencapai N. Kalau semua sudah: jawab "Semua divisi sudah punya video hari ini" lalu berhenti.
+- Kalau owner menyebut divisi, hanya divisi itu. Ambil divisi pertama yang belum mencapai N. Kalau semua sudah: jawab "Semua divisi sudah punya video hari ini" lalu berhenti.
 
 ## 2. Judul (maks 3 pencarian)
 - Kalau di Charizch Agent (`ideas`, via `ArtifactData`) ada ide divisi itu berstatus `acc` yang belum `selesai` dan tidak terkunci, pakai itu.

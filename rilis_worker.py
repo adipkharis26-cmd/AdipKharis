@@ -26,8 +26,10 @@ Konfigurasi lewat environment (lihat workflow/RILIS.md):
   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
   RILIS_IG (0), RILIS_TIKTOK (0), RILIS_TIKTOK_PRIVACY (SELF_ONLY)  → publisher_sosmed.py
 
-Instagram & TikTok: tiap paket dapat jadwal tayang (slot pertama ≥ sekarang + jeda veto, maks
-RILIS_MAKS_PER_HARI per divisi per hari). Saat jamnya tiba, diposting ke platform yang aktif.
+Mode STOK (default): paket di branch rilis-video = stok per divisi. Tiap kali jalan, untuk setiap divisi:
+  kalau posting terakhir divisi itu sudah >= RILIS_JEDA_JAM (12) jam lalu, ambil SATU paket ACAK dari stok
+  (yang sudah berumur >= RILIS_VETO_JAM sejak dibuat) lalu posting ke YouTube/Instagram/TikTok divisi itu.
+  RILIS_YT_DIVISI (ternyata-leluhur) = divisi pemilik token YouTube.
 Veto: hapus folder rilis/<ep> di branch rilis-video, atau `python rilis_worker.py veto <ep>`.
 """
 import argparse
@@ -62,6 +64,8 @@ CHANNEL_ID = os.environ.get("RILIS_CHANNEL_ID", "").strip()
 VETO_JAM = float(os.environ.get("RILIS_VETO_JAM", "12"))
 MAKS_PER_HARI = int(os.environ.get("RILIS_MAKS_PER_HARI", "1"))
 SLOT = [s.strip() for s in os.environ.get("RILIS_SLOT", "11:30,17:30,19:30").split(",") if s.strip()]
+JEDA_JAM = float(os.environ.get("RILIS_JEDA_JAM", "12"))
+YT_DIVISI = os.environ.get("RILIS_YT_DIVISI", "ternyata-leluhur")
 INTERVAL_MENIT = int(os.environ.get("RILIS_INTERVAL_MENIT", "15"))
 PUSH_LAPORAN = os.environ.get("RILIS_PUSH_LAPORAN", "1") == "1"
 # Video dari proyek API yang belum lolos audit YouTube terkunci PRIVATE dan tidak bisa dibuat publik.
@@ -125,6 +129,7 @@ def tarik_paket():
     git("fetch", "origin", RILIS_BRANCH)
     git("checkout", "-B", RILIS_BRANCH, f"origin/{RILIS_BRANCH}")
     git("reset", "--hard", f"origin/{RILIS_BRANCH}")
+    di_git = set(git("ls-tree", "-r", "--name-only", "HEAD", "rilis/").stdout.split())
     paket = []
     for j in sorted((REPO_DIR / "rilis").glob("*/rilis.json")):
         try:
@@ -133,6 +138,7 @@ def tarik_paket():
             log(f"lewati {j}: JSON rusak ({e})")
             continue
         meta["_dir"] = j.parent
+        meta["_video_di_git"] = f"rilis/{j.parent.name}/video.mp4" in di_git
         paket.append(meta)
     return paket
 
@@ -142,7 +148,7 @@ def validasi(meta):
     for k in ("ep", "channel", "judul", "deskripsi"):
         if not meta.get(k):
             salah.append(f"field '{k}' kosong")
-    if not (meta["_dir"] / "video.mp4").exists():
+    if not (meta["_dir"] / "video.mp4").exists() and not meta.get("_video_di_git"):
         salah.append("video.mp4 tidak ada")
     if meta.get("cekFakta") != "lolos":
         salah.append("cekFakta belum 'lolos'")
@@ -350,92 +356,103 @@ def proses_rilis(paket, st, dry, yt=None, me=None, now=None):
     return st
 
 
-# ── Instagram & TikTok ──────────────────────────────────────────────────────
-def jadwal_sosmed(st, channel, now_utc):
-    """Slot pertama ≥ sekarang + jeda veto yang kuota hariannya (per divisi) masih ada."""
-    terpakai = {}
-    for r in st.get("sosmed", {}).values():
-        if r.get("channel") == channel and r.get("tayang"):
-            h = r["tayang"][:10]
-            terpakai[h] = terpakai.get(h, 0) + 1
-    t = jadwal_tayang(now_utc)
-    for _ in range(60):
-        hari = t.astimezone(WIB).date().isoformat()
-        if terpakai.get(hari, 0) < MAKS_PER_HARI:
-            return t
-        t = jadwal_tayang(t - timedelta(hours=VETO_JAM) + timedelta(minutes=1))
-    return t
+# ── mode stok: acak, jeda minimal per divisi ────────────────────────────────
+def _waktu(iso):
+    return datetime.fromisoformat(iso).astimezone(timezone.utc)
 
 
-def proses_sosmed(paket, st, dry, now=None):
+def siapkan_video(meta):
+    """Checkout di Actions bersifat sparse (hanya rilis.json); unduh video paket yang terpilih saja."""
+    if not (meta["_dir"] / "video.mp4").exists():
+        git("sparse-checkout", "add", f"rilis/{meta['_dir'].name}/", check=False)
+    if not (meta["_dir"] / "video.mp4").exists():
+        raise RuntimeError("video.mp4 tidak bisa diambil dari branch rilis-video")
+
+
+def _posting_yt(yt, me, meta, now):
+    if not API_TERAUDIT:
+        raise RuntimeError("RILIS_API_TERAUDIT belum 1 (proyek API belum lolos audit)")
+    if meta["judul"].strip().lower() in judul_terunggah(yt, me):
+        return {"id": None, "catatan": "judul sudah ada di channel"}
+    pub = publish_at_str(now + timedelta(minutes=40))  # private terjadwal 40 menit lagi, tidak langsung public
+    return {"id": unggah(yt, meta, pub), "publishAt": pub}
+
+
+def proses_stok(paket, st, dry, yt=None, me=None, now=None):
+    import random
     import publisher_sosmed as ps
     now = now or datetime.now(timezone.utc)
-    sos = st.setdefault("sosmed", {})
+    stok = st.setdefault("stok", {})
+    terakhir = st.setdefault("terakhirPosting", {})
+    per_divisi = {}
     for meta in paket:
-        ep, ch = meta["ep"], meta["channel"]
-        platform = ps.platform_aktif(ch)
-        if not platform or validasi(meta):
+        per_divisi.setdefault(meta["channel"], []).append(meta)
+    for ch, daftar in per_divisi.items():
+        platform = ps.platform_aktif(ch) + (["youtube"] if (yt and ch == YT_DIVISI) else [])
+        if not platform:
             continue
-        ent = sos.setdefault(ep, {"channel": ch})
-        if ent.get("veto"):
-            continue
-        if not ent.get("tayang"):
-            dasar = now  # jeda veto dihitung sejak paket dibuat, jadi worker tidak perlu jalan tiap 15 menit
-            try:
-                dasar = min(now, datetime.fromisoformat(meta["dibuat"]).astimezone(timezone.utc))
-            except (KeyError, TypeError, ValueError):
-                pass
-            t = jadwal_sosmed(st, ch, dasar)
-            ent["tayang"] = t.astimezone(WIB).isoformat()
-            jam = t.astimezone(WIB).strftime("%d %b %H:%M WIB")
-            log(f"{ep}: {', '.join(platform)} dijadwalkan {jam}")
-            if not dry:
-                save_state(st)
-                kabari(f"[{ch}] {ep} akan diposting ke {', '.join(platform)} pada {jam}.\n{meta['judul']}\n"
-                       f"Veto: hapus folder rilis/{ep} di branch {RILIS_BRANCH} sebelum jam itu.")
-        if now < datetime.fromisoformat(ent["tayang"]):
-            continue
-        for p in platform:
-            r = ent.get(p, {})
-            if r.get("ok") or r.get("coba", 0) >= 3:
-                continue
-            if dry:
-                log(f"[dry-run] {ep}: akan diposting ke {p}")
-                continue
-            try:
-                hasil = ps.posting(p, ch, meta)
-                ent[p] = {"ok": True, **hasil, "wib": datetime.now(WIB).isoformat()}
-                log(f"{ep}: terposting di {p} {hasil}")
-                kabari(f"[{ch}] {ep} terposting di {p}: {meta['judul']}")
-            except Exception as e:
-                ent[p] = {"ok": False, "coba": r.get("coba", 0) + 1, "error": str(e)[:300]}
-                log(f"{ep}: gagal posting ke {p} (percobaan {ent[p]['coba']}/3): {e}")
-                if ent[p]["coba"] >= 3:
-                    kabari(f"[{ch}] {ep} GAGAL diposting ke {p} 3x: {str(e)[:200]}")
-            save_state(st)
+        # 1) lanjutkan paket terpilih yang masih gagal di sebagian platform (maks 3 percobaan)
+        kerja = [m for m in daftar if stok.get(m["ep"], {}).get("dipilih")]
+        # 2) ambil 1 paket acak baru kalau jeda sudah lewat
+        boleh = not terakhir.get(ch) or now >= _waktu(terakhir[ch]) + timedelta(hours=JEDA_JAM)
+        calon = [m for m in daftar if m["ep"] not in stok and not validasi(m)
+                 and now >= _waktu(m.get("dibuat") or now.isoformat()) + timedelta(hours=VETO_JAM)]
+        sisa = len(calon)
+        if boleh and calon:
+            m = random.choice(calon)
+            stok[m["ep"]] = {"channel": ch, "dipilih": now.astimezone(WIB).isoformat()}
+            terakhir[ch] = now.astimezone(WIB).isoformat()
+            sisa -= 1
+            log(f"[{ch}] {m['ep']} terpilih acak dari {len(calon)} stok siap; sisa {sisa}")
+            kerja.append(m)
+        elif calon:
+            log(f"[{ch}] {len(calon)} stok menunggu; posting berikutnya ≥ "
+                f"{(_waktu(terakhir[ch]) + timedelta(hours=JEDA_JAM)).astimezone(WIB):%d %b %H:%M} WIB")
+        for meta in kerja:
+            ep, ent = meta["ep"], stok[meta["ep"]]
+            for p in platform:
+                r = ent.get(p, {})
+                if r.get("ok") or r.get("coba", 0) >= 3:
+                    continue
+                if dry:
+                    log(f"[dry-run] {ep}: akan diposting ke {p}")
+                    continue
+                try:
+                    siapkan_video(meta)
+                    hasil = _posting_yt(yt, me, meta, now) if p == "youtube" else ps.posting(p, ch, meta)
+                    ent[p] = {"ok": True, **hasil, "wib": datetime.now(WIB).isoformat()}
+                    log(f"{ep}: terposting di {p} {hasil}")
+                    kabari(f"[{ch}] {ep} terposting di {p}: {meta['judul']} (sisa stok {sisa})")
+                except Exception as e:
+                    ent[p] = {"ok": False, "coba": r.get("coba", 0) + 1, "error": str(e)[:300]}
+                    log(f"{ep}: gagal posting ke {p} (percobaan {ent[p]['coba']}/3): {e}")
+                    if ent[p]["coba"] >= 3:
+                        kabari(f"[{ch}] {ep} GAGAL diposting ke {p} 3x: {str(e)[:200]}")
+                if not dry:
+                    save_state(st)
+            if all(ent.get(p, {}).get("ok") or ent.get(p, {}).get("coba", 0) >= 3 for p in platform):
+                ent.pop("dipilih", None)
+                ent["selesai"] = datetime.now(WIB).isoformat()
     return st
 
 
 def cmd_veto(args):
     st = load_state()
-    st.setdefault("sosmed", {}).setdefault(args.ep, {})["veto"] = True
+    st.setdefault("stok", {}).setdefault(args.ep, {})["veto"] = True
     save_state(st)
-    log(f"{args.ep}: diveto, tidak akan diposting ke Instagram/TikTok")
+    log(f"{args.ep}: diveto, tidak akan diposting")
 
 
 def cmd_once(args):
     st = load_state()
     paket = tarik_paket()
     yt = ya = me = None
-    pakai_yt = TOKEN_FILE.exists() or args.dry_run
-    if not pakai_yt:
+    if not TOKEN_FILE.exists():
         log("YouTube belum login (rilis_worker.py auth); YouTube dilewati, Instagram/TikTok tetap jalan.")
     elif not args.dry_run:
         yt, ya = layanan()
         me = cek_channel(yt)
-    if pakai_yt:
-        st = proses_rilis(paket, st, args.dry_run, yt, me)
-    st = proses_sosmed(paket, st, args.dry_run)
+    st = proses_stok(paket, st, args.dry_run, yt, me)
     if not args.dry_run and yt:
         save_state(st)
         hari = datetime.now(WIB).date().isoformat()
@@ -443,6 +460,8 @@ def cmd_once(args):
             simpan_laporan(buat_laporan(yt, ya, me))
             st["laporanTerakhir"] = hari
             save_state(st)
+    elif not args.dry_run:
+        save_state(st)
 
 
 def cmd_report(_):
