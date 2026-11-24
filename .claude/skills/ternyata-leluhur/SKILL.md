@@ -5,7 +5,7 @@ description: Gaya terkunci channel "Ternyata Leluhur": cerita kearifan lokal Ind
 
 # Ternyata Leluhur: gaya terkunci
 
-> **STATUS: TERKUNCI** (versi 10 Nov 2026, disetujui owner; visual v3 "sinematik" 10 Nov 2026 atas perintah owner, alur cerita tidak berubah). Gaya, alur, durasi, suara, dan mesin di skill ini hanya boleh diubah atas perintah langsung owner. Sesi otomatis (ide harian/produksi) **dilarang mengubah file skill ini**.
+> **STATUS: TERKUNCI** (versi 10 Nov 2026, disetujui owner; visual v3 "sinematik" 10 Nov 2026 atas perintah owner; **v4 retensi 24 Nov 2026 di-ACC owner**: hook frame 0, judul pernyataan, akhiran loop). Gaya, alur, durasi, suara, dan mesin di skill ini hanya boleh diubah atas perintah langsung owner. Sesi otomatis (ide harian/produksi) **dilarang mengubah file skill ini**.
 
 Gaya ini **terkunci**. Karakter, palet, font, struktur naskah, dan suara tidak boleh diubah kecuali owner (Adip) memintanya langsung. Jangan mencampur gaya channel lain: stikmen Mas Kharis, "Hybrid Kinetic Pop", maskot chibi, dan suara Finn **bukan** milik channel ini.
 
@@ -89,8 +89,11 @@ Patokan hidup: `video/src/leluhur3d.js` (mesin), `video/src/tl01.js` (contoh epi
   - Mix akhir: loudnorm I=-15, TP=-1.5, LRA=11, limiter 0.95, AAC 192k.
 - **Cek audio:** sebelum publikasi, dengarkan hasil `tlNN-mix.m4a`. Dalam sesi otomatis, periksa level dengan `ffmpeg -af volumedetect` (max_volume < -1 dB) dan pastikan VO terdengar di atas musik.
 
-## 6. Struktur naskah (7 beat, wajib) — versi high CTA (sejak TL01 v2)
+## 6. Struktur naskah (7 beat, wajib) — v4 retensi (sejak TL14, ACC owner 24 Nov 2026)
 Alasan: di Shorts, penonton memutuskan menggeser lewat dalam 1–3 detik. Fakta paling mengejutkan **wajib di detik 0**, bukan di tengah.
+Data channel TL01–TL13: APV 80–96%, tetapi retensi jatuh tajam di 5–8 detik terakhir (bagian CTA). View tertinggi datang dari topik bertaruhan tinggi (bencana) dan judul pernyataan + wajah kaget. Karena itu v4:
+- **Frame 0 = momen paling dramatis yang sedang bergerak** (bencana/aksi sudah berlangsung) **+ close-up wajah kaget**. Bukan pemandangan diam, bukan judul.
+- **Tanpa CTA di video.** Beat 7 diganti **akhiran loop**: kalimat terakhir menggantung dan tersambung ke kalimat pertama Beat 1, supaya tontonan berulang. Pertanyaan daerah pindah ke **komentar yang disematkan**.
 | Beat | Fungsi | Durasi |
 |---|---|---|
 | 1 | **HOOK fakta:** klaim paling mengejutkan + bukti singkat, langsung di kalimat pertama ("Candi ini tak memakai semen sebutir pun. Tapi waktu gempa…, tetap berdiri.") | 7–9 dtk |
@@ -99,13 +102,13 @@ Alasan: di Shorts, penonton memutuskan menggeser lewat dalam 1–3 detik. Fakta 
 | 4 | **Penjelasan sains** dengan bahasa sehari-hari ("Rahasianya…", "Soalnya…") | 9–11 dtk |
 | 5 | **Lapisan kedua:** fakta tambahan/penelitian yang membuat "wow" kedua | 12–14 dtk |
 | 6 | **Perubahan:** si pengejek berubah (adegan singkat, tanpa menggurui) | 8–10 dtk |
-| 7 | **CTA tanya daerah:** pertanyaan tentang daerah/keluarga penonton + "tulis di komentar" (memancing komentar dan memberi ide episode) | 7–9 dtk |
+| 7 | **Akhiran loop (v4):** satu-dua kalimat yang menggantung dan menyambung ke kalimat pertama video. Visual terakhir kembali ke komposisi frame 0. Tanpa "tulis di komentar". | 4–6 dtk |
 
 - **Durasi 65–80 detik** (sekitar 140–165 kata). Di atas 80 detik, pangkas.
 - Kalimat pendek dan mengalir. **Angka ditulis dengan huruf** supaya enak dibacakan.
 - Kalimat khas: "Jadi begini..." dan "Soalnya...".
-- **Penutup:** tidak menggurui. Beat 6 menunjukkan perubahan, Beat 7 bertanya ke penonton (daerahnya, neneknya, tradisinya). Pertanyaan tiap episode harus unik; baca penutup semua `naskah/tl*.md` lebih dulu.
-- Komentar yang disematkan mengulang pertanyaan Beat 7.
+- **Penutup:** tidak menggurui. Beat 6 menunjukkan perubahan, Beat 7 menutup dengan loop (v4).
+- **Komentar yang disematkan** berisi pertanyaan daerah/keluarga penonton (unik per episode; baca paket posting semua `naskah/tl*.md` lebih dulu). Tulis di Paket posting.
 - **File naskah** `naskah/tlNN-slug.md` berisi:
   - Baris paling atas: `> Voice Over: DK - Film Dokumenter (ElevenLabs "DK - Documentary")`.
   - Judul dan hook.
@@ -125,8 +128,11 @@ Contoh patokan alur v2: `naskah/tl01-candi-tanpa-semen.md` + `video/src/tl01.js`
 6. Render: `cd video/src && EP=tlNN node render.js video ../out/ternyata-leluhur-tlNN.mp4 30 ../vo/tlNN-mix.m4a`. Kecepatannya sekitar 0,2–0,4 detik per frame, jadi jalankan di background.
 
 ## 8. Ide judul
+- **Judul v4 (sejak TL14):** **kalimat pernyataan ≤35 karakter**, bukan pertanyaan "Kenapa...". Contoh terbaik channel: "Atap Ini Bukan Genteng, Tapi Serabut Hitam!" (4,8 rb view). Judul "Kenapa..." boleh tetap dipakai sebagai judul kerja naskah.
+- **Prioritas topik v4:** taruhan tinggi, terutama **seri bencana** (gempa, tsunami, banjir, gunung api, kekeringan). View tertinggi: smong/tsunami 8,6 rb, tiang rawa 5,9 rb.
+- **Thumbnail/frame 0:** wajah kaget + momen dramatis yang sama dengan frame 0 video.
 - **Kriteria:**
-  - Diawali "Kenapa..." dan menyebut tindakan yang tampak aneh.
+  - Menyebut tindakan yang tampak aneh.
   - Jawabannya disimpan sampai akhir.
   - Bisa divisualkan dengan jelas.
   - Ada pihak yang meremehkan dan ada jawaban ilmiahnya.

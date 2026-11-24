@@ -13,13 +13,14 @@ KEADAAN (24 Nov 2026):
   TERKUNCI (.claude/skills/*), hanya diubah atas perintah owner.
 - Halaman kantor (artifact TPrLXh4cwBMhXhnRKxp7DC, v28): peta padang jaman batu (goa per divisi,
   api unggun rapat, telaga, mamut). workflow/charizch-agent.html = salinan versi live v28.
+- TL14 rumah lanting (skill v4): naskah + VO 72,6 dtk + tl14.js selesai, preview dikirim, render penuh menunggu ACC.
 - Ternyata Leluhur TL01–TL13 selesai (naskah/tlNN-*.md, video/src/tlNN.*, video/vo/tlNN*,
   video/thumb/tlNN.json). MP4 & PNG tidak di git (video/out/ di-ignore).
 - Data channel TL: retensi bagus (APV 80–96%), tapi view mentok 1–2 rb. Retensi jatuh tajam di
   5–8 dtk terakhir (bagian CTA). View tertinggi: smong/tsunami 8,6 rb, tiang rawa 5,9 rb,
   "Atap Ini Bukan Genteng, Tapi Serabut Hitam!" 4,8 rb (judul pernyataan + wajah kaget).
   Data "ditonton vs digeser" belum ada; minta owner screenshot bila perlu.
-- Usulan skill v4 TL (menunggu ACC owner): frame 0 = momen dramatis bergerak + wajah kaget,
+- Skill v4 TL DI-ACC owner 24 Nov 2026 dan sudah ditulis ke skill (sebelumnya usulan): frame 0 = momen dramatis bergerak + wajah kaget,
   judul pernyataan ≤35 karakter, ganti ekor CTA dengan akhiran loop (CTA pindah ke komentar),
   prioritas topik bertaruhan tinggi (seri bencana).
 - Rilis otomatis: rilis_worker.py (jalan di VPS owner) + video/src/rilis_paket.py + workflow/RILIS.md.
@@ -35,7 +36,7 @@ KEADAAN (24 Nov 2026):
 MENUNGGU OWNER:
 1. Izin membuat branch `rilis-video` dan `laporan`.
 2. Daftar proyek/divisi + akun YouTube/Instagram/TikTok masing-masing; divisi prioritas.
-3. ACC skill v4 Ternyata Leluhur.
+3. ACC preview TL14 (rumah lanting, v4 pertama) sebelum render penuh.
 4. Setup VPS + Google Cloud + pengajuan audit YouTube/TikTok + Meta App (panduan: workflow/RILIS.md).
 
 TUGAS SESI INI: <isi satu tugas saja, mis. "republish halaman kantor jadi Charizch Agent"
