@@ -54,69 +54,55 @@
      "shot": "crash",
      "action": "plead",
      "to": "sasa",
-     "text": "Satu foto. Satu aja yang bener.",
-     "say": "[tired but firm] Satu foto. Satu aja yang bener."
+     "text": "Foto buat mading. Satu aja yang bener. Plis.",
+     "say": "[tired, begging] Foto buat mading. Satu aja yang bener. Plis."
     },
     {
      "id": "l002",
      "speaker": "sasa",
      "emotion": "laugh",
      "listener": "smug",
-     "shot": "wide",
+     "shot": "two",
      "action": "photo",
      "to": "nadia",
-     "text": "Siap! Satu, dua, tiga!",
-     "say": "[excited, fast] Siap! Satu, dua, tiga!",
-     "reactions": {
-      "ucok": [
-       "laugh",
-       "peace"
-      ],
-      "ujang": [
-       "deadpan",
-       "idle"
-      ],
-      "nadia": [
-       "smug",
-       "idle"
-      ]
-     }
+     "text": "Oke, oke! Satu... dua...",
+     "say": "[cheerful, counting] Oke, oke! Satu... dua..."
     },
     {
      "id": "l003",
-     "speaker": "sasa",
-     "emotion": "shock",
-     "listener": "surprised",
-     "shot": "two",
-     "action": "show",
-     "to": "ucok",
-     "text": "Ucok merem!",
-     "say": "[gasps] Ucok merem!"
+     "speaker": "ucok",
+     "emotion": "surprised",
+     "listener": "neutral",
+     "shot": "medium",
+     "action": "point",
+     "to": "nadia",
+     "text": "Bentar! Gaya apa kita ini?",
+     "say": "[interrupting, Medan accent] Bentar! Gaya apa kita ini?"
     },
     {
      "id": "l004",
-     "speaker": "ucok",
-     "emotion": "shock",
-     "listener": "deadpan",
-     "shot": "medium",
-     "action": "point",
-     "to": "sasa",
-     "text": "Mana ada! Itu mataku lagi senyum, Sa!",
-     "say": "[offended, Medan accent] Mana ada! Itu mataku lagi senyum, Sa!"
+     "speaker": "nadia",
+     "emotion": "deadpan",
+     "listener": "surprised",
+     "shot": "two",
+     "action": "crossed",
+     "to": "ucok",
+     "text": "Gaya normal, Cok.",
+     "say": "[flat] Gaya normal, Cok."
     },
     {
      "id": "l005",
      "speaker": "sasa",
      "emotion": "laugh",
-     "listener": "deadpan",
-     "shot": "two",
+     "listener": "smug",
+     "shot": "wide",
      "action": "photo",
-     "to": "ujang",
-     "text": "Lagi! Jang, senyum dong!",
-     "say": "[excited] Lagi! Jang, senyum dong!",
+     "to": "nadia",
+     "text": "Tiga!",
+     "say": "[shouting] Tiga!",
      "reactions": {
       "ucok": [
-       "smug",
+       "laugh",
        "peace"
       ],
       "ujang": [
@@ -131,67 +117,111 @@
     },
     {
      "id": "l006",
-     "speaker": "ujang",
-     "emotion": "deadpan",
-     "listener": "surprised",
-     "shot": "close",
-     "action": "idle",
-     "to": "sasa",
-     "closeStyle": "single",
-     "text": "Ini udah senyum.",
-     "say": "[completely flat] Ini udah senyum."
+     "speaker": "sasa",
+     "emotion": "laugh",
+     "listener": "shock",
+     "shot": "two",
+     "action": "show",
+     "to": "ucok",
+     "text": "Ih, Ucok merem!",
+     "say": "[laughing] Ih, Ucok merem!"
     },
     {
      "id": "l007",
-     "speaker": "nadia",
-     "emotion": "deadpan",
-     "listener": "neutral",
-     "shot": "two",
-     "action": "facepalm",
+     "speaker": "ucok",
+     "emotion": "shock",
+     "listener": "laugh",
+     "shot": "close",
+     "action": "plead",
      "to": "sasa",
-     "text": "...Sasa. Cepet.",
-     "say": "[sighs] ...Sasa. Cepet."
+     "closeStyle": "single",
+     "text": "Mana ada! Aku lagi menghayati itu!",
+     "say": "[offended, Medan accent] Mana ada! Aku lagi menghayati itu!"
     },
     {
      "id": "l008",
      "speaker": "sasa",
      "emotion": "smug",
      "listener": "deadpan",
-     "shot": "medium",
-     "action": "phone",
-     "to": "nadia",
-     "text": "Bentar. Poni gue.",
-     "say": "[distracted, fixing hair] Bentar. Poni gue."
+     "shot": "two",
+     "action": "photo",
+     "to": "ujang",
+     "text": "Lagi. Jang, senyum dong. Dikit aja.",
+     "say": "[coaxing] Lagi. Jang, senyum dong. Dikit aja."
     },
     {
      "id": "l009",
-     "speaker": "nadia",
-     "emotion": "suspicious",
-     "listener": "embarrassed",
+     "speaker": "ujang",
+     "emotion": "deadpan",
+     "listener": "smug",
      "shot": "close",
-     "action": "hips",
+     "action": "idle",
      "to": "sasa",
-     "closeStyle": "ots",
-     "text": "Sa.",
-     "say": "[dangerously calm] Sa."
+     "closeStyle": "single",
+     "text": "Ini udah.",
+     "say": "[completely flat] Ini udah."
     },
     {
      "id": "l010",
+     "speaker": "sasa",
+     "emotion": "suspicious",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "hold",
+     "to": "ujang",
+     "text": "...Itu senyum?",
+     "say": "[squinting, unsure] ...Itu senyum?"
+    },
+    {
+     "id": "l011",
+     "speaker": "ujang",
+     "emotion": "deadpan",
+     "listener": "suspicious",
+     "shot": "two",
+     "action": "idle",
+     "to": "sasa",
+     "text": "Ini maksimal.",
+     "say": "[flat, sincere] Ini maksimal."
+    },
+    {
+     "id": "l012",
+     "speaker": "nadia",
+     "emotion": "defeated",
+     "listener": "neutral",
+     "shot": "two",
+     "action": "facepalm",
+     "to": "sasa",
+     "text": "Sa. Udah, jepret aja.",
+     "say": "[exasperated sigh] Sa. Udah, jepret aja."
+    },
+    {
+     "id": "l013",
+     "speaker": "sasa",
+     "emotion": "smug",
+     "listener": "defeated",
+     "shot": "medium",
+     "action": "phone",
+     "to": "nadia",
+     "text": "Bentar, poni gue miring.",
+     "say": "[distracted, fixing hair] Bentar, poni gue miring."
+    },
+    {
+     "id": "l014",
      "speaker": "sasa",
      "emotion": "laugh",
      "listener": "smug",
      "shot": "wide",
      "action": "photo",
      "to": "nadia",
-     "text": "Oke! Tiga!",
-     "say": "[cheerful] Oke! Tiga!",
+     "text": "Oke! Senyum semua!",
+     "say": "[bright] Oke! Senyum semua!",
      "reactions": {
       "ucok": [
        "laugh",
        "thumbsup"
       ],
       "ujang": [
-       "deadpan",
+       "smug",
        "idle"
       ],
       "nadia": [
@@ -201,38 +231,38 @@
      }
     },
     {
-     "id": "l011",
+     "id": "l015",
      "speaker": "sasa",
-     "emotion": "smug",
+     "emotion": "laugh",
      "listener": "surprised",
      "shot": "two",
      "action": "show",
      "to": "nadia",
-     "text": "Gimana? Cakep, kan?",
-     "say": "[proud] Gimana? Cakep, kan?"
+     "text": "Cakep banget!",
+     "say": "[delighted] Cakep banget!"
     },
     {
-     "id": "l012",
+     "id": "l016",
      "speaker": "nadia",
      "emotion": "shock",
-     "listener": "smug",
+     "listener": "laugh",
      "shot": "close",
      "action": "point",
      "to": "sasa",
      "closeStyle": "single",
-     "text": "Kok cuma muka lo?",
-     "say": "[confused, rising] Kok cuma muka lo?"
+     "text": "...Ini muka lo semua, Sa.",
+     "say": "[slowly, staring at the phone] ...Ini muka lo semua, Sa."
     },
     {
-     "id": "l013",
+     "id": "l017",
      "speaker": "sasa",
      "emotion": "surprised",
      "listener": "shock",
      "shot": "two",
      "action": "show",
      "to": "nadia",
-     "text": "Lho. Kamera depan.",
-     "say": "[innocent] Lho. [beat] Kamera depan.",
+     "text": "Lho? Kok kamera depan?",
+     "say": "[genuinely surprised] Lho? Kok kamera depan?",
      "sfx": [
       {
        "id": "record_scratch",
@@ -241,30 +271,16 @@
      ]
     },
     {
-     "id": "l014",
-     "speaker": "nadia",
-     "emotion": "deadpan",
-     "listener": "smug",
+     "id": "l018",
+     "speaker": "ujang",
+     "emotion": "defeated",
+     "listener": "surprised",
      "shot": "close",
-     "action": "crossed",
+     "action": "idle",
      "to": "sasa",
-     "closeStyle": "ots",
-     "text": "Hapus.",
-     "say": "[ice cold] Hapus.",
-     "ref": [
-      "hapus papan"
-     ]
-    },
-    {
-     "id": "l015",
-     "speaker": "sasa",
-     "emotion": "smug",
-     "listener": "deadpan",
-     "shot": "two",
-     "action": "phone",
-     "to": "nadia",
-     "text": "Nggak mau. Ini foto profil baru gue.",
-     "say": "[delighted] Nggak mau. Ini foto profil baru gue.",
+     "closeStyle": "single",
+     "text": "Gue senyum di situ, lho.",
+     "say": "[quietly hurt] Gue senyum di situ, lho.",
      "sfx": [
       {
        "id": "rimshot",
@@ -273,14 +289,14 @@
      ]
     },
     {
-     "id": "l016",
+     "id": "l019",
      "speaker": "ucok",
      "emotion": "pleading",
      "listener": "laugh",
      "shot": "two",
      "action": "plead",
-     "text": "Ikuti lah, biar foto kelas kami jadi juga!",
-     "say": "[pleading, Medan accent] Ikuti lah, biar foto kelas kami jadi juga!",
+     "text": "Ikuti lah, biar tahu foto kami jadi atau nggak!",
+     "say": "[pleading, Medan accent] Ikuti lah, biar tahu foto kami jadi atau nggak!",
      "cta": {
       "kind": "ikuti",
       "text": "IKUTI biar FOTONYA JADI!",
@@ -292,15 +308,15 @@
      }
     },
     {
-     "id": "l017",
+     "id": "l020",
      "speaker": "nadia",
      "emotion": "defeated",
      "listener": "laugh",
      "shot": "two",
      "action": "slump",
      "to": "sasa",
-     "text": "Oke. Satu kali lagi.",
-     "say": "[exhausted sigh] Oke. Satu kali lagi."
+     "text": "Oke. Sekali lagi.",
+     "say": "[exhausted] Oke. Sekali lagi."
     }
    ]
   }

@@ -45,28 +45,32 @@
       0.6
      ],
      [
-      "l002:end",
-      0.64
+      "l004",
+      0.6
      ],
      [
-      "l003",
-      0.64
-     ],
-     [
-      "l003:end",
+      "l004:end",
       2.6
      ],
      [
-      "l013:end",
+      "l010:end",
       2.6
      ],
      [
-      "l014",
+      "l011",
       0
      ],
      [
-      "l014:end",
+      "l011:end",
       0.6
+     ],
+     [
+      "l013:end",
+      0.6
+     ],
+     [
+      "l014:end",
+      2.6
      ]
     ]
    },
@@ -75,143 +79,179 @@
      "id": "l001",
      "speaker": "dinda",
      "emotion": "shock",
-     "listener": "smug",
+     "listener": "neutral",
      "shot": "crash",
      "action": "point",
      "to": "bapak",
-     "text": "Pak! Angkotnya, Pak! Tangannya!",
-     "say": "[panicked, shouting] Pak! Angkotnya, Pak! Tangannya!"
+     "text": "Pak! Angkotnya, Pak! Stop-in!",
+     "say": "[panicked, shouting] Pak! Angkotnya, Pak! Stop-in!"
     },
     {
      "id": "l002",
      "speaker": "bapak",
      "emotion": "smug",
      "listener": "shock",
-     "shot": "wide",
+     "shot": "two",
      "action": "gesture",
      "to": "dinda",
      "caption": "SEPULANG SEKOLAH",
-     "text": "Tenang, Nak. Angkot itu kayak rezeki. Nggak ke mana.",
-     "say": "[calm, pleased with himself] Tenang, Nak. Angkot itu kayak rezeki. [beat] Nggak ke mana."
+     "text": "Santai, Nak. Tahu nggak bedanya angkot sama mantan?",
+     "say": "[relaxed, amused] Santai, Nak. Tahu nggak bedanya angkot sama mantan?"
     },
     {
      "id": "l003",
      "speaker": "dinda",
-     "emotion": "shock",
+     "emotion": "pleading",
      "listener": "smug",
      "shot": "two",
-     "action": "point",
+     "action": "plead",
      "to": "bapak",
-     "text": "Ke mana-mana, Pak! Itu udah jalan!",
-     "say": "[outraged] Ke mana-mana, Pak! Itu udah jalan!"
+     "text": "Pak, nggak sekarang—",
+     "say": "[desperate, cut off] Pak, nggak sekarang—"
     },
     {
      "id": "l004",
      "speaker": "bapak",
-     "emotion": "neutral",
+     "emotion": "laugh",
      "listener": "shock",
-     "shot": "close",
-     "action": "chin",
+     "shot": "wide",
+     "action": "point",
      "to": "dinda",
-     "closeStyle": "single",
-     "text": "Hmm. Berarti bukan jodoh.",
-     "say": "[thoughtful, unbothered] Hmm. Berarti bukan jodoh."
+     "text": "Angkot kalau lewat... masih bisa dikejar. Hehe.",
+     "say": "[slowly, proud of himself] Angkot kalau lewat... masih bisa dikejar. [chuckles] Hehe."
     },
     {
      "id": "l005",
      "speaker": "dinda",
      "emotion": "deadpan",
-     "listener": "neutral",
-     "shot": "two",
-     "action": "hips",
+     "listener": "laugh",
+     "shot": "close",
+     "action": "point",
      "to": "bapak",
-     "text": "Itu angkot terakhir, Pak.",
-     "say": "[flat, slow] Itu angkot terakhir, Pak."
+     "closeStyle": "single",
+     "text": "Ya udah. Kejar.",
+     "say": "[flat] Ya udah. Kejar."
     },
     {
      "id": "l006",
      "speaker": "bapak",
-     "emotion": "laugh",
+     "emotion": "embarrassed",
      "listener": "deadpan",
      "shot": "medium",
-     "action": "gesture",
+     "action": "pocket",
      "to": "dinda",
-     "text": "Bapak dulu juga gitu, Nak. Ketinggalan angkot, ketemu Ibu.",
-     "say": "[nostalgic, warm] Bapak dulu juga gitu, Nak. [chuckles] Ketinggalan angkot, ketemu Ibu."
+     "text": "...Bapak pakai sarung, Nak.",
+     "say": "[pause, sheepish] ...Bapak pakai sarung, Nak."
     },
     {
      "id": "l007",
      "speaker": "dinda",
-     "emotion": "smug",
-     "listener": "shock",
+     "emotion": "deadpan",
+     "listener": "embarrassed",
      "shot": "two",
      "action": "phone",
      "to": "bapak",
-     "text": "Aku aduin Ibu, ya.",
-     "say": "[sweetly threatening] Aku aduin Ibu, ya."
+     "text": "Aku pesen ojek aja deh.",
+     "say": "[sighs] Aku pesen ojek aja deh."
     },
     {
      "id": "l008",
      "speaker": "bapak",
-     "emotion": "shock",
-     "listener": "smug",
+     "emotion": "neutral",
+     "listener": "deadpan",
      "shot": "two",
-     "action": "plead",
+     "action": "gesture",
      "to": "dinda",
-     "text": "Eh, eh, jangan! Nanti Bapak yang dijemput Ibu.",
-     "say": "[panicked] Eh, eh, jangan! Nanti Bapak yang dijemput Ibu."
+     "text": "Ojek? Bapak dulu pulang jalan kaki, Nak. Tiga kilo.",
+     "say": "[nostalgic, lecturing] Ojek? Bapak dulu pulang jalan kaki, Nak. Tiga kilo."
     },
     {
      "id": "l009",
      "speaker": "dinda",
-     "emotion": "suspicious",
-     "listener": "embarrassed",
+     "emotion": "smug",
+     "listener": "neutral",
      "shot": "two",
-     "action": "crossed",
+     "action": "hips",
      "to": "bapak",
-     "text": "Emang motor Bapak mana?",
-     "say": "[suspicious] Emang motor Bapak mana?"
+     "text": "Ya udah, ayo jalan.",
+     "say": "[challenging] Ya udah, ayo jalan."
     },
     {
      "id": "l010",
      "speaker": "bapak",
-     "emotion": "embarrassed",
-     "listener": "suspicious",
+     "emotion": "defeated",
+     "listener": "smug",
      "shot": "close",
-     "action": "pocket",
+     "action": "slump",
      "to": "dinda",
      "closeStyle": "single",
-     "text": "...Bapak ke sini naik angkot. Yang barusan.",
-     "say": "[sheepish, quiet] ...Bapak ke sini naik angkot. [beat] Yang barusan.",
-     "sfx": [
-      {
-       "id": "record_scratch",
-       "at": "end"
-      }
-     ]
+     "text": "Itu dulu. Lutut Bapak sekarang tinggal satu kilo.",
+     "say": "[quieter, honest] Itu dulu. [beat] Lutut Bapak sekarang tinggal satu kilo."
     },
     {
      "id": "l011",
      "speaker": "dinda",
-     "emotion": "deadpan",
-     "listener": "embarrassed",
-     "shot": "close",
-     "action": "facepalm",
-     "to": "bapak",
-     "closeStyle": "single",
-     "text": "Jadi Bapak jemput aku... buat ketinggalan bareng?",
-     "say": "[deadpan, disbelief] Jadi Bapak jemput aku... buat ketinggalan bareng?"
+     "emotion": "surprised",
+     "listener": "neutral",
+     "shot": "wide",
+     "action": "wave",
+     "text": "Eh, angkot! Bang! Bang, kiri!",
+     "say": "[excited, shouting] Eh, angkot! Bang! Bang, kiri!"
     },
     {
      "id": "l012",
      "speaker": "bapak",
-     "emotion": "laugh",
-     "listener": "deadpan",
+     "emotion": "smug",
+     "listener": "surprised",
      "shot": "two",
-     "action": "thumbsup",
+     "action": "gesture",
      "to": "dinda",
-     "text": "Namanya juga keluarga, Nak. Ketinggalan bareng-bareng.",
-     "say": "[proud, cheerful] Namanya juga keluarga, Nak. Ketinggalan bareng-bareng.",
+     "text": "Tuh kan, balik. Nah, bedanya angkot sama mantan—",
+     "say": "[pleased, launching into it] Tuh kan, balik. Nah, bedanya angkot sama mantan—"
+    },
+    {
+     "id": "l013",
+     "speaker": "dinda",
+     "emotion": "laugh",
+     "listener": "smug",
+     "shot": "wide",
+     "action": "wave",
+     "to": "bapak",
+     "text": "Dah, Pak!",
+     "say": "[cheerful, already leaving] Dah, Pak!",
+     "move": {
+      "who": "dinda",
+      "from": "A",
+      "to": "offR",
+      "at": 0
+     }
+    },
+    {
+     "id": "l014",
+     "speaker": "bapak",
+     "emotion": "shock",
+     "listener": "neutral",
+     "shot": "wide",
+     "action": "shock",
+     "text": "...Nak? Nak!",
+     "say": "[confused, then calling out] ...Nak? [louder] Nak!",
+     "sfx": [
+      {
+       "id": "record_scratch",
+       "at": 0.2
+      }
+     ]
+    },
+    {
+     "id": "l015",
+     "speaker": "bapak",
+     "emotion": "deadpan",
+     "listener": "neutral",
+     "shot": "close",
+     "action": "crossed",
+     "closeStyle": "single",
+     "text": "Nah. Itu baru bisa dikejar.",
+     "say": "[to himself, deadpan] Nah. [beat] Itu baru bisa dikejar.",
      "sfx": [
       {
        "id": "rimshot",
@@ -220,14 +260,14 @@
      ]
     },
     {
-     "id": "l013",
-     "speaker": "dinda",
+     "id": "l016",
+     "speaker": "bapak",
      "emotion": "pleading",
-     "listener": "laugh",
+     "listener": "neutral",
      "shot": "two",
      "action": "plead",
-     "text": "Kirim ke bapak kalian. Biar nggak ada yang jemput kayak gini.",
-     "say": "[whining] Kirim ke bapak kalian. Biar nggak ada yang jemput kayak gini.",
+     "text": "Kirim ke bapak kalian. Biar ada yang nemenin nunggu.",
+     "say": "[lonely, pleading] Kirim ke bapak kalian. Biar ada yang nemenin nunggu.",
      "cta": {
       "kind": "kirim",
       "text": "KIRIM ke BAPAK KALIAN!",
@@ -239,15 +279,14 @@
      }
     },
     {
-     "id": "l014",
+     "id": "l017",
      "speaker": "bapak",
      "emotion": "smug",
-     "listener": "surprised",
-     "shot": "wide",
-     "action": "point",
-     "to": "dinda",
-     "text": "Nah, angkot! Nak, tahu nggak kenapa angkot—",
-     "say": "[cheerful] Nah, angkot! [starting a joke] Nak, tahu nggak kenapa angkot—"
+     "listener": "neutral",
+     "shot": "two",
+     "action": "crossed",
+     "text": "Santai. Angkot itu kayak rezeki. Nggak ke mana.",
+     "say": "[sitting back, calm again] Santai. Angkot itu kayak rezeki. Nggak ke mana."
     }
    ]
   }

@@ -2,24 +2,24 @@
 
 (id internal `shorts12` · file `releases/Kusaka-Shorts9-Angkot-Terakhir.mp4`)
 
-Durasi: **0:46** · full 9:16 · format **dad joke Bapak** (cerita mandiri, aturan 20) · teks hook 1,6 dtk · CTA cerita (kirim, akhir) ·
+Durasi: **0:48** · full 9:16 · format **dad joke Bapak** (cerita mandiri, aturan 20) · teks hook 1,6 dtk · CTA cerita (kirim, akhir) ·
 1 adegan · halte sore, sepulang sekolah (Dinda berseragam + tas) · Pak Hendra, Dinda · suara mode dialog (−18,5 LUFS) · angkot datang, pergi, dan datang lagi (loop)
 
 ## Judul (pilih satu; Shorts tidak punya A/B test)
-1. Ketinggalan Angkot Terakhir Gara-Gara Dad Joke Bapak 😭 | KUSAKA
-2. "Angkot Itu Kayak Rezeki, Nak" 💀 Dijemput Bapak Malah Ketinggalan | KUSAKA
-3. Bapak Jemput Anak... Naik Angkot yang Barusan Lewat 😭 | KUSAKA
+1. Bapak Dad Joke Pas Angkot Terakhir, Malah Ditinggal Anak 😭 | KUSAKA
+2. "Bedanya Angkot Sama Mantan..." 💀 Bapak Ketinggalan Sendiri | KUSAKA
+3. Ketinggalan Angkot Gara-Gara Dad Joke Bapak 😭 | KUSAKA
 
 ## Deskripsi (YouTube Shorts)
-Angkot terakhir lewat. Bapak cuma bilang "Angkot itu kayak rezeki, Nak. Nggak ke mana." 😭 Ternyata Bapak juga ke sini naik angkot... yang barusan. 💀
+Angkot lewat, Bapak malah nanya "Tahu nggak bedanya angkot sama mantan?" 😭 Disuruh ngejar... Bapak pakai sarung. Ujung-ujungnya yang ketinggalan siapa? 💀
 
 Bapak kalian juga hobi dad joke di saat genting? 👇
 
 #shorts #animasiindonesia #kusaka #dadjoke #nostalgia #angkot
 
 ## Caption Instagram Reels
-Angkot terakhir lewat, Bapak malah dad joke. 😭
-"Namanya juga keluarga, Nak. Ketinggalan bareng-bareng." 💀
+"Bedanya angkot sama mantan: angkot masih bisa dikejar." 😭
+Bapak pakai sarung, jadi... yang ketinggalan Bapak. 💀
 
 Kirim ke bapak kalian 👇
 
@@ -43,10 +43,10 @@ Jujur 😭 Dad joke bapak kalian yang paling sering diulang apa? 👇
 | Sinyal | Penerapan |
 |---|---|
 | Swipe-away 0–2 dtk | Detik 0 Dinda teriak "Pak! Angkotnya!" + crash zoom + teks hook "ANGKOT TERAKHIR / VS DAD JOKE BAPAK" |
-| Retensi 0–8 dtk | Angkot benar-benar pergi saat Bapak bilang "nggak ke mana" |
+| Retensi 0–8 dtk | Dad joke "bedanya angkot sama mantan" dipotong Dinda; angkot benar-benar pergi saat punchline-nya |
 | Penonton 25–34 | Dad joke bapak-bapak, angkot sore, "Bapak dulu juga gitu" (nostalgia + kini jadi orang tua) |
-| Sends | CTA kirim di akhir: "Kirim ke bapak kalian" |
-| Loop | Angkot datang lagi, Bapak mulai dad joke baru → "Pak! Angkotnya, Pak!" |
+| Sends | CTA kirim di akhir: "Kirim ke bapak kalian. Biar ada yang nemenin nunggu." |
+| Loop | Bapak sendirian: "Angkot itu kayak rezeki. Nggak ke mana." → "Pak! Angkotnya, Pak!" |
 | Komentar | Pertanyaan dad joke favorit di komentar sematan |
 
 ## Metrik cek (Studio, 48 jam)

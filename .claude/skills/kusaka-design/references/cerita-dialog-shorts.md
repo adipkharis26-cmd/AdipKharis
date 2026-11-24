@@ -65,3 +65,16 @@ Perbaiki, lalu jalankan `--estimate`, `audit:props` = 0, storyboard.
 - [ ] Rata-rata ≤ 8 kata/baris · tidak ada baris yang menjelaskan apa yang terlihat · uji tukar lulus
 - [ ] ≥ 1 kalimat khas tokoh · partikel lisan wajar · detail nostalgia spesifik
 - [ ] `voiceMode: dialogue` · `say` dengan tag secukupnya · tidak ada jeda mati > 0,5 dtk
+
+## 6. Pelajaran dari masukan pemilik (24 Nov 2026: Shorts 9 & 10 v1 "kaku, tidak natural")
+Kesalahan v1 yang WAJIB dihindari (contoh nyata → perbaikan v2):
+- **Kalimat kata mutiara / penutup rapi.** "Namanya juga keluarga, Nak. Ketinggalan bareng-bareng." → manusia tidak bicara seperti caption.
+  Ganti dengan reaksi spontan/fisik: "...Nak? Nak!" lalu callback pendek "Nah. Itu baru bisa dikejar."
+- **Tokoh menjelaskan lelucon.** "Jadi Bapak jemput aku... buat ketinggalan bareng?" → biarkan penonton menyimpulkan dari aksi (Dinda naik angkot sendiri).
+- **"Dad joke" yang bukan lelucon.** Tulis lelucon sungguhan dengan pola tanya-jawab bapak-bapak ("Tahu nggak bedanya angkot sama mantan?"),
+  dan punchline-nya berbalik ke dia ("masih bisa dikejar" → "Bapak pakai sarung").
+- **Perintah satu kata beruntun** ("Sa." / "Hapus.") terasa robot bila tanpa reaksi di sekitarnya. Satu kata boleh, tetapi diselingi interupsi,
+  ragu ("...Itu senyum?"), dan jawaban yang tidak diduga ("Ini maksimal.").
+- **Tanpa taruhan.** Beri alasan konkret kenapa keinginan itu penting ("Foto buat mading. Plis.").
+- **Button terbaik datang dari tokoh pinggiran** yang selama ini datar ("Gue senyum di situ, lho.") — bukan dari tokoh utama yang merangkum.
+- Tes cepat: bacakan keras-keras. Kalau ada kalimat yang tidak akan diucapkan orang Indonesia sungguhan di situasi itu, tulis ulang.
