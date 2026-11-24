@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Charizch Agent</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -178,17 +179,15 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     <div class="clock" id="clock"><b>--:--</b>WIB</div>
   </header>
 
-  <nav class="rooms" aria-label="Ruangan kantor">
+  <nav class="rooms" aria-label="Area padang">
     <button class="room" data-room="semua" aria-pressed="true">Semua</button>
-    <button class="room" data-room="rapat" aria-pressed="false">Ruang Rapat</button>
-    <button class="room" data-room="divisi" aria-pressed="false">Divisi Mas Kharis</button>
-    <button class="room" data-room="leluhur" aria-pressed="false">Divisi Ternyata Leluhur</button>
-    <button class="room" data-room="dari1" aria-pressed="false">Divisi Dari 1 mnt</button>
-    <button class="room" data-room="ohhiyaa" aria-pressed="false">Divisi Ohhiyaa!</button>
-    <button class="room" data-room="studio" aria-pressed="false">Studio Publish</button>
-    <button class="room" data-room="lounge" aria-pressed="false">Lounge</button>
+    <button class="room" data-room="rapat" aria-pressed="false">Api Unggun Rapat</button>
+    <button class="room" data-room="leluhur" aria-pressed="false">Goa Ternyata Leluhur</button>
+    <button class="room" data-room="ohhiyaa" aria-pressed="false">Goa Ohhiyaa!</button>
+    <button class="room" data-room="studio" aria-pressed="false">Batu Bersama</button>
+    <button class="room" data-room="lounge" aria-pressed="false">Padang &amp; Telaga</button>
   </nav>
-  <div class="office" aria-label="Peta kantor: agen yang menunggu ACC duduk di Ruang Rapat dengan tanda seru; klik agen untuk membuka panelnya">
+  <div class="office" aria-label="Peta padang jaman batu: agen yang menunggu ACC duduk di api unggun rapat dengan tanda seru; klik agen untuk membuka panelnya">
     <canvas id="iso" width="1600" height="1000"></canvas>
     <button class="waitbtn" id="waitBtn" hidden></button>
     <div class="note" id="liveNote">memuat status agen…</div>
@@ -233,18 +232,12 @@ const $ = id => document.getElementById(id);
 /* ---------- office map (canvas, isometric, multi-room, detailed) ---------- */
 const AGENT_DEFAULTS = [
   { id: 'penggali', nama: 'Penggali Ide', peran: 'Riset tren & setor judul semua divisi', warna: '#F29B4B', urut: 1 },
-  { id: 'penulis',  nama: 'Penulis Naskah', peran: 'Mas Kharis · naskah 8 bagian + CTA', warna: '#2F6FD0', urut: 2 },
   { id: 'cekfakta', nama: 'Cek Fakta', peran: 'Validasi fakta & sumber semua divisi', warna: '#3FA34D', urut: 3 },
-  { id: 'suara',    nama: 'Pengisi Suara', peran: 'Mas Kharis · VO Eyang (ElevenLabs)', warna: '#9B6BD6', urut: 4 },
-  { id: 'animator', nama: 'Animator', peran: 'Mas Kharis · motion graphic & render', warna: '#E84545', urut: 5 },
   { id: 'publisher',nama: 'Publisher', peran: 'Judul, deskripsi, tag, stok upload', warna: '#1F8B95', urut: 6 },
   { id: 'thumbnail',nama: 'Desainer Thumbnail', peran: 'Thumbnail High CTA semua divisi', warna: '#FF8C1E', urut: 6.5 },
   { id: 'tl-penulis', nama: 'Penulis Leluhur', peran: 'Ternyata Leluhur · naskah 7 beat', warna: '#C7301F', urut: 7, ch: 'ternyata-leluhur' },
   { id: 'tl-suara',   nama: 'Narator DK', peran: 'Ternyata Leluhur · VO DK - Documentary', warna: '#1E5A45', urut: 8, ch: 'ternyata-leluhur' },
   { id: 'tl-animator',nama: 'Animator 3D', peran: 'Ternyata Leluhur · diorama 3D & render', warna: '#E9A92B', urut: 9, ch: 'ternyata-leluhur' },
-  { id: 'dm-penulis', nama: 'Penulis Pop', peran: 'Dari 1 mnt · naskah 60–90 detik', warna: '#FF3D71', urut: 10, ch: 'dari-1-mnt' },
-  { id: 'dm-suara',   nama: 'Narator Finn', peran: 'Dari 1 mnt · VO Finn (ElevenLabs)', warna: '#00E5A0', urut: 11, ch: 'dari-1-mnt' },
-  { id: 'dm-animator',nama: 'Animator Pop', peran: 'Dari 1 mnt · kinetic pop & render', warna: '#1E6EFF', urut: 12, ch: 'dari-1-mnt' },
   { id: 'oh-penulis', nama: 'Penghitung', peran: 'Ohhiyaa! · naskah & hitungan 40–60 dtk', warna: '#FF6FAE', urut: 13, ch: 'ohhiyaa' },
   { id: 'oh-suara',   nama: 'Narator Ohhiyaa', peran: 'Ohhiyaa! · VO (ElevenLabs)', warna: '#7EE8CF', urut: 14, ch: 'ohhiyaa' },
   { id: 'oh-animator',nama: 'Animator Mainan', peran: 'Ohhiyaa! · miniatur 3D & render', warna: '#FFC93C', urut: 15, ch: 'ohhiyaa' },
@@ -255,11 +248,11 @@ const ROLE_TAG = { penggali: 'Riset', penulis: 'Naskah', cekfakta: 'Fakta', suar
 const AG_CH = { penulis: 'mas-kharis', suara: 'mas-kharis', animator: 'mas-kharis', 'tl-penulis': 'ternyata-leluhur', 'tl-suara': 'ternyata-leluhur', 'tl-animator': 'ternyata-leluhur', 'dm-penulis': 'dari-1-mnt', 'dm-suara': 'dari-1-mnt', 'dm-animator': 'dari-1-mnt', 'oh-penulis': 'ohhiyaa', 'oh-suara': 'ohhiyaa', 'oh-animator': 'ohhiyaa' };
 const chOf = i => i.channel || 'mas-kharis';
 const DIVS = {
-  'mas-kharis': { nama: 'Divisi Mas Kharis', warna: '#F2CC45', ket: 'stikmen kantor, suara Eyang', room: 'divisi' },
   'ternyata-leluhur': { nama: 'Divisi Ternyata Leluhur', warna: '#C89A58', ket: 'diorama 3D kearifan lokal, suara DK', room: 'leluhur' },
-  'dari-1-mnt': { nama: 'Divisi Dari 1 mnt', warna: '#1E6EFF', ket: 'kinetic pop 60–90 detik, suara Finn', room: 'dari1' },
   'ohhiyaa': { nama: 'Divisi Ohhiyaa!', warna: '#FF6FAE', ket: 'miniatur 3D mainan 40–60 detik', room: 'ohhiyaa' },
 };
+// divisions that are active; ideas and agents of other channels are hidden
+const AKTIF_CH = Object.keys(DIVS), HIDE_AG = ['penulis', 'suara', 'animator', 'dm-penulis', 'dm-suara', 'dm-animator'];
 const forAg = (id, list) => AG_CH[id] ? list.filter(i => chOf(i) === AG_CH[id]) : list;
 const baseRole = id => id.replace(/^[a-z0-9]+-(?=(penulis|suara|animator)$)/, '');   // any division prefix (tl-, dm-, oh-, …)
 let agents = AGENT_DEFAULTS.map(a => ({ ...a, status: 'santai', aktivitas: 'Menunggu tugas' }));
@@ -291,327 +284,228 @@ function updateTOD() { const h = wibHour(); TOD = h >= 18.5 || h < 5.5 ? 'night'
 updateTOD(); setInterval(updateTOD, 60000);
 const SKY = { day: ['#7EC8F2', '#D8F0FF'], sunset: ['#F28C6B', '#FFD59A'], dawn: ['#9FB7E8', '#FFD9B8'], night: ['#0E1430', '#2A3566'] };
 
-// ── map ───────────────────────────────────────────────────────
-const MX = 55, MY = 15;
+// ── map: padang jaman batu (open meadow, 2 division caves) ────
+const MX = 31, MY = 16;
 const ROOMS = {
-  rapat:  { nama: 'Ruang Rapat', focus: [4.5, 4.4, 1.2] },
-  divisi: { nama: 'Divisi Mas Kharis', focus: [14.5, 4.4, 1.05] },
-  studio: { nama: 'Studio Publish', focus: [24, 4.4, 1.2] },
-  leluhur: { nama: 'Divisi Ternyata Leluhur', focus: [32.5, 4.4, 1.1] },
-  dari1: { nama: 'Divisi Dari 1 mnt', focus: [41.5, 4.4, 1.1] },
-  ohhiyaa: { nama: 'Divisi Ohhiyaa!', focus: [50.5, 4.4, 1.1] },
-  lounge: { nama: 'Lounge & Pantry', focus: [13, 11.6, 0.82] },
+  rapat:  { nama: 'Api Unggun Rapat', focus: [4.8, 4.0, 1.1] },
+  studio: { nama: 'Batu Kerja Bersama', focus: [12.8, 3.4, 1.1] },
+  leluhur: { nama: 'Goa Ternyata Leluhur', focus: [20.2, 3.2, 1.05] },
+  ohhiyaa: { nama: 'Goa Ohhiyaa!', focus: [27.2, 3.2, 1.05] },
+  lounge: { nama: 'Padang & Telaga', focus: [13, 11.4, 0.78] },
 };
-const OVERVIEW = [26.3, 6.3, 0.32];
-const LIGHTS = [[4.5, 4.3], [12, 3.2], [16.5, 3.2], [14, 6.2], [24, 3.6], [31, 3.2], [33.5, 5.6], [40, 3.2], [42.5, 5.6], [41, 11.4], [4, 11.5], [11, 11.2], [21, 11.6], [31.5, 11.4]];
-
-function floorWood(x0, y0, w, d, c1, c2, seed) {
-  poly(quad(x0, y0, w, d, 0), c1, null);
-  // planks run along x
-  g.strokeStyle = 'rgba(60,30,10,.22)'; g.lineWidth = 1.2;
-  for (let j = 0; j <= d * 3; j++) { const y = y0 + j / 3; g.beginPath(); g.moveTo(...iso(x0, y)); g.lineTo(...iso(x0 + w, y)); g.stroke(); }
-  for (let j = 0; j < d * 3; j++) for (let k = 0; k < w / 1.6; k++) {
-    const x = x0 + ((k * 1.6 + rndv(j * 7 + seed) * 1.6) % w), y = y0 + j / 3;
-    g.beginPath(); g.moveTo(...iso(x, y)); g.lineTo(...iso(x, y + 1 / 3)); g.stroke();
-    if (rndv(j * 13 + k + seed) > 0.55) poly(quad(x, y, 1.2, 1 / 3, 0), rndv(j + k * 3 + seed) > 0.5 ? c2 : 'rgba(255,255,255,.05)', null);
-  }
+const OVERVIEW = [14.2, 6.6, 0.5];
+const FIRE = [4.6, 4.4], FIRE2 = [9.0, 11.7];
+const TORCHES = [[17.9, 1.5], [22.5, 1.5], [24.9, 1.5], [29.5, 1.5], [9.4, 1.4], [15.9, 1.4]];
+const LIGHTS = [FIRE, FIRE2, ...TORCHES];
+const POND = [19.4, 11.8, 3.2, 2.0];
+const CAVES = [['ternyata-leluhur', 17.4, 23.0, 'GOA LELUHUR', '#FFB347'], ['ohhiyaa', 24.4, 30.0, 'GOA OHHIYAA!', '#FF8FC4']];
+const TREES = [[0.8, 0.8, 1.1, 1], [8.2, 0.6, 0.9, 2], [16.7, 0.5, 1.0, 1], [23.7, 0.6, 1.0, 2], [30.4, 1.2, 1.0, 1], [0.7, 6.0, 1.0, 0], [0.9, 8.8, 1.2, 1], [8.3, 5.7, 0.8, 3], [16.3, 5.2, 0.9, 0], [23.9, 4.8, 0.9, 3], [30.3, 5.2, 1.0, 0], [1.2, 15.0, 1.0, 0], [6.0, 15.3, 0.9, 3], [14.6, 11.3, 1.1, 2], [24.0, 13.3, 1.1, 0], [25.6, 15.1, 0.9, 3], [30.1, 10.6, 1.1, 1], [30.3, 14.9, 1.0, 2], [12.4, 15.3, 0.8, 3], [3.6, 8.6, 0.8, 3], [17.2, 15.2, 1.0, 1]];
+const MAMMOTH = [27.0, 12.2];
+const cut = (s, n) => (s = String(s || '')).length > n ? s.slice(0, n - 1) + '…' : s;
+function lightPool(x, y, a) { const [px, py] = iso(x, y); g.save(); g.translate(px, py); g.scale(1, 0.5); const rg = g.createRadialGradient(0, 0, 0, 0, 0, 170); rg.addColorStop(0, `rgba(255,214,150,${a})`); rg.addColorStop(1, 'rgba(255,214,150,0)'); g.fillStyle = rg; g.beginPath(); g.arc(0, 0, 170, 0, 7); g.fill(); g.restore(); }
+// text laid on a wall facing the viewer (plane y = const)
+function faceText(x, y, z, s, font, col) {
+  const [px, py] = iso(x, y, z); g.save(); g.translate(px, py); g.transform(1, 0.5, 0, 1, 0, 0);
+  g.font = font; g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineJoin = 'round';
+  g.lineWidth = 5; g.strokeStyle = 'rgba(28,18,12,.7)'; g.strokeText(s, 0, 0); g.fillStyle = col; g.fillText(s, 0, 0); g.restore();
 }
-function floors(t) {
-  floorWood(0, 0, 9, 8, '#C69465', 'rgba(120,70,30,.12)', 1);
-  // division: brand teal checker, glossy
-  for (let i = 9; i < 20; i++) for (let j = 0; j < 8; j++) poly(quad(i, j, 1, 1, 0), (i + j) % 2 ? '#EEF5F4' : '#1F8B95', 'rgba(0,0,0,.10)', 1);
-  g.save(); g.globalAlpha = 0.12; poly([iso(10, 0), iso(14, 0), iso(17, 8), iso(13, 8)], '#ffffff', null); g.restore();
-  // studio: polished concrete
-  poly(quad(20, 0, 8, 8, 0), '#D5D1CA', null);
-  for (let k = 0; k < 40; k++) { const x = 20 + rndv(k) * 8, y = rndv(k + 50) * 8; g.fillStyle = 'rgba(0,0,0,.05)'; g.beginPath(); g.ellipse(...iso(x, y), 10 + rndv(k + 9) * 22, 5 + rndv(k + 3) * 8, 0, 0, 7); g.fill(); }
-  // studio rug
-  poly(quad(21.2, 2.6, 4.2, 3.2, 0), '#26335E', OL, 2); poly(quad(21.5, 2.9, 3.6, 2.6, 0), null, 'rgba(255,255,255,.35)', 2);
-  // ternyata leluhur: bamboo floor + woven (anyaman) mat
-  floorWood(28, 0, 9, 8, '#D9B77E', 'rgba(140,90,40,.14)', 4);
-  poly(quad(29.0, 3.2, 4.6, 3.6, 0), '#C89A58', OL, 2);
-  g.save(); clipPoly(quad(29.0, 3.2, 4.6, 3.6, 0));
-  for (let i = 0; i < 23; i++) for (let j = 0; j < 18; j++) if ((i + j) % 2) poly(quad(29.0 + i * 0.2, 3.2 + j * 0.2, 0.2, 0.2, 0), '#A77A3E', null);
-  g.restore(); poly(quad(29.25, 3.45, 4.1, 3.1, 0), null, 'rgba(255,240,200,.45)', 2);
-  // dari 1 mnt: navy tiles with neon cyan grid + pink rug
-  poly(quad(37, 0, 9, 8, 0), '#16205A', null);
-  for (let i = 37; i <= 46; i++) { g.strokeStyle = 'rgba(0,245,212,.35)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(...iso(i, 0)); g.lineTo(...iso(i, 8)); g.stroke(); }
-  for (let j = 0; j <= 8; j++) { g.beginPath(); g.moveTo(...iso(37, j)); g.lineTo(...iso(46, j)); g.stroke(); }
-  poly(quad(38.2, 3.3, 4.6, 3.4, 0), '#FF3D71', OL, 2); poly(quad(38.5, 3.6, 4.0, 2.8, 0), null, 'rgba(255,214,10,.8)', 3);
-  // ohhiyaa!: pastel pink tiles with a measuring grid + mint rug shaped like a ruler
-  poly(quad(46, 0, 9, 8, 0), '#FFE3EC', null);
-  for (let i = 46; i <= 55; i++) { g.strokeStyle = 'rgba(255,111,174,.45)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(...iso(i, 0)); g.lineTo(...iso(i, 8)); g.stroke(); }
-  for (let j = 0; j <= 8; j++) { g.beginPath(); g.moveTo(...iso(46, j)); g.lineTo(...iso(55, j)); g.stroke(); }
-  poly(quad(47.2, 3.4, 4.8, 1.6, 0), '#FFD84A', OL, 2); for (let k = 0; k <= 24; k++) { const x = 47.3 + k * 0.19; g.strokeStyle = OL; g.lineWidth = 1.5; g.beginPath(); g.moveTo(...iso(x, 3.4)); g.lineTo(...iso(x, 3.4 + (k % 5 ? 0.25 : 0.5))); g.stroke(); }
-  // lounge: wood deck + pantry tiles + pool
-  floorWood(0, 8, MX, 7, '#A96F43', 'rgba(70,35,10,.15)', 7);
-  for (let i = 0; i < 5; i++) for (let j = 12; j < 15; j++) poly(quad(i, j, 1, 1, 0), (i + j) % 2 ? '#ECE7DF' : '#DCD5CA', 'rgba(0,0,0,.08)', 1);
-  poly(quad(16.8, 9.2, 9, 4.6, 0), '#EFE8DC', OL, 2);
-  for (let i = 0; i < 18; i++) { const a = iso(16.8 + i * 0.5, 9.2), b = iso(16.8 + i * 0.5, 9.45); g.strokeStyle = 'rgba(0,0,0,.08)'; g.lineWidth = 1; g.beginPath(); g.moveTo(...a); g.lineTo(...b); g.stroke(); }
-  const pool = quad(17.3, 9.7, 8, 3.6, 0);
-  const pg = g.createLinearGradient(...iso(17.3, 9.7), ...iso(25.3, 13.3)); pg.addColorStop(0, '#5ED3F2'); pg.addColorStop(1, '#2EA7D6');
-  poly(pool, pg, OL, 2.5);
-  g.save(); clipPoly(pool); g.strokeStyle = 'rgba(255,255,255,.45)'; g.lineWidth = 2;
-  for (let k = 0; k < 14; k++) { const x = 17.6 + (k % 7) * 1.1 + Math.sin(t * 0.8 + k) * 0.25, y = 10.1 + Math.floor(k / 7) * 1.6 + Math.cos(t * 0.7 + k) * 0.2; const [px, py] = iso(x, y); g.beginPath(); g.moveTo(px - 26, py); g.bezierCurveTo(px - 10, py - 8, px + 10, py + 8, px + 26, py); g.stroke(); }
-  poly([iso(17.3, 9.7), iso(25.3, 9.7), iso(25.3, 9.7, -18), iso(17.3, 9.7, -18)], 'rgba(0,40,70,.18)', null);
-  g.restore();
-  // lounge rugs
-  poly(quad(1.0, 8.9, 5.4, 3.0, 0), '#E9DCC0', OL, 2);
-  for (let k = 0; k < 5; k++) poly(quad(1.3 + k * 1.0, 9.2, 0.5, 2.4, 0), 'rgba(176,120,70,.25)', null);
-  poly(quad(8.6, 10.0, 3.2, 2.4, 0), '#3F7F6E', OL, 2);
-  // wall ambient occlusion
-  const ao = g.createLinearGradient(...iso(5, 0), ...iso(5, 0.9)); ao.addColorStop(0, 'rgba(0,0,0,.22)'); ao.addColorStop(1, 'rgba(0,0,0,0)');
-  poly(quad(0, 0, MX, 0.9, 0), ao, null);
-  const ao2 = g.createLinearGradient(...iso(0, 5), ...iso(0.9, 5)); ao2.addColorStop(0, 'rgba(0,0,0,.22)'); ao2.addColorStop(1, 'rgba(0,0,0,0)');
-  poly(quad(0, 0, 0.9, MY, 0), ao2, null);
+function blob(cx, cy, rx, ry, col, seed, stroke) {
+  const P = []; for (let k = 0; k < 28; k++) { const a = k / 28 * Math.PI * 2, r = 0.86 + rndv(seed + k) * 0.22; P.push(iso(cx + Math.cos(a) * rx * r, cy + Math.sin(a) * ry * r)); }
+  poly(P, col, stroke || null, 2);
 }
-// floor-to-ceiling glass with a skyline (back wall y=0)
-function windowStrip(x0, x1, t, seed) {
-  const pts = onWallY(x0, x1, 18, WALL_H - 16);
-  g.save(); clipPoly(pts);
-  const [a, b] = SKY[TOD]; const top = iso(x0, 0, WALL_H), bot = iso(x0, 0, 18);
-  const sg = g.createLinearGradient(top[0], top[1], bot[0], bot[1]); sg.addColorStop(0, a); sg.addColorStop(1, b); g.fillStyle = sg; g.fillRect(-4000, -4000, 9000, 9000);
-  if (TOD === 'day') for (let k = 0; k < 3; k++) { const cx = x0 + ((t * 0.05 + k * 2.3 + seed) % (x1 - x0 + 2)) - 1; const [px, py] = iso(cx, 0, 150 + k * 10); g.fillStyle = 'rgba(255,255,255,.75)'; g.beginPath(); g.ellipse(px, py, 34, 9, 0.46, 0, 7); g.fill(); }
-  let x = x0 - 0.3, i = 0;
-  while (x < x1) {
-    const w = 0.5 + rndv(i + seed) * 0.8, h = 40 + rndv(i * 3 + seed) * 110, dark = TOD === 'night';
-    const col = dark ? (i % 2 ? '#1A2142' : '#222B52') : (i % 2 ? '#8DB3CF' : '#A7C6DC');
-    poly([iso(x, 0, 18), iso(x + w, 0, 18), iso(x + w, 0, 18 + h), iso(x, 0, 18 + h)], col, null);
-    for (let r = 0; r < h / 14 - 1; r++) for (let c = 0; c < w / 0.18 - 1; c++) {
-      const lit = dark ? rndv(i * 31 + r * 7 + c) > 0.55 : rndv(i * 31 + r * 7 + c) > 0.7;
-      if (!lit) continue;
-      const wx = x + 0.08 + c * 0.18, wz = 26 + r * 14; poly([iso(wx, 0, wz), iso(wx + 0.09, 0, wz), iso(wx + 0.09, 0, wz + 7), iso(wx, 0, wz + 7)], dark ? '#FFE08A' : 'rgba(255,255,255,.55)', null);
-    }
-    x += w + 0.05; i++;
-  }
-  // reflections
-  g.strokeStyle = 'rgba(255,255,255,.18)'; g.lineWidth = 16;
-  for (let k = 0; k < (x1 - x0) / 2; k++) { const rx = x0 + 0.6 + k * 2; g.beginPath(); g.moveTo(...iso(rx, 0, 30)); g.lineTo(...iso(rx + 0.7, 0, WALL_H - 30)); g.stroke(); }
-  g.restore();
-  // mullions
-  g.strokeStyle = '#3A3F55'; g.lineWidth = 4;
-  for (let m = x0; m <= x1 + 0.01; m += (x1 - x0) / Math.round((x1 - x0) / 1.2)) { g.beginPath(); g.moveTo(...iso(m, 0, 18)); g.lineTo(...iso(m, 0, WALL_H - 16)); g.stroke(); }
-  poly(pts, null, '#3A3F55', 5);
-}
-function backWalls(t) {
-  // wall thickness caps
-  poly([iso(-0.25, -0.25, WALL_H), iso(MX, -0.25, WALL_H), iso(MX, 0, WALL_H), iso(0, 0, WALL_H), iso(0, MY, WALL_H), iso(-0.25, MY, WALL_H)], '#4A4F66', OL, 2);
-  [[0, 9, '#E9E2D6', 'RUANG RAPAT'], [9, 20, '#F2CC45', 'DIVISI MAS KHARIS'], [20, 28, '#DDE1EA', 'STUDIO PUBLISH'], [28, 37, '#E9D3AE', 'DIVISI TERNYATA LELUHUR'], [37, 46, '#2A55D9', 'DIVISI DARI 1 MNT'], [46, 55, '#FFB3CF', 'DIVISI OHHIYAA!']].forEach(([a, b, col, label], si) => {
-    poly([iso(a, 0), iso(b, 0), iso(b, 0, WALL_H), iso(a, 0, WALL_H)], col, OL, 2);
-    poly([iso(a, 0, 0), iso(b, 0, 0), iso(b, 0, 10), iso(a, 0, 10)], shade(col, .75), null); // baseboard
-    const w0 = si === 1 ? 14.8 : si === 3 ? 33.6 : si === 4 ? 42.6 : si === 5 ? 51.6 : a + 0.5, w1 = si === 1 ? 19.6 : si === 0 ? 2.6 : si === 3 ? 36.6 : si === 4 ? 45.6 : si === 5 ? 54.6 : 25.0;
-    windowStrip(w0, w1, t, si * 17);
-    const m = iso((a + b) / 2 + (si === 1 ? -2.2 : si === 0 ? 1.6 : si >= 3 ? -2.3 : -0.9), 0, WALL_H - 6);
-    g.save(); g.translate(m[0], m[1]); g.transform(1, 0.5, 0, 1, 0, 0);
-    g.font = '400 20px Bungee, sans-serif'; const w = g.measureText(label).width + 28;
-    g.fillStyle = OL; g.beginPath(); g.roundRect(-w / 2, -2, w, 30, 6); g.fill();
-    g.fillStyle = '#FFD84A'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(label, 0, 14); g.restore();
-  });
-  // left wall: meeting (with bookshelf) then lounge (glass)
-  poly([iso(0, 0), iso(0, 8), iso(0, 8, WALL_H), iso(0, 0, WALL_H)], '#DCD2C1', OL, 2);
-  poly([iso(0, 8), iso(0, MY), iso(0, MY, WALL_H), iso(0, 8, WALL_H)], '#8FCBB9', OL, 2);
-  const m = iso(0, 11.6, 150); g.save(); g.translate(m[0], m[1]); g.transform(1, -0.5, 0, 1, 0, 0);
-  g.font = '400 26px Bungee, sans-serif'; g.fillStyle = '#ffffff'; g.textAlign = 'center'; g.fillText('LOUNGE & PANTRY', 0, 0); g.restore();
-  // whiteboard with sticky notes in the division
-  poly(onWallY(9.6, 12.4, 70, 160), '#FFFFFF', OL, 3);
-  const cols = ['#FFD84A', '#7FD3D9', '#F29B4B', '#9ED6A0', '#F7A8C4', '#B9A3E6'];
-  for (let k = 0; k < 9; k++) { const x = 9.85 + (k % 4) * 0.62, z = 140 - Math.floor(k / 4) * 28; poly(onWallY(x, x + 0.42, z - 20, z), cols[k % 6], OL, 1.5); }
-  // ON AIR sign in studio
-  const onAir = (agents.find(a => a.id === 'publisher') || {}).status === 'kerja';
-  poly(onWallY(25.6, 27.2, 150, 178), onAir ? '#E84545' : '#5a2a2a', OL, 2);
-  const c = iso(26.4, 0.02, 164); g.save(); g.translate(c[0], c[1]); g.transform(1, 0.5, 0, 1, 0, 0); g.font = '900 16px Nunito, sans-serif'; g.fillStyle = onAir ? '#fff' : '#b88'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('ON AIR', 0, 0); g.restore();
-  // ternyata leluhur: woven bamboo wall panel + batik hanging
-  const wv = onWallY(28.4, 29.9, 30, 170); poly(wv, '#C89A58', OL, 2.5);
-  g.save(); clipPoly(wv); for (let r = 0; r < 14; r++) for (let c = 0; c < 15; c++) if ((r + c) % 2) poly(onWallY(28.4 + c * 0.1, 28.5 + c * 0.1, 30 + r * 10, 40 + r * 10, 0.03), '#A77A3E', null); g.restore();
-  const bt = onWallY(31.9, 33.1, 60, 170); poly(bt, '#A22B3A', OL, 2.5);
-  for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) { const x = 32.1 + c * 0.4, z = 75 + r * 26; poly([iso(x + 0.1, 0.03, z + 12), iso(x + 0.2, 0.03, z), iso(x + 0.1, 0.03, z - 12), iso(x, 0.03, z)], '#E9A92B', null); }
-  poly(onWallY(31.85, 33.15, 166, 174), '#5A3C1E', OL, 2);
-  // dari 1 mnt: neon sign + sticker wall
-  poly(onWallY(37.5, 39.2, 40, 175), '#111827', OL, 2.5);
-  [['1F525', 0], ['1F914', 1], ['1F4B0', 2], ['1F631', 3]].forEach(([, k]) => { const c = ['#FFD60A', '#FF3D71', '#00F5D4', '#7C3AED'][k]; const x = 37.75 + (k % 2) * 0.75, z = 140 - Math.floor(k / 2) * 55; poly(onWallY(x, x + 0.6, z - 40, z), c, OL, 2); });
-  // ohhiyaa!: giant ruler on the wall + shelf of toy gallons
-  poly(onWallY(46.5, 46.8, 20, 180), '#FFD84A', OL, 2.5);
-  for (let k = 0; k <= 16; k++) { const z = 25 + k * 9.5; g.strokeStyle = OL; g.lineWidth = 1.5; g.beginPath(); g.moveTo(...iso(46.5, 0.03, z)); g.lineTo(...iso(46.5 + (k % 4 ? 0.1 : 0.2), 0.03, z)); g.stroke(); }
-  poly(onWallY(47.3, 49.6, 118, 126), '#C99A6B', OL, 2);
-  [47.6, 48.3, 49.0].forEach((x, k) => { poly(onWallY(x, x + 0.45, 126, 168), ['#8FD3FF', '#BFE8FF', '#8FD3FF'][k], OL, 1.5); poly(onWallY(x + 0.15, x + 0.3, 168, 176), '#1E6EFF', OL, 1.5); });
-  // wall sconces
-  [[1.4, 0], [7.6, 0], [21.0, 0], [30.6, 0], [41.6, 0], [50.4, 0]].forEach(([x]) => { const [sx, sy] = iso(x, 0.02, 130); g.fillStyle = '#F5B82E'; g.beginPath(); g.ellipse(sx, sy, 7, 12, 0, 0, 7); g.fill(); g.strokeStyle = OL; g.lineWidth = 2; g.stroke(); });
-}
-function wallScreen(x0, x1, z0, z1, lines, col) {
-  poly(onWallY(x0 - 0.06, x1 + 0.06, z0 - 6, z1 + 6), '#2A2D3E', OL, 2.5);
-  poly(onWallY(x0, x1, z0, z1, 0.03), '#141726', null);
-  const c = iso((x0 + x1) / 2, 0.03, (z0 + z1) / 2);
-  g.save(); g.translate(c[0], c[1]); g.transform(1, 0.5, 0, 1, 0, 0);
-  lines.forEach((l, i) => { g.font = (i ? '700 14px' : '900 19px') + ' Nunito, sans-serif'; g.fillStyle = i ? '#cfe9ff' : col; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(l.length > 24 ? l.slice(0, 23) + '…' : l, 0, (i - (lines.length - 1) / 2) * 22); });
-  g.restore();
+function flame(px, py, s, t, ph) {
+  const f = (r, h, col, o) => { const fx = px + Math.sin(t * 7 + ph + o) * 3 * s, hh = h * s * (1 + Math.sin(t * 9 + ph + o) * 0.09);
+    g.beginPath(); g.moveTo(px - r * s, py); g.quadraticCurveTo(px - r * s, py - hh * 0.55, fx, py - hh); g.quadraticCurveTo(px + r * s, py - hh * 0.55, px + r * s, py); g.closePath(); g.fillStyle = col; g.fill(); };
+  f(20, 66, '#E8452C', 0); f(14, 50, '#FF9A1E', 1.7); f(7, 30, '#FFE27A', 3.1);
 }
 
-// ── furniture ─────────────────────────────────────────────────
-function chair(x, y, col, back) {
-  // five-star base + gas lift + seat + backrest (back: side of the backrest, 'n' toward wall or 's' toward viewer)
-  const [bx, by] = iso(x, y); g.strokeStyle = '#2b2e3c'; g.lineWidth = 3;
-  for (let k = 0; k < 5; k++) { const a = k / 5 * Math.PI * 2; g.beginPath(); g.moveTo(bx, by); g.lineTo(bx + Math.cos(a) * 16, by + Math.sin(a) * 8); g.stroke(); g.fillStyle = '#111'; g.beginPath(); g.arc(bx + Math.cos(a) * 16, by + Math.sin(a) * 8, 2.5, 0, 7); g.fill(); }
-  g.lineWidth = 4; g.beginPath(); g.moveTo(bx, by); g.lineTo(bx, by - 22); g.stroke();
-  isoBox(x - 0.22, y - 0.22, 22, 0.44, 0.44, 8, col);
-  if (back === 's') isoBox(x - 0.22, y + 0.16, 30, 0.44, 0.08, 34, col);
+// sky backdrop: mountain ranges and a smoking volcano behind the meadow
+function backdrop(t) {
+  const far = TOD === 'night' ? '#26305A' : TOD === 'sunset' ? '#A86A86' : TOD === 'dawn' ? '#8E98C8' : '#8CA8C8';
+  const near = TOD === 'night' ? '#22402F' : TOD === 'sunset' ? '#7E7A4E' : '#5E9A57';
+  // volcano
+  const [vx, vy] = iso(15, -9, 0), [, vt] = iso(15, -9, 760);
+  poly([[vx - 520, vy], [vx - 70, vt], [vx + 70, vt], [vx + 520, vy]], shade('#7A5A52', TOD === 'night' ? 0.55 : 1), null);
+  poly([[vx - 70, vt], [vx + 70, vt], [vx + 30, vt + 30], [vx - 34, vt + 26]], '#3A2622', null);
+  g.strokeStyle = '#E8582C'; g.lineWidth = 7; g.lineCap = 'round'; g.beginPath(); g.moveTo(vx - 20, vt + 22); g.quadraticCurveTo(vx - 60, vt + 140, vx - 110, vt + 260); g.moveTo(vx + 22, vt + 22); g.quadraticCurveTo(vx + 40, vt + 120, vx + 90, vt + 200); g.stroke();
+  for (let k = 0; k < 6; k++) { const ph = ((t * 0.05) + k / 6) % 1; g.fillStyle = `rgba(${TOD === 'night' ? '90,90,110' : '235,232,226'},${0.75 * (1 - ph)})`; g.beginPath(); g.arc(vx + Math.sin(k * 1.7) * 30 + ph * 220, vt - 40 - ph * 360, 40 + ph * 90, 0, 7); g.fill(); }
+  // far ranges
+  let P = [iso(-10, -3.5, 0)]; for (let i = 0; i <= 26; i++) P.push(iso(-10 + i * 1.8, -3.5, 200 + rndv(i + 40) * 300)); P.push(iso(-10 + 26 * 1.8, -3.5, 0)); poly(P, far, null);
+  P = [iso(-3.5, -10, 0)]; for (let i = 0; i <= 18; i++) P.push(iso(-3.5, -10 + i * 1.8, 200 + rndv(i + 90) * 300)); P.push(iso(-3.5, -10 + 18 * 1.8, 0)); poly(P, far, null);
+  // near green hills
+  P = [iso(-4, -1.2, 0)]; for (let i = 0; i <= 20; i++) { const x = -4 + i * 1.9; P.push(iso(x, -1.2, 70 + Math.sin(i * 0.9) * 40 + rndv(i + 7) * 50)); } P.push(iso(34, -1.2, 0)); poly(P, near, null);
+  P = [iso(-1.2, -4, 0)]; for (let i = 0; i <= 12; i++) { const y = -4 + i * 1.9; P.push(iso(-1.2, y, 70 + Math.sin(i * 1.1) * 40 + rndv(i + 70) * 50)); } P.push(iso(-1.2, 20, 0)); poly(P, near, null);
 }
-function monitor(x, y, z, on, t, k) {
-  isoBox(x - 0.04, y - 0.02, z, 0.08, 0.06, 12, '#3A3F55', 1.5);
-  isoBox(x - 0.28, y - 0.04, z + 12, 0.56, 0.05, 34, '#23263A', 1.8);
-  const scr = [iso(x - 0.25, y + 0.01, z + 15), iso(x + 0.25, y + 0.01, z + 15), iso(x + 0.25, y + 0.01, z + 43), iso(x - 0.25, y + 0.01, z + 43)];
-  poly(scr, on ? '#BFEFFF' : '#2E3348', null);
-  if (on) { g.save(); clipPoly(scr); g.lineWidth = 2; for (let r = 0; r < 4; r++) { const w = 0.1 + 0.3 * ((Math.sin(t * 2 + r + k) + 1) / 2); g.strokeStyle = r === 0 ? '#2F6FD0' : 'rgba(29,32,48,.45)'; g.beginPath(); g.moveTo(...iso(x - 0.2, y + 0.01, z + 38 - r * 6)); g.lineTo(...iso(x - 0.2 + w, y + 0.01, z + 38 - r * 6)); g.stroke(); } g.restore(); }
+
+const inPond = (x, y, m = 0) => ((x - POND[0]) / (POND[2] + m)) ** 2 + ((y - POND[1]) / (POND[3] + m)) ** 2 < 1;
+function freeGrass(x, y) {
+  if (y > 6.3 && y < 7.7) return false;
+  if (inPond(x, y, 0.4)) return false;
+  if (y < 6.3 && x > 1.5 && x < 30) return false;     // work areas (clearings)
+  return Math.hypot(x - FIRE2[0], y - FIRE2[1]) > 2;
 }
-function desk(x, y, on, t, col, k) {
-  // top slab + legs + drawer
-  shadowQ(x - 0.8, y - 0.45, 1.6, 0.9, 0.18);
-  [[-0.76, -0.41], [0.72, -0.41], [-0.76, 0.37], [0.72, 0.37]].forEach(([dx, dy]) => isoBox(x + dx, y + dy, 0, 0.04, 0.04, 46, '#9AA0B4', 1));
-  isoBox(x + 0.35, y - 0.38, 0, 0.36, 0.7, 40, '#E9E3D6', 1.5);
-  isoBox(x - 0.8, y - 0.45, 46, 1.6, 0.9, 6, '#F6EFE2');
-  monitor(x - 0.28, y - 0.3, 52, on, t, k); monitor(x + 0.32, y - 0.3, 52, on, t, k + 2);
-  isoBox(x - 0.32, y - 0.02, 52, 0.62, 0.18, 3, '#E2E5EE', 1.2); // keyboard
-  isoBox(x + 0.42, y + 0.02, 52, 0.08, 0.12, 3, '#E2E5EE', 1.2);   // mouse
-  isoBox(x + 0.58, y - 0.1, 52, 0.12, 0.12, 13, col || '#E84545', 1.5); // mug
-  if (on) { const [mx, my] = iso(x + 0.64, y - 0.04, 70); g.strokeStyle = 'rgba(255,255,255,.7)'; g.lineWidth = 2; g.beginPath(); g.moveTo(mx, my); g.quadraticCurveTo(mx + 6, my - 8 - Math.sin(t * 3) * 3, mx, my - 16); g.stroke(); }
-  poly(quad(x - 0.7, y + 0.12, 0.3, 0.22, 52.5), '#FFFFFF', OL, 1); // papers
-}
-function plant(x, y, s = 1, kind = 0) {
-  shadowQ(x, y, 0.5 * s, 0.5 * s, 0.18);
-  isoBox(x, y, 0, 0.5 * s, 0.5 * s, 30 * s, kind ? '#E8E2D6' : '#C9774A');
-  const [px, py] = iso(x + 0.25 * s, y + 0.25 * s, 32 * s);
-  const leaves = kind ? 7 : 6;
-  for (let k = 0; k < leaves; k++) {
-    const a = -Math.PI / 2 + (k - (leaves - 1) / 2) * 0.42, L = (kind ? 46 : 36) * s;
-    g.save(); g.translate(px, py); g.rotate(a + Math.PI / 2);
-    g.beginPath(); g.ellipse(0, -L / 2, (kind ? 9 : 13) * s, L / 2, 0, 0, 7); g.fillStyle = k % 2 ? '#3FA34D' : '#2E8B57'; g.fill(); g.strokeStyle = OL; g.lineWidth = 2; g.stroke();
-    g.strokeStyle = 'rgba(255,255,255,.35)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(0, -2); g.lineTo(0, -L + 4); g.stroke();
-    g.restore();
+function ground(t) {
+  poly([iso(0, MY, 0), iso(MX, MY, 0), iso(MX, MY, -70), iso(0, MY, -70)], '#8A6440');
+  poly([iso(MX, 0, 0), iso(MX, MY, 0), iso(MX, MY, -70), iso(MX, 0, -70)], '#6E4E32');
+  g.strokeStyle = 'rgba(40,24,12,.35)'; g.lineWidth = 2; g.beginPath(); g.moveTo(...iso(0, MY, -30)); g.lineTo(...iso(MX, MY, -30)); g.lineTo(...iso(MX, 0, -30)); g.stroke();
+  poly(quad(0, 0, MX, MY, 0), '#9CC95E', OL, 3);
+  for (let x = 0; x < MX; x++) for (let y = 0; y < MY; y++) { const r = rndv(x * 31 + y * 7); if (r > 0.55) poly(quad(x, y, 1, 1, 0), r > 0.82 ? '#A9D56A' : '#8FBE55', null); }
+  // trampled earth: work clearings and the main path
+  blob(4.6, 3.6, 3.9, 2.9, '#CDB283', 11); blob(12.7, 3.0, 3.6, 2.8, '#CDB283', 23);
+  blob(20.2, 3.2, 3.3, 2.8, '#C9AC7C', 37); blob(27.2, 3.2, 3.3, 2.8, '#C9AC7C', 51);
+  blob(9.0, 11.7, 2.0, 1.5, '#CDB283', 63);
+  poly(quad(0.3, 6.6, MX - 0.6, 0.85, 0), '#D6B87F', null);
+  for (let k = 0; k < 40; k++) { const [px, py] = iso(0.6 + rndv(k + 200) * (MX - 1.2), 6.7 + rndv(k + 300) * 0.65); g.fillStyle = '#A99377'; g.beginPath(); g.ellipse(px, py, 5, 3, 0, 0, 7); g.fill(); }
+  // pond
+  const P = []; for (let k = 0; k < 36; k++) { const a = k / 36 * Math.PI * 2; P.push(iso(POND[0] + Math.cos(a) * POND[2], POND[1] + Math.sin(a) * POND[3])); }
+  poly(P, '#5DB6C9', OL, 3);
+  const [cx, cy] = iso(POND[0], POND[1]); g.strokeStyle = 'rgba(255,255,255,.5)'; g.lineWidth = 2;
+  for (let k = 0; k < 4; k++) { const w = 40 + k * 30 + Math.sin(t * 1.5 + k) * 8; g.beginPath(); g.ellipse(cx + (k - 1.5) * 30, cy + (k % 2 ? 20 : -20), w, w * 0.22, 0, 0.2, 2.2); g.stroke(); }
+  for (let k = 0; k < 16; k++) { const a = k / 16 * Math.PI * 2, [px, py] = iso(POND[0] + Math.cos(a) * (POND[2] + 0.15), POND[1] + Math.sin(a) * (POND[3] + 0.15)); g.beginPath(); g.ellipse(px, py, 13, 8, 0, 0, 7); g.fillStyle = k % 3 ? '#A39D94' : '#8C877F'; g.fill(); g.strokeStyle = OL; g.lineWidth = 1.8; g.stroke(); }
+  // grass tufts and flowers
+  g.lineCap = 'round';
+  for (let i = 0; i < 190; i++) {
+    const x = rndv(i + 900) * MX, y = rndv(i + 1700) * MY; if (!freeGrass(x, y)) continue;
+    const [px, py] = iso(x, y), sw = reduce ? 0 : Math.sin(t * 1.3 + i) * 2;
+    g.strokeStyle = '#5E8F33'; g.lineWidth = 2.5; g.beginPath(); g.moveTo(px - 6, py); g.lineTo(px - 9 + sw, py - 14); g.moveTo(px, py); g.lineTo(px + sw, py - 19); g.moveTo(px + 6, py); g.lineTo(px + 9 + sw, py - 13); g.stroke();
+    if (i % 7 === 0) { g.fillStyle = ['#FFFFFF', '#FFD84A', '#FF8FC4'][i % 3]; g.beginPath(); g.arc(px + sw, py - 21, 4.5, 0, 7); g.fill(); }
   }
 }
-function bookshelf(y0) {
-  // against the left wall (x=0)
-  isoBox(0.05, y0, 0, 0.45, 1.8, 150, '#7A4E2D');
-  for (let s = 0; s < 4; s++) {
-    const z = 12 + s * 34;
-    for (let b = 0; b < 9; b++) { const y = y0 + 0.1 + b * 0.18, h = 18 + rndv(b + s * 9) * 10; poly([iso(0.5, y, z), iso(0.5, y + 0.14, z), iso(0.5, y + 0.14, z + h), iso(0.5, y, z + h)], ['#E84545', '#2F6FD0', '#F5B82E', '#3FA34D', '#9B6BD6', '#F29B4B'][(b + s) % 6], OL, 1); }
-    poly([iso(0.5, y0, z - 2), iso(0.5, y0 + 1.8, z - 2), iso(0.5, y0 + 1.8, z), iso(0.5, y0, z)], '#5C3A20', null);
+
+// a lumpy rock mass whose front face sits on plane y = y1
+function rockMass(x0, x1, y0, y1, hBase, hVar, seed, col) {
+  const N = Math.max(8, Math.round((x1 - x0) * 3)), H = [], X = i => x0 + (x1 - x0) * i / N;
+  for (let i = 0; i <= N; i++) { const e = Math.sin(i / N * Math.PI); H.push(hBase * (0.3 + 0.7 * Math.pow(e, 0.4)) + (rndv(seed + i) - 0.5) * hVar); }
+  const top = []; for (let i = 0; i <= N; i++) top.push(iso(X(i), y1, H[i])); for (let i = N; i >= 0; i--) top.push(iso(X(i), y0, H[i] * 0.9));
+  poly(top, shade(col, 1.12), OL, 2.5);
+  poly([iso(x1, y1, 0), iso(x1, y0, 0), iso(x1, y0, H[N] * 0.9), iso(x1, y1, H[N])], shade(col, .72), OL, 2.5);
+  const fr = [iso(x0, y1, 0)]; for (let i = 0; i <= N; i++) fr.push(iso(X(i), y1, H[i])); fr.push(iso(x1, y1, 0));
+  poly(fr, col, OL, 3);
+  g.save(); clipPoly(fr); g.strokeStyle = shade(col, .78); g.lineWidth = 3;
+  for (let k = 1; k < 6; k++) { g.beginPath(); for (let i = 0; i <= 12; i++) { const x = x0 + (x1 - x0) * i / 12, [px, py] = iso(x, y1, k * 48 + Math.sin(i * 1.3 + k) * 8); i ? g.lineTo(px, py) : g.moveTo(px, py); } g.stroke(); }
+  g.restore();
+  for (let i = 1; i < N; i += 2) { const [px, py] = iso(X(i), (y0 + y1) / 2, H[i] * 0.95); g.fillStyle = '#6FA347'; g.beginPath(); g.ellipse(px, py, 26, 11, 0, 0, 7); g.fill(); g.strokeStyle = OL; g.lineWidth = 1.5; g.stroke(); }
+  return H;
+}
+// ochre wall paintings: hand prints and a little hunting scene
+function wallArt(x, y, z, seed) {
+  g.save(); g.fillStyle = 'rgba(178,72,40,.85)'; g.strokeStyle = 'rgba(178,72,40,.85)'; g.lineWidth = 3; g.lineCap = 'round';
+  for (let k = 0; k < 2; k++) { const [px, py] = iso(x + k * 0.5 + rndv(seed + k) * 0.2, y, z + rndv(seed + k + 9) * 20); g.beginPath(); g.ellipse(px, py, 7, 8, 0, 0, 7); g.fill(); for (let f = -2; f <= 2; f++) { g.beginPath(); g.moveTo(px + f * 3.4, py - 4); g.lineTo(px + f * 4.6, py - 15 + Math.abs(f) * 2); g.stroke(); } }
+  const [qx, qy] = iso(x + 1.3, y, z + 6); g.translate(qx, qy); g.transform(1, 0.5, 0, 1, 0, 0);
+  g.beginPath(); g.ellipse(0, 0, 16, 8, 0, 0, 7); g.fill(); g.beginPath(); g.moveTo(-10, 6); g.lineTo(-12, 16); g.moveTo(10, 6); g.lineTo(12, 16); g.moveTo(14, -4); g.lineTo(22, -12); g.moveTo(22, -12); g.lineTo(18, -20); g.moveTo(22, -12); g.lineTo(28, -19); g.stroke();
+  g.beginPath(); g.moveTo(40, -6); g.lineTo(40, 10); g.moveTo(40, 10); g.lineTo(35, 18); g.moveTo(40, 10); g.lineTo(45, 18); g.moveTo(40, -2); g.lineTo(28, -6); g.stroke(); g.beginPath(); g.arc(40, -11, 4, 0, 7); g.fill();
+  g.restore();
+}
+function cave(x0, x1, label, glow, lines, lit, t, seed) {
+  const H = rockMass(x0, x1, -0.4, 0.9, 330, 60, seed, '#9A8877');
+  const xc = (x0 + x1) / 2, w = 1.9, h = 140, pts = [];
+  for (let k = 0; k <= 24; k++) { const a = Math.PI * k / 24; pts.push(iso(xc - Math.cos(a) * w / 2, 0.92, Math.sin(a) * h)); }
+  g.save(); clipPoly(pts); const [cx, cy] = iso(xc, 0.92, 40);
+  const rg = g.createRadialGradient(cx, cy, 4, cx, cy, 150); rg.addColorStop(0, lit ? glow : '#4A372C'); rg.addColorStop(0.55, '#24170F'); rg.addColorStop(1, '#0E0805');
+  g.fillStyle = rg; g.fillRect(cx - 200, cy - 220, 400, 400);
+  if (lit) flame(cx, cy + 34, 0.7, t, seed);
+  g.restore(); poly(pts, null, OL, 3.5);
+  wallArt(x0 + 0.7, 0.93, 120, seed); wallArt(x1 - 2.1, 0.93, 150, seed + 5);
+  faceText(xc, 0.93, 262, label, '900 30px Bungee, sans-serif', '#F3E6C8');
+  faceText(xc, 0.93, 228, lines[0], '900 20px "JetBrains Mono", monospace', '#FFD84A');
+  faceText(xc, 0.93, 200, cut(lines[1], 24), '800 18px Nunito, sans-serif', '#FFF6DE');
+}
+function menhir(x, y, w, h, col) { shadowQ(x - w / 2, y - 0.2, w, 0.45, 0.2); isoBox(x - w / 2, y - 0.2, 0, w, 0.4, h, col, 2.5); }
+function stump(x, y, h = 28) {
+  const [px, py] = iso(x, y), rx = 21, ry = 10;
+  g.beginPath(); g.moveTo(px - rx, py - h); g.lineTo(px - rx, py); g.ellipse(px, py, rx, ry, 0, Math.PI, 0, true); g.lineTo(px + rx, py - h); g.closePath(); g.fillStyle = '#8A5A33'; g.fill(); g.strokeStyle = OL; g.lineWidth = 2.5; g.stroke();
+  g.beginPath(); g.ellipse(px, py - h, rx, ry, 0, 0, 7); g.fillStyle = '#D9B383'; g.fill(); g.stroke();
+  g.beginPath(); g.ellipse(px, py - h, rx * 0.55, ry * 0.55, 0, 0, 7); g.strokeStyle = '#A9824F'; g.lineWidth = 1.5; g.stroke();
+}
+// stone work table with an upright tablet; marks get chiselled while the agent works
+function slab(x, y, on, t, col) {
+  shadowQ(x - 0.75, y - 0.4, 1.5, 0.8, 0.2);
+  isoBox(x - 0.62, y - 0.25, 0, 0.32, 0.5, 30, '#7D7368', 1.8); isoBox(x + 0.3, y - 0.25, 0, 0.32, 0.5, 30, '#7D7368', 1.8);
+  isoBox(x - 0.75, y - 0.4, 30, 1.5, 0.8, 9, '#A99B88');
+  isoBox(x + 0.35, y + 0.05, 39, 0.3, 0.22, 5, col, 1.2);
+  poly([iso(x - 0.4, y - 0.28, 39), iso(x + 0.3, y - 0.28, 39), iso(x + 0.3, y - 0.28, 88), iso(x - 0.4, y - 0.28, 88)], on ? '#EBDDB4' : '#8F8578', OL, 2);
+  g.strokeStyle = on ? col : 'rgba(60,50,40,.45)'; g.lineWidth = 3; g.lineCap = 'round';
+  for (let k = 0; k < 3; k++) { const len = on ? 0.15 + ((t * 0.45 + k * 0.33) % 1) * 0.45 : 0.4; g.beginPath(); g.moveTo(...iso(x - 0.3, y - 0.27, 78 - k * 13)); g.lineTo(...iso(x - 0.3 + len, y - 0.27, 78 - k * 13)); g.stroke(); }
+}
+function campfire(x, y, t, s = 1) {
+  const [px, py] = iso(x, y);
+  g.lineCap = 'round'; [[-28, 8, 28, -8], [-26, -8, 26, 8]].forEach(([a, b, c, d]) => { g.strokeStyle = OL; g.lineWidth = 14 * s; g.beginPath(); g.moveTo(px + a * s, py + b * s); g.lineTo(px + c * s, py + d * s); g.stroke(); g.strokeStyle = '#7A4A22'; g.lineWidth = 9 * s; g.stroke(); });
+  for (let k = 0; k < 10; k++) { const a = k / 10 * Math.PI * 2; g.beginPath(); g.ellipse(px + Math.cos(a) * 38 * s, py + Math.sin(a) * 19 * s, 10 * s, 6.5 * s, 0, 0, 7); g.fillStyle = k % 2 ? '#8E8A84' : '#ABA69E'; g.fill(); g.strokeStyle = OL; g.lineWidth = 2; g.stroke(); }
+  flame(px, py - 2, s, t, x);
+  if (!reduce) for (let k = 0; k < 5; k++) { const ph = (t * 0.7 + k / 5) % 1; g.fillStyle = `rgba(255,205,90,${1 - ph})`; g.beginPath(); g.arc(px + Math.sin(k * 2.3 + t * 2) * 16 * s, py - 50 * s - ph * 100 * s, 2.8, 0, 7); g.fill(); }
+}
+function torch(x, y, t) {
+  const [px, py] = iso(x, y); g.lineCap = 'round';
+  g.strokeStyle = OL; g.lineWidth = 10; g.beginPath(); g.moveTo(px, py); g.lineTo(px, py - 96); g.stroke(); g.strokeStyle = '#7A4A22'; g.lineWidth = 6; g.stroke();
+  g.fillStyle = '#5A3A20'; g.beginPath(); g.ellipse(px, py - 96, 9, 5, 0, 0, 7); g.fill();
+  flame(px, py - 96, 0.5, t, x * 3);
+}
+function tree(x, y, s, kind, t) {
+  const [px, py] = iso(x, y), sw = reduce ? 0 : Math.sin(t * 0.9 + x * 1.3) * 3;
+  g.fillStyle = 'rgba(20,30,10,.22)'; g.beginPath(); g.ellipse(px, py + 2, 44 * s, 18 * s, 0, 0, 7); g.fill();
+  g.strokeStyle = OL; g.lineWidth = 2.5; g.lineJoin = 'round';
+  const trunk = (w, h) => { g.beginPath(); g.moveTo(px - w * s, py); g.lineTo(px - w * 0.7 * s, py - h * s); g.lineTo(px + w * 0.7 * s, py - h * s); g.lineTo(px + w * s, py); g.closePath(); g.fillStyle = '#7A4A22'; g.fill(); g.stroke(); };
+  if (kind === 1) { // tall conifer
+    trunk(9, 50);
+    for (let k = 0; k < 3; k++) { const by = py - (40 + k * 58) * s, hw = (62 - k * 15) * s; g.beginPath(); g.moveTo(px - hw, by); g.lineTo(px + sw * (k + 1), by - 100 * s); g.lineTo(px + hw, by); g.closePath(); g.fillStyle = shade('#2F7A45', 1 + k * 0.1); g.fill(); g.stroke(); }
+  } else if (kind === 2) { // prehistoric palm / cycad
+    g.lineCap = 'round'; g.strokeStyle = OL; g.lineWidth = 17 * s; g.beginPath(); g.moveTo(px, py); g.quadraticCurveTo(px - 18 * s, py - 90 * s, px + 10 * s + sw, py - 170 * s); g.stroke(); g.strokeStyle = '#9A6B3C'; g.lineWidth = 11 * s; g.stroke();
+    const tx = px + 10 * s + sw, ty = py - 170 * s;
+    for (let k = 0; k < 8; k++) { const a = -Math.PI / 2 + (k - 3.5) * 0.42 + Math.sin(t + k) * (reduce ? 0 : 0.03), L = 92 * s; const ex = tx + Math.cos(a) * L * 1.15, ey = ty + Math.sin(a) * L * 0.55 + (Math.abs(k - 3.5) * 14) * s;
+      g.beginPath(); g.moveTo(tx, ty); g.quadraticCurveTo(tx + Math.cos(a) * L * 0.6, ty + Math.sin(a) * L * 0.6 - 20 * s, ex, ey); g.quadraticCurveTo(tx + Math.cos(a) * L * 0.5, ty + Math.sin(a) * L * 0.3, tx, ty); g.fillStyle = k % 2 ? '#5FA03C' : '#4C8C30'; g.fill(); g.strokeStyle = OL; g.lineWidth = 2; g.stroke(); }
+  } else if (kind === 3) { // giant fern
+    for (let k = 0; k < 7; k++) { const a = Math.PI + 0.35 + k * 0.4, L = 70 * s; g.beginPath(); g.moveTo(px, py); g.quadraticCurveTo(px + Math.cos(a) * L * 0.4, py - L * 1.1, px + Math.cos(a) * L + sw, py - L * 0.55 + Math.abs(k - 3) * 12 * s); g.lineWidth = 9 * s; g.strokeStyle = OL; g.stroke(); g.lineWidth = 5.5 * s; g.strokeStyle = k % 2 ? '#4E9A3E' : '#6DB04A'; g.stroke(); }
+  } else { // broadleaf
+    trunk(11, 90);
+    [[-30, -120, 46], [30, -126, 44], [0, -160, 52], [-6, -112, 40]].forEach(([dx, dy, r], k) => { g.beginPath(); g.arc(px + (dx + sw) * s, py + dy * s, r * s, 0, 7); g.fillStyle = k === 2 ? '#5DAA45' : '#4A9640'; g.fill(); g.lineWidth = 2.5; g.strokeStyle = OL; g.stroke(); });
+    g.fillStyle = 'rgba(255,255,255,.18)'; g.beginPath(); g.arc(px - 12 * s, py - 172 * s, 18 * s, 0, 7); g.fill();
+    g.fillStyle = '#E84545'; [[-30, -110], [24, -134], [6, -150]].forEach(([dx, dy]) => { g.beginPath(); g.arc(px + dx * s, py + dy * s, 5 * s, 0, 7); g.fill(); });
   }
 }
-function lightPool(x, y, a) { const [px, py] = iso(x, y); g.save(); g.translate(px, py); g.scale(1, 0.5); const rg = g.createRadialGradient(0, 0, 0, 0, 0, 170); rg.addColorStop(0, `rgba(255,238,190,${a})`); rg.addColorStop(1, 'rgba(255,238,190,0)'); g.fillStyle = rg; g.beginPath(); g.arc(0, 0, 170, 0, 7); g.fill(); g.restore(); }
-function pendant(x, y) { const [px, py] = iso(x, y, WALL_H - 6); const [qx, qy] = iso(x, y, 150); g.strokeStyle = '#2b2e3c'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(px, py - 10); g.lineTo(qx, qy); g.stroke(); g.fillStyle = '#2b2e3c'; g.beginPath(); g.moveTo(qx - 16, qy + 10); g.lineTo(qx + 16, qy + 10); g.lineTo(qx + 7, qy); g.lineTo(qx - 7, qy); g.closePath(); g.fill(); if (TOD !== 'day') { g.fillStyle = 'rgba(255,230,160,.9)'; g.beginPath(); g.ellipse(qx, qy + 11, 12, 3, 0, 0, 7); g.fill(); } }
-function glass(x0, y0, x1, y1) {
-  const d = (x0 + x1 + y0 + y1) / 2 + 0.05;
-  return { d, f: () => {
-    const pts = [iso(x0, y0), iso(x1, y1), iso(x1, y1, 160), iso(x0, y0, 160)];
-    g.save(); g.globalAlpha = 0.22; poly(pts, '#CFEAFF', null); g.restore();
-    g.save(); clipPoly(pts); g.strokeStyle = 'rgba(255,255,255,.35)'; g.lineWidth = 10; const L = Math.hypot(x1 - x0, y1 - y0);
-    for (let k = 0; k < L; k += 1.4) { const a = iso(x0 + (x1 - x0) * k / L, y0 + (y1 - y0) * k / L, 10); g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(a[0] + 30, a[1] - 150); g.stroke(); }
-    g.fillStyle = 'rgba(255,255,255,.35)'; poly([iso(x0, y0, 70), iso(x1, y1, 70), iso(x1, y1, 82), iso(x0, y0, 82)], 'rgba(255,255,255,.4)', null); // frosted band
-    g.restore();
-    g.strokeStyle = '#59607A'; g.lineWidth = 3.5; g.beginPath(); g.moveTo(...iso(x0, y0, 160)); g.lineTo(...iso(x1, y1, 160)); g.moveTo(...iso(x0, y0)); g.lineTo(...iso(x1, y1)); g.stroke();
-    g.beginPath(); g.moveTo(...iso(x0, y0)); g.lineTo(...iso(x0, y0, 160)); g.moveTo(...iso(x1, y1)); g.lineTo(...iso(x1, y1, 160)); g.stroke();
-  } };
+function mammoth(x, y, t) {
+  const [px, py] = iso(x, y), b = reduce ? 0 : Math.sin(t * 1.2) * 2, tr = reduce ? 0 : Math.sin(t * 1.6) * 6;
+  g.fillStyle = 'rgba(20,30,10,.25)'; g.beginPath(); g.ellipse(px, py + 2, 86, 22, 0, 0, 7); g.fill();
+  g.strokeStyle = OL; g.lineWidth = 3; g.lineJoin = 'round'; g.lineCap = 'round';
+  [[-48, 0], [-22, 4], [24, 4], [48, 0]].forEach(([dx, dy]) => { g.beginPath(); g.rect(px + dx - 12, py - 52 + dy, 24, 50); g.fillStyle = '#6E4329'; g.fill(); g.stroke(); });
+  g.beginPath(); g.ellipse(px - 4, py - 84 + b, 76, 52, 0, 0, 7); g.fillStyle = '#8B5A3C'; g.fill(); g.stroke();
+  g.strokeStyle = '#6E4329'; g.lineWidth = 2.5; for (let k = 0; k < 9; k++) { const hx = px - 60 + k * 14; g.beginPath(); g.moveTo(hx, py - 60 + b); g.lineTo(hx - 4, py - 42 + b); g.stroke(); }
+  g.strokeStyle = OL; g.lineWidth = 3;
+  g.beginPath(); g.arc(px + 64, py - 104 + b, 34, 0, 7); g.fillStyle = '#93603F'; g.fill(); g.stroke();
+  g.beginPath(); g.ellipse(px + 46, py - 98 + b, 16, 24, -0.3, 0, 7); g.fillStyle = '#7A4C31'; g.fill(); g.stroke();
+  g.lineWidth = 17; g.beginPath(); g.moveTo(px + 88, py - 92 + b); g.quadraticCurveTo(px + 104, py - 50, px + 94 + tr, py - 22); g.quadraticCurveTo(px + 90 + tr, py - 12, px + 80 + tr, py - 20); g.stroke();
+  g.strokeStyle = '#93603F'; g.lineWidth = 11; g.stroke();
+  g.strokeStyle = OL; g.lineWidth = 9; g.beginPath(); g.moveTo(px + 76, py - 80 + b); g.quadraticCurveTo(px + 120, py - 66, px + 128, py - 96); g.stroke(); g.strokeStyle = '#FFF6DE'; g.lineWidth = 5; g.stroke();
+  g.fillStyle = OL; g.beginPath(); g.arc(px + 74, py - 112 + b, 3.6, 0, 7); g.fill();
 }
-function furniture(t) {
-  const J = [];
-  const on = id => (agents.find(a => a.id === id) || {}).status === 'kerja';
-  // meeting room
-  J.push({ d: 1.0, f: () => bookshelf(4.0) });
-  J.push({ d: 1.1, f: () => bookshelf(5.9) });
-  J.push({ d: 2 + 2.5 + 0.1, f: () => [[2.8, 2.25], [4.0, 2.25], [5.2, 2.25]].forEach(([x, y]) => chair(x, y, '#3B4058', 'n')) });
-  J.push({ d: 6.2 + 4.2, f: () => { shadowQ(2.2, 2.8, 4, 1.4, 0.2); isoBox(2.4, 3.0, 0, 0.3, 1.0, 40, '#5C3A20', 1.5); isoBox(5.7, 3.0, 0, 0.3, 1.0, 40, '#5C3A20', 1.5); isoBox(2.2, 2.8, 40, 4, 1.4, 7, '#8A5A33'); for (let k = 0; k < 3; k++) isoBox(2.6 + k * 1.2, 3.3, 47, 0.35, 0.25, 2, '#FFFFFF', 1); isoBox(5.6, 3.6, 47, 0.18, 0.18, 12, '#E84545', 1.2); } });
-  J.push({ d: 2.8 + 4.75 + 0.8, f: () => [[2.6, 4.75], [4.2, 4.75], [5.8, 4.75]].forEach(([x, y]) => chair(x, y, '#3B4058', 's')) });
-  J.push({ d: 6.75 + 3.5 - 0.3, f: () => chair(6.75, 3.5, '#C9A227', 'n') });
-  J.push({ d: 8.7, f: () => plant(8.0, 0.3, 1.1, 1) });
-  // glass partitions with door gaps
-  J.push(glass(9, 0, 9, 3)); J.push(glass(9, 4.6, 9, 8));
-  J.push(glass(20, 0, 20, 3)); J.push(glass(20, 4.6, 20, 8));
-  J.push(glass(0, 8, 3.6, 8)); J.push(glass(5.1, 8, 9, 8));
-  J.push(glass(28, 0, 28, 3)); J.push(glass(28, 4.6, 28, 8));
-  J.push(glass(37, 0, 37, 3)); J.push(glass(37, 4.6, 37, 8));
-  J.push(glass(46, 0, 46, 3)); J.push(glass(46, 4.6, 46, 8));
-  // ohhiyaa!: big OHI standee (toy gallon with a face), mic for the narrator, plants
-  J.push({ d: 53.9 + 5.8 + 0.6, f: () => { shadowQ(53.5, 5.5, 0.9, 0.6, 0.2); const [sx, sy] = iso(53.95, 5.8);
-    g.fillStyle = '#8FD3FF'; g.strokeStyle = OL; g.lineWidth = 3; g.beginPath(); g.roundRect(sx - 30, sy - 112, 60, 104, 14); g.fill(); g.stroke();
-    g.fillStyle = '#fff'; g.fillRect(sx - 30, sy - 70, 60, 22); g.strokeRect(sx - 30, sy - 70, 60, 22);
-    g.fillStyle = '#BFE8FF'; g.beginPath(); g.moveTo(sx - 22, sy - 112); g.lineTo(sx - 9, sy - 128); g.lineTo(sx + 9, sy - 128); g.lineTo(sx + 22, sy - 112); g.closePath(); g.fill(); g.stroke();
-    g.fillStyle = '#1E6EFF'; g.fillRect(sx - 10, sy - 138, 20, 11); g.strokeRect(sx - 10, sy - 138, 20, 11);
-    g.fillStyle = OL; [-11, 11].forEach(dx => { g.beginPath(); g.arc(sx + dx, sy - 88, 4, 0, 7); g.fill(); }); g.beginPath(); g.arc(sx, sy - 80, 8, 0.2, Math.PI - 0.2); g.stroke(); } });
-  J.push({ d: 49.6 + 5.0 + 0.9, f: () => { const [mx, my] = iso(50.5, 5.3); g.strokeStyle = OL; g.lineWidth = 3; g.beginPath(); g.moveTo(mx, my); g.lineTo(mx, my - 78); g.stroke(); g.beginPath(); g.ellipse(mx, my - 92, 8, 13, 0, 0, 7); g.fillStyle = '#FF6FAE'; g.fill(); g.stroke(); } });
-  J.push({ d: 54.6 + 0.6, f: () => plant(54.3, 0.3, 1.1, 1) }); J.push({ d: 46.5 + 7.3, f: () => plant(46.4, 7.1, 0.9) });
-  // dari 1 mnt: cardboard standee of the mascot + mic for the Finn narrator + plants + lounge arcade
-  J.push({ d: 44.8 + 5.8 + 0.6, f: () => { shadowQ(44.4, 5.6, 0.9, 0.4, 0.2); const [sx, sy] = iso(44.85, 5.8); isoBox(44.5, 5.75, 0, 0.7, 0.1, 6, '#C9A44C', 1.5); if (MASKOT_IMG.complete) { const h = 190, w = h * MASKOT_IMG.naturalWidth / MASKOT_IMG.naturalHeight; g.drawImage(MASKOT_IMG, sx - w / 2, sy - h + 2, w, h); } } });
-  J.push({ d: 40.6 + 5.0 + 0.9, f: () => { const [mx, my] = iso(41.5, 5.3); g.strokeStyle = OL; g.lineWidth = 3; g.beginPath(); g.moveTo(mx, my); g.lineTo(mx, my - 78); g.stroke(); g.beginPath(); g.ellipse(mx, my - 92, 8, 13, 0, 0, 7); g.fillStyle = '#00E5A0'; g.fill(); g.stroke(); } });
-  J.push({ d: 45.6 + 0.6, f: () => plant(45.3, 0.3, 1.1, 1) }); J.push({ d: 37.5 + 7.3, f: () => plant(37.4, 7.1, 0.9) });
-  J.push({ d: 44.6 + 9.4 + 0.8, f: () => { shadowQ(44.2, 9.0, 0.9, 0.8, 0.2); isoBox(44.2, 9.0, 0, 0.9, 0.8, 130, '#7C3AED'); const f = [iso(45.1, 9.15, 70), iso(45.1, 9.65, 70), iso(45.1, 9.65, 118), iso(45.1, 9.15, 118)]; poly(f, '#00F5D4', OL, 1.5); g.fillStyle = '#FFD60A'; g.beginPath(); g.arc(...iso(45.1, 9.4, 90 + Math.sin(t * 4) * 10), 5, 0, 7); g.fill(); } });
-  // division
-  // ternyata leluhur: miniature rumah gadang, mic stand at the narrator desk, bamboo plants
-  J.push({ d: 35.6 + 5.6 + 0.6, f: () => {
-    shadowQ(35.0, 5.0, 1.2, 1.0, 0.2); isoBox(35.0, 5.0, 0, 1.2, 1.0, 44, '#7A4E27');
-    isoBox(35.15, 5.2, 44, 0.9, 0.6, 6, '#5A3C1E', 1.5);
-    [[35.2, 5.25], [35.95, 5.25], [35.2, 5.7], [35.95, 5.7]].forEach(([x, y]) => isoBox(x, y, 50, 0.05, 0.05, 14, '#3A2A20', 1));
-    isoBox(35.15, 5.2, 64, 0.9, 0.6, 22, '#B07A45', 1.5);
-    const r = [iso(35.0, 5.5, 86), iso(36.2, 5.5, 86), iso(36.2, 5.5, 110), iso(35.0, 5.5, 110)];
-    poly([iso(35.05, 5.15, 86), iso(36.15, 5.15, 86), iso(36.25, 5.5, 104), iso(34.95, 5.5, 104)], '#3A2A20', OL, 1.5);
-    poly([iso(34.95, 5.5, 104), iso(36.25, 5.5, 104), iso(36.15, 5.85, 86), iso(35.05, 5.85, 86)], '#2A1E16', OL, 1.5);
-    g.strokeStyle = '#3A2A20'; g.lineWidth = 5; g.lineCap = 'round';
-    [[34.95, 34.75], [36.25, 36.45]].forEach(([a, b]) => { g.beginPath(); g.moveTo(...iso(a, 5.5, 104)); g.quadraticCurveTo(...iso((a + b) / 2, 5.5, 108), ...iso(b, 5.5, 128)); g.stroke(); });
-    g.lineCap = 'butt'; void r;
-  } });
-  J.push({ d: 31.6 + 5.0 + 0.9, f: () => { const [mx, my] = iso(32.5, 5.3); g.strokeStyle = OL; g.lineWidth = 3; g.beginPath(); g.moveTo(mx, my); g.lineTo(mx, my - 78); g.stroke(); g.beginPath(); g.ellipse(mx, my - 92, 8, 13, 0, 0, 7); g.fillStyle = '#1E5A45'; g.fill(); g.stroke(); } });
-  [[36.3, 0.3], [28.5, 7.0]].forEach(([x, y]) => J.push({ d: x + y + 0.6, f: () => { shadowQ(x, y, 0.5, 0.5, 0.18); isoBox(x, y, 0, 0.5, 0.5, 26, '#8A6239'); [[0.12, 0.15, 150], [0.3, 0.2, 128], [0.22, 0.35, 165]].forEach(([dx, dy, h], k) => { const [bx, by] = iso(x + dx, y + dy, 26); g.strokeStyle = '#6E8B3D'; g.lineWidth = 5; g.beginPath(); g.moveTo(bx, by); g.lineTo(bx + (k - 1) * 6, by - h); g.stroke(); for (let n = 0; n < 5; n++) { g.save(); g.translate(bx + (k - 1) * 6 * (n + 1) / 6, by - h * (0.35 + n * 0.14)); g.rotate((n % 2 ? 1 : -1) * 0.9); g.beginPath(); g.ellipse(0, -12, 4, 13, 0, 0, 7); g.fillStyle = n % 2 ? '#3AA951' : '#2F9B48'; g.fill(); g.strokeStyle = OL; g.lineWidth = 1.2; g.stroke(); g.restore(); } }); } }));
-  // lounge extension: bale-bale bambu (gazebo) + plants
-  J.push({ d: 31.2 + 10.6 + 0.8, f: () => { shadowQ(29.6, 9.8, 3.2, 1.8, 0.2); [[29.7, 9.9], [32.6, 9.9], [29.7, 11.4], [32.6, 11.4]].forEach(([x, y]) => isoBox(x, y, 0, 0.12, 0.12, 30, '#8A6239', 1)); isoBox(29.6, 9.8, 30, 3.2, 1.8, 6, '#C89A58'); for (let k = 0; k < 15; k++) { const a = iso(29.65 + k * 0.21, 9.8, 36.5), b = iso(29.65 + k * 0.21, 11.6, 36.5); g.strokeStyle = 'rgba(90,60,20,.35)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(...a); g.lineTo(...b); g.stroke(); } isoBox(30.0, 10.1, 36, 0.9, 0.6, 2, '#E2C26A', 1); } });
-  J.push({ d: 36.3 + 14.0, f: () => plant(36.0, 13.9, 1.0, 1) }); J.push({ d: 34.3 + 9.0, f: () => plant(34.0, 8.8, 1.1) });
-  DESKS.forEach(([id, x, y], k) => { if (id === 'suara' || id === 'publisher') return; J.push({ d: x + y + 0.5, f: () => desk(x, y, on(id), t, (agents.find(a => a.id === id) || {}).warna, k) }); J.push({ d: x + y + 0.8, f: () => chair(x, y + 0.75, '#2b2e3c', 's') }); });
-  J.push({ d: 17.6 + 5 + 1.2, f: () => { // vocal booth: acoustic panels + mic
-    shadowQ(16.7, 4.3, 1.8, 1.5, 0.2);
-    isoBox(16.7, 4.3, 0, 1.8, 0.12, 120, '#4A3F6B'); isoBox(16.7, 4.3, 0, 0.12, 1.5, 120, '#4A3F6B');
-    for (let r = 0; r < 3; r++) for (let c = 0; c < 4; c++) poly([iso(16.9 + c * 0.38, 4.42, 20 + r * 32), iso(17.2 + c * 0.38, 4.42, 20 + r * 32), iso(17.2 + c * 0.38, 4.42, 46 + r * 32), iso(16.9 + c * 0.38, 4.42, 46 + r * 32)], '#6A5A99', OL, 1);
-    const [mx, my] = iso(17.8, 5.0); g.strokeStyle = OL; g.lineWidth = 3; g.beginPath(); g.moveTo(mx, my); g.lineTo(mx, my - 84); g.stroke();
-    g.beginPath(); g.ellipse(mx, my - 98, 9, 15, 0, 0, 7); g.fillStyle = '#9B6BD6'; g.fill(); g.stroke();
-    g.beginPath(); g.arc(mx - 10, my - 98, 16, -1, 1); g.strokeStyle = 'rgba(255,255,255,.7)'; g.stroke();
-    chair(17.6, 5.75, '#4A3F6B', 's');
-  } });
-  J.push({ d: 19.6, f: () => plant(19.2, 0.3, 1.1, 1) });
-  J.push({ d: 17.4, f: () => plant(9.3, 7.3, 0.9) });
-  // studio
-  J.push({ d: 26.5 + 1.2, f: () => { shadowQ(25.2, 0.8, 2.4, 0.4, 0.15); [[25.25, 0.85], [27.45, 0.85]].forEach(([x, y]) => isoBox(x, y, 0, 0.06, 0.06, 165, '#9AA0B4', 1)); poly([iso(25.3, 0.88, 160), iso(27.45, 0.88, 160), iso(27.45, 0.95, 0), iso(25.3, 0.95, 0)], '#45B864', OL, 2); } });
-  J.push({ d: 22.4 + 2.2, f: () => { const [rx, ry] = iso(22.4, 2.2); g.strokeStyle = OL; g.lineWidth = 3; [-12, 12, 0].forEach((dx, i) => { g.beginPath(); g.moveTo(rx + dx, ry + (i === 2 ? 7 : 0)); g.lineTo(rx, ry - 70); g.stroke(); }); g.beginPath(); g.moveTo(rx, ry - 70); g.lineTo(rx, ry - 120); g.stroke(); g.beginPath(); g.arc(rx, ry - 140, 24, 0, 7); g.lineWidth = 9; g.strokeStyle = '#FFF6C8'; g.stroke(); g.lineWidth = 2; g.strokeStyle = OL; g.stroke(); g.beginPath(); g.arc(rx, ry - 140, 33, 0, 7); g.stroke(); } });
-  J.push({ d: 24.6 + 1.8, f: () => { const [cx, cy] = iso(24.6, 1.8); g.strokeStyle = OL; g.lineWidth = 3; [-12, 12, 0].forEach((dx, i) => { g.beginPath(); g.moveTo(cx + dx, cy + (i === 2 ? 7 : 0)); g.lineTo(cx, cy - 74); g.stroke(); }); isoBox(24.45, 1.7, 74, 0.32, 0.2, 22, '#2b2e3c', 1.5); g.fillStyle = '#111'; g.beginPath(); g.ellipse(...iso(24.62, 1.92, 85), 9, 7, 0, 0, 7); g.fill(); g.fillStyle = '#E84545'; g.beginPath(); g.arc(...iso(24.5, 1.75, 99), 3, 0, 7); g.fill(); } });
-  J.push({ d: 27 + 3.2, f: () => { const [sx, sy] = iso(27, 3.2); g.strokeStyle = OL; g.lineWidth = 3; g.beginPath(); g.moveTo(sx, sy); g.lineTo(sx, sy - 120); g.stroke(); poly([[sx - 34, sy - 170], [sx + 34, sy - 150], [sx + 34, sy - 105], [sx - 34, sy - 125]], '#F4F4F4', OL, 2.5); } });
-  J.push({ d: 23.6 + 4.6 + 0.5, f: () => desk(23.6, 4.6, on('publisher'), t, '#1F8B95', 9) });
-  J.push({ d: 23.6 + 5.35 + 0.8, f: () => chair(23.6, 5.35, '#2b2e3c', 's') });
-  J.push({ d: 27.6 + 7.2, f: () => plant(27.2, 7.0, 0.9, 1) });
-  // pantry corner (lounge, left-bottom)
-  J.push({ d: 0.3 + 13.5 + 1, f: () => { isoBox(0.1, 12.2, 0, 0.7, 2.6, 46, '#5F6B8A'); isoBox(0.05, 12.15, 46, 0.8, 2.7, 5, '#ECE7DF'); isoBox(0.2, 12.4, 51, 0.4, 0.4, 30, '#2b2e3c', 1.5); g.fillStyle = '#E84545'; g.beginPath(); g.arc(...iso(0.6, 12.6, 72), 3, 0, 7); g.fill(); isoBox(0.25, 13.3, 51, 0.3, 0.3, 4, '#fff', 1); isoBox(0.2, 14.2, 51, 0.4, 0.3, 8, '#7FD3D9', 1.2); } });
-  J.push({ d: 0.9 + 11.1 + 1, f: () => { shadowQ(0.15, 10.5, 0.75, 0.7, 0.2); isoBox(0.15, 10.5, 0, 0.75, 0.7, 120, '#DCE3EA'); poly([iso(0.9, 10.62, 70), iso(0.9, 11.08, 70), iso(0.9, 11.08, 72), iso(0.9, 10.62, 72)], OL, null); isoBox(0.9, 10.6, 80, 0.03, 0.05, 26, '#9AA0B4', 1); } });
-  [[1.6, 12.8], [1.6, 13.8]].forEach(([x, y]) => J.push({ d: x + y + 0.3, f: () => { const [sx, sy] = iso(x, y); g.strokeStyle = '#2b2e3c'; g.lineWidth = 3; g.beginPath(); g.moveTo(sx - 8, sy); g.lineTo(sx, sy - 38); g.lineTo(sx + 8, sy); g.stroke(); g.fillStyle = '#E84545'; g.beginPath(); g.ellipse(sx, sy - 40, 14, 7, 0, 0, 7); g.fill(); g.strokeStyle = OL; g.lineWidth = 2; g.stroke(); } }));
-  // lounge: L-sofa, coffee table, floor lamp, bean bags
-  J.push({ d: 1.6 + 9.3 + 0.6, f: () => { shadowQ(1.4, 9.0, 4.6, 0.9, 0.2); isoBox(1.4, 9.0, 0, 4.6, 0.85, 22, '#4E5DA3'); isoBox(1.4, 9.0, 22, 4.6, 0.25, 30, '#44539A'); for (let k = 0; k < 4; k++) isoBox(1.55 + k * 1.12, 9.3, 22, 1.0, 0.5, 9, '#6475C0', 1.5); isoBox(1.4, 9.0, 22, 0.25, 0.85, 14, '#44539A'); isoBox(5.75, 9.0, 22, 0.25, 0.85, 14, '#44539A'); } });
-  J.push({ d: 3.2 + 10.9 + 0.6, f: () => { shadowQ(2.6, 10.5, 1.9, 0.9, 0.2); isoBox(2.6, 10.5, 0, 1.9, 0.9, 18, '#7A4E2D'); isoBox(2.9, 10.7, 18, 0.5, 0.35, 3, '#F29B4B', 1); isoBox(3.6, 10.75, 18, 0.12, 0.12, 12, '#fff', 1); } });
-  J.push({ d: 6.6 + 9.2 + 0.2, f: () => { const [lx, ly] = iso(6.6, 9.2); g.strokeStyle = OL; g.lineWidth = 3; g.beginPath(); g.moveTo(lx, ly); g.lineTo(lx, ly - 130); g.stroke(); poly([[lx - 18, ly - 130], [lx + 18, ly - 130], [lx + 11, ly - 156], [lx - 11, ly - 156]], '#F5E6C4', OL, 2); } });
-  [[9.4, 10.6, '#E84545'], [10.9, 10.9, '#F5B82E']].forEach(([x, y, c]) => J.push({ d: x + y + 0.4, f: () => { const [bx, by] = iso(x, y); g.fillStyle = 'rgba(0,0,0,.2)'; g.beginPath(); g.ellipse(bx, by + 4, 34, 13, 0, 0, 7); g.fill(); g.beginPath(); g.ellipse(bx, by - 14, 32, 22, 0, 0, 7); g.fillStyle = c; g.fill(); g.strokeStyle = OL; g.lineWidth = 2.5; g.stroke(); g.beginPath(); g.ellipse(bx - 4, by - 22, 18, 9, 0, 0, 7); g.fillStyle = shade(c, 1.15); g.fill(); } }));
-  // pool deck
-  [[18, 13.95], [20.2, 13.95], [22.4, 13.95]].forEach(([x, y]) => J.push({ d: x + y + 0.5, f: () => { shadowQ(x, y, 1.5, 0.6, 0.18); isoBox(x, y, 6, 1.5, 0.6, 6, '#F4F1EA'); isoBox(x, y, 12, 0.45, 0.6, 18, '#F4F1EA'); poly(quad(x + 0.5, y + 0.05, 0.95, 0.5, 12.5), '#7FD3D9', null); } }));
-  J.push({ d: 25.4 + 9.7 + 0.2, f: () => { [[25.0, 9.95], [25.0, 10.45]].forEach(([x, y]) => { const [a, b] = [iso(x, y, 0), iso(x, y, 40)]; g.strokeStyle = '#C9CEDE'; g.lineWidth = 4; g.beginPath(); g.moveTo(...a); g.lineTo(...b); g.lineTo(...iso(x + 0.3, y, 40)); g.stroke(); }); } });
-  J.push({ d: 26.4 + 12.4, f: () => { const [ux, uy] = iso(26.4, 12.4); g.strokeStyle = OL; g.lineWidth = 4; g.beginPath(); g.moveTo(ux, uy); g.lineTo(ux, uy - 120); g.stroke(); for (let k = 0; k < 6; k++) { g.beginPath(); g.moveTo(ux, uy - 160); g.lineTo(ux - 75 + k * 25, uy - 104); g.lineTo(ux - 50 + k * 25, uy - 104); g.closePath(); g.fillStyle = k % 2 ? '#fff' : '#E84545'; g.fill(); g.lineWidth = 2; g.stroke(); } } });
-  // ping-pong table
-  J.push({ d: 12.6 + 12.9 + 0.8, f: () => { shadowQ(11.4, 12.2, 2.6, 1.4, 0.22); [[11.5, 12.3], [13.8, 12.3], [11.5, 13.45], [13.8, 13.45]].forEach(([x, y]) => isoBox(x, y, 0, 0.06, 0.06, 34, '#2b2e3c', 1)); isoBox(11.4, 12.2, 34, 2.6, 1.4, 4, '#1F6E5A'); g.strokeStyle = '#fff'; g.lineWidth = 2; g.beginPath(); g.moveTo(...iso(11.45, 12.9, 38.5)); g.lineTo(...iso(13.95, 12.9, 38.5)); g.stroke(); poly(quad(12.68, 12.2, 0.04, 1.4, 38), null, '#fff', 1.5); poly([iso(12.7, 12.15, 38), iso(12.7, 13.65, 38), iso(12.7, 13.65, 50), iso(12.7, 12.15, 50)], 'rgba(255,255,255,.55)', OL, 1.5); const by = 60 + Math.abs(Math.sin(t * 3)) * 30, bx = 12.0 + (Math.sin(t * 1.5) + 1) * 0.65; g.fillStyle = '#FFA94D'; g.beginPath(); g.arc(...iso(bx, 12.9, by), 4, 0, 7); g.fill(); } });
-  // gaming corner: TV on a stand facing the bean bags
-  J.push({ d: 10.4 + 9.3, f: () => { shadowQ(9.4, 8.95, 1.8, 0.5, 0.2); isoBox(9.4, 8.95, 0, 1.8, 0.45, 26, '#2b2e3c'); isoBox(9.5, 9.05, 26, 1.6, 0.08, 64, '#151827', 1.8); const scr = [iso(9.56, 9.14, 30), iso(11.04, 9.14, 30), iso(11.04, 9.14, 86), iso(9.56, 9.14, 86)]; const sg = g.createLinearGradient(...scr[0], ...scr[2]); sg.addColorStop(0, '#6B5BFF'); sg.addColorStop(1, '#FF6BB5'); poly(scr, sg, null); g.save(); clipPoly(scr); g.fillStyle = '#FFD84A'; g.beginPath(); g.arc(...iso(9.9 + (t * 0.4 % 1) * 0.9, 9.14, 50 + Math.sin(t * 5) * 8), 6, 0, 7); g.fill(); g.restore(); isoBox(10.0, 9.1, 26, 0.3, 0.2, 4, '#E2E5EE', 1); } });
-  // vending machine
-  J.push({ d: 0.6 + 8.7 + 0.9, f: () => { shadowQ(0.15, 8.2, 0.7, 0.8, 0.2); isoBox(0.15, 8.2, 0, 0.7, 0.8, 140, '#E84545'); const f = [iso(0.85, 8.3, 50), iso(0.85, 8.8, 50), iso(0.85, 8.8, 128), iso(0.85, 8.3, 128)]; poly(f, '#BFE4FF', OL, 1.5); for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) poly([iso(0.85, 8.35 + c * 0.15, 56 + r * 18), iso(0.85, 8.45 + c * 0.15, 56 + r * 18), iso(0.85, 8.45 + c * 0.15, 68 + r * 18), iso(0.85, 8.35 + c * 0.15, 68 + r * 18)], ['#F5B82E', '#3FA34D', '#2F6FD0', '#F29B4B'][(r + c) % 4], null); } });
-  J.push({ d: 8.1 + 9.1, f: () => plant(7.7, 8.9, 1.1, 1) }); J.push({ d: 15, f: () => plant(14.4, 13.9, 1.0) }); J.push({ d: 27.2 + 14.2, f: () => plant(27.0, 14.0, 1.0, 1) });
-  // string lights over the deck
-  J.push({ d: 30, f: () => { g.strokeStyle = '#2b2e3c'; g.lineWidth = 1.5; const pts = []; for (let k = 0; k <= 20; k++) { const x = 16.6 + k * 0.48, [px, py] = iso(x, 9.0, 150 - Math.sin(k / 20 * Math.PI * 3) * -14 - 14); pts.push([px, py]); } g.beginPath(); pts.forEach((p, i) => i ? g.lineTo(...p) : g.moveTo(...p)); g.stroke(); pts.forEach((p, i) => { g.fillStyle = TOD === 'day' ? '#F5E6C4' : (i % 2 ? '#FFE08A' : '#FFC36B'); g.beginPath(); g.arc(p[0], p[1] + 5, 4, 0, 7); g.fill(); }); } });
+
+const DESKS = [['penggali', 11.0, 2.0], ['cekfakta', 13.9, 2.0], ['publisher', 11.6, 4.5], ['thumbnail', 14.4, 4.5], ['tl-penulis', 18.8, 2.4], ['tl-animator', 21.6, 2.4], ['tl-suara', 20.2, 4.7], ['oh-penulis', 25.8, 2.4], ['oh-animator', 28.6, 2.4], ['oh-suara', 27.2, 4.7]];
+const MEET = [[3.2, 5.8], [4.3, 5.9], [6.1, 4.7], [3.0, 4.4], [6.0, 3.0], [3.6, 3.4]];
+// idle spots, pond first so somebody is always splashing when the team rests
+const LOUNGE = [[18.2, 11.1, 'swim'], [7.7, 13.0, 'sit'], [20.5, 12.2, 'swim'], [10.6, 11.9, 'sit'], [8.1, 10.8, 'sit'], [19.3, 12.9, 'swim'], [10.3, 10.4, 'sit'], [3.2, 10.9, 'stand'], [13.4, 13.8, 'stand'], [24.6, 10.2, 'stand'], [2.4, 13.6, 'stand'], [14.2, 9.6, 'stand'], [28.6, 8.8, 'stand'], [21.6, 14.6, 'stand'], [5.4, 14.0, 'stand'], [12.0, 9.2, 'stand']];
+const SEATS = [...MEET, ...LOUNGE.filter(l => l[2] === 'sit')];
+function scenery(t, waitN, studioLines, divLines) {
+  const J = [], on = id => (agents.find(a => a.id === id) || {}).status === 'kerja';
+  const col = id => (agents.find(a => a.id === id) || {}).warna || '#888';
+  // fire circle: three standing stones with the waiting board
+  J.push({ d: 2.5, f: () => { menhir(2.2, 1.4, 0.8, 120, '#8E887F'); menhir(7.0, 1.4, 0.8, 120, '#8E887F'); menhir(4.6, 1.1, 2.4, 150, '#9C958B');
+    faceText(4.6, 1.32, 116, waitN ? `${waitN} NUNGGU ACC` : 'SEMUA BERES ✓', '900 22px "JetBrains Mono", monospace', waitN ? '#FF8A8A' : '#7FF0A8');
+    faceText(4.6, 1.32, 84, waitN ? 'klik agen bertanda !' : 'tidak ada antrean', '800 17px Nunito, sans-serif', '#FFF6DE'); } });
+  J.push({ d: FIRE[0] + FIRE[1], f: () => campfire(FIRE[0], FIRE[1], t, 1.1) });
+  J.push({ d: FIRE2[0] + FIRE2[1], f: () => campfire(FIRE2[0], FIRE2[1], t, 0.85) });
+  SEATS.forEach(([x, y]) => J.push({ d: x + y + 0.9, f: () => stump(x, y) }));
+  // shared crew: low painted rock wall
+  J.push({ d: 1, f: () => { rockMass(9.6, 15.9, -0.2, 0.7, 175, 30, 300, '#A08E7C'); wallArt(10.1, 0.72, 70, 301);
+    faceText(12.75, 0.73, 140, 'BATU BERSAMA', '900 24px Bungee, sans-serif', '#F3E6C8');
+    faceText(12.75, 0.73, 110, studioLines[0], '900 18px "JetBrains Mono", monospace', '#7FD3D9');
+    faceText(12.75, 0.73, 86, cut(studioLines[1], 24), '800 16px Nunito, sans-serif', '#FFF6DE'); } });
+  CAVES.forEach(([ch, x0, x1, label, glow], k) => J.push({ d: 1.2 + k, f: () => cave(x0, x1, label, glow, divLines(ch), DESKS.some(d => AG_CH[d[0]] === ch && on(d[0])), t, 400 + k * 50) }));
+  DESKS.forEach(([id, x, y]) => { J.push({ d: x + y + 0.3, f: () => slab(x, y, on(id), t, col(id)) }); J.push({ d: x + y + 0.75 + 0.9, f: () => stump(x, y + 0.75) }); });
+  TORCHES.forEach(([x, y]) => J.push({ d: x + y + 0.5, f: () => torch(x, y, t) }));
+  TREES.forEach(([x, y, s, k]) => J.push({ d: x + y + 0.4, f: () => tree(x, y, s, k, t) }));
+  J.push({ d: MAMMOTH[0] + MAMMOTH[1] + 0.5, f: () => mammoth(MAMMOTH[0], MAMMOTH[1], t) });
+  [[5.2, 9.4], [13.0, 7.9], [23.0, 9.0], [27.8, 7.9], [2.0, 12.2]].forEach(([x, y], k) => J.push({ d: x + y, f: () => { const [px, py] = iso(x, y); g.beginPath(); g.ellipse(px, py - 10, 26 + k * 3, 17, 0, Math.PI, 0); g.lineTo(px + 26 + k * 3, py); g.ellipse(px, py, 26 + k * 3, 9, 0, 0, Math.PI); g.closePath(); g.fillStyle = '#A39D94'; g.fill(); g.strokeStyle = OL; g.lineWidth = 2.5; g.stroke(); } }));
   return J;
 }
-
-// ── agents: placement, walking, drawing ───────────────────────
-const DESKS = [['penggali', 11.2, 2.0], ['penulis', 13.8, 2.0], ['cekfakta', 16.4, 2.0], ['animator', 12.4, 5.0], ['suara', 17.6, 5.75], ['publisher', 23.6, 4.6], ['thumbnail', 21.4, 5.9], ['tl-penulis', 30.0, 2.0], ['tl-animator', 33.0, 2.0], ['tl-suara', 31.6, 5.0], ['dm-penulis', 39.0, 2.0], ['dm-animator', 42.0, 2.0], ['dm-suara', 40.6, 5.0], ['oh-penulis', 48.0, 2.0], ['oh-animator', 51.0, 2.0], ['oh-suara', 49.6, 5.0]];
-const MEET = [[2.6, 4.75], [4.2, 4.75], [5.8, 4.75], [2.8, 2.25], [4.0, 2.25], [5.2, 2.25]];
-// idle spots, pool first so the pool is never empty when people are relaxing
-const LOUNGE = [[19.0, 10.7, 'swim'], [2.3, 9.55, 'sit'], [21.6, 11.7, 'swim'], [9.4, 10.6, 'bean'], [23.8, 10.5, 'swim'], [30.4, 10.6, 'bean'], [18.8, 12.6, 'swim'], [11.3, 12.95, 'stand'], [39.4, 10.8, 'bean'], [22.8, 12.8, 'swim'], [10.9, 10.9, 'bean'], [3.5, 9.55, 'sit'], [31.8, 10.9, 'bean'], [1.9, 13.3, 'stand'], [34.6, 12.4, 'stand'], [40.9, 11.1, 'bean'], [42.8, 12.6, 'stand'], [48.6, 10.8, 'bean'], [51.2, 12.2, 'stand'], [53.4, 10.6, 'bean']];
 function waitingFor(id) {
   const mine = forAg(id, ideas), role = baseRole(id);
   if (role === 'penggali') { const n = ideas.filter(i => i.status === 'usulan').length; return n ? { n, txt: `${n} judul nunggu ACC`, filter: ['usulan'] } : null; }
@@ -640,24 +534,11 @@ function queuedFor(id) {
   return `Antre: ${ep(job)} · mulai ${nextRunWIB()}`;
 }
 const WALK = {}; // id -> {x,y,path:[[x,y]...], pose}
-const roomOf = (x, y) => y >= 8 ? 'lounge' : x < 9 ? 'rapat' : x < 20 ? 'divisi' : x < 28 ? 'studio' : x < 37 ? 'leluhur' : x < 46 ? 'dari1' : 'ohhiyaa';
-const DOOR = { rapat: [4.35, 8.4], divisi: [14.5, 8.4], studio: [20, 3.8], lounge: null };
+const roomOf = (x, y) => y >= 8 ? 'lounge' : x < 9 ? 'rapat' : x < 17 ? 'studio' : x < 24 ? 'leluhur' : 'ohhiyaa';
+// open meadow: walk out to the dirt path, along it, then in
 function planPath(fx, fy, tx, ty) {
-  const a = roomOf(fx, fy), b = roomOf(tx, ty); if (a === b) return [[tx, ty]];
-  const P = [];
-  if (a === 'rapat') P.push([4.35, 7.4], [4.35, 8.5]);
-  if (a === 'studio') P.push([20.6, 3.8], [19.4, 3.8], [19.4, 7.6], [19.4, 8.5]);
-  if (a === 'divisi') P.push([fx, 6.6 < fy ? fy : 6.6], [Math.min(Math.max(fx, 10), 19), 8.5]);
-  if (a === 'dari1') P.push([fx < 43 ? 43.2 : fx, fy], [43.2, 7.6], [43.2, 8.5]);
-  if (a === 'ohhiyaa') P.push([fx < 52 ? 52.2 : fx, fy], [52.2, 7.6], [52.2, 8.5]);
-  if (a === 'leluhur') P.push([fx < 34 ? 34.2 : fx, fy], [34.2, 7.6], [34.2, 8.5]);
-  if (b === 'rapat') P.push([4.35, 8.5], [4.35, 7.4]);
-  if (b === 'studio') P.push([19.4, 8.5], [19.4, 3.8], [20.6, 3.8]);
-  if (b === 'divisi') P.push([Math.min(Math.max(tx, 10), 19), 8.5], [tx, 6.6]);
-  if (b === 'dari1') P.push([43.2, 8.5], [43.2, 7.6], [tx < 43 ? 43.2 : tx, ty]);
-  if (b === 'ohhiyaa') P.push([52.2, 8.5], [52.2, 7.6], [tx < 52 ? 52.2 : tx, ty]);
-  if (b === 'leluhur') P.push([34.2, 8.5], [34.2, 7.6], [tx < 34 ? 34.2 : tx, ty]);
-  P.push([tx, ty]); return P;
+  if (roomOf(fx, fy) === roomOf(tx, ty)) return [[tx, ty]];
+  return [[fx, 7], [tx, 7], [tx, ty]];
 }
 function placeAgents(dt) {
   const out = []; let mi = 0, li = 0;
@@ -716,7 +597,10 @@ function stickman(p, t, i) {
   else if (walk) { const sw = Math.sin(t * 10 + i) * 8; g.moveTo(-13, -6); g.lineTo(-16 - sw, 16); g.moveTo(13, -6); g.lineTo(16 + sw, 16); }
   else { g.moveTo(-13, -6); g.lineTo(-18, 16); g.moveTo(13, -6); g.lineTo(18, 16); }
   g.stroke();
-  g.beginPath(); g.ellipse(0, 0, 19, 26, 0, 0, 7); g.fillStyle = p.a.warna || '#2F6FD0'; g.fill(); g.lineWidth = 3.5; g.stroke();
+  g.beginPath(); g.ellipse(0, 0, 19, 26, 0, 0, 7); g.fillStyle = p.a.warna || '#2F6FD0'; g.fill();
+  g.save(); g.clip(); g.fillStyle = '#B07A45'; g.beginPath(); g.moveTo(-22, 30); for (let k = 0; k <= 8; k++) g.lineTo(-20 + k * 5, k % 2 ? 8 : 14); g.lineTo(22, 30); g.closePath(); g.fill();
+  g.strokeStyle = '#7A4A22'; g.lineWidth = 6; g.beginPath(); g.moveTo(-16, -22); g.lineTo(14, 10); g.stroke(); g.restore();
+  g.beginPath(); g.ellipse(0, 0, 19, 26, 0, 0, 7); g.strokeStyle = OL; g.lineWidth = 3.5; g.stroke();
   g.fillStyle = 'rgba(255,255,255,.18)'; g.beginPath(); g.ellipse(-6, -8, 6, 12, -0.3, 0, 7); g.fill();
   g.beginPath(); g.arc(0, -43, 19, 0, 7); g.fillStyle = '#fff'; g.fill(); g.lineWidth = 3.5; g.stroke();
   g.fillStyle = 'rgba(0,0,0,.08)'; g.beginPath(); g.arc(4, -40, 15, 0.2, 2.4); g.fill();
@@ -725,10 +609,10 @@ function stickman(p, t, i) {
   return [fx, fy + by - 43];
 }
 // owner: at the meeting table while something waits for a decision; otherwise roams the office
-const OWNER_SPOTS = [[4.6, 9.6, 'stand'], [20.4, 12.0, 'swim'], [12.6, 13.6, 'stand'], [31.2, 10.5, 'stand'], [44.2, 6.6, 'stand'], [50.2, 6.8, 'stand'], [24.0, 7.2, 'stand'], [10.2, 11.7, 'stand'], [22.4, 10.6, 'swim']];
-const OWN = { x: 6.75, y: 3.5, tx: 6.75, ty: 3.5, path: [], pose: 'stand' };
+const OWNER_SPOTS = [[5.0, 9.6, 'stand'], [19.2, 11.6, 'swim'], [13.0, 12.6, 'stand'], [24.0, 8.6, 'stand'], [16.6, 7.6, 'stand'], [11.0, 9.8, 'stand'], [21.2, 11.3, 'swim'], [26.0, 6.0, 'stand']];
+const OWN = { x: 7.4, y: 4.6, tx: 7.4, ty: 4.6, path: [], pose: 'stand' };
 function moveOwner(dt, waiting) {
-  const sp = waiting ? [6.75, 3.5, 'stand'] : OWNER_SPOTS[Math.floor(Date.now() / 40000) % OWNER_SPOTS.length];
+  const sp = waiting ? [7.4, 4.6, 'stand'] : OWNER_SPOTS[Math.floor(Date.now() / 40000) % OWNER_SPOTS.length];
   if (OWN.tx !== sp[0] || OWN.ty !== sp[1]) { OWN.path = reduce ? [[sp[0], sp[1]]] : planPath(OWN.x, OWN.y, sp[0], sp[1]); OWN.tx = sp[0]; OWN.ty = sp[1]; }
   let walking = false;
   if (OWN.path.length) { const [nx, ny] = OWN.path[0], dx = nx - OWN.x, dy = ny - OWN.y, dist = Math.hypot(dx, dy), step = 2.2 * dt; if (dist <= step || reduce) { OWN.x = nx; OWN.y = ny; OWN.path.shift(); } else { OWN.x += dx / dist * step; OWN.y += dy / dist * step; } walking = OWN.path.length > 0; }
@@ -795,30 +679,29 @@ function draw(ts) {
   const narrow = cv.clientWidth < 560, zBoost = narrow && room !== 'semua' ? 1.3 : 1;
   const z = camC[2] * zBoost, [cx, cy] = iso(camC[0], camC[1], 60);
   g.setTransform(1, 0, 0, 1, 0, 0);
-  const bg = g.createLinearGradient(0, 0, 0, VH); bg.addColorStop(0, TOD === 'night' ? '#0B0F22' : '#1E2233'); bg.addColorStop(1, '#14161F'); g.fillStyle = bg; g.fillRect(0, 0, VW, VH);
+  const sk = SKY[TOD], bg = g.createLinearGradient(0, 0, 0, VH); bg.addColorStop(0, sk[0]); bg.addColorStop(1, sk[1]); g.fillStyle = bg; g.fillRect(0, 0, VW, VH);
+  if (TOD === 'night') { g.fillStyle = '#fff'; for (let i = 0; i < 60; i++) { g.globalAlpha = 0.4 + rndv(i + 7) * 0.6; g.fillRect(rndv(i) * VW, rndv(i + 99) * VH * 0.6, 2, 2); } g.globalAlpha = 1; }
+  g.beginPath(); g.arc(VW * 0.84, VH * 0.14, TOD === 'night' ? 34 : 50, 0, 7); g.fillStyle = TOD === 'night' ? '#F3F0E4' : TOD === 'sunset' ? '#FFB066' : '#FFE58A'; g.fill();
   g.setTransform(z, 0, 0, z, VW / 2 - cx * z, VH / 2 - cy * z);
-  floors(t); backWalls(t);
+  backdrop(t); ground(t);
   const waitN = ideas.filter(i => ['usulan', 'butuh-vo'].includes(i.status)).length;
-  wallScreen(3.2, 6.4, 72, 150, waitN ? [`${waitN} NUNGGU ACC`, 'klik agen bertanda !'] : ['SEMUA BERES ✓', 'tidak ada antrean'], waitN ? '#FF8A8A' : '#7ff0a8');
-  const last = ideas.filter(i => i.status === 'selesai').sort((a, b) => String(b.diubah || '').localeCompare(String(a.diubah || '')))[0];
-  [['mas-kharis', 12.8, 14.4], ['ternyata-leluhur', 30.2, 31.6], ['dari-1-mnt', 39.6, 41.2]].forEach(([ch, x0, x1]) => {
-    const mine = ideas.filter(i => chOf(i) === ch), prod = mine.filter(i => ['acc', 'produksi', 'vo-ulang', 'vo-acc'].includes(i.status));
-    const done = mine.filter(i => i.status === 'selesai').sort((a, b) => String(b.diubah || '').localeCompare(String(a.diubah || '')))[0];
-    wallScreen(x0, x1, 76, 150, prod.length ? ['DIGARAP', prod[0].judul || ''] : done ? ['SELESAI', done.judul || ''] : ['STANDBY', 'nunggu ACC'], '#FFD84A');
-  });
-  wallScreen(21.4, 24.6, 72, 150, last ? ['SIAP TAYANG', last.judul || ''] : ['JADWAL TAYANG', 'belum ada video'], '#7FD3D9');
-  const people = placeAgents(dt), jobs = furniture(t), heads = [];
-  people.forEach((p, i) => jobs.push({ d: p.x + p.y + ((p.mode === 'work' || (p.mode === 'wait' && p.y > 4)) && p.pose !== 'walk' ? 1.0 : 0.05), f: () => { heads.push([p, ...stickman(p, t, i)]); } }));
+  const newest = list => list.sort((a, b) => String(b.diubah || '').localeCompare(String(a.diubah || '')))[0];
+  const last = newest(ideas.filter(i => i.status === 'selesai'));
+  const divLines = ch => {
+    const mine = ideas.filter(i => chOf(i) === ch), prod = mine.filter(i => ['acc', 'produksi', 'vo-ulang', 'vo-acc'].includes(i.status)), done = newest(mine.filter(i => i.status === 'selesai'));
+    return prod.length ? ['DIGARAP', prod[0].judul] : done ? ['SELESAI', done.judul] : ['STANDBY', 'nunggu ACC'];
+  };
+  const people = placeAgents(dt), jobs = scenery(t, waitN, last ? ['SIAP TAYANG', last.judul] : ['JADWAL TAYANG', 'belum ada video'], divLines), heads = [];
+  people.forEach((p, i) => jobs.push({ d: p.x + p.y + ((p.pose === 'sit' || p.pose === 'bean') ? 1.0 : 0.05), f: () => { heads.push([p, ...stickman(p, t, i)]); } }));
   moveOwner(dt, waitN > 0);
   let ownerHead = null; jobs.push({ d: OWN.x + OWN.y + (OWN.pose === 'walk' ? 0.05 : 0.2), f: () => { ownerHead = ownerAvatar(t); } });
   jobs.sort((a, b) => a.d - b.d).forEach(j => j.f());
-  LIGHTS.forEach(([x, y]) => pendant(x, y));
-  // lighting: dim the room at night, then add warm light pools
+  // lighting: dim the meadow after dark, then add warm firelight
   if (TOD !== 'day') {
     g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'multiply';
-    g.fillStyle = TOD === 'night' ? 'rgb(120,130,190)' : TOD === 'sunset' ? 'rgb(255,214,180)' : 'rgb(220,215,240)'; g.fillRect(0, 0, VW, VH); g.restore();
+    g.fillStyle = TOD === 'night' ? 'rgb(110,120,185)' : TOD === 'sunset' ? 'rgb(255,214,180)' : 'rgb(220,215,240)'; g.fillRect(0, 0, VW, VH); g.restore();
   }
-  g.save(); g.globalCompositeOperation = 'screen'; LIGHTS.forEach(([x, y]) => lightPool(x, y, TOD === 'night' ? 0.35 : TOD === 'day' ? 0.12 : 0.22)); g.restore();
+  g.save(); g.globalCompositeOperation = 'screen'; LIGHTS.forEach(([x, y]) => lightPool(x, y, TOD === 'night' ? 0.45 : TOD === 'day' ? 0.08 : 0.25)); g.restore();
   // labels on top
   HITS = [];
   let wk = 0; heads.sort((a, b) => a[1] - b[1]).forEach(([p, hx, hy]) => { bubble(p, hx, hy, t, p.w && p.pose !== 'walk' ? (wk++) * 30 : 0); const s = g.getTransform().transformPoint(new DOMPoint(hx, hy + 30)); HITS.push({ p, x: s.x, y: s.y, r: 70 * z }); });
@@ -910,7 +793,7 @@ tick(); setInterval(tick, 20000);
 /* ---------- ideas board ---------- */
 let filter = 'usulan', db = null, assets = null, canWrite = false;
 // one owner desk per division: the list, counts and tabs only show that division's titles
-let curDesk = 'mas-kharis', deskPicked = false;
+let curDesk = 'ternyata-leluhur', deskPicked = false;
 try { const d = localStorage.getItem('kk-desk'); if (d && DIVS[d]) { curDesk = d; deskPicked = true; } } catch (e) {}
 const needsMe = ch => ideas.filter(i => chOf(i) === ch && ['usulan', 'butuh-vo'].includes(i.status)).length;
 function setDesk(d) { curDesk = d; deskPicked = true; try { localStorage.setItem('kk-desk', d); } catch (e) {} renderList(); }
@@ -1232,7 +1115,7 @@ renderList('loading');
       const got = Object.fromEntries(s.docs.map(x => [x.id, { id: x.id, ...x.data() }]));
       // defaults keep new divisions visible before their agent docs exist; db values win
       agents = AGENT_DEFAULTS.map(d => ({ ...d, status: 'santai', aktivitas: 'Menunggu tugas', ...(got[d.id] || {}), nama: d.nama, peran: d.peran, warna: d.warna, urut: d.urut }))
-        .concat(Object.values(got).filter(x => !AGENT_DEFAULTS.some(d => d.id === x.id)))
+        .concat(Object.values(got).filter(x => !AGENT_DEFAULTS.some(d => d.id === x.id) && !HIDE_AG.includes(x.id)))
         // a session that ended without resetting its agent: "kerja" older than 3 hours is shown as resting
         .map(a => a.status === 'kerja' && Date.now() - (Date.parse(a.diubah || '') || 0) > 3 * 3600e3 ? { ...a, status: 'santai' } : a);
       renderRoster(); renderPanel(); renderDesks();
@@ -1246,9 +1129,11 @@ renderList('loading');
   db.collection('brand').onSnapshot(s => { brands = Object.fromEntries(s.docs.map(x => [x.id, x.data()])); if (brandOpen) openBrand(brandOpen); }, () => {});
   db.collection('ideas').onSnapshot(s => {
     if (!s.metadata.fromCache) { clearTimeout(timer); $('banner').hidden = true; }
-    ideas = s.docs.map(x => ({ id: x.id, ...x.data() }));
+    ideas = s.docs.map(x => ({ id: x.id, ...x.data() })).filter(i => AKTIF_CH.includes(chOf(i)));
     renderList(); renderPanel();
     if (reduce) requestAnimationFrame(draw);
   }, e => { clearTimeout(timer); const b = $('banner'); b.hidden = false; b.textContent = 'Daftar ide tidak bisa dimuat (' + e.code + ').'; renderList(); });
 })();
 </script>
+
+</body></html>

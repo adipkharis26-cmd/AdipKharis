@@ -8,8 +8,11 @@ Baca dulu CLAUDE.md (aturan 1–4, terutama aturan 4 hemat kuota), lalu workflow
 dan workflow/RILIS.md bagian yang relevan saja. Jangan baca file besar utuh.
 
 KEADAAN (24 Nov 2026):
-- Divisi: Mas Kharis (ep), Ternyata Leluhur (tl), Dari 1 mnt (dm), Ohhiyaa! (oh). Skill tiap divisi
+- Divisi AKTIF (owner 24 Nov 2026): hanya Ternyata Leluhur (tl) & Ohhiyaa! (oh). Mas Kharis (ep)
+  & Dari 1 mnt (dm) disembunyikan dari halaman kantor (skill & file tetap ada). Skill tiap divisi
   TERKUNCI (.claude/skills/*), hanya diubah atas perintah owner.
+- Halaman kantor (artifact TPrLXh4cwBMhXhnRKxp7DC, v28): peta padang jaman batu (goa per divisi,
+  api unggun rapat, telaga, mamut). workflow/charizch-agent.html = salinan versi live v28.
 - Ternyata Leluhur TL01–TL13 selesai (naskah/tlNN-*.md, video/src/tlNN.*, video/vo/tlNN*,
   video/thumb/tlNN.json). MP4 & PNG tidak di git (video/out/ di-ignore).
 - Data channel TL: retensi bagus (APV 80–96%), tapi view mentok 1–2 rb. Retensi jatuh tajam di
