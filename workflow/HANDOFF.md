@@ -40,4 +40,4 @@ atau "buat TL14 topik X" atau "tambah adaptor Instagram ke rilis_worker.py">
 ```
 
 ## Tugas tertunda yang sudah jelas
-- **Halaman kantor live** (claude.ai/artifact/TPrLXh4cwBMhXhnRKxp7DC) masih berjudul lama. File repo sudah diganti (`workflow/charizch-agent.html`). Untuk republish: `Artifact read` URL itu (wajib, karena halaman menyimpan versinya sendiri), ganti hanya judul dan teks "Kantor Konten" di versi live, lalu publish ke URL yang sama. Jangan menimpa dengan file repo tanpa membandingkan.
+- (kosong) Halaman kantor live sudah berganti nama jadi Charizch Agent pada 24 Nov 2026 (versi 27). Perubahan berikutnya ke halaman itu tetap lewat `Artifact read` dulu, karena halaman menyimpan versinya sendiri.
