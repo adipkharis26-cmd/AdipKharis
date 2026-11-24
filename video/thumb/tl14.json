@@ -1,0 +1,74 @@
+{
+  "ep": "tl14",
+  "judul": "Banjir Datang, Rumah Ini Malah Naik!",
+  "thumbPilihan": "A",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Sama dengan frame 0 v4: wajah Bayu kaget di tengah hujan banjir. Teks memancing pertanyaan (kok kering?) tanpa membocorkan rakit, dan tidak mengulang judul.",
+      "latar": {
+        "frame": 1.2,
+        "zoom": 1.1,
+        "fokus": [
+          520,
+          960
+        ],
+        "saturasi": 1.2,
+        "terang": 1.2
+      },
+      "y": 300,
+      "ukuran": 140,
+      "teks": [
+        {
+          "t": "AIR SAMPAI JENDELA",
+          "warna": "putih"
+        },
+        {
+          "t": "KOK KERING?",
+          "kotak": "merah",
+          "besar": 1.15
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Objek utama: rumah kayu di atas rakit yang mengapung di banjir. Panah ke kayu gelondongan, rahasia yang dijawab di video.",
+      "latar": {
+        "frame": 7.8,
+        "zoom": 1.45,
+        "fokus": [
+          560,
+          820
+        ],
+        "saturasi": 1.2,
+        "terang": 1.2
+      },
+      "y": 290,
+      "ukuran": 150,
+      "teks": [
+        {
+          "t": "TIDAK DITANAM",
+          "warna": "kuning"
+        },
+        {
+          "t": "KE TANAH?!",
+          "kotak": "merah",
+          "besar": 1.1
+        }
+      ],
+      "panah": [
+        {
+          "dari": [
+            900,
+            760
+          ],
+          "ke": [
+            720,
+            1180
+          ],
+          "warna": "kuning"
+        }
+      ]
+    }
+  ]
+}

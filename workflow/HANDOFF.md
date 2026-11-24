@@ -13,7 +13,8 @@ KEADAAN (24 Nov 2026):
   TERKUNCI (.claude/skills/*), hanya diubah atas perintah owner.
 - Halaman kantor (artifact TPrLXh4cwBMhXhnRKxp7DC, v28): peta padang jaman batu (goa per divisi,
   api unggun rapat, telaga, mamut). workflow/charizch-agent.html = salinan versi live v28.
-- TL14 rumah lanting (skill v4): naskah + VO 72,6 dtk + tl14.js selesai, preview dikirim, render penuh menunggu ACC.
+- TL14 rumah lanting (skill v4): SELESAI 24 Nov 2026 (MP4 73,4 dtk, thumb A utama). Belum diunggah; uji v4:
+  minta owner screenshot "Ditonton vs digeser" + retensi 48 jam setelah tayang, bandingkan TL13.
 - Ternyata Leluhur TL01–TL13 selesai (naskah/tlNN-*.md, video/src/tlNN.*, video/vo/tlNN*,
   video/thumb/tlNN.json). MP4 & PNG tidak di git (video/out/ di-ignore).
 - Data channel TL: retensi bagus (APV 80–96%), tapi view mentok 1–2 rb. Retensi jatuh tajam di
@@ -36,7 +37,7 @@ KEADAAN (24 Nov 2026):
 MENUNGGU OWNER:
 1. Izin membuat branch `rilis-video` dan `laporan`.
 2. Daftar proyek/divisi + akun YouTube/Instagram/TikTok masing-masing; divisi prioritas.
-3. ACC preview TL14 (rumah lanting, v4 pertama) sebelum render penuh.
+3. Ubah jadwal ide harian/produksi ke 2 divisi (TL & Ohhiyaa!), mulai 1 video/hari (usulan, belum diminta).
 4. Setup VPS + Google Cloud + pengajuan audit YouTube/TikTok + Meta App (panduan: workflow/RILIS.md).
 
 TUGAS SESI INI: <isi satu tugas saja, mis. "republish halaman kantor jadi Charizch Agent"
