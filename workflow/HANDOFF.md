@@ -26,6 +26,9 @@ KEADAAN (24 Nov 2026):
   + Analis (laporan harian, rapor mingguan, eksperimen). TikTok & YouTube wajib audit API;
   Instagram butuh akun Professional + Meta App.
 
+- Branch utama = ccr-89b3a748-96svlz (branch claude/stickmen-… usang, berhenti di TL09).
+  Sesi terjadwal "Charizch Agent: ide harian" & "produksi" sudah menunjuk branch ini, masih NONAKTIF.
+
 MENUNGGU OWNER:
 1. Izin membuat branch `rilis-video` dan `laporan`.
 2. Daftar proyek/divisi + akun YouTube/Instagram/TikTok masing-masing; divisi prioritas.
