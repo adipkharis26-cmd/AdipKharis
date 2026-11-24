@@ -31,8 +31,8 @@ Video yang diunggah lewat API dari proyek Google Cloud yang **belum lolos audit*
 | Pengaman | Perilaku |
 |---|---|
 | Tidak pernah public | `publishAt` wajib di masa depan (> 30 menit). Kalau tidak valid, upload dibatalkan, tidak jatuh ke public. |
-| Jeda veto | Slot WIB pertama ≥ sekarang + `RILIS_VETO_JAM` (12). Slot default 11:30, 17:30, 19:30. |
-| Kuota | Maksimal `RILIS_MAKS_PER_HARI` (1) per hari WIB. |
+| Jeda veto | Paket baru boleh diposting ≥ `RILIS_VETO_JAM` (12) jam sejak dibuat. |
+| Jeda per divisi | 1 video acak per divisi, minimal `RILIS_JEDA_JAM` (12) jam sejak posting terakhir divisi itu. |
 | Cek fakta | Paket tanpa `"cekFakta": "lolos"` ditolak. |
 | Sekali saja | State lokal + cek judul di 50 upload terakhir channel. |
 | Channel benar | Token wajib milik `RILIS_CHANNEL_ID`. Kalau beda, worker berhenti. |
@@ -70,8 +70,7 @@ Video yang diunggah lewat API dari proyek Google Cloud yang **belum lolos audit*
    RILIS_CHANNEL_ID=UCxxxxxxxxxxxxxxxx      # worker menampilkan ID ini kalau dikosongkan
    RILIS_REPO_DIR=/home/USER/AdipKharis/data/rilis-repo
    RILIS_VETO_JAM=12
-   RILIS_MAKS_PER_HARI=1
-   RILIS_SLOT=11:30,17:30,19:30
+   RILIS_JEDA_JAM=12
    RILIS_API_TERAUDIT=0                     # ubah ke 1 setelah audit disetujui
    TELEGRAM_BOT_TOKEN=                      # opsional: notifikasi veto
    TELEGRAM_CHAT_ID=
@@ -125,7 +124,7 @@ File `.github/workflows/rilis-upload.yml` menjalankan worker di server GitHub **
 
 ## Instagram Reels & TikTok (publisher_sosmed.py)
 
-Worker yang sama juga memposting ke Instagram dan TikTok. Tiap paket mendapat jam tayang (slot pertama ≥ sekarang + jeda veto, maks `RILIS_MAKS_PER_HARI` per divisi per hari). Saat jamnya tiba, video diposting ke platform yang aktif, dengan maksimal 3 percobaan per platform. YouTube tidak wajib: kalau belum `auth`, worker tetap jalan untuk IG/TikTok.
+Worker yang sama juga memposting ke Instagram dan TikTok. Video dipilih dengan mode stok (acak, jeda 12 jam per divisi, lihat bagian GitHub Actions) dan diposting ke platform yang aktif, dengan maksimal 3 percobaan per platform. YouTube tidak wajib: kalau belum `auth`, worker tetap jalan untuk IG/TikTok.
 
 **Veto IG/TikTok:** hapus folder `rilis/<ep>` di branch `rilis-video` (bisa dari aplikasi GitHub di HP) sebelum jam tayang, atau `python rilis_worker.py veto <ep>` di VPS.
 
