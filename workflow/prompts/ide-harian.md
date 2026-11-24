@@ -12,7 +12,7 @@ Owner tidak lagi meng-ACC judul harian. Aturannya:
 - Setelah semua tertulis, panggil `mcp__claude-code-remote__fire_trigger` dengan `trigger_id:"trig_01KW7689zngdSs8YW1jcG7qu"` (produksi) supaya tim mulai sekitar 07:00, tanpa menunggu menit ke-13.
 - Mode REFRESH (tombol 🔄 Judul baru) tetap membuat **`ide_refresh` (2)** judul berstatus `usulan` untuk dipilih owner, dan tetap jalan walaupun otomatis OFF (owner sendiri yang meminta).
 
-1. Pastikan repo `adipkharis26-cmd/adipkharis` ada dan branch `claude/stickmen-motion-graphics-kharis-ap44z0` sudah di-checkout. Kalau repo belum ada, pakai `add_repo` lalu clone.
+1. Pastikan repo `adipkharis26-cmd/adipkharis` ada dan branch `ccr-89b3a748-96svlz` sudah di-checkout. Kalau repo belum ada, pakai `add_repo` lalu clone.
 2. Baca `workflow/config.json`, `workflow/README.md`, dan skill setiap channel di `config.channels.*.skill`.
 3. Muat tool `ArtifactData` (ToolSearch `select:ArtifactData`). URL Charizch Agent ada di `config.kantor_konten_url`.
 4. Set `agents/penggali` menjadi `{status:"kerja", aktivitas:"Riset ide hari ini", diubah:<ISO>}`. Tulis dengan `update` dan `if_version` dari hasil `get`.

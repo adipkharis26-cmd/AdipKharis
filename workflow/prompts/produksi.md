@@ -9,7 +9,7 @@ usulan ──owner ACC judul──► acc   (mode otomatis: Penggali menulis lan
 **Sejak 10 Nov 2026 owner menghapus langkah ACC suara.** Setelah judul di-ACC, tim langsung bekerja sampai `selesai` dalam **satu sesi**, tanpa berhenti menunggu owner. Status `cek-vo` tidak dipakai lagi. Kualitas VO dijaga sendiri: durasi masuk target skill, tidak ada kata terpotong, dan jeda wajar (dengarkan ringkas dengan cek durasi per bagian dari `voJson`). Status lama `cek-vo`, `vo-acc`, atau `vo-ulang` yang masih ada diperlakukan sebagai VO sudah siap: lanjut ke TAHAP B (untuk `vo-ulang`, ikuti `catatanVo` dulu seperti TAHAP A2).
 
 ## 0. Persiapan (selalu)
-- Pastikan repo `adipkharis26-cmd/adipkharis` ada (kalau belum, clone), checkout `claude/stickmen-motion-graphics-kharis-ap44z0`, lalu `git pull`.
+- Pastikan repo `adipkharis26-cmd/adipkharis` ada (kalau belum, clone), checkout `ccr-89b3a748-96svlz`, lalu `git pull`.
 - Baca `workflow/config.json` dan `workflow/README.md`. Muat `ArtifactData` (ToolSearch `select:ArtifactData`). Baca juga artifact Charizch Agent sekali dengan Artifact `action:"read"`, karena itu syarat sebelum bisa mengunggah aset.
 - Query `ideas`, lalu buang ide yang punya `kunci.sampai` lebih besar dari waktu sekarang (sedang dikerjakan di sesi lain).
 - Pilih **satu** pekerjaan dengan prioritas: status lama `vo-ulang` / `vo-acc` / `cek-vo` (lanjutkan), lalu `acc`. Di status yang sama, ambil yang `accAt`-nya paling lama.
