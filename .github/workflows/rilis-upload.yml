@@ -1,0 +1,97 @@
+# Upload otomatis paket di branch `rilis-video` ke YouTube / Instagram / TikTok.
+# Jalan di server GitHub (bukan VPS, bukan kuota Claude). Panduan: workflow/RILIS.md bagian "GitHub Actions".
+# CATATAN: jadwal (schedule) hanya dijalankan GitHub dari file ini di branch default (main).
+name: Rilis upload
+
+on:
+  schedule:
+    - cron: "30 4 * * *"    # 11:30 WIB
+    - cron: "30 10 * * *"   # 17:30 WIB
+    - cron: "30 12 * * *"   # 19:30 WIB
+  workflow_dispatch: {}     # tombol "Run workflow" di tab Actions
+
+concurrency:
+  group: rilis-upload
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      KODE_BRANCH: ${{ vars.RILIS_KODE_BRANCH || 'ccr-89b3a748-96svlz' }}
+      RILIS_IG: ${{ vars.RILIS_IG || '0' }}
+      RILIS_TIKTOK: ${{ vars.RILIS_TIKTOK || '0' }}
+      RILIS_TIKTOK_PRIVACY: ${{ vars.RILIS_TIKTOK_PRIVACY || 'SELF_ONLY' }}
+      RILIS_API_TERAUDIT: ${{ vars.RILIS_API_TERAUDIT || '0' }}
+      RILIS_CHANNEL_ID: ${{ vars.RILIS_CHANNEL_ID }}
+      RILIS_VETO_JAM: ${{ vars.RILIS_VETO_JAM || '12' }}
+      RILIS_MAKS_PER_HARI: ${{ vars.RILIS_MAKS_PER_HARI || '1' }}
+      RILIS_SLOT: ${{ vars.RILIS_SLOT || '11:30,17:30,19:30' }}
+      RILIS_PUSH_LAPORAN: "0"
+      RILIS_REPO_DIR: ${{ github.workspace }}/data/rilis-repo
+      SOSMED_KEY: ${{ secrets.SOSMED_KEY }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - name: Ambil kode worker
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.KODE_BRANCH }}
+          fetch-depth: 1
+
+      - name: Cek ada paket rilis
+        id: cek
+        run: |
+          if git ls-remote --exit-code --heads origin rilis-video >/dev/null; then echo "ada=1" >> "$GITHUB_OUTPUT"
+          else echo "Branch rilis-video belum ada: belum ada paket. Selesai."; echo "ada=0" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Ambil paket rilis
+        if: steps.cek.outputs.ada == '1'
+        uses: actions/checkout@v4
+        with:
+          ref: rilis-video
+          path: data/rilis-repo
+          fetch-depth: 1
+
+      - name: Ambil state
+        if: steps.cek.outputs.ada == '1'
+        run: |
+          if git ls-remote --exit-code --heads origin rilis-state >/dev/null; then
+            git fetch --depth 1 origin rilis-state && git worktree add --detach data/state FETCH_HEAD
+          else
+            git worktree add --detach data/state && cd data/state && git checkout -q --orphan state-baru && git rm -rfq .
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.cek.outputs.ada == '1'
+        with:
+          python-version: "3.12"
+
+      - name: Siapkan akun
+        if: steps.cek.outputs.ada == '1'
+        env:
+          SOSMED_AKUN_JSON: ${{ secrets.SOSMED_AKUN_JSON }}
+          YT_TOKEN_JSON: ${{ secrets.YT_TOKEN_JSON }}
+        run: |
+          pip install -q google-api-python-client google-auth-oauthlib google-auth-httplib2
+          python workflow/actions_akun.py muat
+          if [ -n "$YT_TOKEN_JSON" ]; then printf '%s' "$YT_TOKEN_JSON" > data/rilis_token.json; chmod 600 data/rilis_token.json; fi
+
+      - name: Upload
+        if: steps.cek.outputs.ada == '1'
+        run: python rilis_worker.py once
+
+      - name: Simpan state
+        if: always() && steps.cek.outputs.ada == '1'
+        run: |
+          python workflow/actions_akun.py simpan
+          cd data/state
+          git add -A
+          if ! git diff --cached --quiet; then
+            git -c user.name="rilis-bot" -c user.email="rilis-bot@users.noreply.github.com" commit -qm "state $(date -u +%FT%TZ)"
+            git push -q origin HEAD:refs/heads/rilis-state
+          fi
