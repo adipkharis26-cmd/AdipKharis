@@ -1,0 +1,28 @@
+{
+  "ep": "tl15",
+  "judul": "Kampung Terbakar, Padinya Selamat!",
+  "thumbPilihan": "A",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Sama dengan frame 0 v4: wajah Raka kaget dengan kampung terbakar di belakangnya. Teks memancing pertanyaan (kok tidak kelaparan?) tanpa membocorkan leuit, dan tidak mengulang judul.",
+      "latar": { "frame": 1.0, "zoom": 1.1, "fokus": [520, 960], "saturasi": 1.2, "terang": 1.15 },
+      "y": 300, "ukuran": 140,
+      "teks": [
+        { "t": "RUMAH HANGUS", "warna": "putih" },
+        { "t": "KOK TAK LAPAR?", "kotak": "merah", "besar": 1.1 }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Objek utama: deretan lumbung berkaki yang berdiri jauh dari kampung. Panah ke leuit, rahasia yang dijawab di video.",
+      "latar": { "frame": 8.5, "zoom": 1.3, "fokus": [560, 880], "saturasi": 1.2, "terang": 1.2 },
+      "y": 290, "ukuran": 150,
+      "teks": [
+        { "t": "PADI DITARUH", "warna": "kuning" },
+        { "t": "JAUH-JAUH?!", "kotak": "merah", "besar": 1.1 }
+      ],
+      "panah": [ { "dari": [880, 700], "ke": [700, 1080], "warna": "kuning" } ]
+    }
+  ]
+}
