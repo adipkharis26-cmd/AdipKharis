@@ -24,8 +24,7 @@ KEADAAN (24 Nov 2026):
   api unggun rapat, telaga, mamut). workflow/charizch-agent.html = salinan versi live v28.
 - TL14 rumah lanting (skill v4): SELESAI 24 Nov 2026 (MP4 73,4 dtk, thumb A utama). Belum diunggah; uji v4:
   minta owner screenshot "Ditonton vs digeser" + retensi 48 jam setelah tayang, bandingkan TL13.
-- TL15 leuit Baduy (skill v4): naskah, VO 76,7 dtk, dan tl15.js selesai; preview stills sudah dikirim, MENUNGGU ACC owner
-  sebelum mix + render penuh (`leluhur_mix.py tl15` → render video) + thumbnail.
+- TL15 leuit Baduy (skill v4): SELESAI 25 Nov 2026 (MP4 77,5 dtk, thumb A utama). Belum diunggah.
 - Ternyata Leluhur TL01–TL13 selesai (naskah/tlNN-*.md, video/src/tlNN.*, video/vo/tlNN*,
   video/thumb/tlNN.json). MP4 & PNG tidak di git (video/out/ di-ignore).
 - Data channel TL: retensi bagus (APV 80–96%), tapi view mentok 1–2 rb. Retensi jatuh tajam di
