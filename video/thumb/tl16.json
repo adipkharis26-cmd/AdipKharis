@@ -1,0 +1,28 @@
+{
+  "ep": "tl16",
+  "judul": "Gempa 7, Rumah Bambu Ini Tak Roboh!",
+  "thumbPilihan": "A",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Sama dengan frame 0 v4: wajah Doni kaget saat gempa dengan tembok bata di belakangnya. Teks memancing pertanyaan (rumah mana yang selamat?) tanpa mengulang judul.",
+      "latar": { "frame": 1.0, "zoom": 1.1, "fokus": [520, 960], "saturasi": 1.2, "terang": 1.15 },
+      "y": 300, "ukuran": 140,
+      "teks": [
+        { "t": "TEMBOK ROBOH", "warna": "putih" },
+        { "t": "YANG INI BERDIRI?", "kotak": "merah", "besar": 1.0 }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Objek utama: rumah Sasak beratap alang-alang yang tetap berdiri saat gempa. Panah ke rumah, rahasia bahan ringan dijawab di video.",
+      "latar": { "frame": 8.5, "zoom": 1.2, "fokus": [540, 900], "saturasi": 1.2, "terang": 1.15 },
+      "y": 290, "ukuran": 150,
+      "teks": [
+        { "t": "CUMA BAMBU", "warna": "kuning" },
+        { "t": "TAK ROBOH?!", "kotak": "merah", "besar": 1.1 }
+      ],
+      "panah": [ { "dari": [880, 700], "ke": [700, 1060], "warna": "kuning" } ]
+    }
+  ]
+}
