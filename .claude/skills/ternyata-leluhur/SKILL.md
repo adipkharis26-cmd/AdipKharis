@@ -129,7 +129,7 @@ Contoh patokan alur v2: `naskah/tl01-candi-tanpa-semen.md` + `video/src/tl01.js`
 7. **Paket judul + deskripsi (wajib, perintah owner 26 Nov 2026):** setelah video dan thumbnail jadi, kirim ke owner **di chat** dua blok kode terpisah, masing-masing diberi sub-judul tebal, supaya bisa disalin satu klik:
    - **Judul** (≤35 karakter, kalimat pernyataan, dari "Paket posting" naskah).
    - **Deskripsi** (1 paragraf, menyebut tokoh fiksi + sumber singkat, diakhiri hashtag `#shorts #ternyataleluhur ...` 5–8 buah).
-   - Boleh menambah blok ketiga **Komentar disematkan** (pertanyaan daerah). Isi blok harus sama dengan "Paket posting" di `naskah/tlNN-*.md`.
+   - **Jangan** menambah blok Komentar disematkan di chat (perintah owner 26 Nov 2026). Isi blok harus sama dengan "Paket posting" di `naskah/tlNN-*.md`.
 
 ## 8. Ide judul
 - **Judul v4 (sejak TL14):** **kalimat pernyataan ≤35 karakter**, bukan pertanyaan "Kenapa...". Contoh terbaik channel: "Atap Ini Bukan Genteng, Tapi Serabut Hitam!" (4,8 rb view). Judul "Kenapa..." boleh tetap dipakai sebagai judul kerja naskah.
