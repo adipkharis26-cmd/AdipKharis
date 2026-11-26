@@ -7,7 +7,8 @@ const OUT = "#1b1b1b";
 export const ITEMS = ["paper", "book", "kresek", "gorengan", "cup", "mug", "tray", "ball", "wallet", "bagTote", "whistle", "clipboard", "broom", "bowl", "tumbler", "pen", "helmet", "umbrella", "folder", "alarm", "ledger", "bookStack",
   "lotteryBox", "lotScroll", "lotScrollRed", "lotSlip", "libBook", "phonePhoto", "rubberBands",
   "boardEraser", "phoneGallery", "coins", "gorenganTiga",
-  "kresekBelanja", "tomatoBag", "kresekKosong", "mic"] as const;
+  "kresekBelanja", "tomatoBag", "kresekKosong", "mic",
+  "mieBungkus", "ceret"] as const;
 export type ItemId = (typeof ITEMS)[number];
 
 const sw = (w = 5) => ({ stroke: OUT, strokeWidth: w, strokeLinejoin: "round" as const, strokeLinecap: "round" as const });
@@ -297,10 +298,33 @@ const Mic: React.FC = () => (
     <path d="M -12 -26 l 24 0 M -14 -18 l 28 0 M -11 -10 l 22 0 M -6 -33 l 0 26 M 6 -33 l 0 26" stroke="#8d939c" strokeWidth={2} />
   </g>
 );
+/** Mi instan sebungkus (Shorts "Akhir Bulan"): bungkus kuning-oranye bergerigi di ujung, gambar mangkuk mi, tanpa teks/merek. */
+const MieBungkus: React.FC = () => (
+  <g transform="rotate(-8) scale(1.3) translate(0 -26)">
+    <path d="M -38 -28 l 6 -4 l 6 4 l 6 -4 l 6 4 l 6 -4 l 6 4 l 6 -4 l 6 4 l 6 -4 l 6 4 L 40 30 l -6 4 l -6 -4 l -6 4 l -6 -4 l -6 4 l -6 -4 l -6 4 l -6 -4 l -6 4 l -6 -4 Z" fill="#ffcf3f" {...sw(4)} />
+    <rect x={-34} y={-20} width={70} height={14} fill="#e63946" stroke="none" />
+    <path d="M -18 6 Q 2 26 22 6 Z" fill="#fffdf5" {...sw(3)} />
+    <path d="M -12 6 q 4 -8 8 0 q 4 -8 8 0 q 4 -8 8 0" fill="none" stroke="#f3a03c" strokeWidth={3} strokeLinecap="round" />
+    <path d="M 14 -2 l 10 -8" stroke={OUT} strokeWidth={3} strokeLinecap="round" />
+  </g>
+);
+/** Ceret aluminium berisi air panas (warung): badan perak, cerat, gagang hitam, uap mengepul. */
+const Ceret: React.FC = () => (
+  <g transform="scale(1.6) translate(0 -4)">
+    <path d="M -30 -10 Q -34 34 0 38 Q 34 34 30 -10 Q 0 -22 -30 -10 Z" fill="#c9ced4" {...sw(4)} />
+    <path d="M 28 4 Q 46 -2 54 -22" fill="none" stroke={OUT} strokeWidth={11} strokeLinecap="round" />
+    <path d="M 28 4 Q 46 -2 54 -22" fill="none" stroke="#c9ced4" strokeWidth={5} strokeLinecap="round" />
+    <path d="M -22 -14 Q 0 -40 22 -14" fill="none" stroke="#2b2b2b" strokeWidth={7} strokeLinecap="round" />
+    <ellipse cx={0} cy={-14} rx={18} ry={5} fill="#9aa3ad" {...sw(3)} />
+    <path d="M -18 6 Q 0 14 18 6" fill="none" stroke="#fff" strokeWidth={4} opacity={0.6} strokeLinecap="round" />
+    <path d="M 56 -32 q -8 -10 0 -18 q 8 -8 0 -18 M 64 -30 q -6 -8 0 -14" fill="none" stroke="#ffffff" strokeWidth={4} opacity={0.8} strokeLinecap="round" />
+  </g>
+);
 const MAP: Record<ItemId, React.FC> = { paper: Paper, book: Book, kresek: Kresek, gorengan: Gorengan, cup: Cup, mug: Mug, tray: Tray, ball: Ball, wallet: Wallet, bagTote: BagTote, whistle: Whistle, clipboard: Clipboard, broom: Broom, bowl: Bowl, tumbler: Tumbler, pen: Pen, helmet: Helmet, umbrella: Umbrella, folder: Folder, alarm: Alarm, ledger: Ledger, bookStack: BookStack,
   lotteryBox: LotteryBox, lotScroll: LotScroll, lotScrollRed: LotScrollRed, lotSlip: LotSlip, libBook: LibBook, phonePhoto: PhonePhoto, rubberBands: RubberBands,
   boardEraser: BoardEraser, phoneGallery: PhoneGallery, coins: Coins, gorenganTiga: GorenganTiga,
-  kresekBelanja: KresekBelanja, tomatoBag: TomatoBag, kresekKosong: KresekKosong, mic: Mic };
+  kresekBelanja: KresekBelanja, tomatoBag: TomatoBag, kresekKosong: KresekKosong, mic: Mic,
+  mieBungkus: MieBungkus, ceret: Ceret };
 export const Item: React.FC<{ id: string; x: number; y: number }> = ({ id, x, y }) => {
   const C = MAP[id as ItemId];
   return C ? <g transform={`translate(${x} ${y})`}><C /></g> : null;

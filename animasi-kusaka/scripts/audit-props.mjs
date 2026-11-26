@@ -47,6 +47,9 @@ const RULES = [
   // Shorts "Sogok Gorengan": push-up hukuman telat, bakwan sogokan
   { re: /push-?up/i, label: "push-up", acts: ["pushup"] },
   { re: /bakwan|cabe rawit|cabai rawit/i, label: "bakwan", item: "gorengan|gorenganTiga" },
+  // Shorts "Akhir Bulan": mi instan bawaan sendiri, air panas dari ceret
+  { re: /\bmi\b|mi rebus|mi instan/i, label: "mi", item: "mieBungkus|bowl" },
+  { re: /air panas|\bairnya\b|\bair\b/i, label: "air panas", item: "ceret|bowl" },
   { re: /gerbang/i, label: "gerbang", track: "gate", loc: "gerbang" },
   { re: /angkot|\bbus\b/i, label: "angkot", track: "angkot", loc: "halte" },
   { re: /\btas\b|ransel|berangkat|pulang sekolah/i, label: "tas", bag: true },

@@ -1,0 +1,332 @@
+{
+ "format": "shorts",
+ "episode": "shorts14",
+ "title": "Akhir Bulan",
+ "fps": 30,
+ "voiceMode": "dialogue",
+ "gapSeconds": 0.2,
+ "sceneLead": 0.3,
+ "sceneGap": 0,
+ "tail": 0.2,
+ "hook": {
+  "lines": [
+   "TANGGAL TUA",
+   "DI WARUNG BU IJAH"
+  ],
+  "keywords": [
+   "TUA",
+   "WARUNG"
+  ],
+  "seconds": 1.6
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "location": "warung",
+   "music": "music-warung-comedy",
+   "cast": {
+    "buIjah": {
+     "mark": "C",
+     "facing": 1
+    },
+    "tara": {
+     "mark": "A",
+     "facing": -1
+    }
+   },
+   "hold": {
+    "buIjah": {
+     "item": "ledger",
+     "hand": "back"
+    }
+   },
+   "lines": [
+    {
+     "id": "l001",
+     "speaker": "tara",
+     "emotion": "pleading",
+     "listener": "deadpan",
+     "shot": "crash",
+     "action": "plead",
+     "to": "buIjah",
+     "text": "Bu, mi rebus satu. Telurnya dua. Ditulis dulu, ya.",
+     "say": "[sweet, a little too casual] Bu, mi rebus satu. Telurnya dua. Ditulis dulu, ya.",
+     "ref": [
+      "mi"
+     ]
+    },
+    {
+     "id": "l002",
+     "speaker": "buIjah",
+     "emotion": "deadpan",
+     "listener": "pleading",
+     "shot": "medium",
+     "action": "show",
+     "to": "tara",
+     "text": "Ditulis di mana, Nduk? Bukunya wis penuh.",
+     "say": "[flat, Javanese accent] Ditulis di mana, Nduk? Bukunya wis penuh.",
+     "hold": {
+      "buIjah": [
+       null,
+       "ledger"
+      ]
+     }
+    },
+    {
+     "id": "l003",
+     "speaker": "tara",
+     "emotion": "pleading",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "plead",
+     "to": "buIjah",
+     "text": "Halaman belakang, Bu?",
+     "say": "[hopeful] Halaman belakang, Bu?"
+    },
+    {
+     "id": "l004",
+     "speaker": "buIjah",
+     "emotion": "deadpan",
+     "listener": "embarrassed",
+     "shot": "close",
+     "action": "read",
+     "to": "tara",
+     "closeStyle": "single",
+     "text": "Belakang juga namamu semua.",
+     "say": "[flipping pages, flat] Belakang juga namamu semua."
+    },
+    {
+     "id": "l005",
+     "speaker": "tara",
+     "emotion": "embarrassed",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "pocket",
+     "to": "buIjah",
+     "text": "...Telurnya satu aja, deh.",
+     "say": "[hesitant, quieter] ...Telurnya satu aja, deh."
+    },
+    {
+     "id": "l006",
+     "speaker": "buIjah",
+     "emotion": "deadpan",
+     "listener": "embarrassed",
+     "shot": "close",
+     "action": "crossed",
+     "to": "tara",
+     "closeStyle": "ots",
+     "text": "Hm.",
+     "say": "[unimpressed] Hm.",
+     "hold": {
+      "buIjah": [
+       null,
+       {
+        "item": "ledger",
+        "hand": "back"
+       }
+      ]
+     }
+    },
+    {
+     "id": "l007",
+     "speaker": "tara",
+     "emotion": "embarrassed",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "plead",
+     "to": "buIjah",
+     "text": "Mi-nya aja. Nggak pakai telur.",
+     "say": "[bargaining, fast] Mi-nya aja. Nggak pakai telur.",
+     "ref": [
+      "mi"
+     ]
+    },
+    {
+     "id": "l008",
+     "speaker": "buIjah",
+     "emotion": "neutral",
+     "listener": "embarrassed",
+     "shot": "two",
+     "action": "hips",
+     "to": "tara",
+     "text": "Mi-nya juga tinggal satu. Buat makan siang Ibu.",
+     "say": "[casual, not looking] Mi-nya juga tinggal satu. Buat makan siang Ibu.",
+     "ref": [
+      "mi",
+      "makanan"
+     ]
+    },
+    {
+     "id": "l009",
+     "speaker": "tara",
+     "emotion": "smug",
+     "listener": "surprised",
+     "shot": "wide",
+     "action": "show",
+     "to": "buIjah",
+     "text": "Oke. Aku bawa mi sendiri. Mangkok juga. Minta air panasnya aja, Bu.",
+     "say": "[determined, pulling things out] Oke. Aku bawa mi sendiri. Mangkok juga. [sweetly] Minta air panasnya aja, Bu.",
+     "hold": {
+      "tara": [
+       "mieBungkus",
+       {
+        "item": "bowl",
+        "hand": "back"
+       }
+      ]
+     },
+     "ref": [
+      "air panas"
+     ]
+    },
+    {
+     "id": "l010",
+     "speaker": "buIjah",
+     "emotion": "defeated",
+     "listener": "smug",
+     "shot": "wide",
+     "action": "give",
+     "to": "tara",
+     "text": "...Ya wis. Sini.",
+     "say": "[long pause, sighs] ...Ya wis. Sini.",
+     "hold": {
+      "buIjah": [
+       null,
+       "ceret",
+       {
+        "item": "ledger",
+        "hand": "back"
+       }
+      ],
+      "tara": [
+       null,
+       "bowl"
+      ]
+     }
+    },
+    {
+     "id": "l011",
+     "speaker": "tara",
+     "emotion": "laugh",
+     "listener": "neutral",
+     "shot": "two",
+     "action": "hold",
+     "to": "buIjah",
+     "text": "Makasih, Bu! Ibu baik banget.",
+     "say": "[delighted] Makasih, Bu! Ibu baik banget.",
+     "hold": {
+      "buIjah": [
+       null,
+       {
+        "item": "ledger",
+        "hand": "back"
+       }
+      ]
+     }
+    },
+    {
+     "id": "l012",
+     "speaker": "buIjah",
+     "emotion": "neutral",
+     "listener": "laugh",
+     "shot": "two",
+     "action": "write",
+     "to": "tara",
+     "text": "Air panas, satu. Tak catat.",
+     "say": "[writing slowly, matter-of-fact] Air panas, satu. [beat] Tak catat.",
+     "hold": {
+      "buIjah": [
+       null,
+       "pen",
+       {
+        "item": "ledger",
+        "hand": "back"
+       }
+      ]
+     },
+     "sfx": [
+      {
+       "id": "record_scratch",
+       "at": "end"
+      }
+     ]
+    },
+    {
+     "id": "l013",
+     "speaker": "tara",
+     "emotion": "shock",
+     "listener": "neutral",
+     "shot": "close",
+     "action": "shock",
+     "to": "buIjah",
+     "closeStyle": "single",
+     "text": "Air doang, Bu?!",
+     "say": "[shocked] Air doang, Bu?!"
+    },
+    {
+     "id": "l014",
+     "speaker": "buIjah",
+     "emotion": "deadpan",
+     "listener": "shock",
+     "shot": "two",
+     "action": "read",
+     "to": "tara",
+     "text": "Gas elpiji sekarang mahal, Nduk.",
+     "say": "[deadpan] Gas elpiji sekarang mahal, Nduk.",
+     "hold": {
+      "buIjah": [
+       null,
+       "ledger"
+      ]
+     },
+     "sfx": [
+      {
+       "id": "rimshot",
+       "at": "end"
+      }
+     ]
+    },
+    {
+     "id": "l015",
+     "speaker": "tara",
+     "emotion": "pleading",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "plead",
+     "text": "Kirim ke teman kos yang lagi tanggal tua juga.",
+     "say": "[whining] Kirim ke teman kos yang lagi tanggal tua juga.",
+     "hold": {
+      "tara": null,
+      "buIjah": [
+       null,
+       {
+        "item": "ledger",
+        "hand": "back"
+       }
+      ]
+     },
+     "cta": {
+      "kind": "kirim",
+      "text": "KIRIM ke ANAK KOS!",
+      "keywords": [
+       "KIRIM",
+       "KOS!"
+      ],
+      "reveal": "buIjah"
+     }
+    },
+    {
+     "id": "l016",
+     "speaker": "buIjah",
+     "emotion": "smug",
+     "listener": "pleading",
+     "shot": "wide",
+     "action": "crossed",
+     "to": "tara",
+     "text": "Wis. Mau pesen apa lagi, Nduk?",
+     "say": "[pen ready, mildly amused] Wis. Mau pesen apa lagi, Nduk?"
+    }
+   ]
+  }
+ ]
+}

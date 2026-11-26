@@ -158,7 +158,8 @@ function camera(t: number, vertical: boolean): { cam: Cam; shake: [number, numbe
   NOW = t;
   const { line, index, since, scene } = beatAt(t);
   const target = shotFor(scene, line, since, vertical);
-  const lastSceneEnd = SCENES[SCENES.length - 1] === scene && t > END_OF_DIALOG + 0.4;
+  // Shorts 9:16: TANPA dorong-kamera penutup, agar frame terakhir = frame pertama (loop mulus, pemilik 24 Nov 2026)
+  const lastSceneEnd = !vertical && SCENES[SCENES.length - 1] === scene && t > END_OF_DIALOG + 0.4;
   if (lastSceneEnd) {
     const k = STATIC ? 1 : smooth((t - END_OF_DIALOG - 0.4) / 0.8);
     return { cam: mixCam(target, { x: centerOf(scene), y: 520, z: vertical ? 1.15 : 1.08 }, k), shake: [0, 0], scene };
