@@ -126,6 +126,10 @@ Contoh patokan alur v2: `naskah/tl01-candi-tanpa-semen.md` + `video/src/tl01.js`
 4. Render stills di 10–12 titik (`EP=tlNN node render.js stills ../out/tlNNs t...`), gabungkan dengan hstack, lalu periksa sendiri. Perbaiki lalu ulangi.
 5. Audio: `python3 video/src/leluhur_mix.py tlNN` menghasilkan `video/vo/tlNN-mix.m4a`.
 6. Render: `cd video/src && EP=tlNN node render.js video ../out/ternyata-leluhur-tlNN.mp4 30 ../vo/tlNN-mix.m4a`. Kecepatannya sekitar 0,2–0,4 detik per frame, jadi jalankan di background.
+7. **Paket judul + deskripsi (wajib, perintah owner 26 Nov 2026):** setelah video dan thumbnail jadi, kirim ke owner **di chat** dua blok kode terpisah, masing-masing diberi sub-judul tebal, supaya bisa disalin satu klik:
+   - **Judul** (≤35 karakter, kalimat pernyataan, dari "Paket posting" naskah).
+   - **Deskripsi** (1 paragraf, menyebut tokoh fiksi + sumber singkat, diakhiri hashtag `#shorts #ternyataleluhur ...` 5–8 buah).
+   - Boleh menambah blok ketiga **Komentar disematkan** (pertanyaan daerah). Isi blok harus sama dengan "Paket posting" di `naskah/tlNN-*.md`.
 
 ## 8. Ide judul
 - **Judul v4 (sejak TL14):** **kalimat pernyataan ≤35 karakter**, bukan pertanyaan "Kenapa...". Contoh terbaik channel: "Atap Ini Bukan Genteng, Tapi Serabut Hitam!" (4,8 rb view). Judul "Kenapa..." boleh tetap dipakai sebagai judul kerja naskah.
