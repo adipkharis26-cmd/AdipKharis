@@ -855,5 +855,42 @@
       }
     ],
     "prop": null
+  },
+  "shorts14-A": {
+    "episode": 14,
+    "size": "9x16",
+    "bg": "warung",
+    "bgX": 600,
+    "burst": "#2aa6a0",
+    "pattern": "speed",
+    "text": [
+      "AIR PANAS",
+      "DICATAT?!"
+    ],
+    "textX": 540,
+    "textY": 230,
+    "textSize": 180,
+    "textRot": -3,
+    "actors": [
+      {
+        "id": "buIjah",
+        "emotion": "smug",
+        "action": "write",
+        "x": 330,
+        "y": 1560,
+        "scale": 1.5,
+        "facing": 1
+      },
+      {
+        "id": "tara",
+        "emotion": "shock",
+        "action": "shock",
+        "x": 780,
+        "y": 2700,
+        "scale": 2.4,
+        "facing": -1
+      }
+    ],
+    "prop": null
   }
 }
