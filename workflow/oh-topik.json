@@ -188,6 +188,18 @@
       ],
       "format": "benar-bohong",
       "alur": "tangga"
+    },
+    {
+      "ep": "oh13",
+      "judul": "Kopi Sehari se-Indonesia Dituang, Bisa Isi Kolam Renang? ☕",
+      "objek": [
+        "kopi"
+      ],
+      "patokan": [
+        "kolam-olimpiade"
+      ],
+      "format": "tebak-angka",
+      "alur": "hasil-dulu"
     }
   ]
 }

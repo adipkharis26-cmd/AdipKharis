@@ -224,6 +224,12 @@
       "format": "benar-bohong",
       "alur": "tangga",
       "jawaban": "BOHONG"
+    },
+    {
+      "ep": "oh13",
+      "format": "tebak-angka",
+      "alur": "hasil-dulu",
+      "jawaban": "angka"
     }
   ]
 }

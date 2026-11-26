@@ -1,0 +1,59 @@
+{
+  "ep": "oh13",
+  "slug": "kopi-sehari-kolam",
+  "format": "tebak-angka", "alur": "hasil-dulu", "jawaban": "angka",
+  "seri": "Kalau Semua Orang Indonesia…",
+  "judul": "Kopi Sehari se-Indonesia Dituang, Bisa Isi Kolam Renang? ☕ | OHHIYAA!",
+  "objek": ["kopi"],
+  "patokan": ["kolam-olimpiade"],
+  "vo": [
+    "Kopi yang diminum orang Indonesia dalam sehari, kalau dituang jadi satu, bisa mengisi enam kolam renang olimpiade! Ohhiyaa!",
+    "Tapi kok bisa? Tebak dulu, sehari itu berapa cangkir kopi? Tulis angkamu di komentar!",
+    "Satu cangkir kopi butuh sekitar sepuluh gram bubuk, dan dua ratus mililiter air.",
+    "Setahun, kita habiskan hampir dua ratus sembilan puluh juta kilo kopi. Bagi tiga ratus enam puluh lima hari, jadi tujuh puluh sembilan juta cangkir sehari!",
+    "Setahun? Dua ribu tiga ratus kolam olimpiade.",
+    "Tebakan paling dekat, ketik emoji target. Dan cangkirmu pagi ini, ikut mengisi kolam itu."
+  ],
+  "layar": [
+    "Cangkir kopi mainan → kolam olimpiade mainan terisi kopi cepat, berlipat jadi 6 kolam; angka ±6 KOLAM; OHHIYAA!",
+    "Ohi + cangkir; 'Tapi kok bisa?' → tebak(TEBAK ANGKANYA!) + petunjuk rentang",
+    "Cangkir + sendok bubuk; angka 10 GRAM + 200 ML",
+    "Karung kopi jatuh → angka 288 JUTA KG/TAHUN ÷ 365 → 79 JUTA CANGKIR/HARI; kolam terisi lagi",
+    "Kamera mundur: deretan kolam penuh kopi; angka ±2.300 KOLAM/TAHUN",
+    "Ohi + cangkir; chip 'Paling dekat? Ketik 🎯'"
+  ],
+  "hitungan": [
+    "Konsumsi domestik 4,81 juta karung × 60 kg = 288,6 juta kg/tahun (USDA FAS Coffee Annual 2025, MY 2025/26)",
+    "Per hari: 288.600.000 ÷ 365 = ±790.700 kg ≈ 791 ton",
+    "Cangkir: 790.700.000 g ÷ 10 g = ±79 juta cangkir/hari",
+    "Volume: 79.070.000 × 0,2 L = ±15,8 juta L ÷ 2,5 juta L (kolam olimpiade 50 × 25 × 2 m) = ±6,3 kolam/hari",
+    "Setahun: 15,81 juta L × 365 = ±5,77 miliar L ÷ 2,5 juta L = ±2.309 kolam"
+  ],
+  "asumsi": [
+    "1 cangkir = ±10 g bubuk kopi + ±200 ml air (takaran umum seduh; bukan data resmi)",
+    "Konsumsi biji kopi domestik USDA dianggap seluruhnya diseduh jadi minuman, rata-rata merata per hari",
+    "Kolam olimpiade 50 × 25 m, kedalaman minimum 2 m = 2.500 m³"
+  ],
+  "keaslian": {
+    "sumber_primer": [
+      "USDA Foreign Agricultural Service — Indonesia: Coffee Annual 2025 (konsumsi domestik 2025/26 ±4,81 juta karung 60 kg; fas.usda.gov)",
+      "World Aquatics (FINA) — Facilities Rules: kolam 50 m × 25 m, kedalaman minimum 2 m"
+    ],
+    "sudut_baru": "Objek baru (kopi), satuan volume baru (kolam renang olimpiade terisi kopi, bukan menara/tumpukan) dan pertanyaan lanjutan jumlah cangkir per hari; patokan kolam olimpiade belum pernah dipakai.",
+    "web_cek": "WebSearch 'kopi yang diminum orang Indonesia sehari bisa isi berapa kolam renang olimpiade' → hanya survei kebiasaan minum kopi (GoodStats, Antara, Kompas); tidak ada video/judul/visual identik."
+  },
+  "deskripsi": {
+    "pembuka": "Kopi yang diminum orang Indonesia SEHARI, kalau dituang jadi satu, bisa mengisi 6 kolam renang olimpiade ☕🏊",
+    "hitungan": "4,81 juta karung × 60 kg (USDA 2025) ≈ 288,6 juta kg setahun ≈ 79 juta cangkir sehari × 200 ml ≈ 15,8 juta liter = ±6 kolam olimpiade (2,5 juta L); setahun ±2.300 kolam.",
+    "cta": "Tadi kamu tebak berapa cangkir? Yang paling dekat ketik 🎯 👇",
+    "hashtag": "#shorts #ohhiyaa #kopi #faktaunik #indonesia #tahukahkamu"
+  },
+  "thumb": [
+    {"nama": "A", "alasan": "Kolam renang mainan penuh kopi + cangkir raksasa; tanya jumlah cangkir (jawaban 79 juta tidak ditampilkan)", "frame": 6.0, "zoom": 1.15, "fokus": [540, 1050],
+     "teks": [{"t": "KOPI SEHARI SE-INDONESIA", "warna": "putih"}, {"t": "BERAPA CANGKIR?", "kotak": "pink"}],
+     "stiker": [{"e": "2615", "x": 880, "y": 1320, "s": 200, "rot": 0.15}]},
+    {"nama": "B", "alasan": "Varian cadangan: Ohi + cangkir, tantangan tebak angka", "frame": 10.5, "zoom": 1.05, "fokus": [540, 1000],
+     "teks": [{"t": "KOPI = KOLAM RENANG?", "warna": "putih"}, {"t": "TEBAK ANGKANYA!", "kotak": "pink"}],
+     "stiker": [{"e": "1f914", "x": 880, "y": 1320, "s": 200, "rot": -0.12}]}
+  ]
+}

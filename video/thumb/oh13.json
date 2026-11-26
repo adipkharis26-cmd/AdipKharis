@@ -1,0 +1,71 @@
+{
+  "ep": "oh13",
+  "catatan": "Thumbnail oh13. Jangan tampilkan jawaban.",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Kolam renang mainan penuh kopi + cangkir raksasa; tanya jumlah cangkir (jawaban 79 juta tidak ditampilkan)",
+      "latar": {
+        "frame": 6.0,
+        "zoom": 1.15,
+        "fokus": [
+          540,
+          1050
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "KOPI SEHARI SE-INDONESIA",
+          "warna": "putih"
+        },
+        {
+          "t": "BERAPA CANGKIR?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "2615",
+          "x": 880,
+          "y": 1320,
+          "s": 200,
+          "rot": 0.15
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Varian cadangan: Ohi + cangkir, tantangan tebak angka",
+      "latar": {
+        "frame": 10.5,
+        "zoom": 1.05,
+        "fokus": [
+          540,
+          1000
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "KOPI = KOLAM RENANG?",
+          "warna": "putih"
+        },
+        {
+          "t": "TEBAK ANGKANYA!",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1f914",
+          "x": 880,
+          "y": 1320,
+          "s": 200,
+          "rot": -0.12
+        }
+      ]
+    }
+  ],
+  "thumbPilihan": "A"
+}
