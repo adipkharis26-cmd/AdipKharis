@@ -1,6 +1,6 @@
 # Shorts 11 "Akhir Bulan" (id `shorts14`): status produksi
 
-Naskah + storyboard disetujui pemilik ("cocok", 26 Nov 2026). Suara mode dialog dibuat (0:45). BELUM dirender (render hanya atas perintah).
+Naskah + storyboard disetujui pemilik ("cocok", 26 Nov 2026). Suara mode dialog dibuat (0:45). Dirender atas perintah pemilik ("cocok dan render"), dirilis 26 Nov 2026 (0:45, 4,5 MB): `releases/Kusaka-Shorts11-Akhir-Bulan.mp4`.
 
 - Format: running gag buku utang Bu Ijah (aturan 20; beda dari Shorts 10 Tipe-tipe). Tokoh utama Kak Tara (mahasiswi, tanggal tua) + Bu Ijah; warung, siang, baju bebas.
 - 16 baris, 0:45, Kak Tara & Bu Ijah −18,4 LUFS, tanpa jeda mati > 0,5 dtk. Audit props 0. Musik `music-warung-comedy`.
