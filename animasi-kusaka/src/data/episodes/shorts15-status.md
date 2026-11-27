@@ -1,7 +1,7 @@
 # Shorts 12 "Kertas Selembar" (id `shorts15`): status produksi
 
 v1 (0:39) dirilis 27 Nov 2026; pemilik: "cuma 39 detik, ceritanya nggak sampai selesai". v3 (27 Nov 2026, "cocok"): cerita dikembangkan
-berdasarkan data Studio (lihat SKILL.md → "Pelajaran data Studio"). Suara mode dialog dibuat (0:53). BELUM dirender (render hanya atas perintah).
+berdasarkan data Studio (lihat SKILL.md → "Pelajaran data Studio"). Suara mode dialog dibuat (0:53). Dirender atas perintah pemilik ("render"), dirilis 27 Nov 2026 (0:53, 5,3 MB), menggantikan v1.
 
 - Format: POV. Bu Wati, Kusaka, Ujang; kelas (seragam). Musik `music-homework-tension`.
 - 20 baris, 0:53, −18,5 LUFS, tanpa jeda mati > 0,5 dtk. Audit props 0.
