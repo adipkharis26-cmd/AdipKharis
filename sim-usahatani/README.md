@@ -24,7 +24,7 @@ Perancangan Sistem Informasi Manajemen Keuangan Usaha Tani Multi-Komoditas Berba
 - [x] Audit celah proyek (`laporan/03-audit-celah.md`)
 - [x] Tahap 4 — BAB II Landasan Teori (draf v1)
 - [x] Tahap 5 — BAB III Metodologi (draf v1, gambar 3.1 + lampiran pedoman wawancara)
-- [ ] Tahap 6 — BAB IV Perancangan: 4.1 use case ✅ (draf), 4.2 activity, 4.3 Figma
+- [x] Tahap 6 — BAB IV Perancangan: 4.1 use case, 4.2 activity (4), 4.3 antarmuka (teks; gambar menunggu draw.io & Figma)
 - [ ] Tahap 7 — Implementasi web responsif
 - [ ] Tahap 8 — BAB V, daftar pustaka, finalisasi .docx
 

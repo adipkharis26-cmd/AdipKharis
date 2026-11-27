@@ -71,3 +71,37 @@ Diagram ini menjawab rumusan masalah ketiga tentang penyajian HPP, pendapatan, R
 ::gambar assets/05-activity-laporan-laba-rugi.png | Gambar 4.5 Activity Diagram Lihat Laporan Laba Rugi
 
 Pemilik memilih menu Laporan dan menentukan komoditas serta periode yang ingin dilihat. Sistem lalu mengumpulkan data pengeluaran, panen, dan penjualan pada periode itu, membagi biaya bersama dengan rumus (2.8), serta menghitung TC, TR, pendapatan, R/C ratio, dan HPP. Hasil perhitungan ditampilkan dalam bentuk laporan laba rugi. Pemilik dapat memilih untuk mencetak laporan, sehingga sistem membuat file PDF untuk diunduh, atau langsung mengakhiri proses tanpa mencetak.
+
+## 4.3 Tampilan Antarmuka Pengguna
+
+Antarmuka dirancang di Figma dengan pendekatan *mobile first*, karena pencatatan lebih sering dilakukan melalui HP di lahan. Gaya visualnya meniru buku kas petani: latar berwarna kertas, garis tabel tipis, angka rupiah rata kanan, dan tanda berbentuk cap untuk menunjukkan status untung atau di bawah modal. Ukuran huruf dibuat cukup besar dan setiap layar hanya memiliki satu tombol utama agar mudah digunakan oleh pemilik lahan.
+
+### 4.3.1 Halaman Login
+
+::gambar assets/07-ui-login.png | Gambar 4.6 Tampilan Halaman Login
+
+Halaman ini memuat isian nama pengguna dan kata sandi serta tombol Masuk. Jika data tidak cocok, pesan kesalahan muncul tepat di bawah tombol.
+
+### 4.3.2 Halaman Dashboard
+
+::gambar assets/08-ui-dashboard.png | Gambar 4.7 Tampilan Halaman Dashboard
+
+Dashboard menampilkan musim tanam yang sedang berjalan, perbandingan harga pengepul hari ini dengan HPP setiap komoditas, dan ringkasan biaya musim berjalan. Dari halaman ini pemilik dapat langsung menuju pencatatan pengeluaran atau pembaruan harga.
+
+### 4.3.3 Halaman Catat Pengeluaran
+
+::gambar assets/09-ui-catat-pengeluaran.png | Gambar 4.8 Tampilan Halaman Catat Pengeluaran
+
+Formulir disusun berurutan dari tanggal, jenis biaya, nominal, sifat biaya, hingga tujuan pembebanan. Pilihan sifat biaya dan tujuan biaya dibuat sebagai tombol pilihan agar pencatat tidak perlu mengetik.
+
+### 4.3.4 Halaman Update Harga Harian
+
+::gambar assets/10-ui-harga-harian.png | Gambar 4.9 Tampilan Halaman Update Harga Harian
+
+Pemilik mengisi harga dari pengepul untuk padi, jagung, dan pisang, dengan harga hari sebelumnya ditampilkan sebagai pembanding. Setelah disimpan, sistem langsung memperlihatkan selisih harga terhadap HPP beserta statusnya.
+
+### 4.3.5 Halaman Laporan Laba Rugi
+
+::gambar assets/11-ui-laporan.png | Gambar 4.10 Tampilan Halaman Laporan Laba Rugi
+
+Laporan disusun seperti buku kas, berisi penerimaan, rincian biaya, bagian biaya bersama, pendapatan, HPP, serta R/C ratio atas biaya tunai dan biaya total. Bagian akhir laporan memuat satu kalimat kesimpulan kelayakan dan tombol untuk mencetak laporan dalam bentuk PDF.

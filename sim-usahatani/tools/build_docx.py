@@ -269,7 +269,11 @@ def render_bab(doc, blocks, toc_entries):
             else:
                 # Kotak tempat gambar: dibuat sendiri di draw.io lalu diekspor ke assets/
                 png = path.split(",")[0].strip()
-                src = "diagram/" + os.path.basename(png).replace(".png", ".drawio")
+                base = os.path.basename(png)
+                if "-ui-" in base:
+                    src_line = "Buat di Figma: frame " + base.split("-ui-")[1].replace(".png", "") + " (lihat laporan/10-rancangan-antarmuka.md)"
+                else:
+                    src_line = "Buat/edit di draw.io: diagram/" + base.replace(".png", ".drawio")
                 p._p.getparent().remove(p._p)
                 t = doc.add_table(rows=1, cols=1)
                 t.style = "Table Grid"
@@ -290,7 +294,7 @@ def render_bab(doc, blocks, toc_entries):
                 cp.alignment = WD_ALIGN_PARAGRAPH.CENTER
                 cp.paragraph_format.line_spacing = 1.2
                 for i, (txt, bold) in enumerate([("TEMPAT GAMBAR", True), (cap.strip(), False),
-                                                 (f"Buat/edit di draw.io: {src}", False),
+                                                 (src_line, False),
                                                  (f"Ekspor PNG ke: {png}", False)]):
                     if i:
                         cp.add_run().add_break()
