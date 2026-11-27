@@ -1,5 +1,7 @@
 # Tahap 2 — Referensi Jurnal 2021–2026 (APA 7)
 
+> Catatan: kopi sudah dihapus dari objek penelitian. Jurnal dengan studi kasus kopi (Ingesti & Saragih, 2025; Nirmala & Hardjanto, 2022; Dolorosa dkk., 2024) tetap dipakai hanya untuk **konsep umum** (rumus usaha tani, R/C tunai vs total, pentingnya pencatatan), bukan untuk data kopi.
+
 Status verifikasi: setiap entri dicek ke indeks OpenAlex (judul, penulis, tahun, volume, halaman, DOI).
 Entri bertanda **(PDF)** berasal dari file jurnal yang sudah dimiliki.
 Sebelum mengutip sebuah klaim spesifik (angka, kesimpulan), **buka DOI-nya dan baca abstraknya** — kutip hanya yang benar-benar tertulis.
@@ -10,7 +12,7 @@ Sebelum mengutip sebuah klaim spesifik (angka, kesimpulan), **buka DOI-nya dan b
 |---|---|---|---|
 | R1 | Hermawan dkk. (2022) **(PDF)** | Sistem keuangan hasil panen berbasis web (waterfall) | BAB I latar belakang, BAB II penelitian terdahulu |
 | R2 | Pertiwi & Wulandari (2022) **(PDF)** | Pencatatan keuangan berbasis teknologi pada petani | BAB I, BAB II |
-| R3 | Ingesti & Saragih (2025) **(PDF)** | Rumus TC, TR, π, R/C usahatani kopi | BAB II teori biaya usahatani |
+| R3 | Ingesti & Saragih (2025) **(PDF)** | Rumus TC, TR, π, R/C (studi kasus kopi, rumusnya berlaku umum) | BAB II teori biaya usahatani |
 | R4 | Septiadi dkk. (2021) | Rendahnya pencatatan usahatani petani | BAB I |
 | R5 | Dolorosa dkk. (2024) | Catatan usahatani & literasi keuangan petani kopi | BAB I |
 | R6 | Johan dkk. (2022) | Persepsi petani terhadap digitalisasi pertanian | BAB I |
@@ -18,7 +20,7 @@ Sebelum mengutip sebuah klaim spesifik (angka, kesimpulan), **buka DOI-nya dan b
 | R8 | Rayhan dkk. (2024) | Biaya, pendapatan, R/C padi & jagung | BAB II teori usahatani |
 | R9 | Nurcahya dkk. (2022) | Pendapatan jagung lahan kering (tegal) | BAB II |
 | R10 | Wardhani dkk. (2023) | Usahatani pisang | BAB II |
-| R11 | Nirmala & Hardjanto (2022) | Efisiensi usahatani kopi robusta | BAB II |
+| R11 | Nirmala & Hardjanto (2022) | R/C atas biaya tunai vs biaya total (studi kasus kopi, konsepnya berlaku umum) | BAB I, BAB II |
 | R12 | Rahmah dkk. (2024) | HPP padi (Purbalingga, Jawa Tengah) | BAB II teori HPP |
 | R13 | Harun dkk. (2024) | HPP jagung | BAB II teori HPP |
 | R14 | Syahputra dkk. (2022) | Peran SIM dalam pengambilan keputusan | BAB II teori SIM |
@@ -34,6 +36,7 @@ Sebelum mengutip sebuah klaim spesifik (angka, kesimpulan), **buka DOI-nya dan b
 | R24 | Sugiarto dkk. (2022) | Responsive web design | BAB II |
 | R25 | Tazkiyah & Arifin (2022) | UI/UX dengan Figma | BAB II, BAB IV |
 | R26 | Syaikhuddin dkk. (2022) | Figma + metode prototype | BAB III, BAB IV |
+| R27 | Sahara dkk. (2022) | Padi gogo lahan tadah hujan Jawa Tengah, harga gabah di tingkat petani | BAB I, BAB II |
 
 ## B. Pengganti sitasi bermasalah di BAB I
 
@@ -74,6 +77,8 @@ Pertiwi, Y. Z., & Wulandari, E. (2022). Faktor-faktor yang berkaitan dengan akti
 Rahmah, A. F., Mandamdari, A. N., & Sukmaya, S. G. (2024). Analisis usahatani dan perhitungan harga pokok produksi padi Protani di Kecamatan Kemangkon dan Kecamatan Padamara Kabupaten Purbalingga. *Mimbar Agribisnis, 10*(2), 1843. https://doi.org/10.25157/ma.v10i2.13643
 
 Rayhan, M., Fahrudin, T., Sukawati, R., & Hardiansyah, H. (2024). Analisis biaya produksi, pendapatan, dan R/C pada usahatani jagung dan padi: Studi kasus di Desa Selaawi Kecamatan Selaawi Kabupaten Garut. *Jurnal Ilmiah Manajemen, Ekonomi, & Akuntansi (MEA), 8*(3), 919–931. https://doi.org/10.31955/mea.v8i3.4428
+
+Sahara, D., Praptana, R. H., Kurniyati, E., & Hartoyo, B. (2022). Faktor yang mempengaruhi keuntungan usaha tani padi gogo di Kabupaten Boyolali, Jawa Tengah. *Jurnal Penelitian Pertanian Tanaman Pangan, 5*(3), 203–210. https://doi.org/10.21082/jpptp.v5n3.2021.p203-210 *(Crossref mencatat terbit daring 21 April 2022; nomor terbitannya bertanda 2021 — cek halaman jurnal dan sesuaikan tahun bila dosen meminta tahun terbitan)*
 
 Sarfiah, S. N., Nilasari, A. P., Retnosari, R., & Abidin, R. (2023). Perancangan aplikasi laporan keuangan berbasis web untuk pelaku UMKM. *Jati: Jurnal Akuntansi Terapan Indonesia, 6*(1). https://doi.org/10.18196/jati.v6i1.18034
 

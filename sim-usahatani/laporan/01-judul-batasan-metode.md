@@ -9,7 +9,10 @@
 
 - Lahan: Tegal Miring, Desa Sidomulyo, Kabupaten Batang, Jawa Tengah
 - Pemilik/pengelola: orang tua penulis (narasumber wawancara)
-- Komoditas: padi, jagung, pisang, dan kopi
+- Komoditas utama: padi dan jagung, ditanam bergiliran di petak utama (padi saat sering hujan, jagung saat jarang hujan)
+- Komoditas pelengkap: pisang di petak kecil di sisi lahan
+- Tenaga kerja: bapak (utama), ibu (sesekali), buruh harian 2–5 orang saat tanam dan panen
+- Penjualan: ke pengepul
 - Jenis lahan: tegal (lahan kering) — relevan dengan referensi Nurcahya dkk. (2022)
 
 ## Rumusan masalah & batasan masalah
