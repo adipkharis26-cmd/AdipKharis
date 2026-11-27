@@ -83,33 +83,38 @@ def use_case():
     d = Diagram("Use Case Diagram")
     actor = "shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;strokeColor=#000000;fillColor=#FFFFFF;fontSize=14;fontStyle=1;"
     uc = "ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1.5;fontSize=13;"
-    assoc = "endArrow=none;"
-    d.vertex("Sistem Informasi Manajemen Keuangan Usaha Tani<br>Lahan Tegal Miring", 210, 10, 620, 850,
+    # garis asosiasi menempel ke sisi kiri elips agar tidak memotong elips lain
+    assoc = "endArrow=none;entryX=0;entryY=0.5;entryDx=0;entryDy=0;"
+    d.vertex("Sistem Informasi Manajemen Keuangan Usaha Tani<br>Lahan Tegal Miring", 210, 10, 640, 900,
              "rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;verticalAlign=top;fontSize=14;fontStyle=1;strokeWidth=1.5;")
-    pencatat = d.vertex("Pencatat", 70, 170, 40, 80, actor)
-    pemilik = d.vertex("Pemilik", 70, 560, 40, 80, actor)
-    d.edge(pemilik, pencatat, "endArrow=block;endFill=0;endSize=14;")  # generalisasi
+    pencatat = d.vertex("Pencatat", 90, 175, 40, 80, actor)
+    pemilik = d.vertex("Pemilik", 90, 600, 40, 80, actor)
+    # generalisasi: lewat sisi kiri agar tidak menimpa label "Pencatat"
+    d.edge(pemilik, pencatat, "endArrow=block;endFill=0;endSize=14;edgeStyle=orthogonalEdgeStyle;"
+           "exitX=0;exitY=0.25;entryX=0;entryY=0.5;", points=[(40, 620), (40, 215)])
 
-    X, W, H = 250, 240, 58
+    X, W, H = 270, 240, 58
     rows = {}
     for key, label, y in [
         ("login", "Login", 70), ("keluar", "Catat Pengeluaran", 150), ("panen", "Catat Hasil Panen", 230),
-        ("jual", "Catat Penjualan ke Pengepul", 310), ("petak", "Kelola Petak Lahan", 410),
-        ("musim", "Kelola Musim Tanam", 485), ("harga", "Update Harga Harian", 560),
-        ("user", "Kelola Pengguna", 635), ("dash", "Lihat Dashboard", 710), ("lap", "Lihat Laporan Laba Rugi", 785),
+        ("jual", "Catat Penjualan ke Pengepul", 310), ("petak", "Kelola Petak Lahan", 430),
+        ("musim", "Kelola Musim Tanam", 505), ("harga", "Update Harga Harian", 580),
+        ("user", "Kelola Pengguna", 655), ("dash", "Lihat Dashboard", 730), ("lap", "Lihat Laporan Laba Rugi", 805),
     ]:
         rows[key] = d.vertex(label, X, y, W, H, uc)
-    hitung = d.vertex("Hitung HPP, R/C, dan<br>Alokasi Biaya Bersama", 560, 700, 240, 66, uc)
-    cetak = d.vertex("Cetak Laporan", 580, 540, 200, H, uc)
+    hitung = d.vertex("Hitung HPP, R/C, dan<br>Alokasi Biaya Bersama", 590, 735, 240, 66, uc)
+    cetak = d.vertex("Cetak Laporan", 610, 600, 200, H, uc)
 
     for k in ("login", "keluar", "panen", "jual"):
         d.edge(pencatat, rows[k], assoc)
     for k in ("petak", "musim", "harga", "user", "dash", "lap"):
         d.edge(pemilik, rows[k], assoc)
     dashed = "dashed=1;endArrow=open;endSize=10;"
-    d.edge(rows["dash"], hitung, dashed, "«include»")
-    d.edge(rows["lap"], hitung, dashed, "«include»")
-    d.edge(cetak, rows["lap"], dashed, "«extend»")
+    d.edge(rows["dash"], hitung, dashed + "exitX=1;exitY=0.5;", "«include»")
+    d.edge(rows["lap"], hitung, dashed + "exitX=1;exitY=0.5;", "«include»")
+    # extend: dari Cetak Laporan ke Lihat Laporan, lewat sisi kanan (tidak menembus elips lain)
+    d.edge(cetak, rows["lap"], dashed + "edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;",
+           "«extend»", points=[(840, 629), (840, 834)])
     d.save("02-use-case.drawio")
 
 
@@ -179,7 +184,7 @@ def activity_pengeluaran():
         a.go(x, y)
     a.go(n5, n6, "Tidak", style="exitX=0.5;exitY=1;entryX=0.5;entryY=0;")
     a.go(n6, n3, points=[(35, 487), (35, 270)], style="exitX=0;exitY=0.5;entryX=0;entryY=0.5;")
-    a.go(n5, n7, "Ya", points=[(600, 370), (600, 587)], style="exitX=1;exitY=0.5;entryX=1;entryY=0.5;")
+    a.go(n5, n7, "Ya", points=[(645, 370), (645, 587)], style="exitX=1;exitY=0.5;entryX=1;entryY=0.5;")
     a.go(n7, n8)
     a.go(n8, e)
     a.d.save("03-activity-catat-pengeluaran.drawio")
