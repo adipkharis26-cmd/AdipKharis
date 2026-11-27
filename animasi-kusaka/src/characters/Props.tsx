@@ -8,7 +8,8 @@ export const ITEMS = ["paper", "book", "kresek", "gorengan", "cup", "mug", "tray
   "lotteryBox", "lotScroll", "lotScrollRed", "lotSlip", "libBook", "phonePhoto", "rubberBands",
   "boardEraser", "phoneGallery", "coins", "gorenganTiga",
   "kresekBelanja", "tomatoBag", "kresekKosong", "mic",
-  "mieBungkus", "ceret"] as const;
+  "mieBungkus", "ceret",
+  "kertasSelembar", "kertasSobek"] as const;
 export type ItemId = (typeof ITEMS)[number];
 
 const sw = (w = 5) => ({ stroke: OUT, strokeWidth: w, strokeLinejoin: "round" as const, strokeLinecap: "round" as const });
@@ -320,11 +321,28 @@ const Ceret: React.FC = () => (
     <path d="M 56 -32 q -8 -10 0 -18 q 8 -8 0 -18 M 64 -30 q -6 -8 0 -14" fill="none" stroke="#ffffff" strokeWidth={4} opacity={0.8} strokeLinecap="round" />
   </g>
 );
+/** Kertas selembar kosong (ulangan dadakan, Shorts "Kertas Selembar"): folio bergaris tanpa tulisan, sedikit melengkung. */
+const KertasSelembar: React.FC = () => (
+  <g transform="rotate(-5) translate(0 -36)">
+    <path d="M -28 -40 L 28 -40 Q 31 0 28 40 L -28 40 Q -25 0 -28 -40 Z" fill="#fffdf5" {...sw(4.5)} />
+    <line x1={-16} x2={-16} y1={-40} y2={40} stroke="#e85d75" strokeWidth={2.5} />
+    {[-26, -14, -2, 10, 22].map((y) => <line key={y} x1={-12} x2={22} y1={y} y2={y} stroke="#9ab7d3" strokeWidth={2.5} />)}
+  </g>
+);
+/** Sobekan kertas seperempat (dipinjamkan teman): potongan kecil bergaris, tepi sobek bergerigi, tanpa tulisan. */
+const KertasSobek: React.FC = () => (
+  <g transform="rotate(8) translate(0 -18)">
+    <path d="M -14 -16 L 14 -16 L 14 6 l -4 4 l -4 -4 l -4 5 l -4 -5 l -4 4 l -4 -4 l -4 5 Z" fill="#fffdf5" {...sw(3.5)} />
+    <line x1={-8} x2={-8} y1={-16} y2={8} stroke="#e85d75" strokeWidth={2} />
+    {[-9, -2].map((y) => <line key={y} x1={-5} x2={11} y1={y} y2={y} stroke="#9ab7d3" strokeWidth={2} />)}
+  </g>
+);
 const MAP: Record<ItemId, React.FC> = { paper: Paper, book: Book, kresek: Kresek, gorengan: Gorengan, cup: Cup, mug: Mug, tray: Tray, ball: Ball, wallet: Wallet, bagTote: BagTote, whistle: Whistle, clipboard: Clipboard, broom: Broom, bowl: Bowl, tumbler: Tumbler, pen: Pen, helmet: Helmet, umbrella: Umbrella, folder: Folder, alarm: Alarm, ledger: Ledger, bookStack: BookStack,
   lotteryBox: LotteryBox, lotScroll: LotScroll, lotScrollRed: LotScrollRed, lotSlip: LotSlip, libBook: LibBook, phonePhoto: PhonePhoto, rubberBands: RubberBands,
   boardEraser: BoardEraser, phoneGallery: PhoneGallery, coins: Coins, gorenganTiga: GorenganTiga,
   kresekBelanja: KresekBelanja, tomatoBag: TomatoBag, kresekKosong: KresekKosong, mic: Mic,
-  mieBungkus: MieBungkus, ceret: Ceret };
+  mieBungkus: MieBungkus, ceret: Ceret,
+  kertasSelembar: KertasSelembar, kertasSobek: KertasSobek };
 export const Item: React.FC<{ id: string; x: number; y: number }> = ({ id, x, y }) => {
   const C = MAP[id as ItemId];
   return C ? <g transform={`translate(${x} ${y})`}><C /></g> : null;

@@ -5,7 +5,7 @@ const file = process.argv.slice(2).find((a) => a.endsWith(".json")) ?? "src/data
 const sc = JSON.parse(fs.readFileSync(file, "utf8"));
 const locs = JSON.parse(fs.readFileSync("src/scene/locations.json", "utf8")).locations;
 const RULES = [
-  { re: /kertas|lembar|tanda tangan/i, label: "kertas", item: "paper", acts: ["read", "show", "give"] },
+  { re: /kertas|lembar|tanda tangan|sobek/i, label: "kertas", item: "paper|kertasSelembar|kertasSobek", acts: ["read", "show", "give"] },
   { re: /buku|halaman|\bPR\b/i, label: "buku/PR", item: "book|bookStack|ledger|libBook", acts: ["show"] },
   { re: /berkas/i, label: "berkas", item: "folder|clipboard", acts: ["give"] },
   { re: /alarm|weker/i, label: "alarm", item: "alarm" },

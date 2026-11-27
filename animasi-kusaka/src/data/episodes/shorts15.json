@@ -1,0 +1,314 @@
+{
+ "format": "shorts",
+ "episode": "shorts15",
+ "title": "Kertas Selembar",
+ "fps": 30,
+ "voiceMode": "dialogue",
+ "gapSeconds": 0.2,
+ "sceneLead": 0.3,
+ "sceneGap": 0,
+ "tail": 0.2,
+ "hook": {
+  "lines": [
+   "POV: ULANGAN",
+   "DADAKAN"
+  ],
+  "keywords": [
+   "ULANGAN",
+   "DADAKAN"
+  ],
+  "seconds": 1.6
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "location": "kelas",
+   "music": "music-homework-tension",
+   "cast": {
+    "ujang": {
+     "mark": "D",
+     "facing": 1
+    },
+    "kusaka": {
+     "mark": "A",
+     "facing": 1
+    },
+    "buWati": {
+     "mark": "C",
+     "facing": -1
+    }
+   },
+   "hold": {
+    "buWati": "book",
+    "ujang": {
+     "item": "pen",
+     "hand": "back"
+    },
+    "kusaka": {
+     "item": "pen",
+     "hand": "back"
+    }
+   },
+   "lines": [
+    {
+     "id": "l001",
+     "speaker": "buWati",
+     "emotion": "neutral",
+     "listener": "shock",
+     "shot": "crash",
+     "action": "hold",
+     "text": "Simpan bukunya. Keluarkan kertas selembar.",
+     "say": "[calm, slow, terrifying] Simpan bukunya. [beat] Keluarkan kertas selembar.",
+     "reactions": {
+      "kusaka": [
+       "shock",
+       "shock"
+      ],
+      "ujang": [
+       "deadpan",
+       "idle"
+      ]
+     },
+     "sfx": [
+      {
+       "id": "dun_dun_dun",
+       "at": "end"
+      }
+     ],
+     "ref": [
+      "kertas"
+     ]
+    },
+    {
+     "id": "l002",
+     "speaker": "kusaka",
+     "emotion": "pleading",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "plead",
+     "to": "ujang",
+     "text": "Jang. Kertas. Selembar. Plis.",
+     "say": "[urgent whisper] Jang. Kertas. Selembar. Plis.",
+     "ref": [
+      "kertas"
+     ]
+    },
+    {
+     "id": "l003",
+     "speaker": "ujang",
+     "emotion": "deadpan",
+     "listener": "pleading",
+     "shot": "close",
+     "action": "hold",
+     "to": "kusaka",
+     "closeStyle": "ots",
+     "text": "Gue juga cuma bawa satu.",
+     "say": "[flat whisper] Gue juga cuma bawa satu.",
+     "hold": {
+      "ujang": "kertasSelembar"
+     }
+    },
+    {
+     "id": "l004",
+     "speaker": "kusaka",
+     "emotion": "pleading",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "plead",
+     "to": "ujang",
+     "text": "Sobek dua. Nanti gue ganti.",
+     "say": "[whispering, begging] Sobek dua. Nanti gue ganti."
+    },
+    {
+     "id": "l005",
+     "speaker": "ujang",
+     "emotion": "deadpan",
+     "listener": "surprised",
+     "shot": "medium",
+     "action": "give",
+     "to": "kusaka",
+     "text": "...Nih.",
+     "say": "[sighs] ...Nih.",
+     "hold": {
+      "ujang": "kertasSelembar",
+      "kusaka": "kertasSobek"
+     },
+     "sfx": [
+      {
+       "id": "pop",
+       "at": 0.2
+      }
+     ]
+    },
+    {
+     "id": "l006",
+     "speaker": "kusaka",
+     "emotion": "shock",
+     "listener": "deadpan",
+     "shot": "medium",
+     "action": "show",
+     "to": "ujang",
+     "text": "Seperempat?! Nulis nama aja nggak muat, Jang!",
+     "say": "[outraged whisper] Seperempat?! Nulis nama aja nggak muat, Jang!"
+    },
+    {
+     "id": "l007",
+     "speaker": "buWati",
+     "emotion": "suspicious",
+     "listener": "shock",
+     "shot": "two",
+     "action": "crossed",
+     "to": "kusaka",
+     "text": "Kusaka. Ada masalah?",
+     "say": "[calm, quiet] Kusaka. Ada masalah?"
+    },
+    {
+     "id": "l008",
+     "speaker": "kusaka",
+     "emotion": "embarrassed",
+     "listener": "suspicious",
+     "shot": "two",
+     "action": "salute",
+     "to": "buWati",
+     "text": "Nggak, Bu! Siap, Bu!",
+     "say": "[too loud, nervous] Nggak, Bu! Siap, Bu!"
+    },
+    {
+     "id": "l009",
+     "speaker": "buWati",
+     "emotion": "neutral",
+     "listener": "embarrassed",
+     "shot": "medium",
+     "action": "hold",
+     "text": "Soalnya cuma satu. Tulis nama, kelas, dan tanggal.",
+     "say": "[calm] Soalnya cuma satu. [slowly] Tulis nama, kelas, dan tanggal.",
+     "reactions": {
+      "kusaka": [
+       "surprised",
+       "idle"
+      ],
+      "ujang": [
+       "deadpan",
+       "write"
+      ]
+     }
+    },
+    {
+     "id": "l010",
+     "speaker": "kusaka",
+     "emotion": "laugh",
+     "listener": "neutral",
+     "shot": "two",
+     "action": "laugh",
+     "to": "buWati",
+     "text": "Hah? Gampang dong, Bu!",
+     "say": "[relieved laugh] Hah? Gampang dong, Bu!"
+    },
+    {
+     "id": "l011",
+     "speaker": "kusaka",
+     "emotion": "shock",
+     "listener": "neutral",
+     "shot": "medium",
+     "action": "read",
+     "to": "buWati",
+     "text": "...Bu. Tanggalnya nggak muat.",
+     "say": "[small, realizing, staring at the paper] ...Bu. Tanggalnya nggak muat.",
+     "hold": {
+      "kusaka": "kertasSobek"
+     }
+    },
+    {
+     "id": "l012",
+     "speaker": "buWati",
+     "emotion": "smug",
+     "listener": "shock",
+     "shot": "close",
+     "action": "point",
+     "to": "kusaka",
+     "closeStyle": "single",
+     "text": "Nggak apa-apa. Nilaimu juga Ibu kecilkan.",
+     "say": "[gently, deadly calm] Nggak apa-apa. [beat] Nilaimu juga Ibu kecilkan.",
+     "sfx": [
+      {
+       "id": "record_scratch",
+       "at": "end"
+      }
+     ]
+    },
+    {
+     "id": "l013",
+     "speaker": "ujang",
+     "emotion": "deadpan",
+     "listener": "defeated",
+     "shot": "two",
+     "action": "crossed",
+     "to": "kusaka",
+     "text": "Udah gue duga.",
+     "say": "[flat] Udah gue duga.",
+     "sfx": [
+      {
+       "id": "rimshot",
+       "at": "end"
+      }
+     ]
+    },
+    {
+     "id": "l014",
+     "speaker": "kusaka",
+     "emotion": "pleading",
+     "listener": "deadpan",
+     "shot": "two",
+     "action": "plead",
+     "text": "Like dong, biar nilai gue nggak ikut seperempat.",
+     "say": "[whining] Like dong, biar nilai gue nggak ikut seperempat.",
+     "cta": {
+      "kind": "like",
+      "text": "LIKE biar NILAINYA UTUH!",
+      "keywords": [
+       "LIKE",
+       "UTUH!"
+      ],
+      "reveal": "buWati"
+     },
+     "hold": {
+      "ujang": [
+       null,
+       {
+        "item": "pen",
+        "hand": "back"
+       }
+      ],
+      "kusaka": [
+       null,
+       {
+        "item": "pen",
+        "hand": "back"
+       }
+      ]
+     }
+    },
+    {
+     "id": "l015",
+     "speaker": "buWati",
+     "emotion": "neutral",
+     "listener": "defeated",
+     "shot": "wide",
+     "action": "hold",
+     "text": "Besok ulangan lagi. Bawa kertas sendiri.",
+     "say": "[calm, final] Besok ulangan lagi. [beat] Bawa kertas sendiri.",
+     "reactions": {
+      "kusaka": [
+       "defeated",
+       "idle"
+      ],
+      "ujang": [
+       "deadpan",
+       "idle"
+      ]
+     }
+    }
+   ]
+  }
+ ]
+}
