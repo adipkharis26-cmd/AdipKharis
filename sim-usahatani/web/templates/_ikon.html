@@ -5,6 +5,17 @@
 {%- elif nama == 'harga' %}<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/>
 {%- elif nama == 'laporan' %}<path d="M5 20V11M11 20V5M17 20v-6M21 20H3"/>
 {%- elif nama == 'akun' %}<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
-{%- elif nama == 'tunas' %}<path d="M12 21v-9"/><path d="M12 12C12 7 8 4 3 4c0 5 4 8 9 8z"/><path d="M12 10c0-4 3-7 8-7 0 4-3 7-8 7z"/>
+{%- elif nama == 'tunas' or nama == 'Benih' %}<path d="M12 21v-9"/><path d="M12 12C12 7 8 4 3 4c0 5 4 8 9 8z"/><path d="M12 10c0-4 3-7 8-7 0 4-3 7-8 7z"/>
+{%- elif nama == 'Pupuk' %}<path d="M7 4h10l2 4v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8z"/><path d="M5 8h14M10 13h4"/>
+{%- elif nama == 'Obat' %}<path d="M9 3h4v4H9z"/><path d="M8 7h6l1 3v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V10z"/><path d="M13 5h3l2-1M16 7l2 1"/>
+{%- elif nama == 'Upah buruh' %}<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 15c3 0 5 2 5 4"/>
+{%- elif nama == 'Sewa alat' %}<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"/>
+{%- elif nama == 'Tenaga keluarga' %}<path d="M7 11V6a2 2 0 0 1 4 0v5M11 10V4a2 2 0 0 1 4 0v6M15 10V6a2 2 0 0 1 4 0v8a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-3l-2.6-4.3a1.8 1.8 0 0 1 3-2L7 14"/>
+{%- elif nama == 'Pajak lahan' %}<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/>
+{%- elif nama == 'Lainnya' %}<circle cx="6" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/>
+{%- elif nama == 'lahan' %}<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M12 5v14M3 12h18"/>
+{%- elif nama == 'panen' %}<path d="M4 10h16l-2 9H6z"/><path d="M8 10l4-6 4 6"/>
+{%- elif nama == 'jual' or nama == 'uang' %}<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9v.01M18 15v.01"/>
+{%- elif nama == 'centang' %}<path d="M5 12l5 5L20 7"/>
 {%- endif %}</svg>
 {%- endmacro %}

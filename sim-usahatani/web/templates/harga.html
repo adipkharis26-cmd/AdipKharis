@@ -1,30 +1,35 @@
-{% extends "base.html" %}{% set aktif = 'harga' %}
+{% from "_ikon.html" import ikon %}{% extends "base.html" %}{% set aktif = 'harga' %}
 {% block judul %}Harga Hari Ini{% endblock %}
+{% macro status(h) -%}
+  {%- if h.margin is none %}<div class="status-harga kosong" id="st-{{ h.komoditas }}">Modal belum bisa dihitung</div>
+  {%- elif h.margin >= 0 %}<div class="status-harga naik" id="st-{{ h.komoditas }}">Untung {{ h.margin|rp }} setiap kg</div>
+  {%- else %}<div class="status-harga turun" id="st-{{ h.komoditas }}">Rugi {{ (-h.margin)|rp }} setiap kg</div>{% endif %}
+{%- endmacro %}
 {% block isi %}
-<form method="post" style="display:contents"><input type="hidden" name="csrf" value="{{ csrf_token() }}">
-<div class="kepala">
-  <div><div class="kecil">Dari pengepul</div><h1>Harga Hari Ini</h1></div>
-  <div class="baris"><label class="isian" style="flex-direction:row;align-items:center"><span class="sr">Tanggal</span><input type="date" name="tanggal" value="{{ hari_ini }}" style="height:44px"></label>
-  <button class="tombol kecil-t" type="submit">Simpan Harga</button></div>
-</div>
-<div class="grid tiga">
-  {% for h in data %}
-  <section class="kartu">
-    <div class="baris"><span class="inisial {{ h.komoditas }}">{{ h.komoditas[0]|upper }}</span>
-      <div class="tumbuh"><h2>{{ h.komoditas|capitalize }}</h2><div class="kecil">Terakhir {{ h.sekarang and (h.sekarang['harga_per_kg']|angka) or '–' }}{% if h.sekarang %} ({{ h.sekarang['tanggal']|tgl }}){% endif %}</div></div></div>
-    <label class="isian-harga"><span class="kecil">Rp</span><input name="{{ h.komoditas }}" inputmode="numeric" placeholder="{{ h.sekarang and (h.sekarang['harga_per_kg']|angka) or '0' }}" aria-label="Harga {{ h.komoditas }} per kg"></label>
-    {% if h.margin is not none %}
-      <span class="pil {{ 'naik' if h.margin >= 0 else 'turun' }}" style="align-self:flex-start">{{ h.margin|rp(true) }}/kg {{ 'di atas' if h.margin >= 0 else 'di bawah' }} modal</span>
-    {% else %}<span class="kecil">HPP belum bisa dihitung</span>{% endif %}
-    <div class="kecil">HPP acuan: {{ h.hpp|rp }}/kg</div>
-  </section>
-  {% endfor %}
-</div>
+<div><h1 class="tanya">Harga dari pengepul</h1><p class="kecil" style="margin:6px 0 0">Isi harga per kilo hari ini. Yang tidak berubah boleh dikosongkan.</p></div>
+<form method="post" style="display:flex;flex-direction:column;gap:18px" novalidate>
+  <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+  <div class="grid tiga">
+    {% for h in data %}
+    <section class="kartu">
+      <div class="baris"><span class="inisial {{ h.komoditas }}">{{ h.komoditas[0]|upper }}</span>
+        <div class="tumbuh"><h2 style="font-size:20px">{{ h.komoditas|capitalize }}</h2>
+          <div class="kecil">Harga terakhir: <b style="color:var(--tinta)">{{ h.sekarang and (h.sekarang['harga_per_kg']|rp) or 'belum ada' }}</b></div></div></div>
+      <label class="layar-angka" style="background:var(--latar);padding:12px 16px"><b>Rp</b>
+        <input name="{{ h.komoditas }}" inputmode="numeric" autocomplete="off" placeholder="{{ h.sekarang and (h.sekarang['harga_per_kg']|angka) or '0' }}"
+          data-angka data-hpp="{{ h.hpp or 0 }}" data-sekarang="{{ h.sekarang['harga_per_kg'] if h.sekarang else 0 }}" data-status="#st-{{ h.komoditas }}"
+          aria-label="Harga {{ h.komoditas }} hari ini per kilo" style="font-size:30px"></label>
+      {{ status(h) }}
+      <div class="kecil">Modal Bapak: <b style="color:var(--tinta)">{{ h.hpp|rp }}</b> per kg</div>
+    </section>
+    {% endfor %}
+  </div>
+  {% set isi = {} %}{% include "_tanggal.html" %}
+  <div class="tempel-bawah"><button class="tombol besar penuh" type="submit">Simpan Harga</button></div>
 </form>
-<section class="kartu">
-  <h2>Riwayat harga (Rp/kg)</h2>
+<details class="lipat kartu">
+  <summary>Lihat harga hari-hari sebelumnya</summary>
   <table><thead><tr><th>Tanggal</th><th>Padi</th><th>Jagung</th><th>Pisang</th></tr></thead>
   <tbody>{% for r in riwayat %}<tr><td>{{ r['tanggal']|tgl }}</td><td>{{ r['padi']|angka }}</td><td>{{ r['jagung']|angka }}</td><td>{{ r['pisang']|angka }}</td></tr>{% endfor %}</tbody></table>
-</section>
-<style>.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}</style>
+</details>
 {% endblock %}

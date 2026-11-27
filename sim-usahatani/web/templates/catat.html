@@ -1,46 +1,85 @@
-{% extends "base.html" %}{% set aktif = 'catat' %}
-{% block judul %}Catat Biaya{% endblock %}
+{% from "_ikon.html" import ikon %}{% extends "base.html" %}{% set aktif = 'catat' %}
+{% block judul %}Uang Keluar{% endblock %}
+{% block pesan %}{% if not ok %}{{ super() }}{% endif %}{% endblock %}
 {% block isi %}
-<div class="kepala"><div><div class="kecil">Catat pengeluaran usaha tani</div><h1>Catat Biaya</h1></div></div>
-{% include "_tab_catat.html" %}
-<div class="grid utama">
-  <form class="kartu" method="post" novalidate><input type="hidden" name="csrf" value="{{ csrf_token() }}">
-    <label><div class="label">Jumlah (Rp)</div>
-      <input class="isian-besar angka" name="jumlah" inputmode="numeric" placeholder="0" data-rupiah required></label>
-    <div><div class="label">Jenis biaya</div>
-      <div class="pilihan">{% for j in jenis %}<label><input type="radio" name="jenis" value="{{ j }}"><span>{{ j }}</span></label>{% endfor %}</div></div>
-    <div><div class="label">Dibayar dengan</div>
-      <div class="pilihan rata">
-        <label><input type="radio" name="sifat" value="tunai" checked><span>Uang tunai</span></label>
-        <label><input type="radio" name="sifat" value="diperhitungkan"><span>Tenaga keluarga / alat</span></label>
-      </div></div>
-    <div><div class="label">Untuk</div>
-      <div class="pilihan rata">
-        {% for m in musim %}<label><input type="radio" name="tujuan" value="{{ m['id'] }}" {{ 'checked' if loop.first }}><span>{{ m['komoditas']|capitalize }}</span></label>{% endfor %}
-        <label><input type="radio" name="tujuan" value="bersama"><span>Bersama</span></label>
-      </div>
-      <div class="kecil" style="margin-top:6px">Biaya bersama dibagi otomatis sesuai luas petak dan lama musim.</div></div>
-    <div class="baris" style="align-items:flex-end;flex-wrap:wrap">
-      <label class="isian tumbuh">Tanggal<input type="date" name="tanggal" value="{{ hari_ini }}" required></label>
-      <button class="tombol" type="submit" style="min-width:160px">Simpan</button>
+{% if ok %}{% set ulang = url_for('catat') %}{% include "_berhasil.html" %}{% else %}
+<form method="post" data-langkah data-mulai="{{ 3 if isi else 0 }}" novalidate>
+  <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+  {% include "_langkah_atas.html" %}
+
+  <section class="langkah">
+    <h1 class="tanya">Untuk apa uangnya?</h1>
+    <div class="ubin">
+      {% for nilai, label, ket in ubin %}
+      <label><input type="radio" name="jenis" value="{{ nilai }}" data-teks="{{ label }}" data-wajib="Pilih dulu untuk apa uangnya."
+        data-atur="{{ 'sifat=diperhitungkan' if nilai == 'Tenaga keluarga' else 'sifat=tunai' }}{{ ';tujuan=bersama' if nilai == 'Pajak lahan' }}"
+        {{ 'checked' if isi.get('jenis') == nilai }}>
+        <span>{{ ikon(nilai) }}{{ label }}{% if ket %}<small>{{ ket }}</small>{% endif %}</span></label>
+      {% endfor %}
     </div>
-  </form>
-  <section class="kartu">
-    <h2>Catatan terakhir</h2>
-    <div class="daftar">
-      {% for b in terakhir %}
-      <div class="baris antara"><div><div>{{ b['jenis'] }}</div><div class="kecil">{{ b['tanggal']|tgl }} · {{ (b['komoditas'] or 'bersama')|capitalize }}</div></div><b class="angka">{{ b['jumlah']|rp }}</b></div>
-      {% else %}<div class="kecil">Belum ada catatan.</div>{% endfor %}
-    </div>
+    <p class="peringatan"></p>
   </section>
-</div>
-<script>
-// format angka rupiah saat diketik: 300000 -> 300.000
-document.querySelectorAll('[data-rupiah]').forEach(function (el) {
-  el.addEventListener('input', function () {
-    var d = el.value.replace(/\D/g, '');
-    el.value = d ? Number(d).toLocaleString('id-ID') : '';
-  });
-});
-</script>
+
+  <section class="langkah">
+    <h1 class="tanya">Berapa rupiah?</h1>
+    <label class="layar-angka"><b>Rp</b><input id="jumlah" name="jumlah" inputmode="numeric" autocomplete="off" placeholder="0"
+      value="{{ isi.get('jumlah', '') }}" data-angka data-terbilang="#tb-jumlah" data-wajib="Isi dulu jumlah uangnya." data-fokus aria-label="Jumlah rupiah"></label>
+    <p class="terbilang" id="tb-jumlah" aria-live="polite"></p>
+    <div class="cepat">
+      <button type="button" data-tambah="10000" data-target="#jumlah">+10 rb</button>
+      <button type="button" data-tambah="50000" data-target="#jumlah">+50 rb</button>
+      <button type="button" data-tambah="100000" data-target="#jumlah">+100 rb</button>
+      <button type="button" data-tambah="500000" data-target="#jumlah">+500 rb</button>
+      <button type="button" data-tambah="1000000" data-target="#jumlah">+1 juta</button>
+      <button type="button" class="hapus" data-tambah="0" data-target="#jumlah">Hapus</button>
+    </div>
+    <p class="peringatan"></p>
+    <button type="button" class="tombol besar penuh" data-lanjut>Lanjut</button>
+  </section>
+
+  <section class="langkah">
+    <h1 class="tanya">Untuk tanaman apa?</h1>
+    <div class="ubin satu">
+      {% for m in musim %}
+      <label><input type="radio" name="tujuan" value="{{ m['id'] }}" data-teks="{{ m['komoditas']|capitalize }}" data-wajib="Pilih dulu tanamannya."
+        {{ 'checked' if isi.get('tujuan') == m['id']|string }}>
+        <span>{{ ikon('tunas') }}<span class="teks-ubin"><b>{{ m['komoditas']|capitalize }}</b><small>{{ 'kebun pisang' if m['komoditas'] == 'pisang' else 'musim sekarang, hari ke-' ~ hari_ke(m['mulai']) }}</small></span></span></label>
+      {% endfor %}
+      <label><input type="radio" name="tujuan" value="bersama" data-teks="Semua lahan" {{ 'checked' if isi.get('tujuan') == 'bersama' }}>
+        <span>{{ ikon('lahan') }}<span class="teks-ubin"><b>Semua lahan</b><small>pajak, alat yang dipakai bersama</small></span></span></label>
+    </div>
+    <p class="peringatan"></p>
+  </section>
+
+  <section class="langkah">
+    <h1 class="tanya">Sudah benar?</h1>
+    <div class="ringkasan">Uang keluar <b data-isi="jumlah"></b> untuk <b data-isi="jenis"></b>, tanaman <b data-isi="tujuan"></b>.
+      <div class="baris" style="margin-top:12px;gap:8px;flex-wrap:wrap">
+        <button type="button" class="kembali" data-ubah="0">Ubah jenis</button>
+        <button type="button" class="kembali" data-ubah="1">Ubah jumlah</button>
+        <button type="button" class="kembali" data-ubah="2">Ubah tanaman</button>
+      </div>
+    </div>
+    {% include "_tanggal.html" %}
+    <div>
+      <div class="label">Dibayar pakai uang?</div>
+      <div class="pilih-kecil">
+        <label><input type="radio" name="sifat" value="tunai" {{ 'checked' if isi.get('sifat', 'tunai') == 'tunai' }}><span>Ya, bayar uang</span></label>
+        <label><input type="radio" name="sifat" value="diperhitungkan" {{ 'checked' if isi.get('sifat') == 'diperhitungkan' }}><span>Tidak, tenaga sendiri</span></label>
+      </div>
+    </div>
+    <button type="submit" class="tombol besar penuh">Simpan</button>
+  </section>
+</form>
+
+<details class="lipat kartu">
+  <summary>Lihat catatan sebelumnya</summary>
+  <div class="daftar">
+    {% for b in terakhir %}
+    <div class="baris antara"><div><div>{{ b['jenis'] }}</div><div class="kecil">{{ b['tanggal']|tgl }} · {{ (b['komoditas'] or 'semua lahan')|capitalize }}</div></div><b class="angka">{{ b['jumlah']|rp }}</b></div>
+    {% else %}<div class="kecil">Belum ada catatan.</div>{% endfor %}
+  </div>
+</details>
+<style>.teks-ubin{display:flex;flex-direction:column;gap:2px}.teks-ubin b{font-size:19px}</style>
+{% endif %}
 {% endblock %}

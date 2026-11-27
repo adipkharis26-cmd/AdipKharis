@@ -1,0 +1,9 @@
+<div data-pilih-tanggal>
+  <div class="label">Kapan?</div>
+  <div class="pilih-kecil">
+    <label><input type="radio" name="pilih_tgl" value="hari_ini" checked><span>Hari ini</span></label>
+    <label><input type="radio" name="pilih_tgl" value="kemarin"><span>Kemarin</span></label>
+    <label><input type="radio" name="pilih_tgl" value="lain"><span>Tanggal lain</span></label>
+  </div>
+  <label class="isian" data-tanggal-lain style="margin-top:10px">Pilih tanggal<input type="date" name="tanggal" value="{{ isi.get('tanggal', hari_ini) }}" required></label>
+</div>

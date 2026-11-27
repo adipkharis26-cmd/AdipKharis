@@ -1,0 +1,17 @@
+{% from "_ikon.html" import ikon %}{% extends "base.html" %}{% set aktif = 'catat' %}
+{% block judul %}Catat{% endblock %}
+{% block isi %}
+<h1 class="tanya">Mau catat apa?</h1>
+<div class="ubin satu">
+  <a href="{{ url_for('catat') }}" class="ubin-link"><span>{{ ikon('uang') }}<span class="teks-ubin"><b>Uang keluar</b><small>beli pupuk, bayar buruh, dll.</small></span></span></a>
+  <a href="{{ url_for('catat_panen') }}" class="ubin-link"><span>{{ ikon('panen') }}<span class="teks-ubin"><b>Hasil panen</b><small>berapa kg yang dipanen</small></span></span></a>
+  <a href="{{ url_for('catat_jual') }}" class="ubin-link"><span>{{ ikon('jual') }}<span class="teks-ubin"><b>Hasil dijual</b><small>dijual ke pengepul</small></span></span></a>
+</div>
+<style>
+  .ubin-link > span { display:flex; align-items:center; gap:16px; min-height:96px; padding:16px 18px; border-radius:20px; background:var(--permukaan); }
+  .ubin-link > span:hover { background: var(--daun-muda); }
+  .ubin-link svg { width:44px; height:44px; color:var(--daun); flex:none; }
+  .teks-ubin { display:flex; flex-direction:column; gap:2px; font-size:20px; }
+  .teks-ubin small { font-size:15px; color:var(--redup); font-weight:500; }
+</style>
+{% endblock %}

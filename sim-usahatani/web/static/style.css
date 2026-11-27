@@ -125,3 +125,93 @@ th:not(:first-child), td:not(:first-child) { text-align: right; }
   .isi { padding: 0; }
 }
 @media (max-width: 899px) { .grid.empat h1 { font-size: 19px; line-height: 24px; } .grid.empat .kartu { padding: 16px; } }
+
+/* =========================================================
+   RAMAH ORANG TUA: huruf lebih besar, satu pertanyaan per layar
+   ========================================================= */
+:root { --redup: #4F584D; }
+body { font-size: 17px; }
+.kecil { font-size: 15px; }
+h1 { font-size: 24px; line-height: 30px; }
+h2 { font-size: 18px; }
+.tombol { height: 56px; font-size: 17px; border-radius: 16px; }
+.tombol.besar { height: 64px; font-size: 19px; }
+.bawah a { font-size: 12px; }
+.bawah svg { width: 26px; height: 26px; }
+
+/* langkah (wizard) */
+.js .langkah { display: none; }
+.js .langkah.aktif { display: flex; }
+.langkah { flex-direction: column; gap: 18px; padding-bottom: 8px; }
+.langkah + .langkah { margin-top: 24px; }
+.js .langkah + .langkah { margin-top: 0; }
+.tanya { font-size: 26px; line-height: 32px; font-weight: 800; letter-spacing: -0.01em; margin: 0; }
+.atas-langkah { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.kembali { background: var(--permukaan); border: 0; border-radius: 14px; height: 48px; padding: 0 18px; font: inherit; font-weight: 600; color: var(--tinta); cursor: pointer; }
+.titik-langkah { display: flex; gap: 6px; }
+.titik-langkah i { width: 28px; height: 6px; border-radius: 3px; background: var(--garis); }
+.titik-langkah i.sudah { background: var(--daun); }
+
+/* ubin pilihan besar */
+.ubin { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (min-width: 900px) { .ubin { grid-template-columns: repeat(4, minmax(0, 1fr)); } .ubin.dua { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ubin.satu { grid-template-columns: 1fr; }
+.ubin label { position: relative; }
+.ubin input { position: absolute; opacity: 0; pointer-events: none; }
+.ubin span { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center;
+  min-height: 112px; padding: 14px 10px; border-radius: 20px; background: var(--permukaan); border: 2px solid transparent;
+  font-weight: 700; font-size: 18px; cursor: pointer; line-height: 1.2; }
+.ubin span small { font-weight: 500; font-size: 14px; color: var(--redup); }
+.ubin span svg { width: 40px; height: 40px; color: var(--daun); }
+.ubin.satu span { flex-direction: row; justify-content: flex-start; min-height: 80px; padding: 14px 18px; text-align: left; gap: 16px; }
+.ubin.satu span svg { flex: none; }
+.ubin input:checked + span { border-color: var(--daun); background: var(--daun-muda); }
+.ubin input:focus-visible + span { outline: 3px solid var(--padi); outline-offset: 2px; }
+
+/* layar angka */
+.layar-angka { display: flex; align-items: baseline; gap: 8px; background: var(--permukaan); border-radius: 20px; padding: 18px 20px; border: 2px solid transparent; }
+.layar-angka:focus-within { border-color: var(--daun); }
+.layar-angka b { font-size: 22px; color: var(--redup); }
+.layar-angka input { border: 0; background: transparent; font: inherit; font-size: 40px; font-weight: 800; width: 100%; min-width: 0; color: var(--tinta); letter-spacing: -0.02em; padding: 0; }
+.layar-angka input:focus { outline: none; }
+.terbilang { font-size: 17px; color: var(--daun); font-weight: 600; min-height: 24px; margin: -6px 4px 0; }
+.cepat { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.cepat button { height: 52px; border-radius: 14px; border: 0; background: var(--permukaan); font: inherit; font-weight: 700; font-size: 16px; color: var(--tinta); cursor: pointer; }
+.cepat button.hapus { background: var(--tanah-muda); color: var(--tanah); }
+.peringatan { color: var(--tanah); font-weight: 600; min-height: 22px; }
+
+/* ringkasan sebelum simpan */
+.ringkasan { background: var(--permukaan); border-radius: 20px; padding: 20px; font-size: 20px; line-height: 1.5; }
+.ringkasan b { color: var(--daun); }
+.pilih-kecil { display: flex; gap: 8px; flex-wrap: wrap; }
+.pilih-kecil label { flex: 1; min-width: 96px; }
+.pilih-kecil input { position: absolute; opacity: 0; pointer-events: none; }
+.pilih-kecil span { display: flex; align-items: center; justify-content: center; height: 52px; border-radius: 14px; background: var(--permukaan); border: 2px solid transparent; font-weight: 600; cursor: pointer; padding: 0 12px; text-align: center; }
+.pilih-kecil input:checked + span { border-color: var(--daun); background: var(--daun-muda); color: var(--daun); }
+.pilih-kecil input:focus-visible + span { outline: 3px solid var(--padi); }
+
+/* layar berhasil */
+.berhasil { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; padding: 32px 20px; background: var(--permukaan); border-radius: 24px; }
+.berhasil .centang { width: 88px; height: 88px; border-radius: 50%; background: var(--daun); display: grid; place-items: center; }
+.berhasil .centang svg { width: 48px; height: 48px; }
+.berhasil .tombol { width: 100%; }
+
+/* status harga dengan kalimat */
+.status-harga { border-radius: 14px; padding: 12px 14px; font-weight: 700; font-size: 17px; }
+.status-harga.naik { background: var(--daun-muda); color: var(--daun); }
+.status-harga.turun { background: var(--tanah-muda); color: var(--tanah); }
+.status-harga.kosong { background: var(--latar); color: var(--redup); font-weight: 600; }
+.tempel-bawah { position: sticky; bottom: 76px; z-index: 5; }
+@media (min-width: 900px) { .tempel-bawah { bottom: 16px; } }
+details.lipat summary { cursor: pointer; font-weight: 700; padding: 4px 0; list-style: none; }
+details.lipat summary::before { content: "▸ "; color: var(--daun); }
+details.lipat[open] summary::before { content: "▾ "; }
+.istilah { font-size: 13px; color: var(--redup); font-weight: 500; }
+
+/* perbaikan tata letak ubin & detail */
+[hidden] { display: none !important; }
+.ubin span.teks-ubin { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 0; padding: 0;
+  background: none; border: 0; border-radius: 0; text-align: left; font-size: 19px; }
+.ubin .teks-ubin b { font-size: 19px; }
+.ubin .teks-ubin small { font-size: 15px; font-weight: 500; color: var(--redup); }
+.ringkasan .kembali { background: var(--latar); height: 44px; font-size: 15px; }

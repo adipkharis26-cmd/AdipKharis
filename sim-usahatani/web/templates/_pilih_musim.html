@@ -1,0 +1,9 @@
+{% from "_ikon.html" import ikon %}<div class="ubin satu">
+  {% for m in musim %}
+  <label><input type="radio" name="musim_id" value="{{ m['id'] }}" data-teks="{{ m['komoditas'] }}" data-wajib="Pilih dulu tanamannya."
+    {{ 'checked' if isi.get('musim_id') == m['id']|string }}>
+    <span>{{ ikon('tunas') }}<span class="teks-ubin"><b>{{ m['komoditas']|capitalize }}</b>
+      <small>{% if m['selesai'] %}musim {{ m['mulai']|tgl }} (sudah selesai){% elif m['komoditas'] == 'pisang' %}kebun pisang{% else %}musim sekarang{% endif %}</small></span></span></label>
+  {% endfor %}
+</div>
+<style>.teks-ubin{display:flex;flex-direction:column;gap:2px}.teks-ubin b{font-size:19px}</style>

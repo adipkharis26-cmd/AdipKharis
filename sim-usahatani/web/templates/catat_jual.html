@@ -1,24 +1,47 @@
-{% extends "base.html" %}{% set aktif = 'catat' %}
-{% block judul %}Catat Penjualan{% endblock %}
+{% from "_ikon.html" import ikon %}{% extends "base.html" %}{% set aktif = 'catat' %}
+{% block judul %}Hasil Dijual{% endblock %}
+{% block pesan %}{% if not ok %}{{ super() }}{% endif %}{% endblock %}
 {% block isi %}
-<div class="kepala"><div><div class="kecil">Catat penjualan ke pengepul</div><h1>Catat Penjualan</h1></div></div>
-{% include "_tab_catat.html" %}
-<div class="grid utama">
-  <form class="kartu" method="post" novalidate><input type="hidden" name="csrf" value="{{ csrf_token() }}">
-    <div class="grid dua" style="gap:12px">
-      <label class="isian">Jumlah dijual (kg)<input name="kg" inputmode="decimal" required></label>
-      <label class="isian">Harga per kg (Rp)<input name="harga" inputmode="numeric" required></label>
-    </div>
-    <div><div class="label">Musim / komoditas</div>
-      <div class="pilihan">{% for m in musim %}<label><input type="radio" name="musim_id" value="{{ m['id'] }}" {{ 'checked' if loop.first }}><span>{{ m['komoditas']|capitalize }} · {{ m['mulai']|tgl }}</span></label>{% endfor %}</div></div>
-    <label class="isian">Nama pengepul<input name="pengepul" placeholder="mis. Pak Darto"></label>
-    <div class="baris" style="align-items:flex-end;flex-wrap:wrap">
-      <label class="isian tumbuh">Tanggal<input type="date" name="tanggal" value="{{ hari_ini }}" required></label>
-      <button class="tombol" type="submit" style="min-width:160px">Simpan</button>
-    </div>
-  </form>
-  <section class="kartu"><h2>Penjualan terakhir</h2>
-    <div class="daftar">{% for j in terakhir %}<div class="baris antara"><div><div>{{ j['komoditas']|capitalize }} · {{ j['kg']|angka }} kg</div><div class="kecil">{{ j['tanggal']|tgl }} · {{ j['pengepul'] or '–' }}</div></div><b class="angka">{{ (j['kg']*j['harga_per_kg'])|rp }}</b></div>{% else %}<div class="kecil">Belum ada catatan.</div>{% endfor %}</div>
+{% if ok %}{% set ulang = url_for('catat_jual') %}{% include "_berhasil.html" %}{% else %}
+<form method="post" data-langkah data-mulai="{{ 3 if isi else 0 }}" novalidate>
+  <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+  {% include "_langkah_atas.html" %}
+
+  <section class="langkah">
+    <h1 class="tanya">Tanaman apa yang dijual?</h1>
+    {% include "_pilih_musim.html" %}
+    <p class="peringatan"></p>
   </section>
-</div>
+
+  <section class="langkah">
+    <h1 class="tanya">Berapa kilo yang dijual?</h1>
+    <label class="layar-angka"><input id="kg" name="kg" inputmode="numeric" autocomplete="off" placeholder="0" value="{{ isi.get('kg', '') }}"
+      data-angka data-satuan="kilogram" data-terbilang="#tb-kg" data-wajib="Isi dulu berapa kilo yang dijual." data-fokus aria-label="Jumlah kilogram"><b>kg</b></label>
+    <p class="terbilang" id="tb-kg" aria-live="polite"></p>
+    <p class="peringatan"></p>
+    <button type="button" class="tombol besar penuh" data-lanjut>Lanjut</button>
+  </section>
+
+  <section class="langkah">
+    <h1 class="tanya">Harga per kilo berapa?</h1>
+    <label class="layar-angka"><b>Rp</b><input id="harga" name="harga" inputmode="numeric" autocomplete="off" placeholder="0" value="{{ isi.get('harga', '') }}"
+      data-angka data-terbilang="#tb-harga" data-wajib="Isi dulu harga per kilonya." data-fokus aria-label="Harga per kilogram"></label>
+    <p class="terbilang" id="tb-harga" aria-live="polite"></p>
+    <div class="ringkasan" style="font-size:18px">Total uang diterima: <b data-total></b></div>
+    <p class="peringatan"></p>
+    <button type="button" class="tombol besar penuh" data-lanjut>Lanjut</button>
+  </section>
+
+  <section class="langkah">
+    <h1 class="tanya">Sudah benar?</h1>
+    <div class="ringkasan">Jual <b data-isi="musim_id"></b> sebanyak <b data-isi="kg"></b>, harga <b data-isi="harga"></b> per kg.<br>Total <b data-total></b>.</div>
+    <label class="isian">Nama pengepul (boleh dikosongkan)<input name="pengepul" value="{{ isi.get('pengepul', '') }}" placeholder="mis. Pak Darto"></label>
+    {% include "_tanggal.html" %}
+    <button type="submit" class="tombol besar penuh">Simpan</button>
+  </section>
+</form>
+<details class="lipat kartu"><summary>Lihat penjualan sebelumnya</summary>
+  <div class="daftar">{% for j in terakhir %}<div class="baris antara"><div><div>{{ j['komoditas']|capitalize }} · {{ j['kg']|angka }} kg</div><div class="kecil">{{ j['tanggal']|tgl }} · {{ j['pengepul'] or '–' }}</div></div><b class="angka">{{ (j['kg']*j['harga_per_kg'])|rp }}</b></div>{% else %}<div class="kecil">Belum ada catatan.</div>{% endfor %}</div>
+</details>
+{% endif %}
 {% endblock %}

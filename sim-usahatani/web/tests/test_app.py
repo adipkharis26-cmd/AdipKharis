@@ -94,7 +94,7 @@ def test_update_harga_dan_laporan(klien):
     masuk(klien)
     r = kirim(klien, "/harga", {"tanggal": "2026-11-28", "padi": "7.000"}, follow_redirects=True)
     t = r.get_data(as_text=True)
-    assert "Harga tersimpan" in t and "+Rp1.800/kg" in t
+    assert "Harga tersimpan" in t and "Untung Rp1.800 setiap kg" in t
     t = klien.get("/laporan?musim=1").get_data(as_text=True)
     assert "Rp1.800.000" in t and "Layak" in t
 

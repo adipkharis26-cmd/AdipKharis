@@ -1,53 +1,54 @@
-{% extends "base.html" %}{% set aktif = 'beranda' %}
+{% from "_ikon.html" import ikon %}{% extends "base.html" %}{% set aktif = 'beranda' %}
 {% block judul %}Beranda{% endblock %}
 {% block isi %}
-<div class="kepala">
-  <div><div class="kecil">{{ berjalan and ('Musim ' ~ berjalan['komoditas'] ~ ' · hari ke-' ~ hari_ke(berjalan['mulai'])) or 'Belum ada musim berjalan' }}</div><h1>Beranda</h1></div>
-  <div class="baris no-print">
-    <a class="tombol lembut kecil-t" href="{{ url_for('harga') }}">Update Harga</a>
-    <a class="tombol kecil-t" href="{{ url_for('catat') }}">Catat Biaya</a>
-  </div>
+<div><div class="kecil">{{ berjalan and ('Musim ' ~ berjalan['komoditas'] ~ ', hari ke-' ~ hari_ke(berjalan['mulai'])) or 'Belum ada musim berjalan' }}</div>
+  <h1 class="tanya">Halo, {{ g.user['nama'].split(' ')[0] }}</h1></div>
+
+<div class="ubin aksi">
+  <a href="{{ url_for('catat') }}"><span>{{ ikon('uang') }}<b>Catat uang keluar</b></span></a>
+  <a href="{{ url_for('catat_menu') }}"><span>{{ ikon('panen') }}<b>Catat panen / jual</b></span></a>
+  <a href="{{ url_for('harga') }}"><span>{{ ikon('harga') }}<b>Isi harga hari ini</b></span></a>
 </div>
 
 <div class="grid dua">
-  {% if rl %}
-  <section class="kartu hijau" aria-label="Pendapatan musim terakhir">
-    <div class="kecil">Untung musim {{ rl.musim.komoditas }} lalu</div>
-    <div class="besar angka">{{ rl.pendapatan|rp }}</div>
-    <div class="baris" style="flex-wrap:wrap;gap:8px">
-      <span class="pil kaca">R/C {{ rl.rc_total|angka(2) }}</span>
-      <span class="pil kaca">Panen {{ rl.panen_kg|angka }} kg</span>
-      <span class="pil kaca">HPP {{ rl.hpp|rp }}/kg</span>
-    </div>
-  </section>
-  {% endif %}
   <section class="kartu" aria-label="Harga hari ini">
     <div class="baris antara"><h2>Harga pengepul hari ini</h2><a class="kecil daun" href="{{ url_for('harga') }}"><b>Ubah</b></a></div>
     <div class="daftar">
       {% for h in harga %}
       <div class="baris">
         <span class="inisial {{ h.komoditas }}">{{ h.komoditas[0]|upper }}</span>
-        <div class="tumbuh"><h2>{{ h.komoditas|capitalize }}</h2><div class="kecil">HPP {{ h.hpp|angka }}</div></div>
-        <div class="kanan"><h2 class="angka">{{ h.sekarang and (h.sekarang['harga_per_kg']|rp) or '–' }}</h2>
-          {% if h.margin is not none %}<span class="pil {{ 'naik' if h.margin >= 0 else 'turun' }}">{{ h.margin|rp(true) }}/kg</span>{% endif %}</div>
+        <div class="tumbuh"><h2>{{ h.komoditas|capitalize }}</h2>
+          <div class="kecil">Harga <b class="angka" style="color:var(--tinta)">{{ h.sekarang and (h.sekarang['harga_per_kg']|rp) or '–' }}</b> · modal {{ h.hpp|rp }}</div>
+          {% if h.margin is not none %}<span class="pil {{ 'naik' if h.margin >= 0 else 'turun' }}" style="font-size:14px;margin-top:6px">{{ 'Untung' if h.margin >= 0 else 'Rugi' }} {{ (h.margin|abs)|rp }} per kg</span>{% endif %}</div>
       </div>
       {% endfor %}
     </div>
   </section>
+  {% if rl %}
+  <section class="kartu hijau" aria-label="Hasil musim terakhir">
+    <div class="kecil">Musim {{ rl.musim.komoditas }} yang lalu</div>
+    <div class="besar angka">{{ 'Untung' if rl.pendapatan >= 0 else 'Rugi' }} {{ (rl.pendapatan|abs)|rp }}</div>
+    <div style="font-size:17px">Setiap Rp1 modal kembali Rp{{ rl.rc_total|angka(2) }}. Panen {{ rl.panen_kg|angka }} kg.</div>
+    <a class="tombol" href="{{ url_for('laporan') }}" style="background:rgba(255,255,255,.16);align-self:flex-start;height:48px">Lihat laporan lengkap</a>
+  </section>
+  {% endif %}
 </div>
 
 {% if rb %}
-<div class="grid dua">
-  <section class="kartu">
-    <h2>Musim {{ rb.musim.komoditas }}</h2>
-    <div class="kecil">Hari ke-{{ hari_ke(rb.musim.mulai) }} dari ±{{ (rb.musim.lama_bulan*30)|angka }} hari · {{ berjalan['petak'] }}</div>
-    {% set persen = [100, [0, (hari_ke(rb.musim.mulai) / (rb.musim.lama_bulan*30) * 100)]|max]|min %}
-    <div class="progres"><i style="width:{{ persen|round }}%"></i></div>
-  </section>
-  <section class="kartu">
-    <div class="baris antara"><h2>Biaya musim {{ rb.musim.komoditas }} sejauh ini</h2><h2 class="angka">{{ rb.TC|rp }}</h2></div>
-    {% include "_komposisi.html" %}
-  </section>
-</div>
+<section class="kartu">
+  <div class="baris antara" style="flex-wrap:wrap"><h2>Uang keluar musim {{ rb.musim.komoditas }} sejauh ini</h2><h2 class="angka">{{ rb.TC|rp }}</h2></div>
+  <div class="kecil">Hari ke-{{ hari_ke(rb.musim.mulai) }} dari kira-kira {{ (rb.musim.lama_bulan*30)|angka }} hari</div>
+  {% set persen = [100, [0, (hari_ke(rb.musim.mulai) / (rb.musim.lama_bulan*30) * 100)]|max]|min %}
+  <div class="progres"><i style="width:{{ persen|round }}%"></i></div>
+  {% include "_komposisi.html" %}
+</section>
 {% endif %}
+<style>
+  .ubin.aksi { grid-template-columns: 1fr; }
+  @media (min-width: 900px) { .ubin.aksi { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .ubin.aksi a > span { display:flex; flex-direction:row; justify-content:flex-start; align-items:center; gap:14px; min-height:72px; padding:14px 18px; border-radius:20px; background:var(--permukaan); font-size:18px; text-align:left; }
+  .ubin.aksi a > span:hover { background: var(--daun-muda); }
+  .ubin.aksi svg { width:36px; height:36px; color:var(--daun); flex:none; }
+  .kartu.hijau .besar { font-size: 30px; line-height: 36px; }
+</style>
 {% endblock %}

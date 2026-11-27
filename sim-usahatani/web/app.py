@@ -35,6 +35,11 @@ app.secret_key = _kunci_rahasia()
 
 KOMODITAS = ["padi", "jagung", "pisang"]
 JENIS_BIAYA = ["Benih", "Pupuk", "Obat", "Upah buruh", "Sewa alat", "Tenaga keluarga", "Pajak lahan", "Penyusutan alat", "Lainnya"]
+# ubin pilihan di layar "Untuk apa uangnya?": (nilai disimpan, label ramah, keterangan)
+UBIN_BIAYA = [("Benih", "Benih", "bibit"), ("Pupuk", "Pupuk", "urea, phonska"), ("Obat", "Obat hama", "semprot"),
+              ("Upah buruh", "Upah buruh", "tanam, panen"), ("Sewa alat", "Sewa alat", "traktor, perontok"),
+              ("Tenaga keluarga", "Tenaga sendiri", "tidak bayar uang"), ("Pajak lahan", "Pajak lahan", "untuk semua lahan"),
+              ("Lainnya", "Lainnya", "")]
 
 
 # ---------------------------------------------------------------- utilitas
@@ -166,7 +171,7 @@ def login():
             session.clear()
             session["uid"] = u["id"]
             csrf_token()
-            return redirect(url_for("beranda" if u["peran"] == "pemilik" else "catat"))
+            return redirect(url_for("beranda" if u["peran"] == "pemilik" else "catat_menu"))
         flash("Nama pengguna atau kata sandi salah.", "galat")
     return render_template("login.html")
 
@@ -182,7 +187,7 @@ def keluar():
 @perlu_login()
 def beranda():
     if g.user["peran"] != "pemilik":
-        return redirect(url_for("catat"))
+        return redirect(url_for("catat_menu"))
     c = conn()
     aktif = musim_aktif()
     berjalan = next((m for m in aktif if m["komoditas"] != "pisang"), None)
@@ -206,6 +211,17 @@ def num(s):
         return 0.0
 
 
+@app.route("/catat/menu")
+@perlu_login()
+def catat_menu():
+    return render_template("catat_menu.html")
+
+
+def _musim_pilihan(c):
+    """Musim untuk dipilih saat catat panen/jual: yang berjalan dulu, lalu yang sudah selesai."""
+    return c.execute("SELECT * FROM musim ORDER BY selesai IS NULL DESC, komoditas = 'pisang', mulai DESC").fetchall()
+
+
 @app.route("/catat", methods=["GET", "POST"])
 @perlu_login()
 def catat():
@@ -225,11 +241,12 @@ def catat():
                       (f["tanggal"], f["jenis"], jumlah, f["sifat"], musim_id, f.get("keterangan"), g.user["id"]))
             c.commit()
             flash(f"Tersimpan: {f['jenis']} {rp(jumlah)}", "sukses")
-            return redirect(url_for("catat"))
+            return redirect(url_for("catat", ok=1))
     terakhir = c.execute("SELECT b.*, m.komoditas FROM biaya b LEFT JOIN musim m ON m.id=b.musim_id "
                          "ORDER BY b.tanggal DESC, b.id DESC LIMIT 6").fetchall()
-    return render_template("catat.html", musim=musim_aktif(), jenis=JENIS_BIAYA, terakhir=terakhir,
-                           hari_ini=date.today().isoformat(), tab="biaya")
+    return render_template("catat.html", musim=musim_aktif(), ubin=UBIN_BIAYA, terakhir=terakhir,
+                           hari_ini=date.today().isoformat(), isi=request.form if request.method == "POST" else {},
+                           ok=request.args.get("ok"))
 
 
 @app.route("/catat/panen", methods=["GET", "POST"])
@@ -247,10 +264,10 @@ def catat_panen():
                       (ke_int(f["musim_id"]), f["tanggal"], num(f["kg"]), g.user["id"]))
             c.commit()
             flash(f"Tersimpan: panen {angka(num(f['kg']))} kg", "sukses")
-            return redirect(url_for("catat_panen"))
+            return redirect(url_for("catat_panen", ok=1))
     terakhir = c.execute("SELECT p.*, m.komoditas FROM panen p JOIN musim m ON m.id=p.musim_id ORDER BY p.tanggal DESC LIMIT 6").fetchall()
-    semua = c.execute("SELECT * FROM musim ORDER BY selesai IS NULL DESC, mulai DESC").fetchall()
-    return render_template("catat_panen.html", musim=semua, terakhir=terakhir, hari_ini=date.today().isoformat(), tab="panen")
+    return render_template("catat_panen.html", musim=_musim_pilihan(c), terakhir=terakhir, hari_ini=date.today().isoformat(),
+                           isi=request.form if request.method == "POST" else {}, ok=request.args.get("ok"))
 
 
 @app.route("/catat/jual", methods=["GET", "POST"])
@@ -268,10 +285,10 @@ def catat_jual():
                       (ke_int(f["musim_id"]), f["tanggal"], num(f["kg"]), num(f["harga"]), f.get("pengepul"), g.user["id"]))
             c.commit()
             flash(f"Tersimpan: penjualan {angka(num(f['kg']))} kg", "sukses")
-            return redirect(url_for("catat_jual"))
+            return redirect(url_for("catat_jual", ok=1))
     terakhir = c.execute("SELECT j.*, m.komoditas FROM penjualan j JOIN musim m ON m.id=j.musim_id ORDER BY j.tanggal DESC LIMIT 6").fetchall()
-    semua = c.execute("SELECT * FROM musim ORDER BY selesai IS NULL DESC, mulai DESC").fetchall()
-    return render_template("catat_jual.html", musim=semua, terakhir=terakhir, hari_ini=date.today().isoformat(), tab="jual")
+    return render_template("catat_jual.html", musim=_musim_pilihan(c), terakhir=terakhir, hari_ini=date.today().isoformat(),
+                           isi=request.form if request.method == "POST" else {}, ok=request.args.get("ok"))
 
 
 # ---------------------------------------------------------------- harga harian

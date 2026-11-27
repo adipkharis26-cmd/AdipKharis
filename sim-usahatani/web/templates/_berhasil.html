@@ -1,0 +1,7 @@
+{% from "_ikon.html" import ikon %}<section class="berhasil" role="status">
+  <span class="centang">{{ ikon('centang', '#fff') }}</span>
+  <h1 class="tanya">Sudah tersimpan</h1>
+  {% for kat, isi_pesan in get_flashed_messages(with_categories=true) %}<p class="kecil" style="font-size:18px;margin:0">{{ isi_pesan }}</p>{% endfor %}
+  <a class="tombol besar" href="{{ ulang }}">Catat lagi</a>
+  <a class="tombol lembut besar" href="{{ url_for('beranda') if g.user['peran'] == 'pemilik' else url_for('catat_menu') }}">Selesai</a>
+</section>

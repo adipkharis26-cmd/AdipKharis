@@ -5,28 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#2E6B3F">
 <title>{% block judul %}Catatan Tani{% endblock %} · Catatan Tani</title>
+<script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="{{ url_for('static', filename='langkah.js') }}" defer></script>
 </head>
 <body>
 {% set aktif = aktif|default('') %}
 {% set pemilik = g.user and g.user['peran'] == 'pemilik' %}
-{% set menu = ([('beranda','Beranda','beranda')] if pemilik else []) + [('catat','Catat','catat')] + ([('harga','Harga','harga'),('laporan','Laporan','laporan')] if pemilik else []) + [('akun','Akun','akun')] %}
+{# (kunci, endpoint, label pendek HP, label komputer, ikon) #}
+{% set menu = ([('beranda','beranda','Beranda','Beranda','beranda')] if pemilik else [])
+   + [('catat','catat_menu','Catat','Catat','catat')]
+   + ([('harga','harga','Harga','Harga Hari Ini','harga'), ('laporan','laporan','Laporan','Laporan','laporan')] if pemilik else [])
+   + [('akun','akun','Akun','Akun','akun')] %}
 <div class="app">
   <nav class="samping" aria-label="Menu utama">
     <div class="merek"><span class="logo">{{ ikon('tunas', '#fff') }}</span>Catatan Tani</div>
-    {% for ep, lab, ik in menu %}
-      <a class="menu {{ 'aktif' if aktif == ep }}" href="{{ url_for(ep) }}">{{ ikon(ik) }}{{ {'Catat':'Catat Biaya','Harga':'Harga Hari Ini'}.get(lab, lab) }}</a>
+    {% for kunci, ep, pendek, panjang, ik in menu %}
+      <a class="menu {{ 'aktif' if aktif == kunci }}" href="{{ url_for(ep) }}">{{ ikon(ik) }}{{ panjang }}</a>
     {% endfor %}
     {% if g.user %}<div class="bawah-samping kecil" style="padding:0 12px">{{ g.user['nama'] }}</div>{% endif %}
   </nav>
   <main class="isi">
-    {% for kat, isi in get_flashed_messages(with_categories=true) %}<div class="pesan {{ kat }}" role="status">{{ isi }}</div>{% endfor %}
+    {% block pesan %}{% for kat, isi in get_flashed_messages(with_categories=true) %}<div class="pesan {{ kat }}" role="status">{{ isi }}</div>{% endfor %}{% endblock %}
     {% block isi %}{% endblock %}
   </main>
   <nav class="bawah" aria-label="Menu bawah">
-    {% for ep, lab, ik in menu %}<a class="{{ 'aktif' if aktif == ep }}" href="{{ url_for(ep) }}">{{ ikon(ik) }}{{ lab }}</a>{% endfor %}
+    {% for kunci, ep, pendek, panjang, ik in menu %}<a class="{{ 'aktif' if aktif == kunci }}" href="{{ url_for(ep) }}">{{ ikon(ik) }}{{ pendek }}</a>{% endfor %}
   </nav>
 </div>
 </body>
