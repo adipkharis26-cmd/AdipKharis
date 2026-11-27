@@ -265,7 +265,13 @@ def render_bab(doc, blocks, toc_entries):
             # Bisa beberapa kandidat dipisah koma: dipakai file pertama yang ada.
             found = next((c.strip() for c in path.split(",") if os.path.exists(os.path.join(ROOT, c.strip()))), None)
             if found:
-                p.add_run().add_picture(os.path.join(ROOT, found), width=Cm(11))
+                from PIL import Image as _Img
+                with _Img.open(os.path.join(ROOT, found)) as _im:
+                    _w, _h = _im.size
+                if _h > _w:  # gambar tegak (layar HP): batasi tinggi
+                    p.add_run().add_picture(os.path.join(ROOT, found), height=Cm(11))
+                else:
+                    p.add_run().add_picture(os.path.join(ROOT, found), width=Cm(14))
             else:
                 # Kotak tempat gambar: dibuat sendiri di draw.io lalu diekspor ke assets/
                 png = path.split(",")[0].strip()

@@ -1,5 +1,9 @@
 # Rancangan Antarmuka (pegangan untuk menggambar di Figma)
 
+> **UPDATE — desain final = v2 Modern** di Figma: https://www.figma.com/design/6szDx7ZzAMI3RVHA20ZOHs (halaman "Desain Modern v2").
+> Gaya v2: latar `#F3F4EF`, kartu putih radius 16–24, aksen hijau `#2E6B3F`, kuning `#E9B949`, cokelat `#B5542F`, font **Plus Jakarta Sans**, status berupa pil.
+> Responsif: HP 360×800 (menu bawah) dan komputer 1280×800 (menu samping). Bagian di bawah ini adalah **rancangan v1 (gaya buku kas)** yang sudah diarsipkan.
+
 > Dokumen kerja, **bukan** bagian laporan. Isi BAB IV 4.3 ada di `08-bab-4-perancangan.md`.
 
 ## 1. Arah visual — "buku kas petani", bukan dashboard SaaS

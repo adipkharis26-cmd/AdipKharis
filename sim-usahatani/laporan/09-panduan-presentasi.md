@@ -55,6 +55,14 @@ Kalau dosen tanya *"kenapa dibagi T, bukan 12?"* → jawab: kalau dibagi 12, bia
 - Kenapa 4? → **Login** sebagai pintu masuk, lalu 3 diagram yang masing-masing menjawab **satu rumusan masalah**: (1) catat pengeluaran, (2) update harga harian, (3) laporan laba rugi. Use case lain alurnya mirip (isi formulir → simpan), jadi tidak perlu digambar semua.
 - Poin menarik untuk ditunjukkan: di activity harga harian, sistem **langsung membandingkan harga dengan HPP** dan memberi peringatan kalau harga di bawah modal — ini inti "manajemen"-nya.
 
+## 4c. Cara menjelaskan desain antarmuka
+
+- **Responsif** = satu web, dua susunan: HP pakai menu bawah (mudah dijangkau jempol di lahan), komputer pakai menu samping dan beberapa kolom (enak untuk baca laporan).
+- **Prinsip desain:** satu angka penting dibuat besar, teks sesedikit mungkin, satu warna utama (hijau daun), status untung/rugi pakai pil hijau/cokelat.
+- **Nama menu dipersingkat:** use case *Catat Pengeluaran* = menu **Catat Biaya**; *Update Harga Harian* = menu **Harga Hari Ini**.
+- **Font Plus Jakarta Sans** dibuat oleh desainer Indonesia — bisa disebut kalau ditanya alasan memilih font.
+- **Angka di desain konsisten:** Rp8.040.000 − Rp6.240.000 = Rp1.800.000; HPP = 6.240.000 ÷ 1.200 kg = Rp5.200; R/C = 1,29 (angka ilustrasi).
+
 ## 5. Pertanyaan dosen yang mungkin muncul + jawaban
 
 | Pertanyaan | Jawaban singkat |

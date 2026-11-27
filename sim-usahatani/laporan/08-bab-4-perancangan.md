@@ -74,34 +74,34 @@ Pemilik memilih menu Laporan dan menentukan komoditas serta periode yang ingin d
 
 ## 4.3 Tampilan Antarmuka Pengguna
 
-Antarmuka dirancang di Figma dengan pendekatan *mobile first*, karena pencatatan lebih sering dilakukan melalui HP di lahan. Gaya visualnya meniru buku kas petani: latar berwarna kertas, garis tabel tipis, angka rupiah rata kanan, dan tanda berbentuk cap untuk menunjukkan status untung atau di bawah modal. Ukuran huruf dibuat cukup besar dan setiap layar hanya memiliki satu tombol utama agar mudah digunakan oleh pemilik lahan.
+Antarmuka dirancang di Figma sebagai web responsif, yaitu satu rancangan yang menyesuaikan diri dengan dua ukuran layar. Pada HP (360 piksel), isi disusun dalam satu kolom dengan menu di bagian bawah agar mudah dijangkau ibu jari saat mencatat di lahan. Pada komputer (1280 piksel), menu berpindah ke sisi kiri dan isi dibagi menjadi beberapa kolom sehingga ringkasan dan tabel dapat dibaca sekaligus. Gaya visual dibuat sederhana: latar abu kehijauan, kartu putih bersudut bulat, satu warna utama hijau daun, huruf Plus Jakarta Sans, serta label status berbentuk pil berwarna hijau untuk harga di atas modal dan cokelat untuk harga di bawah modal. Setiap gambar berikut menampilkan versi komputer di kiri dan versi HP di kanan. Agar muat pada menu, beberapa nama dipersingkat: use case Catat Pengeluaran tampil sebagai menu Catat Biaya, dan use case Update Harga Harian tampil sebagai menu Harga Hari Ini.
 
 ### 4.3.1 Halaman Login
 
 ::gambar assets/07-ui-login.png | Gambar 4.6 Tampilan Halaman Login
 
-Halaman ini memuat isian nama pengguna dan kata sandi serta tombol Masuk. Jika data tidak cocok, pesan kesalahan muncul tepat di bawah tombol.
+Halaman login hanya memuat logo, nama sistem, dua isian, dan tombol Masuk agar pengguna langsung tahu apa yang harus dilakukan.
 
 ### 4.3.2 Halaman Dashboard
 
 ::gambar assets/08-ui-dashboard.png | Gambar 4.7 Tampilan Halaman Dashboard
 
-Dashboard menampilkan musim tanam yang sedang berjalan, perbandingan harga pengepul hari ini dengan HPP setiap komoditas, dan ringkasan biaya musim berjalan. Dari halaman ini pemilik dapat langsung menuju pencatatan pengeluaran atau pembaruan harga.
+Bagian paling menonjol adalah kartu hijau berisi pendapatan musim terakhir beserta R/C ratio-nya. Di bawahnya tampil harga pengepul hari ini untuk setiap komoditas lengkap dengan selisihnya terhadap HPP, sehingga pemilik dapat menilai harga hanya dengan sekali lihat. Versi komputer menambahkan progres musim berjalan dan komposisi biaya.
 
 ### 4.3.3 Halaman Catat Pengeluaran
 
 ::gambar assets/09-ui-catat-pengeluaran.png | Gambar 4.8 Tampilan Halaman Catat Pengeluaran
 
-Formulir disusun berurutan dari tanggal, jenis biaya, nominal, sifat biaya, hingga tujuan pembebanan. Pilihan sifat biaya dan tujuan biaya dibuat sebagai tombol pilihan agar pencatat tidak perlu mengetik.
+Nominal biaya ditampilkan besar di bagian atas, sedangkan jenis biaya, cara pembayaran (tunai atau tenaga keluarga), dan tujuan biaya dipilih dengan menekan tombol pilihan tanpa mengetik. Pada komputer, daftar catatan terakhir ditampilkan di sisi kanan sebagai pengecekan.
 
 ### 4.3.4 Halaman Update Harga Harian
 
 ::gambar assets/10-ui-harga-harian.png | Gambar 4.9 Tampilan Halaman Update Harga Harian
 
-Pemilik mengisi harga dari pengepul untuk padi, jagung, dan pisang, dengan harga hari sebelumnya ditampilkan sebagai pembanding. Setelah disimpan, sistem langsung memperlihatkan selisih harga terhadap HPP beserta statusnya.
+Setiap komoditas memiliki satu kotak harga besar dengan harga kemarin sebagai pembanding. Label di bawahnya langsung menunjukkan apakah harga berada di atas atau di bawah modal. Versi komputer menambahkan tabel riwayat harga beberapa hari terakhir.
 
 ### 4.3.5 Halaman Laporan Laba Rugi
 
 ::gambar assets/11-ui-laporan.png | Gambar 4.10 Tampilan Halaman Laporan Laba Rugi
 
-Laporan disusun seperti buku kas, berisi penerimaan, rincian biaya, bagian biaya bersama, pendapatan, HPP, serta R/C ratio atas biaya tunai dan biaya total. Bagian akhir laporan memuat satu kalimat kesimpulan kelayakan dan tombol untuk mencetak laporan dalam bentuk PDF.
+Laporan dibuka dengan pendapatan bersih dan status kelayakan, diikuti rincian penerimaan, biaya tunai, biaya diperhitungkan, bagian biaya bersama, R/C ratio, dan HPP. Batang komposisi biaya memperlihatkan porsi setiap jenis biaya, dan tombol Unduh PDF tersedia untuk mencetak laporan.
