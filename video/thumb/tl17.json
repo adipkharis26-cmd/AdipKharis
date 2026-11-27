@@ -1,0 +1,27 @@
+{
+  "ep": "tl17",
+  "judul": "Hujan Deras, Tebing Ini Tak Runtuh!",
+  "thumbPilihan": "A",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Sama dengan frame 0 v4: wajah Rian kaget di tengah hujan deras. Teks memancing pertanyaan (kenapa tebing ini selamat?) tanpa mengulang judul.",
+      "latar": { "frame": 1.0, "zoom": 1.1, "fokus": [520, 960], "saturasi": 1.2, "terang": 1.2 },
+      "y": 300, "ukuran": 140,
+      "teks": [
+        { "t": "TEBING SEBELAH AMBRUK", "warna": "putih", "besar": 0.85 },
+        { "t": "KOK DI SINI UTUH?", "kotak": "merah", "besar": 1.0 }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Objek utama: penampang akar bambu yang mengikat tanah. Teks memancing rasa ingin tahu soal rahasia akar.",
+      "latar": { "frame": 36.0, "zoom": 1.2, "fokus": [540, 900], "saturasi": 1.2, "terang": 1.15 },
+      "y": 290, "ukuran": 150,
+      "teks": [
+        { "t": "AKAR BAMBU", "warna": "kuning" },
+        { "t": "JARING RAHASIA?!", "kotak": "merah", "besar": 1.0 }
+      ]
+    }
+  ]
+}
