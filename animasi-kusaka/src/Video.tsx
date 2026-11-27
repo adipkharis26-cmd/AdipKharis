@@ -120,7 +120,8 @@ function shotFor(sc: Scene, line: Line | null, since: number, vertical: boolean)
   }
   const v = vertical ? 1.05 : 1;
   const cx = centerOf(sc);
-  if (!line) return { x: cx, y: 560, z: (STATIC ? 1 : 0.94 + since * 0.03) * v };
+  // Shorts: sebelum baris pertama = bingkai "wide" yang sama dengan baris loop terakhir (loop mulus)
+  if (!line) return vertical ? { x: cx, y: 540, z: 1.0 } : { x: cx, y: 560, z: (STATIC ? 1 : 0.94 + since * 0.03) * v };
   const who = line.speaker;
   if (line.offscreen || !sc.cast[who]) return { x: cx, y: 560, z: 1.08 * v };
   const sp = posOf(sc, who), other = posOf(sc, otherOf(sc, who));

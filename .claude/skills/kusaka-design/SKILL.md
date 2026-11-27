@@ -34,6 +34,16 @@ punchline membalik harapan, button, loop; dialog pendek saling sambar, subteks, 
 uji tukar antartokoh, partikel lisan. Suara: `"voiceMode": "dialogue"` (ElevenLabs Text to Dialogue eleven_v4, voice kanon,
 `canon.json → dialogue`), field `"say"` = text + tag nada [..] (tidak tampil di subtitle). Uji "writers room" 3 penonton sebelum pratinjau.
 
+## Pelajaran data Studio (pemilik 27 Nov 2026 — WAJIB untuk tiap Shorts)
+Data: "Ke Pasar" 22,1 rb views, rata-rata ditonton 88% (kurva > 100% di awal = ditonton ulang); "Angkot Terakhir" 6,7 rb, 69%, **tebing
+60% → 30% tepat saat CTA sisipan di akhir**; "Foto Kelas" 4,4 rb, 67%, turun terus tanpa alasan bertahan. TikTok terbaik: Topi Alami, Makan Berapa, Jangan Dihapus.
+1. **Hook = kutipan/situasi yang semua orang kenal**, diucapkan di detik 0 dan jadi teks hook (pola "Nanti jajan..." / "Keluarkan kertas selembar.").
+2. **Satu pertanyaan terbuka** ditanam di awal/tengah dan baru terjawab di 20% terakhir (alasan penonton bertahan sampai akhir).
+3. **CTA sisipan TIDAK BOLEH di 20% terakhir** (penonton mengira video selesai lalu pergi). Taruh di ±50–60%, tepat setelah punchline pertama,
+   sebelum pertanyaan terbuka terjawab. Utamakan CTA kirim yang relevan dengan cerita; reveal = tokoh korban.
+4. **Cerita harus tuntas**: babak 1 punchline → CTA → babak 2 akibat/korban kedua → button → loop mulus. Durasi wajar 45–60 dtk bila ceritanya butuh.
+5. Loop mulus: bingkai akhir = frame 0 (Shorts mulai dari bingkai wide; `Video.tsx`), tokoh di mark yang sama, benda diletakkan di balik CTA.
+
 ## Playbook Shorts (pemilik, 18 Nov 2026 — riset algoritma Shorts 2026; diperbarui 20 Nov 2026)
 **Pembaruan 20 Nov 2026 (mengalahkan poin lama di bawah bila bertentangan):** Shorts = **cerita mandiri, topik ACAK**, bukan turunan episode
 (aturan 20); **durasi bebas 20 dtk–3 menit, ideal 25–45 dtk**; **teks hook wajib** di 1–2 dtk pertama:

@@ -10,12 +10,12 @@
  "tail": 0.2,
  "hook": {
   "lines": [
-   "POV: ULANGAN",
-   "DADAKAN"
+   "\"KELUARKAN",
+   "KERTAS SELEMBAR!\""
   ],
   "keywords": [
-   "ULANGAN",
-   "DADAKAN"
+   "KERTAS",
+   "SELEMBAR!\""
   ],
   "seconds": 1.6
  },
@@ -57,8 +57,8 @@
      "listener": "shock",
      "shot": "crash",
      "action": "hold",
-     "text": "Simpan bukunya. Keluarkan kertas selembar.",
-     "say": "[calm, slow, terrifying] Simpan bukunya. [beat] Keluarkan kertas selembar.",
+     "text": "Keluarkan kertas selembar.",
+     "say": "[calm, slow, terrifying] Keluarkan kertas selembar.",
      "reactions": {
       "kusaka": [
        "shock",
@@ -146,7 +146,7 @@
      "emotion": "shock",
      "listener": "deadpan",
      "shot": "medium",
-     "action": "show",
+     "action": "plead",
      "to": "ujang",
      "text": "Seperempat?! Nulis nama aja nggak muat, Jang!",
      "say": "[outraged whisper] Seperempat?! Nulis nama aja nggak muat, Jang!"
@@ -228,7 +228,107 @@
      "to": "kusaka",
      "closeStyle": "single",
      "text": "Nggak apa-apa. Nilaimu juga Ibu kecilkan.",
-     "say": "[gently, deadly calm] Nggak apa-apa. [beat] Nilaimu juga Ibu kecilkan.",
+     "say": "[gently, deadly calm] Nggak apa-apa. [beat] Nilaimu juga Ibu kecilkan."
+    },
+    {
+     "id": "l013",
+     "speaker": "kusaka",
+     "emotion": "pleading",
+     "listener": "defeated",
+     "shot": "two",
+     "action": "plead",
+     "text": "Kirim ke teman yang dulu selalu minta kertas sama kamu.",
+     "say": "[whispering to camera, guilty] Kirim ke teman yang dulu selalu minta kertas sama kamu.",
+     "cta": {
+      "kind": "kirim",
+      "text": "KIRIM ke TUKANG MINTA KERTAS!",
+      "keywords": [
+       "KIRIM",
+       "KERTAS!"
+      ],
+      "reveal": "ujang"
+     }
+    },
+    {
+     "id": "l014",
+     "speaker": "kusaka",
+     "emotion": "pleading",
+     "listener": "smug",
+     "shot": "medium",
+     "action": "write",
+     "to": "buWati",
+     "text": "Oke, oke... Bu, nama pakai singkatan boleh?",
+     "say": "[writing frantically, tiny] Oke, oke... [hopeful] Bu, nama pakai singkatan boleh?",
+     "hold": {
+      "kusaka": [
+       "kertasSobek",
+       {
+        "item": "pen",
+        "hand": "back"
+       }
+      ]
+     }
+    },
+    {
+     "id": "l015",
+     "speaker": "buWati",
+     "emotion": "smug",
+     "listener": "pleading",
+     "shot": "close",
+     "action": "hold",
+     "to": "kusaka",
+     "closeStyle": "single",
+     "text": "Boleh. Nilainya juga Ibu singkat.",
+     "say": "[calm, pleasant] Boleh. [beat] Nilainya juga Ibu singkat."
+    },
+    {
+     "id": "l016",
+     "speaker": "buWati",
+     "emotion": "suspicious",
+     "listener": "neutral",
+     "shot": "two",
+     "action": "point",
+     "to": "ujang",
+     "text": "Ujang. Kertasmu kok tinggal tiga perempat?",
+     "say": "[noticing, slow] Ujang. Kertasmu kok tinggal tiga perempat?",
+     "reactions": {
+      "ujang": [
+       "deadpan",
+       "show"
+      ]
+     }
+    },
+    {
+     "id": "l017",
+     "speaker": "ujang",
+     "emotion": "deadpan",
+     "listener": "suspicious",
+     "shot": "close",
+     "action": "show",
+     "to": "buWati",
+     "closeStyle": "single",
+     "text": "...Dipinjam Kusaka, Bu.",
+     "say": "[flat, resigned] ...Dipinjam Kusaka, Bu."
+    },
+    {
+     "id": "l018",
+     "speaker": "buWati",
+     "emotion": "smug",
+     "listener": "shock",
+     "shot": "medium",
+     "action": "hold",
+     "text": "Oh. Kertasnya dibagi, nilainya juga dibagi dua.",
+     "say": "[warmly, devastating] Oh. [beat] Kertasnya dibagi, nilainya juga dibagi dua.",
+     "reactions": {
+      "kusaka": [
+       "shock",
+       "shock"
+      ],
+      "ujang": [
+       "defeated",
+       "slump"
+      ]
+     },
      "sfx": [
       {
        "id": "record_scratch",
@@ -237,40 +337,22 @@
      ]
     },
     {
-     "id": "l013",
+     "id": "l019",
      "speaker": "ujang",
-     "emotion": "deadpan",
-     "listener": "defeated",
-     "shot": "two",
-     "action": "crossed",
+     "emotion": "defeated",
+     "listener": "shock",
+     "shot": "close",
+     "action": "idle",
      "to": "kusaka",
+     "closeStyle": "single",
      "text": "Udah gue duga.",
-     "say": "[flat] Udah gue duga.",
+     "say": "[flat, defeated] Udah gue duga.",
      "sfx": [
       {
        "id": "rimshot",
        "at": "end"
       }
-     ]
-    },
-    {
-     "id": "l014",
-     "speaker": "kusaka",
-     "emotion": "pleading",
-     "listener": "deadpan",
-     "shot": "two",
-     "action": "plead",
-     "text": "Like dong, biar nilai gue nggak ikut seperempat.",
-     "say": "[whining] Like dong, biar nilai gue nggak ikut seperempat.",
-     "cta": {
-      "kind": "like",
-      "text": "LIKE biar NILAINYA UTUH!",
-      "keywords": [
-       "LIKE",
-       "UTUH!"
-      ],
-      "reveal": "buWati"
-     },
+     ],
      "hold": {
       "ujang": [
        null,
@@ -289,7 +371,7 @@
      }
     },
     {
-     "id": "l015",
+     "id": "l020",
      "speaker": "buWati",
      "emotion": "neutral",
      "listener": "defeated",

@@ -2,16 +2,16 @@
 
 (id internal `shorts15` · file `releases/Kusaka-Shorts12-Kertas-Selembar.mp4`)
 
-Durasi: **0:39** · full 9:16 · format **POV** (cerita mandiri, aturan 20) · teks hook 1,6 dtk · CTA cerita (like, tengah) ·
+Durasi: **0:53** · full 9:16 · format **POV** (cerita mandiri, aturan 20) · teks hook 1,6 dtk · CTA cerita (kirim, 56%) ·
 1 adegan · kelas (seragam, jam pelajaran) · Bu Wati, Kusaka, Ujang · suara mode dialog (−18,5 LUFS) · loop mulus
 
 ## Judul (pilih satu; Shorts tidak punya A/B test)
-1. POV: Ulangan Dadakan, Nggak Bawa Kertas 😭 | KUSAKA
+1. "Keluarkan Kertas Selembar." Nggak Bawa Kertas 😭 | KUSAKA
 2. "Nilaimu Juga Ibu Kecilkan" 💀 Kertas Seperempat Pas Ulangan | KUSAKA
 3. Pinjam Kertas Pas Ulangan, Dikasih Seperempat 😭 | KUSAKA
 
 ## Deskripsi (YouTube Shorts)
-POV: "Simpan bukunya. Keluarkan kertas selembar." 😭 Nggak bawa kertas, pinjam teman... dikasih seperempat. Soalnya gampang, tapi tanggalnya nggak muat. 💀
+"Keluarkan kertas selembar." 😭 Nggak bawa kertas, pinjam teman... dikasih seperempat. Tanggalnya nggak muat, nilainya dikecilkan. Terus temannya juga kena. 💀
 
 Siapa dulu yang selalu minta kertas pas ulangan? 👇
 
@@ -42,11 +42,12 @@ Jujur 😭 Dulu kalian tim bawa kertas sendiri, atau tim "minta selembar dong"? 
 ## Strategi algoritma (sinyal → penerapan)
 | Sinyal | Penerapan |
 |---|---|
-| Swipe-away 0–2 dtk | Detik 0 Bu Wati: "Keluarkan kertas selembar." + crash zoom + teks hook "POV: ULANGAN / DADAKAN" |
+| Swipe-away 0–2 dtk | Kutipan ikonik di detik 0: Bu Wati "Keluarkan kertas selembar." + crash zoom + teks hook `"KELUARKAN / KERTAS SELEMBAR!"` |
 | Retensi 0–8 dtk | Bisikan panik minta kertas → Ujang cuma bawa satu |
 | Penonton 25–34 | Ulangan dadakan & pinjam kertas (nostalgia universal) |
-| Like | CTA like di tengah: "biar nilai gue nggak ikut seperempat" |
-| Loop (mulus) | "Besok ulangan lagi. Bawa kertas sendiri." → "Simpan bukunya. Keluarkan kertas selembar." |
+| Sends | CTA kirim di 56% (bukan di akhir, agar tidak ada tebing retensi): "Kirim ke teman yang dulu selalu minta kertas sama kamu" |
+| Retensi akhir | Pertanyaan terbuka "kertas Ujang tinggal ¾" baru terjawab di akhir ("nilainya juga dibagi dua") |
+| Loop (mulus) | "Besok ulangan lagi. Bawa kertas sendiri." → "Keluarkan kertas selembar." |
 | Komentar | Pertanyaan tim bawa kertas vs minta kertas di komentar sematan |
 
 ## Metrik cek (Studio, 48 jam)
