@@ -35,3 +35,31 @@ Penjelasan setiap use case disajikan pada Tabel 4.2.
 | 12 | Cetak Laporan | Pemilik (extend) | Fungsi pilihan untuk mengunduh laporan laba rugi dalam bentuk PDF. |
 
 Relasi «include» menunjukkan proses yang **selalu** dijalankan, sedangkan «extend» menunjukkan proses **pilihan**. Perhitungan HPP dan R/C selalu dilakukan setiap kali dashboard atau laporan dibuka, sedangkan mencetak laporan hanya dilakukan apabila pemilik membutuhkannya.
+
+## 4.2 Diagram Activity
+
+Activity diagram menggambarkan urutan langkah di dalam sebuah use case, mulai dari tindakan pengguna sampai respons sistem. Setiap diagram dibagi menjadi dua lajur, yaitu lajur pengguna di kiri dan lajur sistem di kanan. Pada penelitian ini dibuat tiga activity diagram untuk use case utama yang mewakili setiap rumusan masalah. Seluruh activity diagram diawali dengan kondisi pengguna telah berhasil login.
+
+### 4.2.1 Activity Diagram Catat Pengeluaran
+
+Diagram ini mewakili rumusan masalah pertama, yaitu pencatatan transaksi per komoditas dan per musim tanam.
+
+::gambar assets/03-activity-catat-pengeluaran.png | Gambar 4.2 Activity Diagram Catat Pengeluaran
+
+Pencatat membuka menu Catat Pengeluaran, lalu sistem menampilkan formulir. Pencatat mengisi tanggal, jenis biaya, jumlah, sifat biaya (tunai atau diperhitungkan), dan tujuan biaya, yaitu musim tanam, petak pisang, atau biaya bersama. Setelah tombol Simpan ditekan, sistem memeriksa kelengkapan data. Jika belum lengkap, sistem menampilkan pesan dan pencatat kembali mengisi formulir. Jika sudah lengkap, data disimpan dan sistem menampilkan notifikasi berhasil.
+
+### 4.2.2 Activity Diagram Update Harga Harian
+
+Diagram ini mewakili rumusan masalah kedua, yaitu pencatatan harga jual harian sebagai acuan nilai jual.
+
+::gambar assets/04-activity-update-harga.png | Gambar 4.3 Activity Diagram Update Harga Harian
+
+Pemilik membuka menu Harga Harian, kemudian sistem menampilkan harga terakhir setiap komoditas. Pemilik mengisi harga dari pengepul hari itu dan menyimpannya. Sistem menyimpan harga beserta tanggalnya, lalu menghitung margin per kilogram dengan rumus (2.7). Jika harga lebih tinggi daripada HPP, sistem menampilkan status untung per kilogram. Jika tidak, sistem menampilkan peringatan bahwa harga berada di bawah modal.
+
+### 4.2.3 Activity Diagram Lihat Laporan Laba Rugi
+
+Diagram ini mewakili rumusan masalah ketiga, yaitu penyajian HPP, pendapatan, R/C ratio, dan laporan laba rugi.
+
+::gambar assets/05-activity-laporan-laba-rugi.png | Gambar 4.4 Activity Diagram Lihat Laporan Laba Rugi
+
+Pemilik membuka menu Laporan, lalu memilih komoditas dan periode. Sistem mengambil data pengeluaran, panen, dan penjualan, kemudian menghitung alokasi biaya bersama dengan rumus (2.8) serta menghitung TC, TR, pendapatan, R/C ratio, dan HPP. Laporan laba rugi kemudian ditampilkan. Apabila pemilik memilih untuk mencetak, sistem membuat file PDF yang dapat diunduh; apabila tidak, proses selesai.
