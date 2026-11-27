@@ -230,6 +230,12 @@
       "format": "tebak-angka",
       "alur": "hasil-dulu",
       "jawaban": "angka"
+    },
+    {
+      "ep": "oh14",
+      "format": "urutkan",
+      "alur": "urut",
+      "jawaban": "123"
     }
   ]
 }

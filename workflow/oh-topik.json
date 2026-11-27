@@ -200,6 +200,21 @@
       ],
       "format": "tebak-angka",
       "alur": "hasil-dulu"
+    },
+    {
+      "ep": "oh14",
+      "judul": "1 Juta e-KTP vs Koin vs Bata Merah Ditumpuk: Urutkan! 🧱",
+      "objek": [
+        "bata-merah",
+        "e-ktp",
+        "koin-1000"
+      ],
+      "patokan": [
+        "burj-khalifa",
+        "garis-karman"
+      ],
+      "format": "urutkan",
+      "alur": "urut"
     }
   ]
 }

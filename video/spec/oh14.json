@@ -1,0 +1,120 @@
+{
+  "ep": "oh14",
+  "slug": "ktp-koin-bata",
+  "format": "urutkan",
+  "alur": "urut",
+  "jawaban": "123",
+  "seri": "Tebak Dulu: Lebih Besar Mana?",
+  "judul": "1 Juta e-KTP vs Koin vs Bata Merah Ditumpuk: Urutkan! 🧱 | OHHIYAA!",
+  "objek": [
+    "e-ktp",
+    "koin-1000",
+    "bata-merah"
+  ],
+  "patokan": [
+    "burj-khalifa",
+    "garis-karman"
+  ],
+  "vo": [
+    "Satu juta e-KTP, satu juta koin seribuan, dan satu juta bata merah. Kalau ditumpuk ke atas, mana yang paling tinggi?",
+    "Urutkan dari yang paling pendek! Ketik urutanmu di komentar.",
+    "E-KTP dulu. Tebalnya tiga perempat milimeter, jadi sejuta kartu cuma tujuh ratus enam puluh meter. Sedikit lebih pendek dari Burj Khalifa!",
+    "Koin seribuan, satu koma empat lima milimeter. Sejuta koin, seribu empat ratus lima puluh meter. Bata merah, enam setengah senti. Sejuta bata, enam puluh lima kilometer, hampir sampai luar angkasa!",
+    "Urutan benar: satu, dua, tiga! E-KTP paling pendek, bata paling tinggi. Ohhiyaa!",
+    "Sejuta kartu identitasmu belum sampai satu kilometer! Jadi, KTP, koin, atau bata, mana paling tinggi?"
+  ],
+  "layar": [
+    "Tiga barang mainan berjajar: kartu e-KTP, koin seribuan, bata merah; chip '1 JUTA masing-masing'",
+    "Ohi di tengah; tebak(URUTKAN!) opsi 1. e-KTP, 2. Koin Rp1.000, 3. Bata merah, 3-2-1",
+    "Satu kartu + penggaris (0,76 mm); tumpukan kartu naik; angka 760 M vs Burj Khalifa 828 m",
+    "Koin lalu bata: dua menara naik berurutan; angka 1.450 M lalu 65 KM, penanda garis Kármán 100 km",
+    "Podium 1-2-3 (KTP, koin, bata); jawab('Urutan benar: 1-2-3'); OHHIYAA!",
+    "Ohi + tiga barang; chip 'KTP, koin, atau bata?' (loop ke pertanyaan awal)"
+  ],
+  "hitungan": [
+    "e-KTP: 1.000.000 × 0,76 mm = 760.000 mm = 760 m (Burj Khalifa 828 m)",
+    "Koin Rp1.000 (TE 2016): 1.000.000 × 1,45 mm = 1.450.000 mm = 1.450 m = 1,45 km",
+    "Bata merah SNI modul M-5a: 1.000.000 × 65 mm = 65.000 m = 65 km (65% dari garis Kármán 100 km)",
+    "Urutan pendek → tinggi: e-KTP (760 m) < koin (1.450 m) < bata (65 km) = 1-2-3 sesuai urutan tampil"
+  ],
+  "asumsi": [
+    "Tumpukan rapat tanpa celah dan sempurna lurus (ideal, bukan fisik nyata)",
+    "Tebal e-KTP 0,76 mm = standar kartu ID-1 (ISO/IEC 7810) yang dipakai kartu identitas; bukan pengukuran langsung",
+    "Koin Rp1.000 yang dipakai adalah logam TE 2016 (tebal 1,45 ± 0,1 mm); bata merah modul M-5a tebal 65 ± 2 mm"
+  ],
+  "keaslian": {
+    "sumber_primer": [
+      "Bank Indonesia — Uang Rupiah Logam Rp1.000 TE 2016: bahan nickel plated steel, diameter 24,10 mm, tebal 1,45 ± 0,1 mm (bi.go.id)",
+      "BSN — SNI 15-2094-2000 Bata Merah Pejal: modul M-5a tebal 65 ± 2 mm (dikutip jurnal UNJ Menara)",
+      "ISO/IEC 7810 — kartu ID-1 85,60 × 53,98 × 0,76 mm (dipakai kartu identitas termasuk e-KTP)"
+    ],
+    "sudut_baru": "Tiga objek baru sekaligus (e-KTP, koin seribuan, bata merah) dari dokumen standar teknis (BI, SNI, ISO), bukan data konsumsi; kejutannya tumpukan benda tipis tetap tinggi sedangkan satu bata jauh lebih tebal.",
+    "web_cek": "WebSearch 'satu juta KTP elektronik ditumpuk setinggi berapa ketebalan kartu 0,76 mm' → hanya berita e-KTP umum dan ukuran kartu; tidak ada video/judul/visual identik."
+  },
+  "deskripsi": {
+    "pembuka": "Satu juta e-KTP, satu juta koin seribuan, dan satu juta bata merah. Ditumpuk, mana yang paling tinggi? 🧱🪙",
+    "hitungan": "e-KTP 0,76 mm → 760 m; koin Rp1.000 1,45 mm → 1.450 m; bata merah SNI 65 mm → 65 km. Sumber: BI, SNI 15-2094-2000, ISO/IEC 7810.",
+    "cta": "Urutanmu tadi berapa? Ketik di komentar 👇",
+    "hashtag": "#shorts #ohhiyaa #faktaunik #indonesia #tahukahkamu #urutkan"
+  },
+  "thumb": [
+    {
+      "nama": "A",
+      "alasan": "Tiga barang berjajar dan tantangan urutkan tanpa menampilkan tinggi akhir",
+      "frame": 7.5,
+      "zoom": 1.15,
+      "fokus": [
+        540,
+        1050
+      ],
+      "teks": [
+        {
+          "t": "KTP vs KOIN vs BATA",
+          "warna": "putih"
+        },
+        {
+          "t": "URUTKAN TINGGINYA!",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1f9f1",
+          "x": 880,
+          "y": 1320,
+          "s": 200,
+          "rot": 0.15
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Varian cadangan: Ohi bingung di antara tiga barang, ajakan urutkan",
+      "frame": 12.0,
+      "zoom": 1.05,
+      "fokus": [
+        540,
+        1000
+      ],
+      "teks": [
+        {
+          "t": "SEJUTA DITUMPUK",
+          "warna": "putih"
+        },
+        {
+          "t": "MANA PALING TINGGI?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1f914",
+          "x": 880,
+          "y": 1320,
+          "s": 200,
+          "rot": -0.12
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "ep": "oh14",
+  "catatan": "Thumbnail oh14. Jangan tampilkan jawaban.",
+  "varian": [
+    {
+      "nama": "A",
+      "alasan": "Tiga barang berjajar dan tantangan urutkan tanpa menampilkan tinggi akhir",
+      "latar": {
+        "frame": 7.5,
+        "zoom": 1.15,
+        "fokus": [
+          540,
+          1050
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "KTP vs KOIN vs BATA",
+          "warna": "putih"
+        },
+        {
+          "t": "URUTKAN TINGGINYA!",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1f9f1",
+          "x": 880,
+          "y": 1320,
+          "s": 200,
+          "rot": 0.15
+        }
+      ]
+    },
+    {
+      "nama": "B",
+      "alasan": "Varian cadangan: Ohi bingung di antara tiga barang, ajakan urutkan",
+      "latar": {
+        "frame": 12.0,
+        "zoom": 1.05,
+        "fokus": [
+          540,
+          1000
+        ]
+      },
+      "y": 360,
+      "teks": [
+        {
+          "t": "SEJUTA DITUMPUK",
+          "warna": "putih"
+        },
+        {
+          "t": "MANA PALING TINGGI?",
+          "kotak": "pink"
+        }
+      ],
+      "stiker": [
+        {
+          "e": "1f914",
+          "x": 880,
+          "y": 1320,
+          "s": 200,
+          "rot": -0.12
+        }
+      ]
+    }
+  ],
+  "thumbPilihan": "A"
+}
