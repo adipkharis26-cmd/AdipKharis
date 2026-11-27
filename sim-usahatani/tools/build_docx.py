@@ -32,7 +32,7 @@ OUT = os.path.join(ROOT, "output", "Laporan_SIM_Usaha_Tani.docx")
 JUDUL = ("PERANCANGAN SISTEM INFORMASI MANAJEMEN KEUANGAN USAHA TANI "
          "MULTI-KOMODITAS BERBASIS WEB RESPONSIF")
 SUBJUDUL = "(Studi Kasus: Lahan Tegal Miring, Desa Sidomulyo, Kabupaten Batang)"
-BAB_FILES = ["04-bab-1-pendahuluan.md", "06-bab-2-landasan-teori.md", "07-bab-3-metodologi.md"]  # bab berikutnya ditambahkan di sini
+BAB_FILES = ["04-bab-1-pendahuluan.md", "06-bab-2-landasan-teori.md", "07-bab-3-metodologi.md", "08-bab-4-perancangan.md"]  # bab berikutnya ditambahkan di sini
 
 FONT = "Times New Roman"
 
@@ -259,7 +259,13 @@ def render_bab(doc, blocks, toc_entries):
             path, _, cap = text.partition("|")
             p = para(doc, "", WD_ALIGN_PARAGRAPH.CENTER, keep_next=True)
             p.paragraph_format.space_before = Pt(6)
-            p.add_run().add_picture(os.path.join(ROOT, path.strip()), width=Cm(11))
+            # Bisa beberapa kandidat dipisah koma: dipakai file pertama yang ada.
+            found = next((c.strip() for c in path.split(",") if os.path.exists(os.path.join(ROOT, c.strip()))), None)
+            if found:
+                p.add_run().add_picture(os.path.join(ROOT, found), width=Cm(11))
+            else:
+                r = p.add_run(f"[gambar belum diekspor: {path.split(',')[0].strip()}]")
+                r.font.highlight_color = WD_COLOR_INDEX.YELLOW
             p = para(doc, "", WD_ALIGN_PARAGRAPH.CENTER, space_after=6)
             p.add_run(cap.strip()).bold = True
         elif kind == "tabel":
@@ -282,8 +288,14 @@ def render_bab(doc, blocks, toc_entries):
                         r.font.size = Pt(10)
                         if i == 0:
                             r.bold = True
-            widths = [Cm(1.0), Cm(2.4), Cm(2.6), Cm(2.2), Cm(2.8), Cm(3.0)]
-            if len(rows[0]) == len(widths):
+            ncol = len(rows[0])
+            if ncol == 6:
+                widths = [Cm(1.0), Cm(2.4), Cm(2.6), Cm(2.2), Cm(2.8), Cm(3.0)]
+            elif ncol == 4:
+                widths = [Cm(1.0), Cm(3.6), Cm(2.6), Cm(6.8)]
+            else:
+                widths = [Cm(1.0)] + [Cm(13.0 / (ncol - 1))] * (ncol - 1)
+            if True:
                 t.autofit = False
                 grid = t._tbl.tblGrid
                 for gc, w in zip(grid.findall(qn("w:gridCol")), widths):

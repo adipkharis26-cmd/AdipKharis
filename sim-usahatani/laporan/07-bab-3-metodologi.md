@@ -4,7 +4,7 @@
 
 Penelitian ini menggunakan metode prototyping karena rancangan dapat diperlihatkan kepada pemilik lahan sejak awal, lalu diperbaiki berdasarkan masukannya. Tahapan yang digunakan mengacu pada Sarfiah dkk. (2023) dan Hasugian dkk. (2026), yang disesuaikan dengan kebutuhan penelitian seperti pada Gambar 3.1.
 
-::gambar assets/gambar-3-1-prototyping.png | Gambar 3.1 Tahapan Metode Prototyping
+::gambar assets/01-tahapan-prototyping.png, assets/gambar-3-1-prototyping.png | Gambar 3.1 Tahapan Metode Prototyping
 
 1. **Identifikasi kebutuhan.** Penulis mengumpulkan kebutuhan melalui observasi lahan dan wawancara dengan pemilik. Hasilnya berupa daftar kebutuhan, misalnya pencatatan transaksi per musim tanam, pencatatan harga dari pengepul, dan laporan laba rugi per komoditas.
 2. **Perancangan prototipe.** Kebutuhan dimodelkan dalam use case diagram dan activity diagram, kemudian diwujudkan menjadi desain antarmuka interaktif menggunakan Figma.

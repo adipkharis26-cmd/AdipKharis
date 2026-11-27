@@ -39,9 +39,9 @@ Dalam penelitian ini, HPP dibandingkan dengan harga jual harian dari pengepul. S
 
 Karena padi dan jagung ditanam bergantian pada petak yang sama, biaya bersama tahunan seperti pajak lahan dan penyusutan alat dibagi menurut luas petak dan lama musim tanam.
 
-::rumus Bᵢ = B × (Lₚ ÷ Lₜ) × (tᵢ ÷ 12) | (2.8)
+::rumus Bᵢ = B × (Lₚ ÷ Lₜ) × (tᵢ ÷ T) | (2.8)
 
-::ket Keterangan: Bᵢ = biaya bersama yang dibebankan ke musim tanam ke-i (Rp); B = biaya bersama satu tahun (Rp); Lₚ = luas petak (m²); Lₜ = luas lahan seluruhnya (m²); tᵢ = lama musim tanam ke-i (bulan). Untuk petak pisang, tᵢ bernilai 12.
+::ket Keterangan: Bᵢ = biaya bersama yang dibebankan ke musim tanam ke-i (Rp); B = biaya bersama satu tahun (Rp); Lₚ = luas petak (m²); Lₜ = luas lahan seluruhnya (m²); tᵢ = lama musim tanam ke-i (bulan); T = jumlah lama seluruh musim tanam di petak tersebut dalam satu tahun (bulan). Pembagi T digunakan agar biaya pada masa lahan kosong (bera) tetap terbagi habis. Untuk petak pisang, tᵢ = T sehingga seluruh bagian petak pisang dibebankan ke pisang.
 
 ### 2.1.5 Metode Prototyping
 
