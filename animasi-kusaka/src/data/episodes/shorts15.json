@@ -306,7 +306,10 @@
        "deadpan",
        "idle"
       ]
-     }
+     },
+     "ref": [
+      "kertas"
+     ]
     }
    ]
   }
