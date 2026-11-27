@@ -1,6 +1,6 @@
 # Shorts 12 "Kertas Selembar" (id `shorts15`): status produksi
 
-Naskah + storyboard disetujui pemilik ("cocok", 27 Nov 2026). Suara mode dialog dibuat (0:39). BELUM dirender (render hanya atas perintah).
+Naskah + storyboard disetujui pemilik ("cocok", 27 Nov 2026). Suara mode dialog dibuat (0:39). Dirender atas perintah pemilik ("render"), dirilis 27 Nov 2026 (0:39, 3,9 MB): `releases/Kusaka-Shorts12-Kertas-Selembar.mp4`.
 
 - Format: POV (aturan 20; beda dari Shorts 11 running gag). Bu Wati, Kusaka, Ujang; kelas (seragam, jam pelajaran).
 - 15 baris, 0:39, Bu Wati −18,4 / Kusaka −18,5 / Ujang −18,5 LUFS, tanpa jeda mati > 0,5 dtk. Audit props 0. Musik `music-homework-tension`.

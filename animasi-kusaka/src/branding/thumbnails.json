@@ -892,5 +892,42 @@
       }
     ],
     "prop": null
+  },
+  "shorts15-A": {
+    "episode": 15,
+    "size": "9x16",
+    "bg": "kelas",
+    "bgX": 900,
+    "burst": "#f3a03c",
+    "pattern": "halftone",
+    "text": [
+      "KERTAS",
+      "SEPEREMPAT?!"
+    ],
+    "textX": 540,
+    "textY": 230,
+    "textSize": 170,
+    "textRot": -4,
+    "actors": [
+      {
+        "id": "buWati",
+        "emotion": "smug",
+        "action": "point",
+        "x": 760,
+        "y": 1580,
+        "scale": 1.45,
+        "facing": -1
+      },
+      {
+        "id": "kusaka",
+        "emotion": "shock",
+        "action": "shock",
+        "x": 330,
+        "y": 2700,
+        "scale": 2.4,
+        "facing": 1
+      }
+    ],
+    "prop": null
   }
 }
