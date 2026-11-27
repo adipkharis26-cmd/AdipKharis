@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% set aktif = 'catat' %}
+{% block judul %}Catat Panen{% endblock %}
+{% block isi %}
+<div class="kepala"><div><div class="kecil">Catat hasil panen</div><h1>Catat Panen</h1></div></div>
+{% include "_tab_catat.html" %}
+<div class="grid utama">
+  <form class="kartu" method="post" novalidate>
+    <label><div class="label">Jumlah panen (kg)</div><input class="isian-besar angka" name="kg" inputmode="decimal" placeholder="0" required></label>
+    <div><div class="label">Musim / komoditas</div>
+      <div class="pilihan">{% for m in musim %}<label><input type="radio" name="musim_id" value="{{ m['id'] }}" {{ 'checked' if loop.first }}><span>{{ m['komoditas']|capitalize }} · {{ m['mulai']|tgl }}</span></label>{% endfor %}</div></div>
+    <div class="baris" style="align-items:flex-end;flex-wrap:wrap">
+      <label class="isian tumbuh">Tanggal<input type="date" name="tanggal" value="{{ hari_ini }}" required></label>
+      <button class="tombol" type="submit" style="min-width:160px">Simpan</button>
+    </div>
+  </form>
+  <section class="kartu"><h2>Panen terakhir</h2>
+    <div class="daftar">{% for p in terakhir %}<div class="baris antara"><div><div>{{ p['komoditas']|capitalize }}</div><div class="kecil">{{ p['tanggal']|tgl }}</div></div><b class="angka">{{ p['kg']|angka }} kg</b></div>{% else %}<div class="kecil">Belum ada catatan.</div>{% endfor %}</div>
+  </section>
+</div>
+{% endblock %}

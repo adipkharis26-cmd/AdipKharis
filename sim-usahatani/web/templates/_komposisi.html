@@ -1,0 +1,9 @@
+{% set r = rb if rb is defined and rb else r %}
+<div class="batang" role="img" aria-label="Komposisi biaya">
+  <i style="flex:{{ r.tunai }};background:var(--daun)"></i>
+  <i style="flex:{{ r.diperhitungkan }};background:var(--padi)"></i>
+  <i style="flex:{{ r.bersama }};background:var(--tanah)"></i>
+</div>
+<div class="baris antara kecil"><span><span class="titik" style="background:var(--daun)"></span> Tunai</span><span class="angka" style="color:var(--tinta)">{{ r.tunai|rp }}</span></div>
+<div class="baris antara kecil"><span><span class="titik" style="background:var(--padi)"></span> Tenaga keluarga &amp; alat (diperhitungkan)</span><span class="angka" style="color:var(--tinta)">{{ r.diperhitungkan|rp }}</span></div>
+<div class="baris antara kecil"><span><span class="titik" style="background:var(--tanah)"></span> Bagian biaya bersama</span><span class="angka" style="color:var(--tinta)">{{ r.bersama|rp }}</span></div>

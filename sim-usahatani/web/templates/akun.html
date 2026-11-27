@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% set aktif = 'akun' %}
+{% block judul %}Akun{% endblock %}
+{% block isi %}
+<div class="kepala"><div><div class="kecil">{{ g.user['peran']|capitalize }}</div><h1>{{ g.user['nama'] }}</h1></div></div>
+<section class="kartu daftar">
+  {% if g.user['peran'] == 'pemilik' %}
+  <a class="baris antara" href="{{ url_for('kelola_musim') }}"><span>Kelola musim tanam</span><span class="kecil">›</span></a>
+  <a class="baris antara" href="{{ url_for('kelola_petak') }}"><span>Kelola petak lahan</span><span class="kecil">›</span></a>
+  <a class="baris antara" href="{{ url_for('kelola_pengguna') }}"><span>Kelola pengguna</span><span class="kecil">›</span></a>
+  {% endif %}
+  <a class="baris antara tanah" href="{{ url_for('keluar') }}"><span>Keluar</span><span class="kecil">›</span></a>
+</section>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% set aktif = 'harga' %}
+{% block judul %}Harga Hari Ini{% endblock %}
+{% block isi %}
+<form method="post" style="display:contents">
+<div class="kepala">
+  <div><div class="kecil">Dari pengepul</div><h1>Harga Hari Ini</h1></div>
+  <div class="baris"><label class="isian" style="flex-direction:row;align-items:center"><span class="sr">Tanggal</span><input type="date" name="tanggal" value="{{ hari_ini }}" style="height:44px"></label>
+  <button class="tombol kecil-t" type="submit">Simpan Harga</button></div>
+</div>
+<div class="grid tiga">
+  {% for h in data %}
+  <section class="kartu">
+    <div class="baris"><span class="inisial {{ h.komoditas }}">{{ h.komoditas[0]|upper }}</span>
+      <div class="tumbuh"><h2>{{ h.komoditas|capitalize }}</h2><div class="kecil">Terakhir {{ h.sekarang and (h.sekarang['harga_per_kg']|angka) or '–' }}{% if h.sekarang %} ({{ h.sekarang['tanggal']|tgl }}){% endif %}</div></div></div>
+    <label class="isian-harga"><span class="kecil">Rp</span><input name="{{ h.komoditas }}" inputmode="numeric" placeholder="{{ h.sekarang and (h.sekarang['harga_per_kg']|angka) or '0' }}" aria-label="Harga {{ h.komoditas }} per kg"></label>
+    {% if h.margin is not none %}
+      <span class="pil {{ 'naik' if h.margin >= 0 else 'turun' }}" style="align-self:flex-start">{{ h.margin|rp(true) }}/kg {{ 'di atas' if h.margin >= 0 else 'di bawah' }} modal</span>
+    {% else %}<span class="kecil">HPP belum bisa dihitung</span>{% endif %}
+    <div class="kecil">HPP acuan: {{ h.hpp|rp }}/kg</div>
+  </section>
+  {% endfor %}
+</div>
+</form>
+<section class="kartu">
+  <h2>Riwayat harga (Rp/kg)</h2>
+  <table><thead><tr><th>Tanggal</th><th>Padi</th><th>Jagung</th><th>Pisang</th></tr></thead>
+  <tbody>{% for r in riwayat %}<tr><td>{{ r['tanggal']|tgl }}</td><td>{{ r['padi']|angka }}</td><td>{{ r['jagung']|angka }}</td><td>{{ r['pisang']|angka }}</td></tr>{% endfor %}</tbody></table>
+</section>
+<style>.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}</style>
+{% endblock %}

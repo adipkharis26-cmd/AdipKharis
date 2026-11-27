@@ -14,7 +14,7 @@ Perancangan Sistem Informasi Manajemen Keuangan Usaha Tani Multi-Komoditas Berba
 |---|---|
 | `laporan/` | Draf per bab laporan (Markdown) dan daftar referensi |
 | `diagram/` | File diagram `.drawio` (prototyping, use case, activity) — diedit di diagrams.net / VS Code |
-| `web/` | Kode web responsif (menyusul, setelah desain Figma final) |
+| `web/` | Purwarupa web responsif (Flask + SQLite) — lihat `web/README.md` |
 
 ## Progres
 
@@ -25,7 +25,7 @@ Perancangan Sistem Informasi Manajemen Keuangan Usaha Tani Multi-Komoditas Berba
 - [x] Tahap 4 — BAB II Landasan Teori (draf v1)
 - [x] Tahap 5 — BAB III Metodologi (draf v1, gambar 3.1 + lampiran pedoman wawancara)
 - [x] Tahap 6 — BAB IV Perancangan: 4.1 use case, 4.2 activity (4), 4.3 antarmuka (teks; gambar menunggu draw.io & Figma)
-- [ ] Tahap 7 — Implementasi web responsif
+- [x] Tahap 7 — Implementasi web responsif (`web/`, Flask + SQLite, 7 tes lulus)
 - [ ] Tahap 8 — BAB V, daftar pustaka, finalisasi .docx
 
 ## Pindah ke laptop lain

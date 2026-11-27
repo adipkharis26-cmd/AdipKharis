@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% set aktif = 'akun' %}
+{% block judul %}Kelola Petak{% endblock %}
+{% block isi %}
+<div class="kepala"><div><div class="kecil"><a href="{{ url_for('akun') }}">‹ Akun</a></div><h1>Kelola Petak Lahan</h1></div></div>
+<form class="kartu" method="post" style="max-width:520px">
+  {% for p in petak %}<label class="isian">{{ p['nama'] }} (m²)<input name="luas_{{ p['id'] }}" inputmode="numeric" value="{{ p['luas_m2']|angka }}"></label>{% endfor %}
+  <div class="kecil">Luas petak dipakai untuk membagi biaya bersama (rumus 2.8).</div>
+  <button class="tombol penuh">Simpan</button>
+</form>
+{% endblock %}

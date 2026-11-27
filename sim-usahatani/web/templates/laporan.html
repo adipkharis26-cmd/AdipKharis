@@ -1,0 +1,42 @@
+{% extends "base.html" %}{% set aktif = 'laporan' %}
+{% block judul %}Laporan Laba Rugi{% endblock %}
+{% block isi %}
+{% if not r %}<div class="kartu">Belum ada musim tanam.</div>{% else %}
+{% set m = r.musim %}
+<div class="kepala">
+  <div><div class="kecil">Musim {{ m.komoditas }} · {{ m.mulai|tgl }} – {{ m.selesai|tgl if m.selesai else 'berjalan' }}</div><h1>Laporan Laba Rugi</h1></div>
+  <div class="baris no-print" style="flex-wrap:wrap">
+    <form method="get"><label class="isian"><select name="musim" onchange="this.form.submit()" aria-label="Pilih musim" style="height:44px">
+      {% for s in semua %}<option value="{{ s['id'] }}" {{ 'selected' if s['id'] == m.id }}>{{ s['komoditas']|capitalize }} · {{ s['mulai']|tgl }}</option>{% endfor %}
+    </select></label></form>
+    <button class="tombol kecil-t" onclick="window.print()">Unduh PDF</button>
+  </div>
+</div>
+{% set ada_jual = r.TR > 0 %}
+<div class="grid empat">
+  <section class="kartu"><div class="kecil">Pendapatan bersih</div>
+    <h1 class="angka {{ 'daun' if r.pendapatan >= 0 else 'tanah' }}">{{ r.pendapatan|rp if ada_jual else '–' }}</h1>
+    {% if ada_jual %}<span class="pil {{ 'naik' if r.rc_total > 1 else 'turun' }}" style="align-self:flex-start">{{ 'Layak' if r.rc_total > 1 else 'Belum layak' }}</span>{% else %}<span class="kecil">Belum ada penjualan</span>{% endif %}</section>
+  <section class="kartu"><div class="kecil">R/C atas biaya total</div><h1 class="angka">{{ r.rc_total|angka(2) if ada_jual else '–' }}</h1></section>
+  <section class="kartu"><div class="kecil">R/C atas biaya tunai</div><h1 class="angka">{{ r.rc_tunai|angka(2) if ada_jual else '–' }}</h1></section>
+  <section class="kartu"><div class="kecil">HPP{{ ' (sementara, dari target panen)' if r.hpp_sementara }}</div><h1 class="angka">{{ r.hpp|rp }}/kg</h1></section>
+</div>
+<div class="grid utama">
+  <section class="kartu"><h2>Rincian</h2>
+    <table>
+      <tr><td>Penerimaan ({{ r.jual_kg|angka }} kg{% if r.harga_rata %} × {{ r.harga_rata|rp }}{% endif %})</td><td>{{ r.TR|rp }}</td></tr>
+      <tr><td>Biaya tunai</td><td>−{{ r.tunai|rp }}</td></tr>
+      <tr><td>Biaya diperhitungkan (tenaga keluarga, alat)</td><td>−{{ r.diperhitungkan|rp }}</td></tr>
+      <tr><td>Bagian biaya bersama (rumus 2.8)</td><td>−{{ r.bersama|rp }}</td></tr>
+      <tr><td>Total biaya (TC)</td><td>{{ r.TC|rp }}</td></tr>
+      <tr><td><b>Pendapatan bersih (π)</b></td><td><b class="{{ 'daun' if r.pendapatan >= 0 else 'tanah' }}">{{ r.pendapatan|rp }}</b></td></tr>
+      <tr><td>Hasil panen</td><td>{{ r.panen_kg|angka }} kg</td></tr>
+      <tr><td>Titik impas produksi (BEP)</td><td>{{ (r.bep_kg|angka ~ ' kg') if r.bep_kg else '–' }}</td></tr>
+    </table>
+  </section>
+  <section class="kartu"><h2>Komposisi biaya</h2>{% include "_komposisi.html" %}
+    {% if ada_jual %}<div class="kecil">{{ 'Usaha layak dilanjutkan karena R/C lebih dari 1.' if r.rc_total > 1 else 'Usaha belum layak karena R/C tidak lebih dari 1.' }}</div>{% endif %}
+  </section>
+</div>
+{% endif %}
+{% endblock %}

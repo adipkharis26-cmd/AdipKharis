@@ -1,0 +1,22 @@
+{% from "_ikon.html" import ikon %}<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#2E6B3F">
+<title>Masuk · Catatan Tani</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main class="halaman-login">
+  <form class="kotak-login" method="post">
+    <span class="logo besar-l">{{ ikon('tunas', '#fff') }}</span>
+    <div><div class="besar">Catatan Tani</div><div class="kecil">Lahan Tegal Miring, Sidomulyo</div></div>
+    <label class="isian">Nama pengguna<input name="username" autocomplete="username" required autofocus></label>
+    <label class="isian">Kata sandi<input name="password" type="password" autocomplete="current-password" required></label>
+    {% for kat, isi in get_flashed_messages(with_categories=true) %}<div class="pesan {{ kat }}" role="alert">{{ isi }}</div>{% endfor %}
+    <button class="tombol penuh" type="submit">Masuk</button>
+    <p class="kecil" style="text-align:center">Padi · Jagung · Pisang</p>
+  </form>
+</main>
+</body>
+</html>

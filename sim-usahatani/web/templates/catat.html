@@ -1,0 +1,46 @@
+{% extends "base.html" %}{% set aktif = 'catat' %}
+{% block judul %}Catat Biaya{% endblock %}
+{% block isi %}
+<div class="kepala"><div><div class="kecil">Catat pengeluaran usaha tani</div><h1>Catat Biaya</h1></div></div>
+{% include "_tab_catat.html" %}
+<div class="grid utama">
+  <form class="kartu" method="post" novalidate>
+    <label><div class="label">Jumlah (Rp)</div>
+      <input class="isian-besar angka" name="jumlah" inputmode="numeric" placeholder="0" data-rupiah required></label>
+    <div><div class="label">Jenis biaya</div>
+      <div class="pilihan">{% for j in jenis %}<label><input type="radio" name="jenis" value="{{ j }}"><span>{{ j }}</span></label>{% endfor %}</div></div>
+    <div><div class="label">Dibayar dengan</div>
+      <div class="pilihan rata">
+        <label><input type="radio" name="sifat" value="tunai" checked><span>Uang tunai</span></label>
+        <label><input type="radio" name="sifat" value="diperhitungkan"><span>Tenaga keluarga / alat</span></label>
+      </div></div>
+    <div><div class="label">Untuk</div>
+      <div class="pilihan rata">
+        {% for m in musim %}<label><input type="radio" name="tujuan" value="{{ m['id'] }}" {{ 'checked' if loop.first }}><span>{{ m['komoditas']|capitalize }}</span></label>{% endfor %}
+        <label><input type="radio" name="tujuan" value="bersama"><span>Bersama</span></label>
+      </div>
+      <div class="kecil" style="margin-top:6px">Biaya bersama dibagi otomatis sesuai luas petak dan lama musim.</div></div>
+    <div class="baris" style="align-items:flex-end;flex-wrap:wrap">
+      <label class="isian tumbuh">Tanggal<input type="date" name="tanggal" value="{{ hari_ini }}" required></label>
+      <button class="tombol" type="submit" style="min-width:160px">Simpan</button>
+    </div>
+  </form>
+  <section class="kartu">
+    <h2>Catatan terakhir</h2>
+    <div class="daftar">
+      {% for b in terakhir %}
+      <div class="baris antara"><div><div>{{ b['jenis'] }}</div><div class="kecil">{{ b['tanggal']|tgl }} · {{ (b['komoditas'] or 'bersama')|capitalize }}</div></div><b class="angka">{{ b['jumlah']|rp }}</b></div>
+      {% else %}<div class="kecil">Belum ada catatan.</div>{% endfor %}
+    </div>
+  </section>
+</div>
+<script>
+// format angka rupiah saat diketik: 300000 -> 300.000
+document.querySelectorAll('[data-rupiah]').forEach(function (el) {
+  el.addEventListener('input', function () {
+    var d = el.value.replace(/\D/g, '');
+    el.value = d ? Number(d).toLocaleString('id-ID') : '';
+  });
+});
+</script>
+{% endblock %}

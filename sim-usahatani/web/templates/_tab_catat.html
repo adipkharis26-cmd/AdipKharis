@@ -1,0 +1,5 @@
+<nav class="tab" aria-label="Jenis catatan">
+  <a class="{{ 'aktif' if tab == 'biaya' }}" href="{{ url_for('catat') }}">Biaya</a>
+  <a class="{{ 'aktif' if tab == 'panen' }}" href="{{ url_for('catat_panen') }}">Panen</a>
+  <a class="{{ 'aktif' if tab == 'jual' }}" href="{{ url_for('catat_jual') }}">Penjualan</a>
+</nav>

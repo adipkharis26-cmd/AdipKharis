@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% set aktif = 'akun' %}
+{% block judul %}Kelola Pengguna{% endblock %}
+{% block isi %}
+<div class="kepala"><div><div class="kecil"><a href="{{ url_for('akun') }}">‹ Akun</a></div><h1>Kelola Pengguna</h1></div></div>
+<div class="grid utama">
+  <section class="kartu"><h2>Daftar pengguna</h2>
+    <div class="daftar">{% for u in daftar %}<div class="baris antara"><div><div>{{ u['nama'] }}</div><div class="kecil">{{ u['username'] }} · {{ u['peran'] }}</div></div>
+      {% if u['id'] != g.user['id'] %}<form method="post"><input type="hidden" name="aksi" value="hapus"><input type="hidden" name="id" value="{{ u['id'] }}"><button class="tombol lembut kecil-t" style="height:34px" onclick="return confirm('Hapus pengguna ini?')">Hapus</button></form>{% endif %}</div>{% endfor %}</div>
+  </section>
+  <form class="kartu" method="post"><h2>Tambah pencatat</h2>
+    <label class="isian">Nama<input name="nama"></label>
+    <label class="isian">Nama pengguna<input name="username" autocomplete="off"></label>
+    <label class="isian">Kata sandi<input name="password" type="password" autocomplete="new-password"></label>
+    <button class="tombol penuh">Tambah</button>
+  </form>
+</div>
+{% endblock %}

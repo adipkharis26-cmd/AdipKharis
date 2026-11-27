@@ -1,0 +1,53 @@
+{% extends "base.html" %}{% set aktif = 'beranda' %}
+{% block judul %}Beranda{% endblock %}
+{% block isi %}
+<div class="kepala">
+  <div><div class="kecil">{{ berjalan and ('Musim ' ~ berjalan['komoditas'] ~ ' · hari ke-' ~ hari_ke(berjalan['mulai'])) or 'Belum ada musim berjalan' }}</div><h1>Beranda</h1></div>
+  <div class="baris no-print">
+    <a class="tombol lembut kecil-t" href="{{ url_for('harga') }}">Update Harga</a>
+    <a class="tombol kecil-t" href="{{ url_for('catat') }}">Catat Biaya</a>
+  </div>
+</div>
+
+<div class="grid dua">
+  {% if rl %}
+  <section class="kartu hijau" aria-label="Pendapatan musim terakhir">
+    <div class="kecil">Untung musim {{ rl.musim.komoditas }} lalu</div>
+    <div class="besar angka">{{ rl.pendapatan|rp }}</div>
+    <div class="baris" style="flex-wrap:wrap;gap:8px">
+      <span class="pil kaca">R/C {{ rl.rc_total|angka(2) }}</span>
+      <span class="pil kaca">Panen {{ rl.panen_kg|angka }} kg</span>
+      <span class="pil kaca">HPP {{ rl.hpp|rp }}/kg</span>
+    </div>
+  </section>
+  {% endif %}
+  <section class="kartu" aria-label="Harga hari ini">
+    <div class="baris antara"><h2>Harga pengepul hari ini</h2><a class="kecil daun" href="{{ url_for('harga') }}"><b>Ubah</b></a></div>
+    <div class="daftar">
+      {% for h in harga %}
+      <div class="baris">
+        <span class="inisial {{ h.komoditas }}">{{ h.komoditas[0]|upper }}</span>
+        <div class="tumbuh"><h2>{{ h.komoditas|capitalize }}</h2><div class="kecil">HPP {{ h.hpp|angka }}</div></div>
+        <div class="kanan"><h2 class="angka">{{ h.sekarang and (h.sekarang['harga_per_kg']|rp) or '–' }}</h2>
+          {% if h.margin is not none %}<span class="pil {{ 'naik' if h.margin >= 0 else 'turun' }}">{{ h.margin|rp(true) }}/kg</span>{% endif %}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+
+{% if rb %}
+<div class="grid dua">
+  <section class="kartu">
+    <h2>Musim {{ rb.musim.komoditas }}</h2>
+    <div class="kecil">Hari ke-{{ hari_ke(rb.musim.mulai) }} dari ±{{ (rb.musim.lama_bulan*30)|angka }} hari · {{ berjalan['petak'] }}</div>
+    {% set persen = [100, (hari_ke(rb.musim.mulai) / (rb.musim.lama_bulan*30) * 100)]|min %}
+    <div class="progres"><i style="width:{{ persen|round }}%"></i></div>
+  </section>
+  <section class="kartu">
+    <div class="baris antara"><h2>Biaya musim {{ rb.musim.komoditas }} sejauh ini</h2><h2 class="angka">{{ rb.TC|rp }}</h2></div>
+    {% include "_komposisi.html" %}
+  </section>
+</div>
+{% endif %}
+{% endblock %}
