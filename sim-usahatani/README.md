@@ -20,9 +20,9 @@ Perancangan Sistem Informasi Manajemen Keuangan Usaha Tani Multi-Komoditas Berba
 
 - [x] Tahap 1 — Judul, batasan masalah, metode
 - [x] Tahap 2 — Referensi jurnal 2021–2026 (terverifikasi DOI)
-- [x] Tahap 3 — BAB I Pendahuluan (draf v1, ada [isi nanti])
+- [x] Tahap 3 — BAB I Pendahuluan (draf v3 ringkas, ada [isi nanti])
 - [x] Audit celah proyek (`laporan/03-audit-celah.md`)
-- [ ] Tahap 4 — BAB II Landasan Teori
+- [x] Tahap 4 — BAB II Landasan Teori (draf v1)
 - [ ] Tahap 5 — BAB III Metodologi
 - [ ] Tahap 6 — BAB IV Perancangan (use case → activity → Figma)
 - [ ] Tahap 7 — Implementasi web responsif
@@ -40,3 +40,13 @@ git checkout claude/charming-cannon-5xh7nt
 ```
 
 Lalu buka folder `sim-usahatani` di VS Code atau Antigravity.
+
+## Membuat ulang file Word
+
+```bash
+pip install python-docx
+```
+
+```bash
+python sim-usahatani/tools/build_docx.py
+```

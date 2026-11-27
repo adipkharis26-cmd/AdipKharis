@@ -32,7 +32,7 @@ OUT = os.path.join(ROOT, "output", "Laporan_SIM_Usaha_Tani.docx")
 JUDUL = ("PERANCANGAN SISTEM INFORMASI MANAJEMEN KEUANGAN USAHA TANI "
          "MULTI-KOMODITAS BERBASIS WEB RESPONSIF")
 SUBJUDUL = "(Studi Kasus: Lahan Tegal Miring, Desa Sidomulyo, Kabupaten Batang)"
-BAB_FILES = ["04-bab-1-pendahuluan.md"]  # bab berikutnya ditambahkan di sini
+BAB_FILES = ["04-bab-1-pendahuluan.md", "06-bab-2-landasan-teori.md"]  # bab berikutnya ditambahkan di sini
 
 FONT = "Times New Roman"
 
@@ -193,6 +193,21 @@ def parse_bab(path):
         if s.startswith(">"):
             flush()
             continue
+        m = re.match(r"^::(rumus|ket|tabel)\s+(.*)$", s)
+        if m:
+            flush()
+            blocks.append((m.group(1), 0, m.group(2)))
+            continue
+        if s.startswith("|"):
+            flush()
+            cells = [c.strip() for c in s.strip("|").split("|")]
+            if all(re.fullmatch(r":?-+:?", c) for c in cells):
+                continue
+            if blocks and blocks[-1][0] == "table":
+                blocks[-1][2].append(cells)
+            else:
+                blocks.append(("table", 0, [cells]))
+            continue
         m = re.match(r"^(#{1,3})\s+(.*)$", s)
         if m:
             flush()
@@ -224,6 +239,59 @@ def render_bab(doc, blocks, toc_entries):
             r = p.add_run(text)
             r.bold = True
             toc_entries.append((lvl - 1, text))
+        elif kind == "rumus":
+            expr, _, num = text.partition("|")
+            p = para(doc, "", WD_ALIGN_PARAGRAPH.LEFT)
+            p.paragraph_format.tab_stops.add_tab_stop(Cm(7), WD_TAB_ALIGNMENT.CENTER)
+            p.paragraph_format.tab_stops.add_tab_stop(Cm(14), WD_TAB_ALIGNMENT.RIGHT)
+            r = p.add_run("\t" + expr.strip())
+            r.italic = True
+            p.add_run("\t" + num.strip())
+        elif kind == "ket":
+            p = para(doc, "", WD_ALIGN_PARAGRAPH.JUSTIFY)
+            p.paragraph_format.line_spacing = 1.0
+            p.paragraph_format.space_before = Pt(6)
+            p.paragraph_format.space_after = Pt(6)
+            add_runs(p, text)
+            for r in p.runs:
+                r.font.size = Pt(11)
+        elif kind == "tabel":
+            p = para(doc, "", WD_ALIGN_PARAGRAPH.CENTER, keep_next=True)
+            p.paragraph_format.space_before = Pt(6)
+            r = p.add_run(text)
+            r.bold = True
+        elif kind == "table":
+            rows = text
+            t = doc.add_table(rows=len(rows), cols=len(rows[0]))
+            t.style = "Table Grid"
+            for i, row in enumerate(rows):
+                for j, val in enumerate(row):
+                    cell = t.cell(i, j)
+                    cp = cell.paragraphs[0]
+                    cp.paragraph_format.line_spacing = 1.0
+                    cp.alignment = WD_ALIGN_PARAGRAPH.CENTER if i == 0 else WD_ALIGN_PARAGRAPH.LEFT
+                    add_runs(cp, val)
+                    for r in cp.runs:
+                        r.font.size = Pt(10)
+                        if i == 0:
+                            r.bold = True
+            widths = [Cm(1.0), Cm(2.4), Cm(2.6), Cm(2.2), Cm(2.8), Cm(3.0)]
+            if len(rows[0]) == len(widths):
+                t.autofit = False
+                grid = t._tbl.tblGrid
+                for gc, w in zip(grid.findall(qn("w:gridCol")), widths):
+                    gc.set(qn("w:w"), str(int(w.twips)))
+                tblPr = t._tbl.tblPr
+                tw = OxmlElement("w:tblW")
+                tw.set(qn("w:w"), str(int(sum(w.twips for w in widths))))
+                tw.set(qn("w:type"), "dxa")
+                for old in tblPr.findall(qn("w:tblW")):
+                    tblPr.remove(old)
+                tblPr.append(tw)
+                for row in t.rows:
+                    for c, w in zip(row.cells, widths):
+                        c.width = w
+            doc.add_paragraph()
         elif kind == "li":
             p = para(doc, "", left_indent=Cm(0.75), hanging=Cm(0.75))
             p.paragraph_format.tab_stops.add_tab_stop(Cm(0.75))
@@ -286,7 +354,8 @@ def build(pages=None):
         if i:
             page_break(doc)
         blocks = parse_bab(os.path.join(LAPORAN, fn))
-        texts += [b[2] for b in blocks]
+        for b in blocks:
+            texts += [" ".join(c for row in b[2] for c in row)] if b[0] == "table" else [b[2]]
         render_bab(doc, blocks, toc_entries)
     page_break(doc)
     toc_entries.append((0, "DAFTAR PUSTAKA"))
