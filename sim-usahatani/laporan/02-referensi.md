@@ -1,5 +1,8 @@
 # Tahap 2 — Referensi Jurnal 2021–2026 (APA 7)
 
+> **Status pemakaian (update):** laporan kini memakai **15 jurnal inti**: Hermawan (2022), Pertiwi & Wulandari (2022), Ingesti & Saragih (2025), Septiadi (2021), Nurcahya (2022), Siswanto (2023), Rayhan (2024), Rahmah (2024), Nirmala & Hardjanto (2022), Johan (2022), Syahputra (2022), Hasugian (2026), Sarfiah (2023), Setiaji & Sastra (2021), Tazkiyah & Arifin (2022).
+> Jurnal lain di daftar ini adalah **cadangan** — tidak masuk Daftar Pustaka karena tidak dikutip. Daftar Pustaka di docx dibuat otomatis hanya dari jurnal yang dikutip.
+
 > Catatan: kopi sudah dihapus dari objek penelitian. Jurnal dengan studi kasus kopi (Ingesti & Saragih, 2025; Nirmala & Hardjanto, 2022; Dolorosa dkk., 2024) tetap dipakai hanya untuk **konsep umum** (rumus usaha tani, R/C tunai vs total, pentingnya pencatatan), bukan untuk data kopi.
 
 Status verifikasi: setiap entri dicek ke indeks OpenAlex (judul, penulis, tahun, volume, halaman, DOI).

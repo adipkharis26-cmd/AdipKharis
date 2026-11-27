@@ -32,7 +32,7 @@ OUT = os.path.join(ROOT, "output", "Laporan_SIM_Usaha_Tani.docx")
 JUDUL = ("PERANCANGAN SISTEM INFORMASI MANAJEMEN KEUANGAN USAHA TANI "
          "MULTI-KOMODITAS BERBASIS WEB RESPONSIF")
 SUBJUDUL = "(Studi Kasus: Lahan Tegal Miring, Desa Sidomulyo, Kabupaten Batang)"
-BAB_FILES = ["04-bab-1-pendahuluan.md", "06-bab-2-landasan-teori.md"]  # bab berikutnya ditambahkan di sini
+BAB_FILES = ["04-bab-1-pendahuluan.md", "06-bab-2-landasan-teori.md", "07-bab-3-metodologi.md"]  # bab berikutnya ditambahkan di sini
 
 FONT = "Times New Roman"
 
@@ -51,13 +51,13 @@ def set_base_styles(doc):
 
 def add_runs(p, text):
     """Tulis teks dengan dukungan **tebal**, *miring*, dan sorot [isi nanti]/[konfirmasi ...]."""
-    tokens = re.split(r"(\*\*[^*]+\*\*|\*[^*]+\*|\[(?:isi nanti|konfirmasi[^\]]*)\])", text)
+    tokens = re.split(r"(\*\*[^*]+\*\*|\*[^*]+\*|\[(?:isi nanti[^\]]*|konfirmasi[^\]]*)\])", text)
     for t in tokens:
         if not t:
             continue
         if t.startswith("**") and t.endswith("**"):
             inner = t[2:-2]
-            if re.fullmatch(r"\[(?:isi nanti|konfirmasi[^\]]*)\]", inner):
+            if re.fullmatch(r"\[(?:isi nanti[^\]]*|konfirmasi[^\]]*)\]", inner):
                 r = p.add_run(inner)
                 r.font.highlight_color = WD_COLOR_INDEX.YELLOW
             else:
@@ -193,7 +193,7 @@ def parse_bab(path):
         if s.startswith(">"):
             flush()
             continue
-        m = re.match(r"^::(rumus|ket|tabel)\s+(.*)$", s)
+        m = re.match(r"^::(rumus|ket|tabel|gambar)\s+(.*)$", s)
         if m:
             flush()
             blocks.append((m.group(1), 0, m.group(2)))
@@ -255,6 +255,13 @@ def render_bab(doc, blocks, toc_entries):
             add_runs(p, text)
             for r in p.runs:
                 r.font.size = Pt(11)
+        elif kind == "gambar":
+            path, _, cap = text.partition("|")
+            p = para(doc, "", WD_ALIGN_PARAGRAPH.CENTER, keep_next=True)
+            p.paragraph_format.space_before = Pt(6)
+            p.add_run().add_picture(os.path.join(ROOT, path.strip()), width=Cm(11))
+            p = para(doc, "", WD_ALIGN_PARAGRAPH.CENTER, space_after=6)
+            p.add_run(cap.strip()).bold = True
         elif kind == "tabel":
             p = para(doc, "", WD_ALIGN_PARAGRAPH.CENTER, keep_next=True)
             p.paragraph_format.space_before = Pt(6)
@@ -361,6 +368,21 @@ def build(pages=None):
     toc_entries.append((0, "DAFTAR PUSTAKA"))
     n = daftar_pustaka(doc, cited_authors(texts))
 
+    # Lampiran: pedoman wawancara (dari 05-pertanyaan-untuk-bapak.md, bagian A–E)
+    page_break(doc)
+    heading_center(doc, "LAMPIRAN")
+    toc_entries.append((0, "LAMPIRAN"))
+    p = para(doc, "", WD_ALIGN_PARAGRAPH.LEFT, space_after=6)
+    p.add_run("Lampiran 1. Pedoman Wawancara dengan Pemilik Lahan").bold = True
+    blocks = []
+    for kind, lvl, text in parse_bab(os.path.join(LAPORAN, "05-pertanyaan-untuk-bapak.md")):
+        if kind == "h" and text.startswith("F."):
+            break
+        if (kind == "h" and lvl == 1) or (kind == "p" and re.match(r"^(Tujuan:|Tips:|\*\*Tanggal)", text)):
+            continue
+        blocks.append((kind, lvl, text))
+    render_bab(doc, blocks, [])
+
     # Sisipkan daftar isi di bagian romawi
     tmp = Document()
     set_base_styles(tmp)
@@ -389,11 +411,13 @@ def page_map(entries):
     norm = lambda s: re.sub(r"\s+", " ", s).strip().lower()
     start = next(i for i, pg in enumerate(pages_txt) if re.search(r"^\s*BAB I\s*$", pg, re.M) and "DAFTAR ISI" not in pg)
     result = {}
+    last = start
     for _, t in entries:
         key = norm(re.sub(r"^BAB [IVX]+ ", "", t))
-        for i in range(start, len(pages_txt)):
+        for i in range(last, len(pages_txt)):
             if key in norm(pages_txt[i]):
                 result[t] = str(i - start + 1)
+                last = i  # judul selalu urut, jadi pencarian lanjut dari halaman ini
                 break
     return result
 
