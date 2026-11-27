@@ -4,11 +4,11 @@
 
 ### 2.1.1 Sistem Informasi Manajemen
 
-Sistem Informasi Manajemen (SIM) adalah sistem yang mengolah data menjadi informasi yang akurat dan tepat waktu untuk membantu pengambilan keputusan, perencanaan, dan pengendalian dalam organisasi (Syahputra dkk., 2022). Dalam penelitian ini, SIM berperan mengubah catatan transaksi harian di lahan menjadi informasi biaya, keuntungan, dan kelayakan setiap komoditas bagi pemilik.
+Sistem Informasi Manajemen (SIM) merupakan rangkaian pengolahan data yang menghasilkan informasi benar dan siap pakai, sehingga pengelola lebih mudah menyusun rencana, mengawasi kegiatan, dan memutuskan langkah usaha (Syahputra dkk., 2022). Dalam penelitian ini, SIM berperan mengubah catatan transaksi harian di lahan menjadi informasi biaya, keuntungan, dan kelayakan setiap komoditas bagi pemilik.
 
 ### 2.1.2 Usaha Tani dan Pencatatan Keuangan
 
-Usaha tani adalah kegiatan mengelola lahan, tenaga kerja, dan modal untuk menghasilkan produk pertanian. Pencatatan keuangan usaha tani membantu petani mengendalikan pengelolaan uang usahanya (Septiadi dkk., 2021). Pertiwi dan Wulandari (2022) menemukan bahwa pencatatan dan analisis keuangan berbasis teknologi berkaitan dengan pendapatan petani serta pengalaman mereka mengikuti pelatihan pencatatan.
+Usaha tani adalah kegiatan mengelola lahan, tenaga kerja, dan modal untuk menghasilkan produk pertanian. Dengan pembukuan yang tertib, petani dapat mengawasi ke mana saja uang usahanya digunakan (Septiadi dkk., 2021). Hasil penelitian Pertiwi dan Wulandari (2022) menunjukkan bahwa kebiasaan mencatat dan menganalisis keuangan dengan bantuan teknologi berhubungan dengan tingkat pendapatan petani dan keikutsertaan mereka dalam pelatihan pembukuan.
 
 ### 2.1.3 Analisis Biaya dan Pendapatan Usaha Tani
 
@@ -45,22 +45,22 @@ Karena padi dan jagung ditanam bergantian pada petak yang sama, biaya bersama ta
 
 ### 2.1.5 Metode Prototyping
 
-Prototyping adalah metode pengembangan sistem yang membuat rancangan awal secara cepat, lalu menyempurnakannya berdasarkan masukan pengguna. Sarfiah dkk. (2023) menerapkan empat tahap, yaitu identifikasi kebutuhan, perancangan prototipe, pengujian dan evaluasi, serta penarikan kesimpulan. Metode ini memungkinkan sistem dibuat cepat dan sesuai kebutuhan inti pengguna (Siswanto dkk., 2023). Hasugian dkk. (2026) juga memakai metode ini secara berulang dalam merancang SIM pertanian, mulai dari pengumpulan kebutuhan, pembuatan *mock-up*, hingga pengujian *mock-up*.
+Prototyping adalah metode pengembangan sistem yang membuat rancangan awal secara cepat, lalu menyempurnakannya berdasarkan masukan pengguna. Sarfiah dkk. (2023) menerapkan empat tahap, yaitu identifikasi kebutuhan, perancangan prototipe, pengujian dan evaluasi, serta penarikan kesimpulan. Pendekatan ini mempercepat penyusunan rancangan sekaligus menjaga agar fitur yang dibuat tetap berfokus pada kebutuhan utama pengguna (Siswanto dkk., 2023). Pada bidang pertanian, Hasugian dkk. (2026) menerapkan pendekatan serupa dalam beberapa putaran, yaitu menggali kebutuhan, menyusun lalu menyempurnakan *mock-up*, kemudian mengujinya.
 
 ### 2.1.6 Unified Modeling Language (UML)
 
-UML adalah bahasa pemodelan untuk menggambarkan kebutuhan dan alur sistem sebelum dibangun, sehingga alur kerja sistem dapat dipantau sejak tahap perancangan (Setiaji & Sastra, 2021). Penelitian ini menggunakan dua diagram berikut.
+UML merupakan notasi standar untuk menggambarkan kebutuhan dan jalannya sistem sebelum dibuat, sehingga pengembang dan pengguna memiliki gambaran yang sama sejak awal perancangan (Setiaji & Sastra, 2021). Penelitian ini menggunakan dua diagram berikut.
 
 1. **Use case diagram**, yang menggambarkan interaksi antara aktor (Pemilik dan Pencatat) dengan fungsi-fungsi sistem.
 2. **Activity diagram**, yang menggambarkan urutan aktivitas dalam setiap fungsi, mulai dari input data hingga laporan ditampilkan.
 
 ### 2.1.7 Web Responsif
 
-Web responsif adalah situs web yang tampilannya menyesuaikan ukuran layar perangkat, baik komputer maupun ponsel. Aplikasi keuangan berbasis web dapat dibuka melalui ponsel maupun komputer sehingga memudahkan pengawasan keuangan (Sarfiah dkk., 2023). Bagi pengguna di lahan, pendekatan ini menghilangkan kebutuhan memasang aplikasi khusus.
+Web responsif adalah situs web yang tampilannya menyesuaikan ukuran layar perangkat, baik komputer maupun ponsel. Sarfiah dkk. (2023) menunjukkan bahwa aplikasi keuangan berbasis web dapat dijalankan dari HP maupun komputer, sehingga pemilik usaha bisa memantau keuangannya dari mana saja. Bagi pengguna di lahan, pendekatan ini menghilangkan kebutuhan memasang aplikasi khusus.
 
 ### 2.1.8 Figma
 
-Figma adalah aplikasi berbasis web untuk merancang antarmuka dan membuat prototipe tampilan. Tazkiyah dan Arifin (2022) menggunakan Figma untuk merancang prototipe antarmuka website, karena antarmuka yang baik membuat pengguna nyaman, sedangkan antarmuka yang buruk membuat pengguna meninggalkan sistem.
+Figma adalah aplikasi berbasis web untuk merancang antarmuka dan membuat prototipe tampilan. Tazkiyah dan Arifin (2022) memanfaatkan Figma untuk menyusun prototipe tampilan website, dengan alasan bahwa kenyamanan pengguna sangat ditentukan oleh rancangan antarmuka; tampilan yang membingungkan membuat pengguna enggan kembali memakai sistem.
 
 ### 2.1.9 Penelitian Terdahulu
 

@@ -52,7 +52,7 @@ Kalau dosen tanya *"kenapa dibagi T, bukan 12?"* → jawab: kalau dibagi 12, bia
 - **Bulatan hitam** = mulai. **Bulatan hitam bercincin** = selesai.
 - **Kotak sudut bulat** = satu langkah/aksi. **Belah ketupat** = keputusan (Ya/Tidak).
 - **Lajur kiri** = yang dilakukan orang (Pencatat/Pemilik). **Lajur kanan** = yang dilakukan sistem.
-- Kenapa hanya 3? → masing-masing mewakili **satu rumusan masalah**: (1) catat pengeluaran, (2) update harga harian, (3) laporan laba rugi. Use case lain alurnya mirip (isi form → simpan).
+- Kenapa 4? → **Login** sebagai pintu masuk, lalu 3 diagram yang masing-masing menjawab **satu rumusan masalah**: (1) catat pengeluaran, (2) update harga harian, (3) laporan laba rugi. Use case lain alurnya mirip (isi formulir → simpan), jadi tidak perlu digambar semua.
 - Poin menarik untuk ditunjukkan: di activity harga harian, sistem **langsung membandingkan harga dengan HPP** dan memberi peringatan kalau harga di bawah modal — ini inti "manajemen"-nya.
 
 ## 5. Pertanyaan dosen yang mungkin muncul + jawaban

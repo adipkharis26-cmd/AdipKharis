@@ -38,28 +38,36 @@ Relasi «include» menunjukkan proses yang **selalu** dijalankan, sedangkan «ex
 
 ## 4.2 Diagram Activity
 
-Activity diagram menggambarkan urutan langkah di dalam sebuah use case, mulai dari tindakan pengguna sampai respons sistem. Setiap diagram dibagi menjadi dua lajur, yaitu lajur pengguna di kiri dan lajur sistem di kanan. Pada penelitian ini dibuat tiga activity diagram untuk use case utama yang mewakili setiap rumusan masalah. Seluruh activity diagram diawali dengan kondisi pengguna telah berhasil login.
+Activity diagram memperlihatkan alur kerja di dalam sebuah use case secara berurutan, dari tindakan pengguna hingga tanggapan sistem. Setiap diagram dibagi menjadi dua lajur: lajur kiri berisi kegiatan pengguna, sedangkan lajur kanan berisi proses yang dijalankan sistem. Penelitian ini menyajikan empat activity diagram, yaitu login sebagai pintu masuk sistem dan tiga diagram lain yang masing-masing menjawab satu rumusan masalah.
 
-### 4.2.1 Activity Diagram Catat Pengeluaran
+### 4.2.1 Activity Diagram Login
 
-Diagram ini mewakili rumusan masalah pertama, yaitu pencatatan transaksi per komoditas dan per musim tanam.
+Login menjadi langkah awal sebelum pengguna dapat memakai fungsi lain di dalam sistem.
 
-::gambar assets/03-activity-catat-pengeluaran.png | Gambar 4.2 Activity Diagram Catat Pengeluaran
+::gambar assets/06-activity-login.png | Gambar 4.2 Activity Diagram Login
 
-Pencatat membuka menu Catat Pengeluaran, lalu sistem menampilkan formulir. Pencatat mengisi tanggal, jenis biaya, jumlah, sifat biaya (tunai atau diperhitungkan), dan tujuan biaya, yaitu musim tanam, petak pisang, atau biaya bersama. Setelah tombol Simpan ditekan, sistem memeriksa kelengkapan data. Jika belum lengkap, sistem menampilkan pesan dan pencatat kembali mengisi formulir. Jika sudah lengkap, data disimpan dan sistem menampilkan notifikasi berhasil.
+Pengguna membuka halaman login lalu memasukkan nama pengguna dan kata sandi. Sistem mencocokkan data tersebut dengan data yang tersimpan. Bila tidak cocok, sistem memberi tahu bahwa login gagal dan pengguna diminta mengisi ulang. Bila cocok, sistem membuka dashboard yang menunya disesuaikan dengan peran pengguna, yaitu Pemilik atau Pencatat.
 
-### 4.2.2 Activity Diagram Update Harga Harian
+### 4.2.2 Activity Diagram Catat Pengeluaran
 
-Diagram ini mewakili rumusan masalah kedua, yaitu pencatatan harga jual harian sebagai acuan nilai jual.
+Diagram ini menjawab rumusan masalah pertama tentang pencatatan transaksi per komoditas dan per musim tanam.
 
-::gambar assets/04-activity-update-harga.png | Gambar 4.3 Activity Diagram Update Harga Harian
+::gambar assets/03-activity-catat-pengeluaran.png | Gambar 4.3 Activity Diagram Catat Pengeluaran
 
-Pemilik membuka menu Harga Harian, kemudian sistem menampilkan harga terakhir setiap komoditas. Pemilik mengisi harga dari pengepul hari itu dan menyimpannya. Sistem menyimpan harga beserta tanggalnya, lalu menghitung margin per kilogram dengan rumus (2.7). Jika harga lebih tinggi daripada HPP, sistem menampilkan status untung per kilogram. Jika tidak, sistem menampilkan peringatan bahwa harga berada di bawah modal.
+Alur dimulai ketika pencatat memilih menu Catat Pengeluaran dan sistem menyiapkan formulir isian. Pencatat kemudian melengkapi tanggal, jenis biaya, nominal, sifat biaya (tunai atau diperhitungkan), serta tujuan pembebanannya, yakni musim tanam, petak pisang, atau biaya bersama. Saat tombol Simpan ditekan, sistem memeriksa apakah semua isian sudah terisi. Isian yang belum lengkap membuat sistem menampilkan pemberitahuan dan pencatat kembali ke formulir, sedangkan isian yang lengkap langsung disimpan lalu sistem menampilkan pesan berhasil.
 
-### 4.2.3 Activity Diagram Lihat Laporan Laba Rugi
+### 4.2.3 Activity Diagram Update Harga Harian
 
-Diagram ini mewakili rumusan masalah ketiga, yaitu penyajian HPP, pendapatan, R/C ratio, dan laporan laba rugi.
+Diagram ini menjawab rumusan masalah kedua tentang pencatatan harga jual harian sebagai acuan nilai jual.
 
-::gambar assets/05-activity-laporan-laba-rugi.png | Gambar 4.4 Activity Diagram Lihat Laporan Laba Rugi
+::gambar assets/04-activity-update-harga.png | Gambar 4.4 Activity Diagram Update Harga Harian
 
-Pemilik membuka menu Laporan, lalu memilih komoditas dan periode. Sistem mengambil data pengeluaran, panen, dan penjualan, kemudian menghitung alokasi biaya bersama dengan rumus (2.8) serta menghitung TC, TR, pendapatan, R/C ratio, dan HPP. Laporan laba rugi kemudian ditampilkan. Apabila pemilik memilih untuk mencetak, sistem membuat file PDF yang dapat diunduh; apabila tidak, proses selesai.
+Pemilik memilih menu Harga Harian, lalu sistem memperlihatkan harga terakhir yang tercatat untuk padi, jagung, dan pisang. Pemilik memasukkan harga yang diperoleh dari pengepul pada hari itu kemudian menyimpannya. Sistem merekam harga tersebut bersama tanggalnya dan menghitung selisihnya terhadap HPP menggunakan rumus (2.7). Apabila harga berada di atas HPP, sistem menampilkan besar keuntungan per kilogram; apabila berada di bawahnya, sistem memberikan peringatan bahwa harga belum menutup modal.
+
+### 4.2.4 Activity Diagram Lihat Laporan Laba Rugi
+
+Diagram ini menjawab rumusan masalah ketiga tentang penyajian HPP, pendapatan, R/C ratio, dan laporan laba rugi.
+
+::gambar assets/05-activity-laporan-laba-rugi.png | Gambar 4.5 Activity Diagram Lihat Laporan Laba Rugi
+
+Pemilik memilih menu Laporan dan menentukan komoditas serta periode yang ingin dilihat. Sistem lalu mengumpulkan data pengeluaran, panen, dan penjualan pada periode itu, membagi biaya bersama dengan rumus (2.8), serta menghitung TC, TR, pendapatan, R/C ratio, dan HPP. Hasil perhitungan ditampilkan dalam bentuk laporan laba rugi. Pemilik dapat memilih untuk mencetak laporan, sehingga sistem membuat file PDF untuk diunduh, atau langsung mengakhiri proses tanpa mencetak.
