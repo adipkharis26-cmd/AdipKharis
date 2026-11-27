@@ -20,7 +20,8 @@ Perancangan Sistem Informasi Manajemen Keuangan Usaha Tani Multi-Komoditas Berba
 
 - [x] Tahap 1 — Judul, batasan masalah, metode
 - [x] Tahap 2 — Referensi jurnal 2021–2026 (terverifikasi DOI)
-- [ ] Tahap 3 — BAB I Pendahuluan
+- [x] Tahap 3 — BAB I Pendahuluan (draf v1, ada [isi nanti])
+- [x] Audit celah proyek (`laporan/03-audit-celah.md`)
 - [ ] Tahap 4 — BAB II Landasan Teori
 - [ ] Tahap 5 — BAB III Metodologi
 - [ ] Tahap 6 — BAB IV Perancangan (use case → activity → Figma)

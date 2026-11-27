@@ -12,21 +12,9 @@
 - Komoditas: padi, jagung, pisang, dan kopi
 - Jenis lahan: tegal (lahan kering) — relevan dengan referensi Nurcahya dkk. (2022)
 
-## Rumusan masalah (revisi, disesuaikan "web responsif")
+## Rumusan masalah & batasan masalah
 
-1. Bagaimana merancang sistem informasi berbasis web responsif yang dapat mencatat dan mengelompokkan biaya operasional usaha tani berdasarkan komoditas (padi, jagung, pisang, dan kopi)?
-2. Bagaimana merancang fitur pencatatan transaksi harian yang dapat diakses langsung dari ponsel di lahan sehingga data tersimpan terpusat?
-3. Bagaimana merancang penyajian perhitungan Harga Pokok Produksi (HPP), pendapatan, R/C ratio, dan laporan laba rugi per komoditas secara otomatis?
-
-## Batasan masalah (draf)
-
-1. Studi kasus hanya pada Lahan Tegal Miring, Desa Sidomulyo, Kabupaten Batang.
-2. Komoditas yang dicakup: padi, jagung, pisang, dan kopi.
-3. Sistem berbentuk web responsif (dapat dibuka di laptop dan ponsel lewat browser); tidak membuat aplikasi mobile native.
-4. Pengguna sistem: **Pemilik** (melihat laporan, mengelola master data) dan **Pencatat/Pekerja lapangan** (input transaksi).
-5. Perhitungan keuangan yang disajikan: total biaya (TC = FC + VC), penerimaan (TR = P × Q), pendapatan (π = TR − TC), R/C ratio, HPP per kg, dan laporan laba rugi per musim tanam.
-6. Laporan berhenti pada tahap perancangan: use case diagram, activity diagram, dan desain antarmuka (Figma). Implementasi web dibuat sebagai purwarupa pendukung.
-7. Tidak mencakup pemasaran/penjualan online, penggajian formal, maupun integrasi perbankan.
+Versi terbaru ada di `04-bab-1-pendahuluan.md` (3 rumusan, 11 batasan, termasuk fitur harga panen harian).
 
 ## Metode
 
