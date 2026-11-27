@@ -257,6 +257,9 @@ def render_bab(doc, blocks, toc_entries):
                 r.font.size = Pt(11)
         elif kind == "gambar":
             path, _, cap = text.partition("|")
+            # paragraf pengantar sebelum gambar ikut pindah halaman bersama gambarnya
+            if doc.paragraphs:
+                doc.paragraphs[-1].paragraph_format.keep_with_next = True
             p = para(doc, "", WD_ALIGN_PARAGRAPH.CENTER, keep_next=True)
             p.paragraph_format.space_before = Pt(6)
             # Bisa beberapa kandidat dipisah koma: dipakai file pertama yang ada.
@@ -264,8 +267,37 @@ def render_bab(doc, blocks, toc_entries):
             if found:
                 p.add_run().add_picture(os.path.join(ROOT, found), width=Cm(11))
             else:
-                r = p.add_run(f"[gambar belum diekspor: {path.split(',')[0].strip()}]")
-                r.font.highlight_color = WD_COLOR_INDEX.YELLOW
+                # Kotak tempat gambar: dibuat sendiri di draw.io lalu diekspor ke assets/
+                png = path.split(",")[0].strip()
+                src = "diagram/" + os.path.basename(png).replace(".png", ".drawio")
+                p._p.getparent().remove(p._p)
+                t = doc.add_table(rows=1, cols=1)
+                t.style = "Table Grid"
+                t.alignment = 1  # tengah
+                tr = t.rows[0]._tr
+                trPr = tr.get_or_add_trPr()
+                h = OxmlElement("w:trHeight")
+                h.set(qn("w:val"), str(int(Cm(7).twips)))
+                h.set(qn("w:hRule"), "exact")
+                trPr.append(h)
+                cell = t.cell(0, 0)
+                cell.width = Cm(12)
+                tcPr = cell._tc.get_or_add_tcPr()
+                va = OxmlElement("w:vAlign")
+                va.set(qn("w:val"), "center")
+                tcPr.append(va)
+                cp = cell.paragraphs[0]
+                cp.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                cp.paragraph_format.line_spacing = 1.2
+                for i, (txt, bold) in enumerate([("TEMPAT GAMBAR", True), (cap.strip(), False),
+                                                 (f"Buat/edit di draw.io: {src}", False),
+                                                 (f"Ekspor PNG ke: {png}", False)]):
+                    if i:
+                        cp.add_run().add_break()
+                    r = cp.add_run(txt)
+                    r.bold = bold
+                    r.font.size = Pt(10 if i > 1 else 11)
+                    r.font.highlight_color = WD_COLOR_INDEX.YELLOW
             p = para(doc, "", WD_ALIGN_PARAGRAPH.CENTER, space_after=6)
             p.add_run(cap.strip()).bold = True
         elif kind == "tabel":
