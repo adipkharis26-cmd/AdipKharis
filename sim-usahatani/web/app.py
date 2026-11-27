@@ -5,6 +5,7 @@ Dari HP (satu WiFi): buka http://<IP-laptop>:5000
 Akun contoh: bapak / tani123 (Pemilik), pencatat / tani123 (Pencatat)
 """
 import os
+import secrets
 from datetime import date
 from functools import wraps
 
@@ -15,7 +16,22 @@ import db
 import hitung
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("SIM_SECRET", "ganti-kunci-ini-saat-dipakai-sungguhan")
+
+
+def _kunci_rahasia():
+    """Kunci sesi: dari SIM_SECRET, atau dibuat acak sekali lalu disimpan di data/ (tidak ikut git)."""
+    if os.environ.get("SIM_SECRET"):
+        return os.environ["SIM_SECRET"]
+    berkas = os.path.join(os.path.dirname(db.DB_PATH), "secret.key")
+    os.makedirs(os.path.dirname(berkas), exist_ok=True)
+    if not os.path.exists(berkas):
+        with open(berkas, "w") as f:
+            f.write(secrets.token_hex(32))
+    with open(berkas) as f:
+        return f.read().strip()
+
+
+app.secret_key = _kunci_rahasia()
 
 KOMODITAS = ["padi", "jagung", "pisang"]
 JENIS_BIAYA = ["Benih", "Pupuk", "Obat", "Upah buruh", "Sewa alat", "Tenaga keluarga", "Pajak lahan", "Penyusutan alat", "Lainnya"]
@@ -58,8 +74,42 @@ def tgl(s):
     if not s:
         return "–"
     bln = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]
-    y, m, d = s.split("-")
-    return f"{int(d)} {bln[int(m) - 1]} {y}"
+    try:
+        d = date.fromisoformat(s)
+    except ValueError:
+        return s  # data lama yang formatnya tidak valid tetap tampil, tidak membuat halaman error
+    return f"{d.day} {bln[d.month - 1]} {d.year}"
+
+
+def tanggal_valid(s):
+    try:
+        return len(s) == 10 and date.fromisoformat(s) is not None
+    except (TypeError, ValueError):
+        return False
+
+
+def ke_int(s):
+    try:
+        return int(s)
+    except (TypeError, ValueError):
+        return None
+
+
+# ---------------------------------------------------------------- CSRF
+def csrf_token():
+    if "csrf" not in session:
+        session["csrf"] = secrets.token_hex(16)
+    return session["csrf"]
+
+
+app.jinja_env.globals.update(csrf_token=csrf_token)
+
+
+@app.before_request
+def cek_csrf():
+    if request.method == "POST":
+        if not session.get("csrf") or request.form.get("csrf") != session["csrf"]:
+            abort(400)
 
 
 def pengguna():
@@ -89,7 +139,17 @@ def musim_aktif():
 
 
 def hari_ke(mulai):
-    return (date.today() - date.fromisoformat(mulai)).days + 1
+    try:
+        return max(0, (date.today() - date.fromisoformat(mulai)).days + 1)
+    except (TypeError, ValueError):
+        return 0
+
+
+def musim_ada(mid, aktif_saja=False):
+    if mid is None:
+        return False
+    sql = "SELECT 1 FROM musim WHERE id=?" + (" AND selesai IS NULL" if aktif_saja else "")
+    return conn().execute(sql, (mid,)).fetchone() is not None
 
 
 app.jinja_env.globals.update(hari_ke=hari_ke)
@@ -98,11 +158,14 @@ app.jinja_env.globals.update(hari_ke=hari_ke)
 # ---------------------------------------------------------------- akses
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "GET" and pengguna():
+        return redirect(url_for("beranda"))
     if request.method == "POST":
         u = conn().execute("SELECT * FROM pengguna WHERE username=?", (request.form.get("username", "").strip(),)).fetchone()
         if u and check_password_hash(u["password_hash"], request.form.get("password", "")):
             session.clear()
             session["uid"] = u["id"]
+            csrf_token()
             return redirect(url_for("beranda" if u["peran"] == "pemilik" else "catat"))
         flash("Nama pengguna atau kata sandi salah.", "galat")
     return render_template("login.html")
@@ -151,10 +214,13 @@ def catat():
         f = request.form
         kurang = _wajib(f, "tanggal", "jenis", "jumlah", "sifat", "tujuan")
         jumlah = num(f.get("jumlah"))
+        musim_id = None if f.get("tujuan") == "bersama" else ke_int(f.get("tujuan"))
+        tujuan_ok = f.get("tujuan") == "bersama" or musim_ada(musim_id, aktif_saja=True)
         if kurang or jumlah <= 0:
             flash("Data belum lengkap. Isi tanggal, jumlah, jenis, cara bayar, dan tujuan biaya.", "galat")
+        elif not tanggal_valid(f["tanggal"]) or f["sifat"] not in ("tunai", "diperhitungkan") or not tujuan_ok:
+            flash("Data tidak valid. Periksa tanggal, cara bayar, dan tujuan biaya.", "galat")
         else:
-            musim_id = None if f["tujuan"] == "bersama" else int(f["tujuan"])
             c.execute("INSERT INTO biaya (tanggal,jenis,jumlah,sifat,musim_id,keterangan,dicatat_oleh) VALUES (?,?,?,?,?,?,?)",
                       (f["tanggal"], f["jenis"], jumlah, f["sifat"], musim_id, f.get("keterangan"), g.user["id"]))
             c.commit()
@@ -174,9 +240,11 @@ def catat_panen():
         f = request.form
         if _wajib(f, "tanggal", "musim_id", "kg") or num(f.get("kg")) <= 0:
             flash("Data belum lengkap. Isi tanggal, komoditas, dan jumlah panen.", "galat")
+        elif not tanggal_valid(f["tanggal"]) or not musim_ada(ke_int(f["musim_id"])):
+            flash("Data tidak valid. Periksa tanggal dan musim.", "galat")
         else:
             c.execute("INSERT INTO panen (musim_id,tanggal,kg,dicatat_oleh) VALUES (?,?,?,?)",
-                      (int(f["musim_id"]), f["tanggal"], num(f["kg"]), g.user["id"]))
+                      (ke_int(f["musim_id"]), f["tanggal"], num(f["kg"]), g.user["id"]))
             c.commit()
             flash(f"Tersimpan: panen {angka(num(f['kg']))} kg", "sukses")
             return redirect(url_for("catat_panen"))
@@ -193,9 +261,11 @@ def catat_jual():
         f = request.form
         if _wajib(f, "tanggal", "musim_id", "kg", "harga") or num(f.get("kg")) <= 0 or num(f.get("harga")) <= 0:
             flash("Data belum lengkap. Isi tanggal, komoditas, jumlah, dan harga per kg.", "galat")
+        elif not tanggal_valid(f["tanggal"]) or not musim_ada(ke_int(f["musim_id"])):
+            flash("Data tidak valid. Periksa tanggal dan musim.", "galat")
         else:
             c.execute("INSERT INTO penjualan (musim_id,tanggal,kg,harga_per_kg,pengepul,dicatat_oleh) VALUES (?,?,?,?,?,?)",
-                      (int(f["musim_id"]), f["tanggal"], num(f["kg"]), num(f["harga"]), f.get("pengepul"), g.user["id"]))
+                      (ke_int(f["musim_id"]), f["tanggal"], num(f["kg"]), num(f["harga"]), f.get("pengepul"), g.user["id"]))
             c.commit()
             flash(f"Tersimpan: penjualan {angka(num(f['kg']))} kg", "sukses")
             return redirect(url_for("catat_jual"))
@@ -211,6 +281,9 @@ def harga():
     c = conn()
     if request.method == "POST":
         tgl_ = request.form.get("tanggal") or date.today().isoformat()
+        if not tanggal_valid(tgl_):
+            flash("Tanggal tidak valid.", "galat")
+            return redirect(url_for("harga"))
         n = 0
         for k in KOMODITAS:
             v = num(request.form.get(k))
@@ -259,13 +332,23 @@ def kelola_musim():
     if request.method == "POST":
         f = request.form
         if f.get("aksi") == "tutup":
-            c.execute("UPDATE musim SET selesai=? WHERE id=?", (f.get("selesai") or date.today().isoformat(), int(f["id"])))
-            flash("Musim ditutup.", "sukses")
+            m = c.execute("SELECT * FROM musim WHERE id=? AND selesai IS NULL", (ke_int(f.get("id")),)).fetchone()
+            selesai = f.get("selesai") or date.today().isoformat()
+            if m is None or not tanggal_valid(selesai):
+                flash("Musim tidak ditemukan atau sudah ditutup.", "galat")
+            elif selesai < m["mulai"]:
+                flash("Tanggal selesai tidak boleh sebelum tanggal mulai.", "galat")
+            else:
+                c.execute("UPDATE musim SET selesai=? WHERE id=?", (selesai, m["id"]))
+                flash("Musim ditutup.", "sukses")
         elif _wajib(f, "komoditas", "petak_id", "mulai", "lama_bulan") or num(f.get("lama_bulan")) <= 0:
             flash("Data musim belum lengkap.", "galat")
+        elif (f["komoditas"] not in KOMODITAS or not tanggal_valid(f["mulai"])
+              or not c.execute("SELECT 1 FROM petak WHERE id=?", (ke_int(f["petak_id"]),)).fetchone()):
+            flash("Data musim tidak valid. Periksa komoditas, petak, dan tanggal mulai.", "galat")
         else:
             c.execute("INSERT INTO musim (komoditas,petak_id,mulai,lama_bulan,target_kg) VALUES (?,?,?,?,?)",
-                      (f["komoditas"], int(f["petak_id"]), f["mulai"], num(f["lama_bulan"]), num(f.get("target_kg")) or None))
+                      (f["komoditas"], ke_int(f["petak_id"]), f["mulai"], num(f["lama_bulan"]), num(f.get("target_kg")) or None))
             flash("Musim baru dibuka.", "sukses")
         c.commit()
         return redirect(url_for("kelola_musim"))
@@ -296,10 +379,16 @@ def kelola_pengguna():
     if request.method == "POST":
         f = request.form
         if f.get("aksi") == "hapus":
-            if int(f["id"]) == g.user["id"]:
+            uid = ke_int(f.get("id"))
+            if uid == g.user["id"]:
                 flash("Akun sendiri tidak bisa dihapus.", "galat")
+            elif uid is None or not c.execute("SELECT 1 FROM pengguna WHERE id=?", (uid,)).fetchone():
+                flash("Pengguna tidak ditemukan.", "galat")
             else:
-                c.execute("DELETE FROM pengguna WHERE id=?", (int(f["id"]),))
+                # catatan yang pernah dibuat tetap disimpan; hanya nama pencatatnya dikosongkan
+                for tabel in ("biaya", "panen", "penjualan"):
+                    c.execute(f"UPDATE {tabel} SET dicatat_oleh=NULL WHERE dicatat_oleh=?", (uid,))
+                c.execute("DELETE FROM pengguna WHERE id=?", (uid,))
                 flash("Pengguna dihapus.", "sukses")
         elif _wajib(f, "username", "nama", "password"):
             flash("Isi nama, nama pengguna, dan kata sandi.", "galat")
@@ -317,6 +406,12 @@ def kelola_pengguna():
 @app.errorhandler(403)
 def dilarang(_):
     return render_template("pesan.html", judul="Tidak ada akses", isi="Halaman ini khusus untuk Pemilik."), 403
+
+
+@app.errorhandler(400)
+def permintaan_salah(_):
+    return render_template("pesan.html", judul="Permintaan tidak valid",
+                           isi="Formulir kedaluwarsa atau tidak sah. Muat ulang halaman lalu coba lagi."), 400
 
 
 with app.app_context():

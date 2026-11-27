@@ -19,7 +19,7 @@
     {% for ep, lab, ik in menu %}
       <a class="menu {{ 'aktif' if aktif == ep }}" href="{{ url_for(ep) }}">{{ ikon(ik) }}{{ {'Catat':'Catat Biaya','Harga':'Harga Hari Ini'}.get(lab, lab) }}</a>
     {% endfor %}
-    <div class="bawah-samping kecil" style="padding:0 12px">{{ g.user['nama'] }}</div>
+    {% if g.user %}<div class="bawah-samping kecil" style="padding:0 12px">{{ g.user['nama'] }}</div>{% endif %}
   </nav>
   <main class="isi">
     {% for kat, isi in get_flashed_messages(with_categories=true) %}<div class="pesan {{ kat }}" role="status">{{ isi }}</div>{% endfor %}

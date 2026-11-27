@@ -55,7 +55,7 @@ Basis data SQLite dibuat otomatis di `data/tani.db` beserta **data contoh ilustr
 python -m pytest -q
 ```
 
-Menguji rumus (2.1)–(2.8) dengan angka contoh (TR Rp8.040.000, TC Rp6.240.000, HPP Rp5.200, R/C 1,29, biaya bersama terbagi habis Rp600.000) serta alur login, hak akses, validasi "data lengkap?", update harga, dan laporan.
+Menguji (24 tes) rumus (2.1)–(2.8) dengan angka contoh (TR Rp8.040.000, TC Rp6.240.000, HPP Rp5.200, R/C 1,29, biaya bersama terbagi habis Rp600.000) serta alur login, hak akses, validasi "data lengkap?", update harga, dan laporan.
 
 ## Struktur
 
@@ -70,3 +70,10 @@ web/
 ```
 
 Catatan keamanan: ganti `SIM_SECRET` (variabel lingkungan) dan kata sandi contoh sebelum dipakai sungguhan.
+
+## Keamanan & validasi
+
+- Setiap formulir dilindungi token CSRF.
+- Kunci sesi dibuat acak otomatis di `data/secret.key` (tidak ikut git), atau dari variabel `SIM_SECRET`.
+- Semua isian divalidasi (tanggal, angka, pilihan, ID musim/petak/pengguna); input rusak ditolak dengan pesan, bukan error.
+- Menghapus pencatat tidak menghapus catatannya.

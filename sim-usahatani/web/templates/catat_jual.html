@@ -4,7 +4,7 @@
 <div class="kepala"><div><div class="kecil">Catat penjualan ke pengepul</div><h1>Catat Penjualan</h1></div></div>
 {% include "_tab_catat.html" %}
 <div class="grid utama">
-  <form class="kartu" method="post" novalidate>
+  <form class="kartu" method="post" novalidate><input type="hidden" name="csrf" value="{{ csrf_token() }}">
     <div class="grid dua" style="gap:12px">
       <label class="isian">Jumlah dijual (kg)<input name="kg" inputmode="decimal" required></label>
       <label class="isian">Harga per kg (Rp)<input name="harga" inputmode="numeric" required></label>

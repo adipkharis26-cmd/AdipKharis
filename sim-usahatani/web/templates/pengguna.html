@@ -5,9 +5,9 @@
 <div class="grid utama">
   <section class="kartu"><h2>Daftar pengguna</h2>
     <div class="daftar">{% for u in daftar %}<div class="baris antara"><div><div>{{ u['nama'] }}</div><div class="kecil">{{ u['username'] }} · {{ u['peran'] }}</div></div>
-      {% if u['id'] != g.user['id'] %}<form method="post"><input type="hidden" name="aksi" value="hapus"><input type="hidden" name="id" value="{{ u['id'] }}"><button class="tombol lembut kecil-t" style="height:34px" onclick="return confirm('Hapus pengguna ini?')">Hapus</button></form>{% endif %}</div>{% endfor %}</div>
+      {% if u['id'] != g.user['id'] %}<form method="post"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><input type="hidden" name="aksi" value="hapus"><input type="hidden" name="id" value="{{ u['id'] }}"><button class="tombol lembut kecil-t" style="height:34px" onclick="return confirm('Hapus pengguna ini?')">Hapus</button></form>{% endif %}</div>{% endfor %}</div>
   </section>
-  <form class="kartu" method="post"><h2>Tambah pencatat</h2>
+  <form class="kartu" method="post"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><h2>Tambah pencatat</h2>
     <label class="isian">Nama<input name="nama"></label>
     <label class="isian">Nama pengguna<input name="username" autocomplete="off"></label>
     <label class="isian">Kata sandi<input name="password" type="password" autocomplete="new-password"></label>

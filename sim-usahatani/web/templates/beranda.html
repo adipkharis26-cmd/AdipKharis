@@ -41,7 +41,7 @@
   <section class="kartu">
     <h2>Musim {{ rb.musim.komoditas }}</h2>
     <div class="kecil">Hari ke-{{ hari_ke(rb.musim.mulai) }} dari ±{{ (rb.musim.lama_bulan*30)|angka }} hari · {{ berjalan['petak'] }}</div>
-    {% set persen = [100, (hari_ke(rb.musim.mulai) / (rb.musim.lama_bulan*30) * 100)]|min %}
+    {% set persen = [100, [0, (hari_ke(rb.musim.mulai) / (rb.musim.lama_bulan*30) * 100)]|max]|min %}
     <div class="progres"><i style="width:{{ persen|round }}%"></i></div>
   </section>
   <section class="kartu">

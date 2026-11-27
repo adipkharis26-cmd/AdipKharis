@@ -1,2 +1,2 @@
 {% extends "base.html" %}
-{% block isi %}<section class="kartu"><h1>{{ judul }}</h1><p>{{ isi }}</p><a class="tombol lembut" href="{{ url_for('akun') }}">Kembali</a></section>{% endblock %}
+{% block isi %}<section class="kartu"><h1>{{ judul }}</h1><p>{{ isi }}</p><a class="tombol lembut" href="{{ url_for('akun') if g.user else url_for('login') }}" style="align-self:flex-start">Kembali</a></section>{% endblock %}

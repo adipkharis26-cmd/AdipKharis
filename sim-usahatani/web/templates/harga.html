@@ -1,7 +1,7 @@
 {% extends "base.html" %}{% set aktif = 'harga' %}
 {% block judul %}Harga Hari Ini{% endblock %}
 {% block isi %}
-<form method="post" style="display:contents">
+<form method="post" style="display:contents"><input type="hidden" name="csrf" value="{{ csrf_token() }}">
 <div class="kepala">
   <div><div class="kecil">Dari pengepul</div><h1>Harga Hari Ini</h1></div>
   <div class="baris"><label class="isian" style="flex-direction:row;align-items:center"><span class="sr">Tanggal</span><input type="date" name="tanggal" value="{{ hari_ini }}" style="height:44px"></label>

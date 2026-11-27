@@ -7,10 +7,10 @@
     <table><thead><tr><th>Komoditas</th><th>Mulai</th><th>Lama</th><th>Status</th></tr></thead><tbody>
     {% for m in daftar %}<tr><td>{{ m['komoditas']|capitalize }} · {{ m['petak'] }}</td><td>{{ m['mulai']|tgl }}</td><td>{{ m['lama_bulan']|angka }} bln</td>
       <td>{% if m['selesai'] %}<span class="pil netral">Selesai {{ m['selesai']|tgl }}</span>{% else %}
-        <form method="post" style="display:inline"><input type="hidden" name="aksi" value="tutup"><input type="hidden" name="id" value="{{ m['id'] }}"><button class="tombol lembut kecil-t" style="height:34px">Tutup musim</button></form>{% endif %}</td></tr>{% endfor %}
+        <form method="post" style="display:inline"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><input type="hidden" name="aksi" value="tutup"><input type="hidden" name="id" value="{{ m['id'] }}"><button class="tombol lembut kecil-t" style="height:34px">Tutup musim</button></form>{% endif %}</td></tr>{% endfor %}
     </tbody></table>
   </section>
-  <form class="kartu" method="post"><h2>Buka musim baru</h2>
+  <form class="kartu" method="post"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><h2>Buka musim baru</h2>
     <div class="pilihan rata">{% for k in ['padi','jagung','pisang'] %}<label><input type="radio" name="komoditas" value="{{ k }}" {{ 'checked' if loop.first }}><span>{{ k|capitalize }}</span></label>{% endfor %}</div>
     <label class="isian">Petak<select name="petak_id">{% for p in petak %}<option value="{{ p['id'] }}">{{ p['nama'] }} ({{ p['luas_m2']|angka }} m²)</option>{% endfor %}</select></label>
     <label class="isian">Tanggal mulai<input type="date" name="mulai" value="{{ hari_ini }}"></label>

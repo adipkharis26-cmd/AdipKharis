@@ -8,7 +8,7 @@
 </head>
 <body>
 <main class="halaman-login">
-  <form class="kotak-login" method="post">
+  <form class="kotak-login" method="post"><input type="hidden" name="csrf" value="{{ csrf_token() }}">
     <span class="logo besar-l">{{ ikon('tunas', '#fff') }}</span>
     <div><div class="besar">Catatan Tani</div><div class="kecil">Lahan Tegal Miring, Sidomulyo</div></div>
     <label class="isian">Nama pengguna<input name="username" autocomplete="username" required autofocus></label>
